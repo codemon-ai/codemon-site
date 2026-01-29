@@ -8,22 +8,16 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/coffeemon/codemon-site',
   footer: {
-    text: '© 2024 codemon.ai',
+    content: '© 2024 codemon.ai',
   },
   head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta property="og:title" content="codemon" />
-      <meta property="og:description" content="AI Engineer & Full-Stack Developer" />
+      <meta property="og:description" content="Pro Vibe Coder & Cracked Engineer" />
       <link rel="icon" href="/favicon.ico" />
     </>
   ),
-  useNextSeoProps() {
-    return {
-      titleTemplate: '%s – codemon'
-    }
-  },
-  primaryHue: 200,
   sidebar: {
     defaultMenuCollapseLevel: 1,
     toggleButton: true,
@@ -36,9 +30,6 @@ const config: DocsThemeConfig = {
     next: true,
   },
   darkMode: true,
-  nextThemes: {
-    defaultTheme: 'dark',
-  },
 }
 
 export default config
