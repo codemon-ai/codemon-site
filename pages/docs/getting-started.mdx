@@ -1,0 +1,64 @@
+---
+title: Getting Started
+---
+
+# Getting Started
+
+이 문서 사이트는 [Nextra](https://nextra.site)로 구축되었습니다.
+
+## 로컬 실행
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 시작
+npm run dev
+```
+
+http://localhost:3000 에서 확인하세요.
+
+## 문서 작성
+
+`pages/docs/` 폴더에 `.mdx` 파일을 추가하면 됩니다.
+
+### Frontmatter
+
+```yaml
+---
+title: 페이지 제목
+---
+```
+
+### 사이드바 순서
+
+`_meta.json` 파일에서 문서 순서를 지정합니다.
+
+```json
+{
+  "index": "Introduction",
+  "getting-started": "Getting Started",
+  "advanced": "Advanced"
+}
+```
+
+## 컴포넌트 사용
+
+Nextra의 내장 컴포넌트를 사용할 수 있습니다.
+
+```mdx
+import { Callout, Cards, Card, Steps, Tabs } from 'nextra/components'
+
+<Callout type="info">
+정보 메시지
+</Callout>
+```
+
+## 배포
+
+Vercel에 자동 배포됩니다.
+
+```bash
+# main 브랜치에 푸시하면 자동 배포
+git push origin main
+```

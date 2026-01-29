@@ -1,0 +1,60 @@
+---
+title: 그림하루 - AI 그림일기
+---
+
+# 🎨 그림하루
+
+AI가 당신의 일기를 그림으로 그려드립니다.
+
+> **서비스 URL**: [grimharu.codemon.ai](https://grimharu.codemon.ai)
+
+## 서비스 소개
+
+그림하루는 AI 기반 그림일기 서비스입니다.
+짧은 일기를 작성하면 AI가 감정을 분석하고, 일기 내용에 맞는 이미지를 생성해드립니다.
+
+### 주요 기능
+
+- **일기 작성**: 50~300자의 짧은 일기 작성
+- **감정 분석**: GPT-3.5를 활용한 감정 분석
+- **이미지 생성**: DALL-E 2로 3개의 이미지 생성
+- **이미지 선택**: 마음에 드는 이미지 선택 및 저장
+- **갤러리**: 과거 일기와 이미지 모아보기
+
+## 기술 스택
+
+| 분류 | 기술 |
+|------|------|
+| Frontend | Next.js 14 (App Router), TypeScript, Tailwind CSS |
+| AI | OpenAI GPT-3.5 (감정 분석), DALL-E 2 (이미지 생성) |
+| Backend | Next.js API Routes |
+| Auth/DB | Supabase (PostgreSQL) |
+| Deployment | Vercel |
+
+## 데이터 흐름
+
+```
+일기 작성 → 감정 분석 (GPT-3.5) → 프롬프트 생성 → 이미지 생성 (DALL-E 2) → 선택 & 저장
+```
+
+### 프롬프트 엔지니어링
+
+1. **감정 추출**: 일기에서 주요 감정 키워드 추출
+2. **장면 구성**: 일기 내용을 시각적 장면으로 변환
+3. **스타일 적용**: 일관된 아트 스타일 프롬프트 적용
+
+## 오픈소스
+
+이 프로젝트는 오픈소스로 공개되어 있습니다.
+
+- **GitHub**: [github.com/coffeemon/grimharu](https://github.com/coffeemon/grimharu)
+
+## 개발 문서
+
+- [시스템 분석](/docs/grimharu/system-analysis)
+- [API 문서](/docs/grimharu/api)
+
+## 링크
+
+- **서비스**: [grimharu.codemon.ai](https://grimharu.codemon.ai)
+- **GitHub**: [github.com/coffeemon/grimharu](https://github.com/coffeemon/grimharu)
