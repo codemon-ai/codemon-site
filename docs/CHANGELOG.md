@@ -25,7 +25,7 @@
 - `footer.text` → `footer.content` 변경 (Nextra 3 API 변경)
 - `pages/_app.tsx` 추가 (Nextra 3 필수)
 
-### 알려진 이슈
+### 홈페이지 스타일 수정
 
-- [ ] 홈페이지 레이아웃/스타일 깨짐 (조사 필요)
-- [ ] `layout: 'raw'` 설정 문제 가능성
+- `pages/_meta.ts`에서 `layout: 'raw'` 설정 제거
+- 홈페이지 Nextra 기본 스타일 적용됨

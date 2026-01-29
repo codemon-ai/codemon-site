@@ -1,10 +1,7 @@
 export default {
   index: {
     title: 'Home',
-    type: 'page',
-    theme: {
-      layout: 'raw'
-    }
+    type: 'page'
   },
   about: {
     title: 'About',
