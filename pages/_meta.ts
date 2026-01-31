@@ -1,7 +1,15 @@
 export default {
   index: {
     title: 'Home',
-    type: 'page'
+    type: 'page',
+    theme: {
+      layout: 'raw',
+      breadcrumb: false,
+      footer: true,
+      sidebar: false,
+      toc: false,
+      pagination: false
+    }
   },
   about: {
     title: 'About',
