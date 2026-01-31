@@ -6,6 +6,7 @@ export default {
   'dollar-signal': '달러시그널',
   moneymon: '머니몬',
   grimharu: '그림하루',
+  usobjet: 'USobjet',
   // 개발 중
   '---': { type: 'separator', title: '개발 중' },
   arbimon: '아비몬',
