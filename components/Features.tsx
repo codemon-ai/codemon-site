@@ -1,60 +1,105 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { Code2, Cpu, Rocket } from 'lucide-react'
+
 const features = [
   {
     title: 'Full-Stack Development',
     description: '프론트엔드부터 백엔드, 인프라까지 전 영역을 아우르는 15년 경력의 개발자',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
+    icon: Code2,
+    gradient: 'from-blue-500 to-cyan-500',
   },
   {
     title: 'AI/ML Engineering',
     description: 'LLM, Computer Vision 등 AI 기술을 실무 서비스에 적용하고 최적화',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
+    icon: Cpu,
+    gradient: 'from-accent-purple to-accent-pink',
   },
   {
     title: 'Service Building',
     description: '아이디어를 실제 운영 가능한 서비스로 만들어내는 기획-개발-배포 전 과정',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
+    icon: Rocket,
+    gradient: 'from-orange-500 to-red-500',
   },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut' as const,
+    },
+  },
+}
+
 export function Features() {
   return (
-    <section className="py-24 px-6 bg-gray-50 dark:bg-gray-900/50">
+    <section className="py-24 px-6 bg-background">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-          Core Skills
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-          기획부터 실제 서비스까지, 아이디어를 기술로 현실화합니다
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
+            Core Skills
+          </h2>
+          <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
+            기획부터 실제 서비스까지, 아이디어를 기술로 현실화합니다
+          </p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {features.map((feature, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white mb-4">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
+        <motion.div
+          className="grid md:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {features.map((feature, i) => {
+            const Icon = feature.icon
+            return (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                className="group relative p-8 rounded-2xl glass hover:bg-white/10 transition-all duration-500 hover:-translate-y-2"
+              >
+                {/* Glow effect on hover */}
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl`} />
+
+                <div className={`relative w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon className="w-7 h-7 text-white" />
+                </div>
+
+                <h3 className="text-xl font-semibold text-foreground mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-foreground/60 leading-relaxed">
+                  {feature.description}
+                </p>
+
+                {/* Bottom border gradient on hover */}
+                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-b-2xl`} />
+              </motion.div>
+            )
+          })}
+        </motion.div>
       </div>
     </section>
   )
