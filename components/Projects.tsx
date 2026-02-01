@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ExternalLink, Github, Sparkles, MessageSquare, Newspaper } from 'lucide-react'
+import { useState } from 'react'
 
 const projects = [
   {
@@ -11,6 +13,7 @@ const projects = [
     description: 'AI 기반 타로 카드 리딩 서비스. 직관적인 UI와 깊이 있는 해석을 제공합니다.',
     icon: Sparkles,
     gradient: 'from-purple-600 to-pink-600',
+    thumbnail: '/projects/taromon.png',
     tags: ['AI', 'OpenAI', 'Next.js'],
     links: {
       demo: '/projects/taromon',
@@ -23,6 +26,7 @@ const projects = [
     description: '텔레그램으로 빠르게 메모하고 정리하는 AI 기반 메모 관리 봇입니다.',
     icon: MessageSquare,
     gradient: 'from-blue-600 to-cyan-600',
+    thumbnail: '/projects/memomon.png',
     tags: ['Telegram Bot', 'Python', 'AI'],
     links: {
       demo: '/projects/memomon',
@@ -35,6 +39,7 @@ const projects = [
     description: 'AI와 기술 분야의 최신 뉴스를 자동으로 수집하고 요약해주는 서비스입니다.',
     icon: Newspaper,
     gradient: 'from-orange-600 to-red-600',
+    thumbnail: '/projects/newsmon.png',
     tags: ['Crawling', 'AI Summary', 'FastAPI'],
     links: {
       demo: '/projects/newsmon',
@@ -42,6 +47,45 @@ const projects = [
     },
   },
 ]
+
+function ProjectThumbnail({
+  src,
+  gradient,
+  icon: Icon,
+  title
+}: {
+  src: string
+  gradient: string
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+}) {
+  const [hasError, setHasError] = useState(false)
+
+  if (hasError) {
+    return (
+      <div className={`relative w-full h-40 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 overflow-hidden`}>
+        <div className="absolute inset-0 bg-black/20" />
+        <Icon className="w-12 h-12 text-white/80 relative z-10" />
+        <div className="absolute bottom-3 left-3 right-3">
+          <span className="text-white/60 text-xs font-medium">{title}</span>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 group-hover:shadow-lg transition-shadow duration-300">
+      <Image
+        src={src}
+        alt={title}
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-500"
+        onError={() => setHasError(true)}
+      />
+      <div className={`absolute inset-0 bg-gradient-to-t from-black/50 to-transparent`} />
+    </div>
+  )
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -106,10 +150,13 @@ export function Projects() {
                   {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
 
-                  {/* Icon */}
-                  <div className={`relative w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
+                  {/* Thumbnail */}
+                  <ProjectThumbnail
+                    src={project.thumbnail}
+                    gradient={project.gradient}
+                    icon={Icon}
+                    title={project.title}
+                  />
 
                   {/* Content */}
                   <div className="relative">
