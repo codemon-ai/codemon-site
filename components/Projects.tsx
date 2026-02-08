@@ -49,7 +49,7 @@ const projects = [
   {
     title: '숲에서 99일 밤',
     subtitle: '3D 생존 게임',
-    description: '9살 아이의 아이디어로 시작된 Three.js 기반 로우폴리 생존 게임. 99일간 숲에서 살아남아 보스를 물리쳐라!',
+    description: '9살 아들의 아이디어로 시작된 Three.js 기반 로우폴리 생존 게임. 99일간 숲에서 살아남아 보스를 물리쳐라!',
     icon: Gamepad2,
     gradient: 'from-green-600 to-emerald-600',
     thumbnail: '/projects/forest99.png',
