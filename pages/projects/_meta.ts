@@ -14,5 +14,6 @@ export default {
   farmingmon: '파밍몬',
   'realestate-crawler': '부동산 크롤러',
   bluemango: '블루망고',
-  cryptomon: '크립토몬'
+  cryptomon: '크립토몬',
+  forest99: '숲에서 99일 밤'
 }
