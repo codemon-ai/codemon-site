@@ -2,54 +2,205 @@
 title: Projects
 ---
 
+import { ProjectCardGrid, ProjectCard } from '../../components/ProjectCard'
+
 # Projects
 
 직접 기획하고 구현한 AI 기반 서비스들입니다.
 
 ## 🟢 운영 중
 
-### [🔮 타로몬](/projects/tarotmon)
-AI 기반 타로 리딩 서비스
-
-### [🍽️ 슬림몬](/projects/slimmon)
-AI 기반 간헐적 단식 관리 서비스
-
-### [💵 달러시그널](/projects/dollar-signal)
-AI 기반 환율 예측 서비스
-
-### [💰 머니몬](/projects/moneymon)
-AI 기반 투자 분석 서비스
-
-### [🎨 그림하루](/projects/grimharu)
-AI 그림일기 서비스
-
-### [🛍️ USobjet](/projects/usobjet)
-3D 상품 미리보기 시스템
+<ProjectCardGrid>
+  <ProjectCard
+    emoji="🔮"
+    title="타로몬"
+    description="AI 기반 타로 리딩 서비스"
+    color="#7c3aed"
+    features={[
+      'AI 기반 타로 카드 해석',
+      '직관적인 사용자 인터페이스',
+      '개인 맞춤형 리딩'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/tarotmon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🍽️"
+    title="슬림몬"
+    description="AI 기반 간헐적 단식 관리 서비스"
+    color="#ea580c"
+    features={[
+      '스마트 단식 타이머',
+      'AI 식단 추천',
+      '체중 변화 추적'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/slimmon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="💵"
+    title="달러시그널"
+    description="AI 기반 환율 예측 서비스"
+    color="#2563eb"
+    features={[
+      '실시간 환율 모니터링',
+      'AI 예측 알고리즘',
+      '알림 및 리포트 제공'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/dollar-signal' }
+    ]}
+  />
+  <ProjectCard
+    emoji="💰"
+    title="머니몬"
+    description="AI 기반 투자 분석 서비스"
+    color="#16a34a"
+    features={[
+      '포트폴리오 분석',
+      'AI 투자 인사이트',
+      '리스크 관리'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/moneymon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🎨"
+    title="그림하루"
+    description="AI 그림일기 서비스"
+    color="#7c3aed"
+    features={[
+      'AI 이미지 생성',
+      '일기 작성 도우미',
+      '감성 분석 및 추천'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/grimharu' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🛍️"
+    title="USobjet"
+    description="3D 상품 미리보기 시스템"
+    color="#ea580c"
+    features={[
+      'Three.js 기반 3D 렌더링',
+      '실시간 상품 회전',
+      '모바일 최적화'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/usobjet' }
+    ]}
+  />
+</ProjectCardGrid>
 
 ---
 
 ## 🟡 개발 중
 
-### [📊 아비몬](/projects/arbimon)
-거래소 간 차익거래 기회 탐지 서비스
-
-### [📰 뉴스몬](/projects/newsmon)
-AI 기반 개인 맞춤형 뉴스 큐레이션 서비스
-
-### [🌾 파밍몬](/projects/farmingmon)
-앱테크 리워드 수집 자동화 서비스
-
-### [🏠 부동산 크롤러](/projects/realestate-crawler)
-부동산 매물 정보 수집 및 분석 시스템
-
-### [🥭 블루망고](/projects/bluemango)
-콘텐츠 제작 및 브랜딩 프로젝트
-
-### [🪙 크립토몬](/projects/cryptomon)
-AI 기반 암호화폐 매매 시그널 서비스
-
-### [🌲 숲에서 99일 밤](/projects/forest99)
-9살 아들의 아이디어로 시작된 Three.js 기반 3D 생존 게임
+<ProjectCardGrid>
+  <ProjectCard
+    emoji="📊"
+    title="아비몬"
+    description="거래소 간 차익거래 기회 탐지 서비스"
+    color="#2563eb"
+    features={[
+      '실시간 가격 비교',
+      '자동 기회 탐지',
+      '수익률 계산'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/arbimon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="📰"
+    title="뉴스몬"
+    description="AI 기반 개인 맞춤형 뉴스 큐레이션 서비스"
+    color="#ea580c"
+    features={[
+      'AI 기반 뉴스 필터링',
+      '관심사 맞춤 추천',
+      '멀티 소스 통합'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/newsmon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🌾"
+    title="파밍몬"
+    description="앱테크 리워드 수집 자동화 서비스"
+    color="#16a34a"
+    features={[
+      '자동 리워드 수집',
+      '다중 플랫폼 지원',
+      '수익 통계'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/farmingmon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🏠"
+    title="부동산 크롤러"
+    description="부동산 매물 정보 수집 및 분석 시스템"
+    color="#2563eb"
+    features={[
+      '자동 매물 수집',
+      '가격 동향 분석',
+      '알림 설정'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/realestate-crawler' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🥭"
+    title="블루망고"
+    description="콘텐츠 제작 및 브랜딩 프로젝트"
+    color="#ea580c"
+    features={[
+      '브랜드 아이덴티티',
+      '콘텐츠 전략',
+      '디자인 시스템'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/bluemango' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🪙"
+    title="크립토몬"
+    description="AI 기반 암호화폐 매매 시그널 서비스"
+    color="#7c3aed"
+    features={[
+      'AI 시그널 생성',
+      '리스크 관리',
+      '백테스팅 도구'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/cryptomon' }
+    ]}
+  />
+  <ProjectCard
+    emoji="🌲"
+    title="숲에서 99일 밤"
+    description="9살 아들의 아이디어로 시작된 Three.js 기반 3D 생존 게임"
+    color="#16a34a"
+    features={[
+      'Three.js 3D 그래픽',
+      '생존 게임 메커닉',
+      '가족 협업 프로젝트'
+    ]}
+    links={[
+      { label: '자세히 보기', href: '/projects/forest99' }
+    ]}
+  />
+</ProjectCardGrid>
 
 ---
 

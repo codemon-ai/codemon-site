@@ -1,0 +1,140 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  position: relative;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-color, #6366f1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark) .card {
+  background: #1a1a2e;
+  border-color: #2d2d44;
+}
+
+:global(.dark) .card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.emoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+}
+
+:global(.dark) .title {
+  color: #f3f4f6;
+}
+
+.description {
+  font-size: 0.925rem;
+  color: #6b7280;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+:global(.dark) .description {
+  color: #9ca3af;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+}
+
+.features li {
+  font-size: 0.875rem;
+  color: #4b5563;
+  padding: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.features li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card-color, #6366f1);
+  flex-shrink: 0;
+}
+
+:global(.dark) .features li {
+  color: #9ca3af;
+}
+
+.links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+  color: #ffffff;
+  background: var(--card-color, #6366f1);
+}
+
+.link:hover {
+  opacity: 0.85;
+}
+
+.linkSecondary {
+  composes: link;
+  background: transparent;
+  color: var(--card-color, #6366f1);
+  border: 1px solid var(--card-color, #6366f1);
+}
+
+.linkSecondary:hover {
+  background: var(--card-color, #6366f1);
+  color: #ffffff;
+  opacity: 1;
+}
