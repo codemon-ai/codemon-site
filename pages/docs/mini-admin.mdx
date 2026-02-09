@@ -1,0 +1,145 @@
+---
+title: Mini Admin
+description: PM2 프로세스 통합 관리 대시보드
+date: 2026-02-10
+---
+
+# Mini Admin
+
+## 목적
+
+Mini Admin은 PM2 생태계의 모든 프로세스를 웹 UI로 관리할 수 있는 통합 관리 대시보드입니다.
+26개의 서비스를 시작/중지하고, 자동시작 설정을 관리하며, 실시간 로그를 확인할 수 있습니다.
+
+## 기술 스택
+
+| 카테고리 | 기술 |
+|---------|------|
+| **Framework** | Next.js 14 |
+| **Runtime** | Node.js |
+| **UI** | React 18, Tailwind CSS |
+| **Data Fetching** | SWR |
+| **Process Manager** | PM2 |
+| **Port** | 5050 |
+
+## 주요 기능
+
+### 1. PM2 프로세스 관리
+- **시작/중지/재시작**: 각 서비스의 상태를 실시간으로 제어
+- **로그 확인**: 실시간 stdout/stderr 로그 뷰어
+- **상태 모니터링**: CPU/메모리 사용률, 실행 시간 표시
+
+### 2. Ecosystem 설정 관리
+- **자동시작 토글**: 시스템 부팅 시 자동 실행할 서비스 선택
+- **ecosystem.config.js 편집**: 웹 UI에서 직접 설정 파일 수정
+- **자동 백업**: 모든 변경 전 `.backups/` 디렉토리에 백업
+
+### 3. 보호 메커니즘
+- **자기 보호**: mini-admin과 ngrok-mini-admin은 웹 UI에서 중지 불가
+- **백업 시스템**: 타임스탬프 기반 자동 백업
+- **안전한 재로드**: 변경 후 PM2 자동 재시작
+
+## 아키텍처
+
+```
+┌─────────────────────┐
+│  Web UI (React)     │
+│  localhost:5050     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Next.js API Routes │
+│  /api/pm2/*         │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  PM2 Ecosystem      │
+│  26 services        │
+└─────────────────────┘
+```
+
+## 시작하기
+
+### 로컬 실행
+
+```bash
+cd /Users/coffeemon/workspace/codemon/mini-admin
+
+# 개발 모드
+npm run dev
+
+# 프로덕션 모드 (PM2)
+pm2 start mini-admin
+```
+
+### 접속 방법
+
+**로컬**:
+```
+http://localhost:5050
+```
+
+**외부 접근** (Ngrok):
+```
+https://mini-admin.ngrok.io
+```
+
+## 주요 페이지
+
+### PM2 대시보드 (`/pm2`)
+- 모든 서비스의 실시간 상태 표시
+- 시작/중지/재시작 버튼
+- 로그 보기 모달
+
+### Ecosystem 편집기 (`/ecosystem`)
+- 26개 서비스 카드 뷰
+- 자동시작 ON/OFF 토글
+- "Save & Reload PM2" 버튼
+
+## 파일 구조
+
+```
+mini-admin/
+├── pages/
+│   ├── api/
+│   │   └── pm2/         # PM2 API 엔드포인트
+│   ├── pm2.tsx          # PM2 대시보드
+│   └── ecosystem.tsx    # Ecosystem 편집기
+├── components/          # React 컴포넌트
+└── package.json
+```
+
+## 관리되는 파일
+
+### ecosystem.config.js
+- **경로**: `/Users/coffeemon/workspace/codemon/ecosystem.config.js`
+- **⚠️ 수동 편집 금지**: 웹 UI를 통해서만 수정
+- **백업 위치**: `/Users/coffeemon/workspace/codemon/.backups/`
+
+### .startup.json
+- **경로**: `/Users/coffeemon/workspace/codemon/.startup.json`
+- **내용**: 자동시작 서비스 목록 (현재 19개)
+- **관리**: mini-admin이 자동 생성/업데이트
+
+## 알려진 제약사항
+
+1. **주석 보존**: 정규식 파서는 주석을 완벽하게 보존하지 못할 수 있음
+2. **복잡한 환경변수**: `process.env.VARIABLE || ''` 패턴은 보존하지만 평가하지 않음
+3. **재시작 시간**: PM2 재로드 시 짧은 다운타임 발생
+4. **동시 수정**: 여러 사용자가 동시에 수정하면 충돌 가능
+
+## 향후 개선 계획
+
+- [ ] 모달 기반 인라인 편집 (포트, 환경변수)
+- [ ] 앱 설정 템플릿 저장/불러오기
+- [ ] 여러 앱 일괄 시작/중지
+- [ ] 리소스 한계 설정 (CPU/메모리)
+- [ ] Rolling restart (다운타임 없는 재시작)
+
+## 링크
+
+- **대시보드**: https://mini-admin.ngrok.io
+- **PM2 관리**: https://mini-admin.ngrok.io/pm2
+- **Ecosystem 편집**: https://mini-admin.ngrok.io/ecosystem

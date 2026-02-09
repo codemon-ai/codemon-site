@@ -1,0 +1,68 @@
+---
+title: Slimmon
+description: 경량 시스템 모니터링 서비스
+date: 2026-02-10
+---
+
+# Slimmon
+
+## 목적
+
+Slimmon은 경량화된 시스템 모니터링 서비스입니다.
+최소한의 리소스로 핵심 지표를 추적합니다.
+
+## 기술 스택
+
+| 카테고리 | 기술 |
+|---------|------|
+| **Backend** | Node.js, Express |
+| **Runtime** | Node.js |
+| **Port** | 3001 |
+
+## 주요 기능
+
+### 1. 시스템 모니터링
+- CPU 사용률
+- 메모리 사용량
+- 디스크 I/O
+- 네트워크 트래픽
+
+### 2. 경량 설계
+- 최소한의 의존성
+- 낮은 메모리 사용
+- 빠른 응답 속도
+
+## 시작하기
+
+### 로컬 실행
+
+```bash
+cd /Users/coffeemon/workspace/codemon/slimmon/backend
+
+# 프로덕션 모드 (PM2)
+pm2 start slimmon
+```
+
+### 접속 방법
+
+**로컬**:
+```
+http://localhost:3001
+```
+
+**외부 접근** (Ngrok):
+```
+https://slimmon.ngrok.io
+```
+
+## API 엔드포인트
+
+```
+GET /api/status    # 시스템 상태
+GET /api/metrics   # 지표 데이터
+```
+
+## 링크
+
+- **API**: http://localhost:3001
+- **Ngrok**: https://slimmon.ngrok.io

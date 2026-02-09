@@ -1,0 +1,163 @@
+---
+title: Dollar Signal
+description: 주식/암호화폐 가격 신호 분석 서비스
+date: 2026-02-10
+---
+
+# Dollar Signal
+
+## 목적
+
+Dollar Signal은 주식과 암호화폐의 가격 변동을 실시간으로 추적하고 신호를 분석하는 서비스입니다.
+사용자 정의 알림 설정과 차트 시각화를 제공합니다.
+
+## 기술 스택
+
+| 카테고리 | 기술 |
+|---------|------|
+| **Backend** | FastAPI (Python), Uvicorn |
+| **Frontend** | Next.js 14, React 18 |
+| **Database** | PostgreSQL |
+| **Charts** | Recharts |
+| **Styling** | Tailwind CSS |
+| **Ports** | Backend: 8001, Frontend: 3003 |
+
+## 아키텍처
+
+```
+┌─────────────────────┐
+│  Frontend           │
+│  Next.js (3003)     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Backend API        │
+│  FastAPI (8001)     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  PostgreSQL         │
+│  dollarsignal DB    │
+└─────────────────────┘
+```
+
+## 주요 기능
+
+### 1. 실시간 가격 추적
+- 주식 시세 모니터링
+- 암호화폐 가격 추적
+- 환율 변동 분석
+
+### 2. 신호 분석
+- 가격 변동 알림
+- 트렌드 분석
+- 사용자 정의 임계값 설정
+
+### 3. 시각화
+- Recharts 기반 차트
+- 실시간 업데이트
+- 다크모드 지원
+
+## 시작하기
+
+### Backend 실행
+
+```bash
+cd /Users/coffeemon/workspace/codemon/dollar-signal/backend
+
+# venv 활성화
+source venv/bin/activate
+
+# 개발 모드
+uvicorn app.main:app --reload --port 8001
+
+# 프로덕션 모드 (PM2)
+pm2 start dollar-signal-api
+```
+
+### Frontend 실행
+
+```bash
+cd /Users/coffeemon/workspace/codemon/dollar-signal/frontend
+
+# 개발 모드
+npm run dev
+
+# 프로덕션 모드 (PM2)
+pm2 start dollar-signal-web
+```
+
+### 접속 방법
+
+**Frontend**:
+```
+http://localhost:3003
+```
+
+**Backend API**:
+```
+http://localhost:8001
+http://localhost:8001/docs  # Swagger UI
+```
+
+**외부 접근** (Ngrok):
+```
+https://dollar-signal-api.ngrok.io
+```
+
+## 환경변수
+
+### Backend
+
+```bash
+DATABASE_URL=postgresql://coffeemon@localhost:5432/dollarsignal
+```
+
+### Frontend
+
+```bash
+PORT=3003
+NEXT_PUBLIC_API_URL=http://localhost:8001
+```
+
+## API 엔드포인트
+
+### 주요 API
+
+```
+GET  /api/v1/signals         # 신호 목록
+POST /api/v1/signals         # 신호 생성
+GET  /api/v1/prices/{symbol} # 가격 조회
+GET  /api/v1/alerts          # 알림 목록
+```
+
+## 데이터베이스 스키마
+
+```sql
+-- signals 테이블
+CREATE TABLE signals (
+  id SERIAL PRIMARY KEY,
+  symbol VARCHAR(20),
+  signal_type VARCHAR(50),
+  price DECIMAL,
+  created_at TIMESTAMP
+);
+
+-- alerts 테이블
+CREATE TABLE alerts (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER,
+  symbol VARCHAR(20),
+  threshold DECIMAL,
+  created_at TIMESTAMP
+);
+```
+
+## 링크
+
+- **Frontend**: http://localhost:3003
+- **Backend API**: http://localhost:8001
+- **Swagger Docs**: http://localhost:8001/docs
+- **Ngrok**: https://dollar-signal-api.ngrok.io

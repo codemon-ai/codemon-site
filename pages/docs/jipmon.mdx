@@ -1,0 +1,119 @@
+---
+title: Jipmon
+description: 지정 모니터링 서비스
+date: 2026-02-10
+---
+
+# Jipmon
+
+## 목적
+
+Jipmon은 특정 대상을 지정하여 모니터링하는 서비스입니다.
+사용자가 관심 있는 항목을 집중적으로 추적합니다.
+
+## 기술 스택
+
+| 카테고리 | 기술 |
+|---------|------|
+| **Backend** | FastAPI (Python), Uvicorn |
+| **Frontend** | Next.js, React |
+| **Database** | PostgreSQL |
+| **Styling** | Tailwind CSS |
+| **Ports** | Backend: 8000, Frontend: 3000 |
+
+## 아키텍처
+
+```
+┌─────────────────────┐
+│  Frontend           │
+│  Next.js (3000)     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Backend API        │
+│  FastAPI (8000)     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  PostgreSQL         │
+└─────────────────────┘
+```
+
+## 주요 기능
+
+### 1. 대상 지정
+- 모니터링 대상 추가/삭제
+- 카테고리별 분류
+- 우선순위 설정
+
+### 2. 알림 시스템
+- 변화 감지 알림
+- 임계값 기반 알림
+- 이메일/슬랙 연동
+
+### 3. 대시보드
+- 실시간 상태 표시
+- 히스토리 차트
+- 통계 분석
+
+## 시작하기
+
+### Backend 실행
+
+```bash
+cd /Users/coffeemon/workspace/jipmon
+
+# 개발 모드
+python3 -m uvicorn main:app --reload --port 8000
+
+# 프로덕션 모드 (PM2)
+pm2 start jipmon-backend
+```
+
+### Frontend 실행
+
+```bash
+cd /Users/coffeemon/workspace/jipmon/frontend
+
+# 개발 모드
+npm run dev
+
+# 프로덕션 모드 (PM2)
+pm2 start jipmon-frontend
+```
+
+### 접속 방법
+
+**Frontend**:
+```
+http://localhost:3000
+```
+
+**Backend API**:
+```
+http://localhost:8000
+http://localhost:8000/docs  # Swagger UI
+```
+
+**외부 접근** (Ngrok):
+```
+https://jipmon.ngrok.io
+```
+
+## API 엔드포인트
+
+```
+GET  /api/targets       # 모니터링 대상 목록
+POST /api/targets       # 대상 추가
+GET  /api/alerts        # 알림 내역
+POST /api/alerts/config # 알림 설정
+```
+
+## 링크
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **Swagger Docs**: http://localhost:8000/docs
+- **Ngrok**: https://jipmon.ngrok.io
