@@ -1,0 +1,101 @@
+---
+title: Arbimon - 아비트라지 모니터링
+description: 
+tags: [wip]
+created: 2026-02-10
+---
+
+# ArbiMon - 암호화폐 차익거래 모니터링
+
+> 펀딩비 & 김프 모니터링 시스템
+
+## 📌 개요
+
+| 항목 | 내용 |
+|------|------|
+| **프로젝트명** | ArbiMon |
+| **목적** | 암호화폐 차익거래 기회 모니터링 & 알림 |
+| **시작일** | 2026-01-29 |
+| **상태** | ✅ 운영 중 |
+| **담당** | 로디 🦊 (펀딩비) / 누비 🐕 (김프) |
+
+---
+
+## 🔧 시스템 구성
+
+### 1. 펀딩비 모니터링 (arbimon-api)
+- **위치:** `~/workspace/codemon/arbimon/backend/`
+- **포트:** 8002
+- **PM2:** `arbimon-api`
+- **기능:**
+  - 바이낸스 선물 펀딩비 조회
+  - 연환산 20% 이상 기회 알림
+  - 5분마다 체크
+  - 텔레그램 알림 (@dollarmon_bot)
+
+### 2. 김프 모니터링 (arbimon-kimchi)
+- **위치:** `~/workspace/codemon/arbimon-kimchi/`
+- **PM2:** `arbimon-kimchi`
+- **GitHub:** https://github.com/codemon-ai/arbimon
+- **기능:**
+  - 업비트/바이낸스 가격 비교
+  - 김치프리미엄 계산
+  - 역프/저김프/고김프 알림
+  - 60초마다 체크
+  - 텔레그램 알림 (@dollarmon_bot)
+
+### 3. 삼각 차익 스캐너 (arbimon-triangular) 🆕
+- **위치:** `~/workspace/codemon/arbimon/arbimon/triangular.py`
+- **GitHub:** https://github.com/codemon-ai/arbimon
+- **담당:** 누비 🐕
+- **기능:**
+  - 바이낸스 내 삼각 차익 스캔
+  - USDT → 코인A → 코인B → USDT 경로
+  - 수수료(0.1%) 포함 수익률 계산
+  - 수익 기회 발견 시 텔레그램 알림
+- **실행:** `python -m arbimon.main --tri`
+- **참고:** 실제 기회는 밀리초 단위로 매우 드묾
+
+---
+
+## 📊 알림 기준
+
+### 펀딩비
+| 조건 | 알림 |
+|------|------|
+| 연환산 ≥ 20% | 🔥 펀딩비 기회! |
+
+### 김프
+| 조건 | 알림 |
+|------|------|
+| < 0% (역프) | 🔵 역프 발생! |
+| < 0.5% | 🔵 저김프 알림 |
+| > 5% | 🔴 고김프 알림 |
+
+---
+
+## 📁 관련 문서
+
+- [[arbimon-guide-펀딩비완전가이드]] - 펀딩비 전략 가이드
+- [[arbimon-guide-김프완전가이드]] - 김프 전략 가이드 (작성 예정)
+
+---
+
+## 📝 변경 이력
+
+### 2026-01-29
+- ✅ 펀딩비 시스템 개발 & 배포
+- ✅ 펀딩비 로직 수정 (음수 펀딩비 → 선물 롱)
+- ✅ 김프 시스템 개발 (누비) & 배포
+- ✅ 알림 임계값 조정 (10% → 20%)
+
+---
+
+## 🔗 링크
+
+- **텔레그램 봇:** @dollarmon_bot
+- **GitHub (김프):** https://github.com/codemon-ai/arbimon
+
+---
+
+#project #crypto #arbitrage #funding #kimchi
