@@ -13,7 +13,6 @@ Codemon은 다양한 모니터링, 신호, 유틸리티 서비스를 운영합�
 ## 서비스 분류
 
 ### 🔧 모니터링 & 관리
-- **[Mini Admin](/docs/mini-admin)**: PM2 프로세스 통합 관리 대시보드
 - **[Slimmon](/docs/slimmon)**: 경량 시스템 모니터링 서비스
 - **[Jipmon](/docs/jipmon)**: 지정 모니터링 서비스
 - **[Memomon](/docs/memomon)**: 메모리 관리 서비스
@@ -59,16 +58,15 @@ pm2 list
 
 ```bash
 # 특정 서비스만 시작
-pm2 start mini-admin
 pm2 start dollar-signal-api
 pm2 start tarotmon
+pm2 start slimmon
 ```
 
 ## 공통 인프라
 
 ### PM2 Ecosystem
 - **경로**: `~/workspace/codemon/ecosystem.config.js`
-- **관리**: [Mini Admin](https://mini-admin.ngrok.io) 웹 UI
 - **자동시작**: 19개 서비스
 - **수동시작**: 7개 서비스
 
@@ -79,7 +77,6 @@ pm2 start tarotmon
 
 ### Ngrok 터널
 각 주요 서비스는 Ngrok 터널을 통해 외부 접근 가능:
-- `ngrok-mini-admin` → https://mini-admin.ngrok.io
 - `ngrok-dollar-signal-api` → 외부 API 접근
 - `ngrok-tarotmon` → 외부 웹 접근
 - 등등...
@@ -87,7 +84,6 @@ pm2 start tarotmon
 ## 관련 링크
 
 - **Codemon GitHub**: (비공개 레포)
-- **Mini Admin Dashboard**: https://mini-admin.ngrok.io
 - **Codemon Site**: https://codemon.ai
 
 > 각 서비스의 상세 문서는 왼쪽 사이드바에서 확인하세요.

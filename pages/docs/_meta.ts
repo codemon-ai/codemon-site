@@ -4,7 +4,6 @@ export default {
     type: 'separator',
     title: '모니터링 & 관리',
   },
-  'mini-admin': 'Mini Admin',
   'slimmon': 'Slimmon',
   'jipmon': 'Jipmon',
   'memomon': 'Memomon',
