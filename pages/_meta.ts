@@ -26,5 +26,9 @@ export default {
   docs: {
     title: 'Docs',
     type: 'page'
+  },
+  p: {
+    type: 'folder',
+    display: 'hidden'
   }
 }
