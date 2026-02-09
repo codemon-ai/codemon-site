@@ -1,0 +1,207 @@
+---
+title: 블루망고 Vercel 마이그레이션 계획
+description: 
+created: 2026-02-10
+---
+
+# 블루망고 인프라 마이그레이션 계획
+## AWS EC2/RDS → 점진적 Vercel 마이그레이션 + Sentry
+
+**Status**: 📋 검토 완료 → 점진적 접근 채택
+**Created**: 2026-02-06
+**Updated**: 2026-02-07
+**Author**: 누비몬
+**Reviewer**: 길벗
+
+---
+
+## 🎯 결론: 점진적 마이그레이션
+
+> **"한 번에 다 바꾸지 말고, 리스크 낮게 단계별로 가자"**
+
+### 채택 이유
+1. **이미 잘 돌아가고 있음** - EC2 + RDS 안정적
+2. **마이그레이션 리스크** - DB 이전 중 문제, 다운타임 위험
+3. **소규모 팀 리소스 한계** - 인프라에 시간 쏟기 어려움
+4. **비용 절감 대비 리스크** - 월 $15~50 절감 vs 마이그레이션 시간/위험
+
+---
+
+## 1. 현재 인프라 현황
+
+### AWS 구성
+| 서비스 | 스펙 | 월 예상 비용 |
+|--------|------|-------------|
+| EC2 (t3.large) | vCPU 2, 8GB RAM | ~$60 |
+| RDS PostgreSQL | db.t3.micro | ~$15 |
+| S3 (이미지) | - | ~$5 |
+| **합계** | | **~$80/월** |
+
+### 현재 서비스 구성
+```
+EC2 (15.164.124.18)
+├── Frontend (Next.js 14) - PM2, 포트 3000
+├── Admin Site (React+Vite) - PM2, 포트 5173
+├── Service API (NestJS) - PM2, 포트 3002
+└── Admin API (NestJS) - PM2, 포트 3001
+
+RDS
+└── PostgreSQL 15 (bluemango DB)
+```
+
+---
+
+## 2. 점진적 마이그레이션 단계
+
+### 🟢 Phase 1: Sentry 연동 (즉시 가능, 1일)
+
+> **가장 먼저! 디버깅 환경부터 개선**
+
+- [ ] Sentry 계정 생성 (무료 티어 OK)
+- [ ] Frontend (Next.js)에 Sentry 연동
+- [ ] Admin Site에 Sentry 연동
+- [ ] Backend API들에 Sentry 연동
+
+**효과:**
+- 에러 발생 시 즉시 알림
+- 스택트레이스, 유저 컨텍스트 확인
+- 성능 모니터링 가능
+- **EC2 그대로 둬도 디버깅 엄청 편해짐!**
+
+### 🟡 Phase 2: Frontend만 Vercel로 (1~2주)
+
+> **리스크 낮은 Frontend부터**
+
+```
+[Before]
+EC2 → Frontend, Admin, APIs 전부
+
+[After]  
+Vercel → Frontend (Next.js) ✅
+Vercel → Admin Site ✅
+EC2 → Backend APIs (그대로 유지)
+RDS → PostgreSQL (그대로 유지)
+```
+
+**작업:**
+- [ ] Vercel 계정 생성 & 프로젝트 연결
+- [ ] Frontend Next.js 배포
+- [ ] Admin Site 배포
+- [ ] 도메인 연결 (bluemango-travel.com → Vercel)
+- [ ] API 엔드포인트는 EC2로 프록시
+
+**효과:**
+- git push만 하면 자동 배포
+- Preview 환경 자동 생성
+- SSL 자동
+- Edge 캐싱으로 속도 향상
+
+### 🔴 Phase 3: Backend 마이그레이션 (나중에, 필요시)
+
+> **여유 생기면 그때 고려**
+
+```
+Railway or Render
+├── Service API
+└── Admin API
+
+Supabase or Neon
+└── PostgreSQL (RDS에서 이전)
+```
+
+**이건 나중에:**
+- Frontend Vercel 안정화 확인 후
+- 비용 절감 필요성 생기면
+- AWS 관리 부담 커지면
+
+---
+
+## 3. 비용 예상
+
+### Phase 1 (Sentry만)
+| 항목 | 월 비용 |
+|------|--------|
+| AWS (기존) | $80 |
+| Sentry Free | $0 |
+| **합계** | **$80** (변화 없음) |
+
+### Phase 2 (Frontend Vercel)
+| 항목 | 월 비용 |
+|------|--------|
+| Vercel Pro | $20 |
+| EC2 (BE만) | $40~50 |
+| RDS | $15 |
+| Sentry Free | $0 |
+| **합계** | **$75~85** (비슷하거나 약간 증가) |
+
+> ⚠️ Phase 2는 비용 절감보다 **편의성/안정성** 목적
+
+### Phase 3 (풀 마이그레이션, 나중에)
+| 항목 | 월 비용 |
+|------|--------|
+| Vercel Pro | $20 |
+| Railway | $10~20 |
+| Supabase/Neon | $0~25 |
+| Sentry Free | $0 |
+| **합계** | **$30~65** |
+
+---
+
+## 4. 우선순위 정리
+
+| 순서 | 작업 | 난이도 | 효과 | 상태 |
+|------|------|--------|------|------|
+| 1 | Sentry 연동 | 쉬움 | 높음 (디버깅) | 📋 TODO |
+| 2 | Frontend Vercel | 중간 | 중간 (배포 편의) | 📋 TODO |
+| 3 | Backend Railway | 어려움 | 중간 (비용) | ⏸️ 보류 |
+| 4 | DB 마이그레이션 | 어려움 | 낮음 | ⏸️ 보류 |
+
+---
+
+## 5. 다음 액션
+
+### 이번 주
+1. **Sentry 계정 생성** (길벗)
+2. **Frontend에 Sentry SDK 추가** (누비)
+3. 테스트 에러 발생시켜서 확인
+
+### 다음 주 (여유 있으면)
+1. Vercel 계정 생성
+2. Frontend 배포 테스트
+
+---
+
+## 6. 참고: 원래 계획 (전체 마이그레이션)
+
+<details>
+<summary>펼쳐보기 - 기존 전체 마이그레이션 계획</summary>
+
+### 원래 제안했던 구성
+```
+Vercel
+├── Frontend (bluemango-travel.com)
+└── Admin Site (admin.bluemango-travel.com)
+
+Railway
+├── Service API (api.bluemango-travel.com)
+└── Admin API (admin-api.bluemango-travel.com)
+
+Supabase
+└── PostgreSQL
+```
+
+### 리스크
+- DB 마이그레이션 중 데이터 손실 위험
+- 도메인 전환 시 다운타임
+- 모든 환경변수 재설정 필요
+- 테스트 범위 넓음
+
+→ **소규모 팀 상황에서 리스크 대비 효과가 애매해서 점진적 접근 채택**
+
+</details>
+
+---
+
+**💬 질문 있으면 말해줘!**
+
+*Updated: 2026-02-07 by 누비몬*
