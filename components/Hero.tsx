@@ -112,7 +112,7 @@ export function Hero({ title, subtitle, description }: HeroProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-accent-pink to-accent-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
           <Link
-            href="https://github.com/coffeemon"
+            href="https://github.com/codemon-ai"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-4 glass rounded-xl font-semibold text-foreground/90 hover:bg-white/10 transition-all duration-300 hover:scale-105"

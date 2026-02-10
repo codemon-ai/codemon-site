@@ -51,7 +51,7 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 const config: DocsThemeConfig = {
   logo: <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>codemon</span>,
   project: {
-    link: 'https://github.com/coffeemon',
+    link: 'https://github.com/codemon-ai',
   },
   footer: {
     content: '© 2024 codemon.ai',  // Nextra 3에서는 'text' 대신 'content' 사용

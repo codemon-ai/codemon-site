@@ -17,7 +17,7 @@ const projects = [
     tags: ['AI', 'OpenAI', 'Next.js'],
     links: {
       demo: '/projects/taromon',
-      github: 'https://github.com/coffeemon',
+      github: 'https://github.com/codemon-ai',
     },
   },
   {
@@ -30,7 +30,7 @@ const projects = [
     tags: ['Telegram Bot', 'Python', 'AI'],
     links: {
       demo: '/projects/memomon',
-      github: 'https://github.com/coffeemon',
+      github: 'https://github.com/codemon-ai',
     },
   },
   {
@@ -43,7 +43,7 @@ const projects = [
     tags: ['Crawling', 'AI Summary', 'FastAPI'],
     links: {
       demo: '/projects/newsmon',
-      github: 'https://github.com/coffeemon',
+      github: 'https://github.com/codemon-ai',
     },
   },
   {

@@ -6,7 +6,7 @@
 
 ```bash
 # GitHub에서 새 저장소 생성 후
-git remote add origin https://github.com/coffeemon/codemon-site.git
+git remote add origin https://github.com/codemon-ai/codemon-site.git
 git branch -M main
 git push -u origin main
 ```

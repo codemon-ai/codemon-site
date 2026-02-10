@@ -7,7 +7,7 @@ import { Github, Linkedin, Mail, Twitter, Heart } from 'lucide-react'
 const socialLinks = [
   {
     name: 'GitHub',
-    href: 'https://github.com/coffeemon',
+    href: 'https://github.com/codemon-ai',
     icon: Github,
   },
   {
