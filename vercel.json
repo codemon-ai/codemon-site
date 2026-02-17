@@ -9,5 +9,13 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/ko" },
+    { "source": "/blog/:path*", "destination": "/ko/blog/:path*" },
+    { "source": "/projects/:path*", "destination": "/ko/projects/:path*" },
+    { "source": "/docs/:path*", "destination": "/ko/docs/:path*" },
+    { "source": "/about", "destination": "/ko/about" },
+    { "source": "/p/:path*", "destination": "/ko/p/:path*" }
   ]
 }
