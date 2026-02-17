@@ -73,10 +73,12 @@ export function Hero({ title, subtitle, description }: HeroProps) {
             <Typewriter
               options={{
                 strings: [
-                  'Pro Vibe Coder',
-                  'Cracked Engineer',
-                  'AI Builder',
-                  'Full-Stack Developer',
+                  'AI Agent Platform',
+                  'Trading Automation',
+                  'SaaS Products',
+                  'Content Platforms',
+                  '10+ Live Services',
+                  '1 Developer',
                 ],
                 autoStart: true,
                 loop: true,
@@ -108,16 +110,14 @@ export function Hero({ title, subtitle, description }: HeroProps) {
             href="/projects"
             className="group relative px-8 py-4 bg-gradient-to-r from-accent-purple to-accent-pink text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-accent-purple/25"
           >
-            <span className="relative z-10">View Projects</span>
+            <span className="relative z-10">See What I Built</span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent-pink to-accent-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
           <Link
-            href="https://github.com/codemon-ai"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/blog"
             className="px-8 py-4 glass rounded-xl font-semibold text-foreground/90 hover:bg-white/10 transition-all duration-300 hover:scale-105"
           >
-            GitHub
+            Read My Blog
           </Link>
         </motion.div>
       </div>

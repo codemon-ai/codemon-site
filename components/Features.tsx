@@ -5,22 +5,22 @@ import { Code2, Cpu, Rocket } from 'lucide-react'
 
 const features = [
   {
-    title: 'Full-Stack Development',
-    description: '프론트엔드부터 백엔드, 인프라까지 전 영역을 아우르는 15년 경력의 개발자',
-    icon: Code2,
-    gradient: 'from-blue-500 to-cyan-500',
+    title: 'Ship Fast, Ship Everything',
+    description: '기획부터 배포까지 혼자 끝낸다. 아이디어가 있으면 일주일 안에 라이브.',
+    icon: Rocket,
+    gradient: 'from-orange-500 to-red-500',
   },
   {
-    title: 'AI/ML Engineering',
-    description: 'LLM, Computer Vision 등 AI 기술을 실무 서비스에 적용하고 최적화',
+    title: 'AI-Native Development',
+    description: 'AI 에이전트 7명이 일하는 외주 플랫폼부터, 트레이딩 봇, 콘텐츠 자동화까지.',
     icon: Cpu,
     gradient: 'from-accent-purple to-accent-pink',
   },
   {
-    title: 'Service Building',
-    description: '아이디어를 실제 운영 가능한 서비스로 만들어내는 기획-개발-배포 전 과정',
-    icon: Rocket,
-    gradient: 'from-orange-500 to-red-500',
+    title: 'Enterprise × Indie',
+    description: '삼성·SKT에서 배운 엔터프라이즈 설계 + 인디 빌더의 속도. 둘 다 가능.',
+    icon: Code2,
+    gradient: 'from-blue-500 to-cyan-500',
   },
 ]
 
@@ -58,10 +58,10 @@ export function Features() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
-            Core Skills
+            What I Do
           </h2>
           <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
-            기획부터 실제 서비스까지, 아이디어를 기술로 현실화합니다
+            가진 기술로 뭐든 만든다
           </p>
         </motion.div>
 

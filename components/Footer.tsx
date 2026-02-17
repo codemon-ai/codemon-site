@@ -51,10 +51,10 @@ export function Footer() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold gradient-text inline-block mb-4">
-            Get in Touch
+            Let&apos;s Build Together
           </h2>
           <p className="text-foreground/60 max-w-md mx-auto mb-8">
-            프로젝트 협업, 기술 문의, 또는 그냥 인사도 환영합니다
+            만들고 싶은 게 있으면 연락주세요. 같이 만들어봅시다.
           </p>
 
           {/* Email CTA */}

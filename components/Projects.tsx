@@ -8,6 +8,32 @@ import { useState } from 'react'
 
 const projects = [
   {
+    title: 'Codemon Make',
+    subtitle: 'AI 에이전트 외주 플랫폼',
+    description: 'AI 에이전트 7명이 기획·개발·QA를 수행하는 자동화 외주 플랫폼. PM이 PRD를 쓰고, Dev가 코드를 짜고, QA가 검증한다.',
+    icon: Sparkles,
+    gradient: 'from-accent-purple to-accent-pink',
+    thumbnail: '/projects/codemon-make.png',
+    tags: ['AI Agents', 'Next.js 15', 'BullMQ', 'Claude'],
+    links: {
+      demo: 'https://make.codemon.ai',
+      github: 'https://github.com/codemon-ai/codemon-make',
+    },
+  },
+  {
+    title: 'MoneyMon',
+    subtitle: '투자 자동화',
+    description: '실시간 시장 데이터 분석과 자동 매매. 달러 시그널, 펀딩비 모니터링, 김프 추적까지.',
+    icon: Sparkles,
+    gradient: 'from-green-600 to-emerald-600',
+    thumbnail: '/projects/moneymon.png',
+    tags: ['Trading', 'Python', 'Real-time'],
+    links: {
+      demo: 'https://moneymon.codemon.ai',
+      github: 'https://github.com/codemon-ai',
+    },
+  },
+  {
     title: '타로몬',
     subtitle: 'AI 타로 리딩',
     description: 'AI 기반 타로 카드 리딩 서비스. 직관적인 UI와 깊이 있는 해석을 제공합니다.',
@@ -17,32 +43,6 @@ const projects = [
     tags: ['AI', 'OpenAI', 'Next.js'],
     links: {
       demo: '/projects/taromon',
-      github: 'https://github.com/codemon-ai',
-    },
-  },
-  {
-    title: '메모몬',
-    subtitle: '텔레그램 메모 봇',
-    description: '텔레그램으로 빠르게 메모하고 정리하는 AI 기반 메모 관리 봇입니다.',
-    icon: MessageSquare,
-    gradient: 'from-blue-600 to-cyan-600',
-    thumbnail: '/projects/memomon.png',
-    tags: ['Telegram Bot', 'Python', 'AI'],
-    links: {
-      demo: '/projects/memomon',
-      github: 'https://github.com/codemon-ai',
-    },
-  },
-  {
-    title: '뉴스몬',
-    subtitle: 'AI/Tech 뉴스 수집',
-    description: 'AI와 기술 분야의 최신 뉴스를 자동으로 수집하고 요약해주는 서비스입니다.',
-    icon: Newspaper,
-    gradient: 'from-orange-600 to-red-600',
-    thumbnail: '/projects/newsmon.png',
-    tags: ['Crawling', 'AI Summary', 'FastAPI'],
-    links: {
-      demo: '/projects/newsmon',
       github: 'https://github.com/codemon-ai',
     },
   },
@@ -137,10 +137,10 @@ export function Projects() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
-            Projects
+            What I Built
           </h2>
           <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
-            직접 기획하고 구현한 서비스들
+            혼자 기획하고, 만들고, 운영 중인 서비스들
           </p>
         </motion.div>
 

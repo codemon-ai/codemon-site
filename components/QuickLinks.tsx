@@ -7,14 +7,14 @@ import { FolderOpen, BookOpen, FileText } from 'lucide-react'
 const links = [
   {
     title: 'Projects',
-    description: '직접 기획하고 구현한 서비스들',
+    description: '혼자 만들고 운영 중인 서비스들',
     href: '/projects',
     icon: FolderOpen,
     gradient: 'from-accent-purple to-accent-pink',
   },
   {
     title: 'Blog',
-    description: '개발, AI, 자동화에 관한 이야기',
+    description: '만들면서 배운 것들. 기술, AI, 자동화.',
     href: '/blog',
     icon: BookOpen,
     gradient: 'from-blue-500 to-cyan-500',
