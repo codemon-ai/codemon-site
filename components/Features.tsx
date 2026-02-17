@@ -1,104 +1,59 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Code2, Cpu, Rocket } from 'lucide-react'
 
 const features = [
   {
-    title: 'Ship Fast, Ship Everything',
-    description: '기획부터 배포까지 혼자 끝낸다. 아이디어가 있으면 일주일 안에 라이브.',
-    icon: Rocket,
-    gradient: 'from-orange-500 to-red-500',
+    number: '01',
+    title: 'AI-First',
+    description: 'AI 에이전트 7명이 일하는 외주 플랫폼. PM이 기획하고, Dev가 코딩하고, QA가 테스트한다.',
   },
   {
-    title: 'AI-Native Development',
-    description: 'AI 에이전트 7명이 일하는 외주 플랫폼부터, 트레이딩 봇, 콘텐츠 자동화까지.',
-    icon: Cpu,
-    gradient: 'from-accent-purple to-accent-pink',
+    number: '02',
+    title: 'Ship Fast',
+    description: '아이디어에서 배포까지 48시간. 20개 이상의 프로젝트를 혼자 만들고 운영 중.',
   },
   {
-    title: 'Enterprise × Indie',
-    description: '삼성·SKT에서 배운 엔터프라이즈 설계 + 인디 빌더의 속도. 둘 다 가능.',
-    icon: Code2,
-    gradient: 'from-blue-500 to-cyan-500',
+    number: '03',
+    title: 'Full Stack',
+    description: '프론트엔드, 백엔드, 인프라, 자동화. 필요하면 뭐든 만든다.',
+  },
+  {
+    number: '04',
+    title: '15+ Years',
+    description: '삼성전자 → SK텔레콤 → 인디 빌더. 엔터프라이즈 설계와 스타트업 속도를 동시에.',
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut' as const,
-    },
-  },
-}
-
 export function Features() {
   return (
-    <section className="py-24 px-6 bg-background">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-24 px-6 bg-black">
+      <div className="max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="grid md:grid-cols-2 gap-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
-            What I Do
-          </h2>
-          <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
-            가진 기술로 뭐든 만든다
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid md:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {features.map((feature, i) => {
-            const Icon = feature.icon
-            return (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="group relative p-8 rounded-2xl glass hover:bg-white/10 transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* Glow effect on hover */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl`} />
-
-                <div className={`relative w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-foreground/60 leading-relaxed">
-                  {feature.description}
-                </p>
-
-                {/* Bottom border gradient on hover */}
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-b-2xl`} />
-              </motion.div>
-            )
-          })}
+          {features.map((feature, i) => (
+            <motion.div
+              key={i}
+              className="group p-8 rounded-2xl border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
+              <span className="text-sm font-mono text-white/25">{feature.number}</span>
+              <h3 className="mt-3 text-2xl font-semibold text-white">
+                {feature.title}
+              </h3>
+              <p className="mt-3 text-white/45 leading-relaxed">
+                {feature.description}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
