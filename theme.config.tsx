@@ -30,10 +30,6 @@ const config: DocsThemeConfig = {
     next: true,
   },
   darkMode: true,
-  i18n: [
-    { locale: 'ko', name: '한국어' },
-    { locale: 'en', name: 'English' },
-  ],
 }
 
 export default config
