@@ -40,7 +40,7 @@ export function Hero({ title, subtitle, description }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {description}
+          혼자서 팀을 대체합니다
         </motion.p>
 
         {/* CTA */}

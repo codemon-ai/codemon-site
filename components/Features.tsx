@@ -5,23 +5,23 @@ import { motion } from 'framer-motion'
 const features = [
   {
     number: '01',
-    title: 'AI-First',
-    description: 'AI 에이전트 7명이 일하는 외주 플랫폼. PM이 기획하고, Dev가 코딩하고, QA가 테스트한다.',
+    title: 'AI가 일한다',
+    description: 'AI 에이전트로 구성된 자동화 팀.',
   },
   {
     number: '02',
-    title: 'Ship Fast',
-    description: '아이디어에서 배포까지 48시간. 20개 이상의 프로젝트를 혼자 만들고 운영 중.',
+    title: '생각하면 만든다',
+    description: '아이디어가 생기면 바로 만들고, 바로 배포한다.',
   },
   {
     number: '03',
-    title: 'Full Stack',
-    description: '프론트엔드, 백엔드, 인프라, 자동화. 필요하면 뭐든 만든다.',
+    title: '경계가 없다',
+    description: '프론트, 백엔드, 인프라, 봇, 자동화. 필요한 건 직접 만든다.',
   },
   {
     number: '04',
-    title: '15+ Years',
-    description: '삼성전자 → SK텔레콤 → 인디 빌더. 엔터프라이즈 설계와 스타트업 속도를 동시에.',
+    title: '오래 살아남았다',
+    description: '대기업에서 시스템을 배웠고, 밖에서 속도를 배웠다.',
   },
 ]
 
