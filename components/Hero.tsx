@@ -73,10 +73,11 @@ export function Hero({ title, subtitle, description }: HeroProps) {
             <Typewriter
               options={{
                 strings: [
+                  'Pro Vibe Coder',
+                  'Cracked Engineer',
                   'AI Agent Platform',
                   'Trading Automation',
                   'SaaS Products',
-                  'Content Platforms',
                   '10+ Live Services',
                   '1 Developer',
                 ],
