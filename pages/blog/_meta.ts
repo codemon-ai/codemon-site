@@ -1,5 +1,6 @@
 export default {
   index: 'Blog',
+  'solitude-philosophy-at-40': '40대의 고독은 철학이 된다',
   '3-dollar-ai-dev-team': '월 $3으로 AI 개발팀 운영하기',
   'teaching-skills-to-ai-agents': 'AI 에이전트에게 스킬을 가르치는 법',
   'mac-mini-startup-infra': '맥미니 하나로 AI 스타트업 인프라 구축하기',
