@@ -30,5 +30,10 @@ export default {
   p: {
     type: 'folder',
     display: 'hidden'
+  },
+  en: {
+    title: 'English',
+    type: 'page',
+    display: 'hidden'
   }
 }
