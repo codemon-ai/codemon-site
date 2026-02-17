@@ -1,0 +1,172 @@
+---
+title: "AI 에이전트에게 스킬을 가르치는 법"
+description: "SKILL.md 파일 하나가 AI의 전문성을 바꾼다. skills.sh 생태계와 실전 적용기."
+date: 2026-02-17
+author: codemon
+tags: [AI, 스킬, Claude-Code, OpenCode, 자동화]
+---
+
+# AI 에이전트에게 스킬을 가르치는 법
+
+> SKILL.md 파일 하나가 AI의 전문성을 바꾼다. 프롬프트 엔지니어링의 다음 단계.
+
+---
+
+## 문제
+
+AI 코딩 에이전트에게 프로젝트를 맡기면, 매번 같은 걸 설명해야 한다.
+
+"우리 프로젝트는 Next.js 15를 써" "Tailwind CSS 사용해" "테스트는 Playwright로" "커밋 메시지는 한국어로" — 매 세션마다 반복이다.
+
+프롬프트를 길게 쓰면 해결될까? 어느 정도는 된다. 하지만 프로젝트가 복잡해지면 프롬프트가 수천 자가 되고, 정작 AI는 중요한 부분을 빼먹는다.
+
+나는 다른 접근이 필요했다. **AI에게 스킬을 가르치는 것.**
+
+![AI가 SKILL.md를 읽는 모습](/images/blog/260217-teaching-skills/01-reading-skill.png)
+
+---
+
+## 스킬이란
+
+스킬은 **AI 에이전트에게 주는 매뉴얼**이다.
+
+폴더 하나, `SKILL.md` 파일 하나. 이게 전부다.
+
+```
+.claude/skills/
+├── systematic-debugging/
+│   ├── SKILL.md              ← "디버깅은 이렇게 해"
+│   └── root-cause-tracing.md  ← 참고 자료
+├── frontend-design/
+│   └── SKILL.md              ← "디자인은 이렇게 해"
+└── verification-before-completion/
+    └── SKILL.md              ← "끝나기 전에 이거 확인해"
+```
+
+AI가 프로젝트 폴더에서 작업을 시작하면, `.claude/skills/` 안의 SKILL.md를 **자동으로 읽고 따른다.** 별도 지시 필요 없이.
+
+---
+
+## skills.sh: 스킬 앱스토어
+
+[skills.sh](https://skills.sh)는 에이전트 스킬의 오픈 마켓플레이스다. 누구나 스킬을 만들어 올리고, 누구나 설치할 수 있다.
+
+인기 스킬 몇 가지:
+
+| 스킬 | 설치수 | 만든 곳 |
+|------|--------|---------|
+| vercel-react-best-practices | 138K | Vercel |
+| frontend-design | 73K | Anthropic |
+| systematic-debugging | 11.8K | Superpowers |
+| webapp-testing | 10.7K | Anthropic |
+| supabase-postgres-best-practices | 18.8K | Supabase |
+
+설치는 한 줄이다:
+```bash
+npx skills add anthropics/skills/frontend-design
+```
+
+하지만 솔직히, 이 CLI가 잘 안 되는 경우도 있다. 그래서 나는 GitHub에서 직접 클론해서 넣었다. 결과는 같다 — **파일만 있으면 된다.**
+
+---
+
+## 실전: 우리 프로젝트에 8개 스킬 적용
+
+Codemon Make(AI 외주 플랫폼)에 다음 스킬들을 설치했다:
+
+**개발 품질:**
+- `frontend-design` — 프론트엔드 디자인 가이드
+- `systematic-debugging` — 체계적 디버깅 방법론
+- `verification-before-completion` — 완료 전 체크리스트
+- `test-driven-development` — TDD 워크플로우
+
+**프로젝트 관리:**
+- `writing-plans` — 계획 수립 방법
+- `executing-plans` — 계획 실행 방법
+- `webapp-testing` — E2E 테스트
+
+설치 후 체감 변화:
+- 디버깅할 때 "일단 이것저것 바꿔보기" → **"에러 로그 먼저, 재현 다음, 원인 추적"** 으로 바뀜
+- 작업 완료 시 빌드 에러 빈도가 줄었음 (verification 스킬 효과)
+
+---
+
+## 세 에이전트가 같은 스킬을 읽는다
+
+재미있는 건 **Claude Code, OpenCode, Antigravity가 모두 같은 SKILL.md 포맷**을 쓴다는 것이다.
+
+| 에이전트 | 스킬 경로 |
+|----------|----------|
+| Claude Code | `.claude/skills/` |
+| OpenCode | `.opencode/skill/` |
+| Antigravity | `.agent/skills/` |
+
+그래서 세 곳에 다 넣어뒀다. git에 커밋하면 **어디서 clone 해도 스킬이 따라온다.** 팀원이 10명이든 AI 에이전트가 7개든, 같은 스킬을 공유한다.
+
+![멀티 에이전트 스킬 공유](/images/blog/260217-teaching-skills/02-multi-agent-skills.png)
+
+---
+
+## 나만의 스킬 만들기
+
+마켓에 원하는 스킬이 없으면? 직접 만들면 된다.
+
+나는 블로그 작성을 위한 두 가지 스킬을 만들었다:
+
+**blog-writing**: Tech Lead 관점의 글쓰기 가이드
+```markdown
+---
+name: blog-writing
+description: Tech Lead 관점의 기술 블로그 글쓰기 가이드
+---
+
+## 페르소나
+15년 이상 경력 Tech Lead. "왜 이 기술이 필요한가"를 먼저 설명한다.
+
+## 구조
+1. 문제 정의부터 시작
+2. 기존 방식의 한계
+3. 의사결정 과정 공개
+4. 결과와 배운 점
+5. 독자가 생각할 질문
+```
+
+**blog-publish**: 드래프트 → 이미지 생성 → 자동 발행
+```
+드래프트 작성 → IMG 마커 삽입 → 검토
+→ Gemini로 이미지 생성 → MDX 변환 → git push → Vercel 배포
+```
+
+이 스킬들 덕분에 "이 주제로 블로그 써줘" 한 마디면 **페르소나 맞는 드래프트 + 이미지 + 자동 발행**까지 된다. 실제로 이 글도 그렇게 만들어졌다.
+
+---
+
+## 스킬 vs 프롬프트
+
+| | 프롬프트 | 스킬 |
+|---|---|---|
+| 지속성 | 세션마다 반복 | 파일로 영구 저장 |
+| 공유 | 복붙 | git으로 팀 공유 |
+| 구조화 | 자유 텍스트 | 메타데이터 + 참고 파일 |
+| 관리 | 어딘가에 메모 | 프로젝트 내 버전 관리 |
+
+프롬프트는 "이번에만 쓰는 지시". 스킬은 "영구적인 전문성". **프롬프트 엔지니어링의 다음 단계는 스킬 엔지니어링**이다.
+
+---
+
+## 배운 점
+
+1. **스킬은 누적된다.** 프로젝트를 할수록 스킬이 쌓이고, AI가 점점 "그 프로젝트에 맞는 전문가"가 된다.
+2. **좋은 스킬은 짧다.** 핵심 원칙 5~10개면 충분하다. 길면 AI가 무시한다.
+3. **참고 파일이 강력하다.** SKILL.md에 원칙을 쓰고, 예제 코드나 패턴은 별도 파일로 분리하면 효과적이다.
+4. **마켓을 먼저 확인하라.** 만들기 전에 skills.sh를 검색하면 대부분 이미 있다.
+
+---
+
+## 생각해볼 질문
+
+> 당신의 AI 에이전트에게 어떤 "매뉴얼"을 주고 있는가? 매번 프롬프트로 설명하고 있다면, 그건 스킬로 만들 때가 됐다.
+
+---
+
+*이 글에서 사용한 스킬들은 [skills.sh](https://skills.sh)에서 찾을 수 있습니다.*

@@ -1,0 +1,152 @@
+---
+title: "월 $3으로 AI 개발팀 운영하기"
+description: "PM은 Opus, Dev는 GLM-5. 역할에 따라 모델을 섞어 쓰면 비용이 58배 줄어든다."
+date: 2026-02-17
+author: codemon
+tags: [AI, GLM-5, 비용최적화, 에이전트]
+---
+
+# 월 $3으로 AI 개발팀 운영하기
+
+> PM은 Opus, Dev는 GLM-5. 역할에 따라 모델을 섞어 쓰면 비용이 58배 줄어든다.
+
+---
+
+## 문제
+
+AI 에이전트로 개발 파이프라인을 구축하면 비용 문제가 바로 찾아온다.
+
+PM Agent가 PRD를 쓰고, Dev Agent가 코딩하고, QA Agent가 테스트한다. 세 에이전트 모두 Claude Opus 4.6을 쓰면 어떻게 될까? 월 API 비용만 $100을 쉽게 넘긴다.
+
+프로젝트가 1개면 괜찮다. 하지만 외주 플랫폼에서 동시에 10개 프로젝트를 돌리면? 월 $1,000. AI 외주의 비용 우위가 사라진다.
+
+나는 이 문제를 **사람 조직과 같은 원리**로 풀었다.
+
+![비용 비교](/images/blog/260217-3-dollar-team/01-cost-comparison.png)
+
+---
+
+## 핵심 인사이트: 판단과 실행은 다른 근육이다
+
+회사에서 CTO가 아키텍처를 설계하면, 주니어 개발자가 구현한다. CTO의 연봉이 높은 건 **판단력** 때문이고, 주니어도 구현을 잘 하는 건 **명확한 지시**가 있기 때문이다.
+
+AI도 마찬가지다.
+
+- **PM Agent** = CTO 역할. 요구사항을 분석하고, PRD를 쓰고, Phase를 나눈다. **추론력이 핵심.**
+- **Dev Agent** = 개발자 역할. PRD에 따라 코드를 작성한다. **실행력이 핵심.**
+- **QA Agent** = 테스터 역할. 빌드 확인, 에러 탐지. **반복 속도가 핵심.**
+
+PM이 잘못 판단하면 프로젝트 전체가 망한다. 하지만 Dev가 코드를 약간 비효율적으로 짜도 동작은 한다.
+
+**비싼 판단 + 저렴한 실행.** 이게 전략이다.
+
+---
+
+## GLM-5라는 변수
+
+2026년 2월, Zhipu AI가 GLM-5를 공개했다.
+
+| 항목 | GLM-5 | Opus 4.6 |
+|------|-------|----------|
+| SWE-bench Verified | 77.8% | 79.4% |
+| Input 가격 (1M 토큰) | $0.11 | $5 |
+| Output 가격 (1M 토큰) | $0.44 | $25 |
+| 컨텍스트 | 200K | 1M |
+| 오픈소스 | MIT ✅ | ❌ |
+
+**코딩 벤치마크 차이는 1.6%.** 가격 차이는 **45배.**
+
+실제 체감은? Reddit r/ClaudeCode에서 한 유저가 이렇게 말했다:
+
+> "GLM-5는 Opus 수준은 아니지만 Sonnet에 가깝다. 가성비로는 최강."
+
+코딩 작업 — 특히 명확한 지시가 있는 구현 작업 — 에서는 이 1.6% 차이가 거의 느껴지지 않는다.
+
+---
+
+## 듀얼 모드 비용 구조
+
+| Agent | 모델 | 역할 | 월 비용 |
+|-------|------|------|---------|
+| PM | Claude Opus 4.6 | PRD, 이슈 분해 | ~$10 |
+| Dev | GLM-5 | 코딩 | ~$2 |
+| QA/Debug | GLM-5 | 테스트, 디버깅 | ~$1 |
+| **합계** | | | **~$13** |
+
+전부 Opus를 쓰면 ~$105. **8배 절약.**
+
+여기서 더 나갈 수 있다. PM도 API로 전환하면:
+
+| Agent | 모델 | 월 비용 |
+|-------|------|---------|
+| PM | Opus API | ~$5 |
+| Dev | GLM-5 | ~$2 |
+| QA | GLM-5 | ~$1 |
+| **합계** | | **~$8** |
+
+극단적으로, NVIDIA NIM 무료 티어를 쓰면 Dev+QA 비용이 **$0**이 된다. PM만 Opus API로 월 $3~5. **월 $3으로 AI 개발팀을 운영할 수 있다.**
+
+![에이전트별 모델 티어](/images/blog/260217-3-dollar-team/02-agent-tiers.png)
+
+---
+
+## 구현: 엔진 추상화 레이어
+
+모델을 자유롭게 바꾸려면 **엔진 추상화**가 필요하다.
+
+```typescript
+interface AgentEngine {
+  execute(prompt: string, options: AgentOptions): Promise<AgentResult>
+  getStatus(sessionId: string): Promise<SessionStatus>
+  abort(sessionId: string): Promise<void>
+}
+
+// PM은 Claude CLI (구독)
+class ClaudeCLIEngine implements AgentEngine { ... }
+
+// Dev/QA는 OpenCode SDK (GLM-5)
+class OpenCodeEngine implements AgentEngine { ... }
+```
+
+Worker 설정에서 에이전트별 엔진을 지정한다:
+
+```typescript
+const workerConfig = {
+  pm:  { engine: "claude-cli", model: "opus-4.6" },
+  dev: { engine: "opencode",   model: "glm-5" },
+  qa:  { engine: "opencode",   model: "glm-5" },
+}
+```
+
+내일 더 좋은 모델이 나오면? config 한 줄 바꾸면 끝이다.
+
+---
+
+## PRD가 좋으면 Dev는 덜 헤맨다
+
+이 전략이 작동하는 전제가 있다. **PM이 좋은 PRD를 써야 한다.**
+
+PRD가 모호하면 Dev Agent가 아무리 좋은 모델이어도 방향을 잃는다. 반대로 PRD가 명확하면 — Phase별 이슈, 완료 조건, 기술 스택이 정해져 있으면 — 저렴한 모델도 잘 해낸다.
+
+이건 사람 조직에서도 똑같다. 기획서가 좋으면 주니어도 잘 만든다. 기획서가 부실하면 시니어도 헤맨다.
+
+**PM에 돈을 쓰는 건 낭비가 아니라 투자다.**
+
+---
+
+## 배운 점
+
+1. **모든 에이전트에 같은 모델을 쓸 필요 없다.** 역할에 따라 최적의 모델이 다르다.
+2. **PM에 투자하면 전체 비용이 줄어든다.** 좋은 기획 = 적은 재작업.
+3. **추상화가 유연성을 만든다.** 엔진 인터페이스 하나면 모델 교체가 config 변경 수준이 된다.
+4. **무료도 충분할 수 있다.** NVIDIA NIM 무료 티어로 실제 코딩 작업이 가능하다.
+
+---
+
+## 생각해볼 질문
+
+> 당신의 AI 워크플로우에서 "비싼 판단"과 "저렴한 실행"을 구분하고 있는가? 모든 작업에 최고 모델을 쓰고 있다면, 그건 CTO한테 보일러플레이트를 시키는 거다.
+
+---
+
+*이 글에서 소개한 듀얼 모드 전략은 [Codemon Make](https://make.codemon.ai)에서 구현 중입니다.*
