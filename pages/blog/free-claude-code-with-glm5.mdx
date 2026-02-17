@@ -1,0 +1,128 @@
+---
+title: "Claude Code를 무료로 쓰는 법 — GLM-5 + NVIDIA NIM"
+description: "구독료 $200 없이 Claude Code의 에이전트 코딩 UX를 그대로 쓸 수 있다. free-claude-code 프록시와 GLM-5 활용법."
+date: 2026-02-17
+author: codemon
+tags: [Tips, AI, Claude-Code, GLM-5]
+---
+
+# Claude Code를 무료로 쓰는 법 — GLM-5 + NVIDIA NIM
+
+> 구독료 $200 없이 Claude Code의 에이전트 코딩 UX를 그대로 쓸 수 있다.
+
+---
+
+## 문제
+
+Claude Code는 강력하다. 파일을 읽고, 코드를 쓰고, 빌드하고, 디버깅까지 하는 에이전트 코딩 경험은 현재 최고 수준이다.
+
+문제는 가격이다. 월 $200 구독이 필요하고, API를 쓰면 토큰 비용이 빠르게 올라간다.
+
+그런데 최근 흥미로운 프로젝트가 나왔다. **Claude Code의 UI는 그대로 쓰면서, 백엔드 모델만 무료로 바꿔치기하는 방법**이다.
+
+![프록시 아키텍처](/images/blog/260217-free-claude-code/01-proxy-architecture.png)
+
+---
+
+## free-claude-code
+
+[free-claude-code](https://github.com/Alishahryar1/free-claude-code)는 가벼운 프록시 서버다. Claude Code CLI가 보내는 Anthropic API 요청을 가로채서, 다른 모델 프로바이더 포맷으로 변환해준다.
+
+```
+Claude Code CLI → [프록시] → GLM-5 (NVIDIA NIM)
+                           → Kimi-K2.5
+                           → LMStudio (로컬)
+                           → OpenRouter (아무 모델)
+```
+
+Claude Code의 에이전트 기능 — 파일 읽기/쓰기, 터미널 실행, 빌드, 디버깅 — 을 **그대로 유지**하면서 모델만 바꾸는 거다.
+
+---
+
+## 왜 가능한가
+
+NVIDIA NIM이 최근 GLM-5를 무료 티어에 추가했다. **분당 40 요청, 카드 등록 불필요.** 이 정도면 실제 코딩 작업에 충분하다.
+
+GLM-5 자체도 놀랍다:
+- SWE-bench Verified **77.8%** (Opus 4.6은 79.4%)
+- 744B 파라미터 MoE, MIT 오픈소스
+- Opus 대비 **45배 저렴**한 API 가격
+
+1.6% 차이의 성능으로, 비용이 45배 줄어든다. 트레이드오프가 명확하다.
+
+---
+
+## 설정 방법
+
+### 1. 클론 & 설치
+
+```bash
+git clone https://github.com/Alishahryar1/free-claude-code.git
+cd free-claude-code
+npm install
+```
+
+### 2. NVIDIA NIM API 키 발급
+
+[NVIDIA NIM](https://build.nvidia.com/)에서 무료 계정 생성 후 API 키를 받는다. 카드 등록 없이 가능하다.
+
+### 3. 환경 변수 설정
+
+```bash
+export NIM_API_KEY="your-key"
+```
+
+### 4. 프록시 서버 실행
+
+```bash
+npm start
+```
+
+### 5. Claude Code가 프록시를 바라보게 설정
+
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:PORT"
+claude
+```
+
+이제 Claude Code를 평소처럼 사용하면 된다. 차이점은 뒤에서 GLM-5가 응답한다는 것뿐이다.
+
+---
+
+## 지원 모델
+
+| 모델 | 출처 | 특징 |
+|------|------|------|
+| **GLM-5** | Zhipu AI | SWE-bench 77.8%, 오픈소스 |
+| **Kimi-K2.5** | Moonshot AI | 추론 특화 |
+| **MiniMax-M2.1** | MiniMax | 범용 |
+| **Devstral-2** | Mistral | 코딩 특화 |
+| **Qwen 3.5** | Alibaba | 다국어 |
+
+OpenRouter를 프로바이더로 쓰면 사실상 **아무 모델**이나 연결 가능하다. LMStudio를 쓰면 **완전 로컬**에서 돌릴 수도 있다.
+
+---
+
+## 주의할 점
+
+**이건 만능이 아니다.**
+
+- Opus의 깊은 추론 능력은 대체할 수 없다. 복잡한 아키텍처 설계나 미묘한 버그 추적에서는 차이가 난다.
+- 무료 티어의 rate limit(분당 40회)은 긴 세션에서 병목이 될 수 있다.
+- 프록시 계층이 하나 더 끼어서 레이턴시가 약간 늘어난다.
+
+**내 추천:**
+- 정밀한 작업 (아키텍처 설계, 복잡한 리팩토링) → **Opus 구독**
+- 반복적 작업 (보일러플레이트, 테스트 코드, 간단한 기능 추가) → **GLM-5 무료**
+
+두 가지를 상황에 따라 섞어 쓰는 게 현실적인 전략이다.
+
+---
+
+## 생각해볼 질문
+
+> AI 코딩 도구의 가치는 "모델 성능"에 있는가, "에이전트 UX"에 있는가? Claude Code가 비싼 이유는 Opus 때문이 아니라, 에이전트 프레임워크 때문일 수도 있다.
+
+---
+
+*출처: [Reddit r/ClaudeAI](https://www.reddit.com/r/ClaudeAI/comments/1r6pqnh/) | [GitHub: free-claude-code](https://github.com/Alishahryar1/free-claude-code)*
