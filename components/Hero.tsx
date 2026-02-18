@@ -26,11 +26,9 @@ export function Hero({ title, subtitle, description }: HeroProps) {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black dark:text-white tracking-tight leading-[1.1]">
+            Pro
+            <br />
             Vibe Coder
-            <br />
-            <span className="text-black/30 dark:text-white/40">&</span>
-            <br />
-            Craft Engineer
           </h1>
         </motion.div>
 
