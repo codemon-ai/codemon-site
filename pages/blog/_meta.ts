@@ -3,6 +3,7 @@ export default {
     title: '전체 글',
     display: 'hidden'
   },
+  'llm-price-war-2026': '2026년 LLM 가격 전쟁 — Sonnet 4.6보다 10배 싼 모델이 코딩도 한다',
   'ai-coding-agents-comparison': 'Claude Code vs Cursor vs Windsurf — 3개 다 써본 사람의 솔직 비교',
   'sonnet-46-developer-reactions': 'Sonnet 4.6 실사용 평가 — Reddit 개발자들의 솔직한 반응',
   'sonnet-46-dropped': 'Sonnet 4.6이 떴다 — Opus급 성능을 1/5 가격에',
