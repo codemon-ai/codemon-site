@@ -3,6 +3,7 @@ export default {
     title: '전체 글',
     display: 'hidden'
   },
+  'sonnet-46-dropped': 'Sonnet 4.6이 떴다 — Opus급 성능을 1/5 가격에',
   '3-dollar-ai-dev-team': '월 $3으로 AI 개발팀 운영하기',
   'teaching-skills-to-ai-agents': 'AI 에이전트에게 스킬을 가르치는 법',
   'mac-mini-startup-infra': '맥미니 하나로 AI 스타트업 인프라 구축하기',
