@@ -3,6 +3,7 @@ export default {
     title: '전체 글',
     display: 'hidden'
   },
+  'ai-file-management-system': 'AI 봇에게 파일 정리를 맡겼더니 — 옵시디언 + iCloud + 에이전트 자동화 실전기',
   'claude-code-agent-teams': 'Claude Code Agent Teams — AI 여러 명이 팀으로 코드 리뷰하는 시대',
   'llm-price-war-2026': '2026년 LLM 가격 전쟁 — Sonnet 4.6보다 10배 싼 모델이 코딩도 한다',
   'ai-coding-agents-comparison': 'Claude Code vs Cursor vs Windsurf — 3개 다 써본 사람의 솔직 비교',
