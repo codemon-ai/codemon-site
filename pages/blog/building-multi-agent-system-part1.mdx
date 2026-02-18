@@ -8,6 +8,14 @@ tags: [AI, series, 멀티에이전트]
 
 # 로컬에서 AI 멀티 에이전트 만들기 (1) — 설계와 환경 구성
 
+> **시리즈 (3편 중 1편)**
+>
+> | 편 | 제목 | 핵심 |
+> |---|---|---|
+> | **→ 1편** | **설계와 환경 구성** | **AgentEngine 추상화, CLI/API 팩토리** |
+> | 2편 | [에이전트 구현](/blog/building-multi-agent-system-part2) | EventBus, Orchestrator, 3개 에이전트 |
+> | 3편 | [실전과 확장](/blog/building-multi-agent-system-part3) | 실행 결과, 피드백 루프, 비용 최적화 |
+
 "AI한테 코드 짜달라고 하면 되는데, 에이전트를 왜 여러 개 돌려?"
 
 나도 처음엔 그렇게 생각했다. Claude에게 "TODO 앱 만들어줘" 하면 한 번에 끝나니까. 그런데 **codemon-make**를 7에이전트로 운영하면서 생각이 바뀌었다.
@@ -186,5 +194,7 @@ export function createEngine(type: EngineType, options?): AgentEngine {
 ## 다음 편에서
 
 에이전트 엔진과 환경 구성을 마쳤다. 2편에서는 이 엔진 위에 **EventBus, Orchestrator, 그리고 3개 에이전트**를 구현한다.
+
+**→ 다음: [2편 — 에이전트 구현](/blog/building-multi-agent-system-part2)**
 
 > 전체 코드: [github.com/codemon-ai/agent-basic](https://github.com/codemon-ai/agent-basic)

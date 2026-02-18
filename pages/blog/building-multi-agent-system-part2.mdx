@@ -8,6 +8,14 @@ tags: [AI, series, 멀티에이전트]
 
 # 로컬에서 AI 멀티 에이전트 만들기 (2) — 에이전트 구현
 
+> **시리즈 (3편 중 2편)**
+>
+> | 편 | 제목 | 핵심 |
+> |---|---|---|
+> | 1편 | [설계와 환경 구성](/blog/building-multi-agent-system-part1) | AgentEngine 추상화, CLI/API 팩토리 |
+> | **→ 2편** | **에이전트 구현** | **EventBus, Orchestrator, 3개 에이전트** |
+> | 3편 | [실전과 확장](/blog/building-multi-agent-system-part3) | 실행 결과, 피드백 루프, 비용 최적화 |
+
 [1편](/blog/building-multi-agent-system-part1)에서 AgentEngine 인터페이스와 환경을 구성했다. 이번 편에서는 에이전트 간 통신(EventBus), 라우팅(Orchestrator), 그리고 3개 에이전트를 구현한다.
 
 ![EventBus 허브-스포크](/images/blog/multi_agent_part2/01.png)
@@ -264,5 +272,7 @@ const reviewerWorker = createReviewerWorker(eventBus);
 ## 다음 편에서
 
 3편에서는 이 파이프라인을 **실제로 실행**하고, 결과를 분석하고, 프로덕션으로 확장하는 방법을 다룬다.
+
+**← 이전: [1편 — 설계와 환경 구성](/blog/building-multi-agent-system-part1)** | **다음: [3편 — 실전과 확장](/blog/building-multi-agent-system-part3) →**
 
 > 전체 코드: [github.com/codemon-ai/agent-basic](https://github.com/codemon-ai/agent-basic)
