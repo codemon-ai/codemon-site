@@ -3,6 +3,7 @@ export default {
     title: '전체 글',
     display: 'hidden'
   },
+  'ai-coding-agents-comparison': 'Claude Code vs Cursor vs Windsurf — 3개 다 써본 사람의 솔직 비교',
   'sonnet-46-developer-reactions': 'Sonnet 4.6 실사용 평가 — Reddit 개발자들의 솔직한 반응',
   'sonnet-46-dropped': 'Sonnet 4.6이 떴다 — Opus급 성능을 1/5 가격에',
   '3-dollar-ai-dev-team': '월 $3으로 AI 개발팀 운영하기',
