@@ -1,4 +1,13 @@
+# *
 User-agent: *
 Disallow: /p/
 
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://codemon.ai
+
+# Sitemaps
 Sitemap: https://codemon.ai/sitemap.xml

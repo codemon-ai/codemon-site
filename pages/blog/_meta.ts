@@ -3,6 +3,7 @@ export default {
     title: '전체 글',
     display: 'hidden'
   },
+  'claude-code-agent-teams': 'Claude Code Agent Teams — AI 여러 명이 팀으로 코드 리뷰하는 시대',
   'llm-price-war-2026': '2026년 LLM 가격 전쟁 — Sonnet 4.6보다 10배 싼 모델이 코딩도 한다',
   'ai-coding-agents-comparison': 'Claude Code vs Cursor vs Windsurf — 3개 다 써본 사람의 솔직 비교',
   'sonnet-46-developer-reactions': 'Sonnet 4.6 실사용 평가 — Reddit 개발자들의 솔직한 반응',
