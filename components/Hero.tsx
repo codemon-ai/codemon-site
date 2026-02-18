@@ -43,26 +43,7 @@ export function Hero({ title, subtitle, description }: HeroProps) {
           혼자서 팀을 대체합니다
         </motion.p>
 
-        {/* CTA */}
-        <motion.div
-          className="mt-12 flex flex-wrap justify-center gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <Link
-            href="/blog"
-            className="px-8 py-3.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:opacity-90 transition-all duration-200"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/about"
-            className="px-8 py-3.5 border border-black/20 dark:border-white/20 text-black/70 dark:text-white/70 rounded-lg font-medium hover:border-black/40 dark:hover:border-white/40 hover:text-black dark:hover:text-white transition-all duration-200"
-          >
-            About
-          </Link>
-        </motion.div>
+        {/* CTA buttons removed — navigation via header */}
       </div>
     </section>
   )
