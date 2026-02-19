@@ -14,6 +14,14 @@ interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'gemini-cli-google-mcp-handson',
+    title: 'Gemini CLI + Google MCP로 풀스택 앱 클라우드 배포하기',
+    date: '2026-02-19',
+    tags: ['AI', 'hands-on'],
+    description: 'MCP 서버 3개 연결, 자연어 4줄로 DB 생성 → 데이터 이동 → Cloud Run 배포.',
+    series: 'AI 핸즈온'
+  },
+  {
     slug: 'blog-seo-basics-to-practice',
     title: '블로그 SEO, 기본 개념부터 실전 셋팅까지',
     date: '2026-02-19',
@@ -144,7 +152,7 @@ const posts: Post[] = [
   }
 ]
 
-const ALL_TAGS = ['AI', 'tips', 'insight', 'news', 'project', 'series', '인프라']
+const ALL_TAGS = ['AI', 'tips', 'insight', 'news', 'project', 'series', 'hands-on', '인프라']
 
 export default function BlogIndex() {
   const [activeTag, setActiveTag] = useState<string | null>(null)

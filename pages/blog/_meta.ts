@@ -9,6 +9,7 @@ export default {
       pagination: false
     }
   },
+  'gemini-cli-google-mcp-handson': 'Gemini CLI + Google MCP로 풀스택 앱 클라우드 배포하기',
   'blog-seo-basics-to-practice': '블로그 SEO, 기본 개념부터 실전 셋팅까지',
   'building-multi-agent-system-part1': '로컬에서 AI 멀티 에이전트 만들기 (1) — 설계와 환경 구성',
   'building-multi-agent-system-part2': '로컬에서 AI 멀티 에이전트 만들기 (2) — 에이전트 구현',
