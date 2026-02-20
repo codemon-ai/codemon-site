@@ -1,0 +1,36 @@
+카테고리,기능명,경로,CRUD,설명,상태
+대시보드,대시보드,/,R,"통계 카드 4개, 차트 4개, 기간 필터, 새로고침",구현됨
+예약관리,전체 예약,/bookings/all,R,"예약 전체 목록, 상태별 필터, 검색, 페이지네이션",구현됨
+예약관리,예약 접수중,/bookings/new,R,신규(PENDING) 상태 예약 목록,구현됨
+예약관리,인보이스,/bookings/invoice,R,"인보이스 발송(INVOICE_SENT) 상태, 인보이스 뷰어",구현됨
+예약관리,결제 완료,/bookings/paid,R,결제완료(PAID) 상태 예약,구현됨
+예약관리,바우처(확정),/bookings/voucher,R,바우처 발행(VOUCHER_ISSUED) 상태,구현됨
+예약관리,예약 취소 요청,/bookings/cancel-claim,R,취소 요청(CANCEL_REQUESTED) 상태,구현됨
+예약관리,예약 취소,/bookings/cancelled,R,취소 완료(CANCELLED) 상태,구현됨
+예약관리,개인 결제 상품,/bookings/individual-items,CR,개인 결제 상품 목록 + 생성,구현됨
+예약관리,개인 결제 내역,/bookings/individual-paid,R,개인 결제 완료 내역,구현됨
+예약관리,예약 상세,/bookings/show/:id,R,예약 상세 정보 보기,구현됨
+예약관리,무통장입금 내역,/bank-transfers,CRUD,"무통장입금 예약 목록, 생성, 수정, 상세, 상태 변경",구현됨
+예약관리,차량 예약 관리,/car-bookings,R,"차량 예약 목록 카드 UI, 상태별 필터, 상세 보기",구현됨
+상품관리,호텔/풀빌라 관리,/hotels,CRUD,"호텔 목록 테이블, 생성/수정 폼, 상세 보기, 가격 정책, 이미지 관리",구현됨
+상품관리,차량 관리,/cars,CRUD,"차량 상품 목록, 생성/수정/상세",구현됨
+상품관리,골프 관리,/golf,CRUD,"골프 상품 목록, 생성/수정/상세",구현됨
+상품관리,여행/투어 관리,/tours,CRUD,"투어 상품 목록, 생성/수정/상세, 상세 정보 탭",구현됨
+상품관리,비자 관리,/visa,CRUD,"비자 상품 목록, 생성/수정/상세",구현됨
+상품관리,기타 상품 관리,/etc-products,CRUD,"기타 상품 (스파, 레스토랑, 쇼 등) 목록, 생성/수정/상세",구현됨
+상품관리,항공권 관리,/flights,R,항공권 목록 (비활성화됨),구현됨
+회원관리,회원 목록,/users,CRUD,"회원 목록 (4탭), 통계 카드, 검색, 일괄 등록, 내보내기",구현됨
+회원관리,회원 생성,/users/create,C,3섹션 폼 (계정/개인/설정),구현됨
+회원관리,회원 일괄 등록,/users/batch,C,CSV/엑셀 일괄 등록,구현됨
+회원관리,회원 상세,/users/show/:id,R,"6탭 (기본 정보, 활동 이력, 예약 내역, 소셜 로그인, 보안 관리, 포인트 내역)",구현됨
+회원관리,회원 수정,/users/edit/:id,U,회원 정보 수정,구현됨
+사이트관리,일반 설정,/site/general,RU,사이트 기본 정보 설정,구현됨
+사이트관리,네비게이션,/site/navigation,RU,메뉴 구조 관리,구현됨
+사이트관리,SEO 설정,/site/seo,RU,"메타 태그, sitemap 설정",구현됨
+사이트관리,환율 관리,/site/exchange-rate,RU,통화별 환율 설정,구현됨
+기타관리,통계,/statistics,R,통계 대시보드,구현됨
+기타관리,공급처 관리,/suppliers,CRUD,"공급처 목록/생성/수정/상세, 정산일 설정",구현됨
+기타관리,상품 분류 관리,/product-categories/hierarchy,R,카테고리 계층 구조 트리 뷰,구현됨
+기타관리,상품 카테고리,/product-categories,CRUD,카테고리 CRUD,구현됨
+기타관리,데이터 관리,/database-management,R,"DB 상태 조회, 마이그레이션 관리",구현됨
+기타관리,활동 로그,/activity-logs,R,활동 로그 (임시 구현),플레이스홀더
