@@ -9,6 +9,7 @@ export default {
       pagination: false
     }
   },
+  'agent-skills-ecosystem': 'AI 코딩 에이전트의 npm — Agent Skills 생태계 완전 정복',
   'gemini-3-vs-31-pro-real-code-review': 'Gemini 3 Pro vs 3.1 Pro: 실제 코드 11만 자를 던져봤다',
   'opus-surrounded': 'Opus가 포위됐다 — Sonnet 4.6과 Gemini 3.1 Pro, 48시간의 협공',
   'gemini-cli-google-mcp-handson': 'Gemini CLI + Google MCP로 풀스택 앱 클라우드 배포하기',

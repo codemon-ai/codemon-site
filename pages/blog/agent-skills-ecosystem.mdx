@@ -1,0 +1,286 @@
+---
+title: "AI 코딩 에이전트의 npm — Agent Skills 생태계 완전 정복"
+description: "skills.sh, Antigravity, Nano Banana Pro까지 — 조사하고, 설치하고, 직접 써보고, 우리 프로젝트에 적용한 이야기"
+date: 2026-02-21
+author: codemon
+tags: [ai-tools, agent-skills, tips]
+---
+
+# AI 코딩 에이전트의 "npm" — Agent Skills 생태계 완전 정복
+
+> skills.sh, Antigravity, Nano Banana Pro까지 — 조사하고, 설치하고, 직접 써보고, 우리 프로젝트에 적용한 이야기
+
+![Agent Skills 생태계](/images/blog/agent-skills-ecosystem/agent_skills_hero.png)
+
+## 한 줄 요약
+
+`npx skills add vercel-labs/agent-skills` 한 줄이면 AI 코딩 에이전트가 React 베스트 프랙티스 10년치를 즉시 이해한다. 이게 뭐고, 왜 나왔고, 실제로 써보니 어땠는지.
+
+---
+
+## 1. Agent Skills이 뭔데?
+
+### 프롬프트 복붙의 한계
+
+AI 코딩 도구를 쓰다 보면 매번 같은 말을 반복하게 된다.
+
+```
+"React 서버 컴포넌트 패턴 써줘"
+"Tailwind 쓰고, 다크모드 지원해줘"
+"에러 핸들링 제대로 해줘"
+```
+
+매 세션마다. 매 프로젝트마다. 매 동료마다.
+
+**Agent Skills**는 이 반복을 끝내려고 나온 오픈 표준이다.
+
+### 핵심 구조
+
+```
+my-skill/
+├── SKILL.md          ← 에이전트가 읽는 진입점
+├── rules/            ← 세부 규칙 파일들
+│   ├── performance.md
+│   ├── accessibility.md
+│   └── ...
+└── scripts/          ← 실행 가능한 스크립트 (선택)
+    └── generate.py
+```
+
+`SKILL.md` 하나가 전부다. 에이전트가 이 파일을 읽고, 언제 이 스킬을 쓸지 스스로 판단한다. MCP 서버처럼 무거운 인프라가 필요 없다.
+
+### 누가 만들었나
+
+- **Anthropic**이 원래 Claude Code용으로 개발 (2025년 10월)
+- 오픈 표준으로 공개 → [agentskills.io](https://agentskills.io)
+- **Vercel**이 2026년 1월 `skills.sh` 디렉토리 + CLI 런칭
+- **Google Antigravity**, Cursor, Codex, Windsurf 등 20개+ 에이전트가 지원
+
+한마디로: **Anthropic이 규격을 만들고, Vercel이 npm 역할을 자처한 것.**
+
+---
+
+## 2. skills.sh — AI 에이전트의 npm
+
+[skills.sh](https://skills.sh)는 GitHub Trending의 AI 스킬 버전이다.
+
+### 설치 방법
+
+```bash
+# Claude Code, Antigravity, Cursor 등 어디서든
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices
+```
+
+이 한 줄이면:
+1. GitHub에서 스킬 폴더를 다운로드
+2. 현재 에이전트의 스킬 디렉토리에 설치 (`.claude/skills/`, `.agent/skills/` 등)
+3. 에이전트가 자동으로 인식하고 관련 작업 시 활용
+
+### 인기 스킬 Top 10 (2026년 2월 기준)
+
+| 순위 | 스킬 | 설치수 | 한마디 |
+|------|------|--------|--------|
+| 1 | find-skills | 279K | 스킬 찾는 메타 스킬 |
+| 2 | vercel-react-best-practices | 152K | React/Next.js 베스트 프랙티스 |
+| 3 | web-design-guidelines | 115K | UI/UX 디자인 가이드라인 |
+| 4 | remotion-best-practices | 101K | 비디오 생성 프레임워크 |
+| 5 | frontend-design | 85K | Anthropic 공식 UI 미학 |
+| 6 | vercel-composition-patterns | 49K | React 합성 패턴 |
+| 7 | agent-browser | 49K | 브라우저 자동화 |
+| 8 | skill-creator | 41K | 스킬 만드는 법 (메타) |
+| 9 | vercel-react-native | 35K | React Native/Expo |
+| 10 | browser-use | 35K | Chromium 자동화 |
+
+**패턴이 보인다**: 가장 많이 설치되는 건 "프론트엔드 품질 관리" 스킬들이다. AGI가 아니라, 매일 반복하는 코드 리뷰를 자동화하는 실용적인 것들.
+
+---
+
+## 3. 실습: 디자인 관련 스킬 직접 써보기
+
+### 3-1. frontend-design (Anthropic 공식)
+
+Anthropic이 직접 만든 "못생긴 UI 방지" 스킬.
+
+```bash
+npx skills add anthropics/skills --skill frontend-design
+```
+
+**뭘 해주나:**
+- 색상, 간격, 모션, 시각 위계 규칙
+- 구체적인 DO / DON'T 예시
+- 에이전트가 UI 코드 작성 시 자동 적용
+
+설치 후 Claude Code에서 "랜딩 페이지 만들어줘"라고 하면, 이전에는 밋밋한 기본 Tailwind 결과물이 나왔지만 스킬 적용 후에는 시각적 위계, 여백, 컬러 시스템이 일관된 결과물이 나온다.
+
+### 3-2. web-design-guidelines (Vercel)
+
+```bash
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+```
+
+Vercel의 자체 인터페이스 디자인 가이드라인을 에이전트에게 주입. 레이아웃, 타이포그래피, 접근성, UX 규칙을 파일/라인 단위로 위반 체크.
+
+### 3-3. Nano Banana Pro (이미지 생성)
+
+우리가 이미 쓰고 있는 스킬! Gemini 3 Pro Image를 에이전트 안에서 바로 호출.
+
+```bash
+# OpenClaw 스킬
+# ~/.openclaw/skills/nano-banana-pro/
+
+# Claude Code 스킬 (커뮤니티)
+npx skills add <owner>/nano-banana-pro
+```
+
+**우리 사용 사례:**
+- 인스타그램 카드뉴스 히어로 이미지 생성
+- 블로그 포스트 커버 이미지
+- 캐릭터 에셋 생성
+- 크로마키 투명 배경 처리
+
+---
+
+## 4. Antigravity에서의 스킬 활용
+
+Google Antigravity는 "에이전트 퍼스트" IDE다. 기존 코딩 도구와 근본적으로 다른 점:
+
+| | 기존 AI 코딩 도구 | Antigravity |
+|---|---|---|
+| AI 역할 | 사이드바 챗봇 | 자율 에이전트 |
+| 작업 방식 | 한 줄씩 제안 | 전체 기능 단위 |
+| 뷰 | 에디터만 | Editor View + Agent View |
+| 스킬 | 수동 설정 | `.agent/skills/`에 자동 로드 |
+
+**Agent View**에서 에이전트가 계획 → 코딩 → 브라우저 테스트까지 자율적으로 수행. 이때 설치된 스킬이 자동으로 적용된다.
+
+### Antigravity + 스킬 조합 예시
+
+```bash
+cd my-project
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+npx skills add anthropics/skills --skill frontend-design
+```
+
+이제 Antigravity Agent View에서 "랜딩 페이지 만들어줘" 하면, 두 스킬의 디자인 규칙이 자동으로 반영된 코드가 나온다.
+
+**주의:** Antigravity의 글로벌 스킬 경로 이슈가 있다. `npx skills` v1.0.18에서 `~/.gemini/antigravity/skills` 대신 `~/.gemini/antigravity/global_skills`를 써야 하는 버그. 프로젝트 루트 `.agent/skills/`에 넣는 게 확실하다.
+
+---
+
+## 5. 직접 스킬 만들기 — 우리 경험
+
+skills.sh에서 가져다 쓰는 것도 좋지만, **자기 프로젝트에 맞는 스킬을 직접 만드는 게 진짜 파워**다.
+
+### 우리가 만든 스킬들
+
+| 스킬 | 용도 | 에이전트 |
+|------|------|---------|
+| nano-banana-pro | Gemini 이미지 생성 | OpenClaw |
+| blog-publish | MDX 변환 + Vercel 배포 | OpenClaw |
+| blog-mining | 옵시디언에서 블로그 소재 발굴 | OpenClaw |
+| dev-delegate | Claude Code에 개발 위임 | OpenClaw |
+| llm-compare | 멀티 LLM 병렬 비교 분석 | OpenClaw |
+
+### 스킬 만드는 핵심 원칙
+
+Quesma 블로그에서 좋은 조언이 있었다:
+
+> "Oftentimes it may be easier to vibe code your own skill, tweaked for your use-case and workflow, than search for one."
+
+맞는 말이다. 범용 스킬은 70%만 맞고, 나머지 30%는 내 워크플로우에 안 맞을 수 있다. 그때는 직접 만드는 게 빠르다.
+
+```markdown
+# SKILL.md 최소 템플릿
+
+## Description
+이 스킬이 뭘 하는지 한 줄로.
+
+## When to Use
+에이전트가 이 스킬을 써야 하는 상황.
+
+## Instructions
+1. 단계별 절차
+2. ...
+
+## Examples
+구체적인 입출력 예시.
+```
+
+---
+
+## 6. 스킬 vs MCP — 뭐가 다르고, 언제 뭘 쓰나?
+
+![Skills vs MCP](/images/blog/agent-skills-ecosystem/skills_vs_mcp.png)
+
+| | Agent Skills | MCP |
+|---|---|---|
+| 무게 | 가벼움 (마크다운 파일) | 무거움 (서버 프로세스) |
+| 설치 | `npx skills add` | 서버 셋업 필요 |
+| 역할 | 절차적 지식, 규칙 | 외부 도구/API 연동 |
+| 상태 | 무상태 | 상태 유지 가능 |
+| 비유 | 매뉴얼/SOP | 직원/도구 |
+
+**결론:** 둘 다 쓴다. 스킬은 "어떻게 해야 하는지" (지식), MCP는 "무엇으로 하는지" (도구).
+
+---
+
+## 7. 현실적 평가 — 기대 vs 현실
+
+### 좋은 점
+- **설치 1초**: `npx skills add` 하나면 끝
+- **크로스 에이전트**: Claude Code에서 쓰던 스킬을 Antigravity에서도 사용
+- **버전 관리**: Git 기반이라 팀 공유 + 히스토리 추적
+- **경량**: 서버 없이 마크다운만으로 동작
+
+### 아쉬운 점
+- **Antigravity 글로벌 스킬 버그**: 경로 이슈 (v1.0.18)
+- **품질 편차**: 커뮤니티 스킬 중 36%에 보안 결함 (skillsdirectory.com 조사)
+- **발견성**: 69,000+ 설치지만 실제 유용한 스킬은 소수
+- **에이전트마다 다른 동작**: 같은 스킬이 Claude Code에선 잘 되고 Antigravity에선 무시되기도
+
+---
+
+## 8. 추천 스킬 세트 — 목적별
+
+### 디자인 퀄리티 올리기
+```bash
+npx skills add anthropics/skills --skill frontend-design
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max
+```
+
+### React/Next.js 프로젝트
+```bash
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices
+npx skills add vercel-labs/agent-skills --skill vercel-composition-patterns
+npx skills add vercel-labs/next-skills --skill next-best-practices
+```
+
+### 브라우저 자동화
+```bash
+npx skills add vercel-labs/agent-browser --skill agent-browser
+npx skills add browser-use/browser-use --skill browser-use
+```
+
+---
+
+## 9. 마무리 — 에이전트 시대의 패키지 매니저
+
+npm이 JavaScript 생태계를 폭발시켰듯, Agent Skills가 AI 코딩 에이전트 생태계를 만들어가고 있다.
+
+아직 초기다. 버그도 있고, 품질 관리도 부족하다. 하지만 방향은 맞다:
+
+> **반복되는 프롬프트를 패키징하고, 공유하고, 재사용한다.**
+
+이미 7만 건의 설치가 그걸 증명하고 있다.
+
+---
+
+## 참고 링크
+
+- [skills.sh — The Agent Skills Directory](https://skills.sh)
+- [Agent Skills 공식 스펙](https://agentskills.io)
+- [Vercel Skills CLI (GitHub)](https://github.com/vercel-labs/skills)
+- [Google Antigravity](https://antigravity.google)
+- [Anthropic Skills (GitHub)](https://github.com/anthropics/skills)
+- [Creative Tim — Agent Skills 가이드](https://www.creative-tim.com/blog/ai-agent/what-are-ai-agent-skills-a-practical-guide-to-skillmd/)
