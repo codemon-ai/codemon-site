@@ -1,0 +1,147 @@
+---
+title: "BlueMango v2 비즈니스 로직 정리"
+description: "기존 코드에서 추출한 비즈니스 로직 LEGACY 상충 없이 정리"
+tags: [bluemango, v2, private]
+created: 2026-02-21
+---
+
+# BlueMango v2 — 비즈니스 로직 정리
+> 목적: 기존 코드에서 추출한 비즈니스 로직을 LEGACY 상충 없이 정리
+원칙: “WHAT과 WHY만. HOW(기술구현)는 아키텍처 단계에서.”
+기준일: 2026-02-21
+---
+## 도메인 맵
+```plain text
+┌─────────────────────────────────────────────────────┐
+│                  BlueMango Platform                  │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
+│  │ 상품관리  │  │ 예약관리  │  │  결제/정산       │  │
+│  │ Product   │→│ Booking   │→│  Payment          │  │
+│  │ Domain    │  │ Domain    │  │  Settlement       │  │
+│  └──────────┘  └──────────┘  └──────────────────┘  │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
+│  │ 회원/인증 │  │ 콘텐츠   │  │  사이트운영      │  │
+│  │ User/Auth │  │ Content   │  │  SiteOps          │  │
+│  └──────────┘  └──────────┘  └──────────────────┘  │
+└─────────────────────────────────────────────────────┘
+```
+---
+# 1. 상품 도메인 (Product)
+## 1.1 상품 타입 체계
+### 현재 (v1) — 14개 카테고리
+호텔, 풀빌라, 차량, 골프장, 골프텔, 투어(단독/지상/해양), 스파/마사지, 레스토랑, 쇼/입장권, 가이드, 공항패스트트랙, 비자
+### v2 정리안
+상품 타입 분류 (타입별 전용 데이터가 다름):
+
+### v2 해결: Vehicle 분리
+v1 문제: Product 엔티티에 vehicleServiceType, vehiclePricing, rentalOptions, golfHoleOptions, secondaryCategoryId, tertiaryCategoryId, meetingLocationTime 등 차량 전용 nullable 컬럼 7개가 직접 존재.
+v2 해결: VehicleProduct 엔티티를 HotelProduct, GolfProduct처럼 별도 분리.
+## 1.2 상품 공통 필드
+모든 상품이 공유하는 기본 필드:
+
+### v2 해결: Product 이중 상태
+v1 문제: isActive: boolean (deprecated) + status: string 두 필드가 공존. 둘 다 default가 “활성”이라 어느 쪽으로 필터하느냐에 따라 결과 다름.
+v2 해결: isActive 제거. status 필드만 사용.
+상품 상태 플로우:
+```plain text
+DRAFT → ACTIVE → INACTIVE → (soft delete)
+          ↑         |
+          └─────────┘
+          (재활성화 가능)
+```
+- DRAFT: 임시 저장 (사용자에게 노출 안 됨)
+- ACTIVE: 활성 (사용자에게 노출, 예약 가능)
+- INACTIVE: 비활성 (사용자에게 노출 안 됨, 기존 예약은 유지)
+- HIDDEN: v1에 존재하지만 v2에서는 INACTIVE로 통합
+## 1.3 카테고리 체계
+- 4단계 계층 구조: 대분류 → 중분류 → 소분류 → 세부분류
+- 각 카테고리: name, slug, displayOrder, parentId
+- 상품은 1개의 카테고리에 소속 (N:1)
+- 차량은 출발지(2차 카테고리) + 도착지(3차 카테고리) 별도 관리
+## 1.4 공급처 (Supplier)
+- 상품은 1개의 공급처에 소속 (N:1)
+- 공급처 정보: 회사명, 연락처, 은행계좌, 정산일
+- 정산일: 월 단위 정산 기준일
+## 1.5 가격/가용성 정책
+- 호텔 객실 가용성: 날짜별 객실 수량/가격/잔여량 관리 (RoomAvailability)
+- 가격 정책: 시즌별/요일별/특별일 가격 조정 (PricePolicy)
+- 매입가 관리: 판매가 vs 매입가로 마진 관리
+## 1.6 상품 이미지
+- 상품당 다수의 이미지 (1:N)
+- 이미지: URL, 대체텍스트, 표시순서, 대표이미지 여부
+- S3에 업로드 후 URL 저장
+- 압축/리사이징 처리
+## 1.7 주변 명소 (호텔 전용)
+- 호텔 상품에 연결된 주변 관광지/편의시설
+- 이름, 거리, 카테고리별 관리
+---
+# 2. 예약 도메인 (Booking)
+## 2.1 예약 생성
+### 예약 필수 데이터
+
+### 예약 경로
+1. 장바구니 경유: 상품 상세 → 장바구니 담기 → 결제 → 예약 생성
+1. 즉시 예약: 상품 상세 → 바로 결제 → 예약 생성
+1. 비회원 예약: 게스트 정보 입력 → 예약 (로그인 불필요)
+1. 관리자 생성: 어드민에서 직접 예약 생성 (개인결제 상품)
+## 2.2 예약 상태 머신
+```plain text
+PENDING ──────→ INVOICE_SENT ──────→ PAYMENT_COMPLETED ──────→ VOUCHER_SENT ──────→ COMPLETED
+   │                                       │                        │
+   │              CANCEL_REQUESTED ←───────┘                        │
+   │                    │                                           │
+   └────────────────────┴───────────→ CANCELLED ←──────────────────┘
+```
+
+### 상태 전이 규칙
+- 모든 상태 변경은 이력으로 기록 (BookingStatusHistory: 변경인, 변경시각, 이유)
+- CANCELLED 상태에서는 다른 상태로 변경 불가
+- COMPLETED 상태에서는 CANCELLED로만 변경 가능 (환불)
+- requiresConsultation = true인 상품: PENDING에서 관리자 확인 후 진행
+- instantInvoice = true인 상품: 예약 즉시 INVOICE_SENT로 자동 전이
+## 2.3 인보이스/바우처
+- 인보이스: 결제 요청 문서. UUID 기반 공개 URL로 외부 공유 가능
+- 바우처: 예약 확정 문서. UUID 기반 공개 URL로 외부 공유 가능
+- 공개 링크: /public/invoice/[uuid], /public/voucher/[uuid] (로그인 불요)
+- PDF 생성 가능
+## 2.4 차량 예약 (특수)
+- 일반 예약과 동일한 Booking 엔티티 사용
+- 어드민에서 별도 관리 뷰 제공 (/car-bookings)
+- 차종/경로/서비스타입 등 차량 전용 정보는 options JSON에 저장
+### v2 해결: Order 잔재
+v1 문제: Booking 엔티티에 orderId nullable 컬럼 존재. Order 엔티티는 삭제됐지만 컬럼 잔재. Payment.orderId는 “토스 주문번호”로 용도 변경됨 (의미 충돌).
+v2 해결:
+- Booking에서 orderId 컬럼 완전 제거
+- Payment에서 orderId → pgOrderId로 명확하게 리네임 (PG사 주문번호)
+- SettlementItem에서 orderId, orderNumber, orderDate → bookingId, bookingReference, bookingDate로 변경
+---
+# 3. 결제 도메인 (Payment)
+## 3.1 결제 수단
+
+> v2에서 CASH, PAYPAL 제거 (사용 안 함)
+## 3.2 PG 결제 플로우
+```plain text
+사용자 → 결제 요청 → PG 결제창 → PG 승인 → 서버 콜백 → 결제 확인 → 예약 상태 변경
+```
+1. 사용자가 결제 정보 입력 후 PG 결제창 호출
+1. PG사에서 결제 승인 처리
+1. 서버가 PG 승인 결과 수신 (webhook/callback)
+1. Payment 레코드 생성 (COMPLETED)
+1. Booking 상태를 PAYMENT_COMPLETED로 변경
+v2 변경: Toss Payments → 이니시스(INICIS) / 또는 PortOne(포트원) 래핑
+## 3.3 Payment 엔티티
+
+### 결제 상태 플로우
+```plain text
+PENDING → COMPLETED → REFUNDED
+   │          │
+   │          └→ PARTIAL_REFUNDED
+   │
+   └→ FAILED
+   └→ CANCELLED
+```
+## 3.4 무통장입금 (BankTransfer)
+### v2 해결: BankTransfer 독립 문제
+v1 문제: BankTransferBooking이 Booking, Payment와 아무 관계 없이 완전 독립. 자체 상태(소문자 pending/confirmed/cancelled), 자체 결제카테고리(kakao_bank/bangkok_bank/cash). 정산 시 두 플로우 합치는 암묵적 로직 필요.

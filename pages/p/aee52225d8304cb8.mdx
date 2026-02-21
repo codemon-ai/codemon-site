@@ -1,0 +1,186 @@
+---
+title: "BlueMango v2 PRD"
+description: "태국 여행 예약 플랫폼 전면 재구축 PRD"
+tags: [bluemango, v2, private]
+created: 2026-02-21
+---
+
+# BlueMango v2 — Product Requirements Document
+> 태국 여행 예약 플랫폼 전면 재구축
+1인 개발자(+AI) 유지보수 최적화, LEGACY 전면 해결, 현대적 서버리스 아키텍처
+---
+## 1. 프로젝트 개요
+### 1.1 배경
+BlueMango는 태국 현지 여행 상품(호텔, 골프, 차량, 투어 등 14개 카테고리)을 한국 고객에게 제공하는 B2C 예약 플랫폼이다. v1은 NestJS + TypeORM + React/Ant Design 기반으로 95% 완성되었으나, 다음 문제점으로 인해 전면 재구축이 필요하다:
+1. Admin Site 프레임워크(Refine + Ant Design) 과중 — 에러 빈번, 번들 사이즈 과대
+1. NestJS 230개 엔드포인트 — 1인 유지보수에 과도한 보일러플레이트
+1. LEGACY 코드 부채 — Order 잔재, 이중 상태, 독립된 BankTransfer 등 5개 구조적 결함
+1. EC2 수동 관리 — DevOps 부담, 배포 복잡성
+1. TypeORM 서버리스 비호환 — 콜드스타트, 커넥션 풀 문제
+### 1.2 목표
+- 비즈니스 로직 100% 유지 — 기존 예약/결제/상품/정산 워크플로우 동일
+- FE 디자인 유지 — 피그마 기준 현재 디자인 계승 (코드는 새로 작성)
+- LEGACY 5개 문제점 전면 해결 — 깨끗한 데이터 모델
+- 1인 개발자 지속 가능성 — 관리 서비스 최소화, 서버리스, AI 친화적 스택
+- Admin 전면 재구축 — shadcn/ui 기반, 모든 데이터 관리 가능
+### 1.3 스코프
+IN (포함):
+- 고객 웹사이트 (상품 조회, 예약, 결제, 마이페이지)
+- 어드민 사이트 (상품/예약/정산/회원/콘텐츠/설정 관리)
+- Backend API (Next.js API Routes)
+- DB 스키마 (Drizzle, 새 설계)
+- 인증 (카카오/구글/네이버 소셜 + 이메일)
+- 결제 (토스페이먼츠)
+- 배포 (Vercel)
+- E2E 테스트 (Playwright, 페이지별)
+- 데이터 마이그레이션 (v1 → v2)
+OUT (제외):
+- 모바일 앱 (네이티브)
+- 실시간 채팅/고객 지원
+- AI 추천 시스템
+- 다국어 (한국어만, 영어 필드는 데이터 레벨에서 지원)
+### 1.4 확정 기술 스택
+
+### 1.5 모노레포 구조
+```plain text
+bluemango-v2/
+├── apps/
+│   ├── web/                     ← Next.js 15 (고객 사이트 + Service API)
+│   └── admin/                   ← Next.js 15 (어드민 사이트 + Admin API)
+├── packages/
+│   ├── db/                      ← Drizzle 스키마 + 마이그레이션 (공유)
+│   ├── auth/                    ← Better Auth 설정 (공유)
+│   ├── ui/                      ← shadcn/ui 공유 컴포넌트
+│   ├── email/                   ← React Email 템플릿 (공유)
+│   └── shared/                  ← 공유 타입, Zod 스키마, 유틸
+├── docs/                        ← CODA 문서화 구조
+│   ├── INDEX.md
+│   ├── prd/
+│   ├── spec/
+│   ├── wiki/
+│   └── changelog/
+├── turbo.json
+├── pnpm-workspace.yaml
+└── CLAUDE.md
+```
+---
+## 2. 도메인 요구사항
+```plain text
+┌─────────────────────────────────────────────────────────┐
+│                  BlueMango v2 Platform                    │
+│                                                          │
+│  ┌──────────┐   ┌──────────┐   ┌──────────────────┐    │
+│  │ 상품관리  │   │ 예약관리  │   │  결제/정산       │    │
+│  │ Product   │──→│ Booking   │──→│  Payment         │    │
+│  │ Domain    │   │ Domain    │   │  Settlement      │    │
+│  └──────────┘   └──────────┘   └──────────────────┘    │
+│                                                          │
+│  ┌──────────┐   ┌──────────┐   ┌──────────────────┐    │
+│  │ 회원/인증 │   │ 콘텐츠   │   │  사이트운영      │    │
+│  │ User/Auth │   │ Content   │   │  SiteOps         │    │
+│  └──────────┘   └──────────┘   └──────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+```
+---
+### 2.1 상품 도메인 (Product)
+### 2.1.1 상품 타입 체계
+5개 타입으로 분류하되, 14개 카테고리는 카테고리 계층으로 관리:
+
+> v1→v2 변경: Vehicle 7개 nullable 컬럼을 Product에서 분리하여 VehicleProduct 엔티티 생성 (L5 해결)
+v1→v2 변경: Tour도 EtcProduct에서 분리하여 TourProduct 생성 (일정/포함사항 전용 필드)
+### 2.1.2 상품 공통 필드
+모든 상품이 공유하는 기본 필드:
+- 식별: code(고유, 자동생성), name(KR), nameEn(EN)
+- 설명: description(리치텍스트, Tiptap)
+- 분류: productType, categoryId(FK, 필수)
+- 가격: price, costPrice, discountPrice
+- 위치: address, latitude, longitude, regionCode, location
+- 상태: status (DRAFT / ACTIVE / INACTIVE) — isActive 제거 (L4 해결)
+- 이미지: thumbnailUrl + ProductImage 엔티티(1:N) — imageUrls 제거 (D6 해결)
+- 예약설정: maxQuantity, minQuantity, requiresConsultation, instantInvoice
+- 평점: rating, reviewCount
+- 공급처: supplierId (FK, 필수 — D8 해결. 자사 상품은 “BlueMango” supplier)
+- 메타: tags, bookingPriority, specialBenefits, precautions, memo, options(JSON)
+### 2.1.3 상품 상태 플로우
+```plain text
+DRAFT ───→ ACTIVE ───→ INACTIVE
+              ↑            │
+              └────────────┘
+              (재활성화 가능)
+```
+- DRAFT: 임시 저장 (사용자 노출 안 됨)
+- ACTIVE: 활성 (노출, 예약 가능)
+- INACTIVE: 비활성 (노출 안 됨, 기존 예약은 유지)
+- HIDDEN 제거 — INACTIVE로 통합
+### 2.1.4 카테고리 계층
+- 4단계: 대분류 → 중분류 → 소분류 → 세부분류
+- 각 카테고리: name, code(unique), slug(unique), depth, displayOrder, parentId, isActive
+- 상품은 1개 카테고리에 소속 (N:1)
+### 2.1.5 가격 정책
+- 정적 가격: price(판매가), costPrice(매입가), discountPrice(할인가)
+- 호텔 객실 동적 가격: RoomAvailability (날짜별 가격/잔여량)
+- 가격 정책(PricePolicy): 시즌/프로모션/얼리버드/라스트미닛/장기체류
+### 2.1.6 상품 이미지
+- ProductImage: imageUrl, imageType(MAIN/ROOM/FACILITY/MENU/OTHER), displayOrder, description
+- 상품당 다수 이미지 (1:N)
+- Supabase Storage에 업로드 → URL 저장
+- imageUrls 레거시 필드 제거 (D6)
+### 2.1.7 공급처 (Supplier)
+- 상품은 1개 공급처에 소속 (N:1, 필수)
+- 공급처: name, businessNumber(unique), contactPerson, phone, email
+- 은행: bankName, bankAccount, accountHolder
+- 정산: commissionRate(%), settlementCycle, settlementDay
+- 계약: contractStartDate, contractEndDate, contractDocumentUrl
+- 상태: status (active/inactive/suspended)
+---
+### 2.2 예약 도메인 (Booking)
+### 2.2.1 예약 생성
+필수 데이터:
+- productId, productType, quantity
+- startDate, endDate (이용 기간)
+- numAdults(기본 2), numChildren(기본 0)
+- guestName, guestEmail, guestPhone (이용자 연락처)
+- specialRequests(선택), options(JSON, 카테고리별 옵션)
+자동 생성:
+- bookingReference: BK\{timestamp\}\{random3digits\} (고유)
+- status: PENDING
+- totalPrice: 상품 가격 × 수량 (consultation 상품은 null)
+- totalCostPrice: 매입가 × 수량
+예약 경로 4가지 (D4 해결 — 단일 서비스로 통합):
+1. 장바구니 → 결제 → 예약
+2. 즉시 예약 (바로 결제)
+3. 비회원 예약 (D3 해결 — userId nullable, guestToken으로 조회)
+4. 관리자 직접 생성
+### 2.2.2 예약 상태 머신
+```plain text
+PENDING ──────→ INVOICE_SENT ──────→ PAYMENT_COMPLETED ──────→ VOUCHER_SENT ──────→ COMPLETED
+   │                                        │                        │
+   │              CANCEL_REQUESTED ←────────┘                        │
+   │                    │                                            │
+   └────────────────────┴───────────→ CANCELLED ←───────────────────┘
+```
+
+상태 전이 규칙:
+- 모든 상태 변경은 BookingStatusHistory에 기록 (D1 해결 — 누가, 언제, 왜)
+- CANCELLED에서는 다른 상태로 변경 불가 (terminal)
+- COMPLETED에서는 CANCELLED로만 변경 가능 (환불)
+- requiresConsultation=true 상품: PENDING에서 관리자 확인 후 진행
+- instantInvoice=true 상품: 예약 즉시 INVOICE_SENT로 자동 전이
+### 2.2.3 인보이스
+- invoiceNumber: INV\{timestamp\}\{random3digits\} (고유)
+- 자동 생성 필드: issuedDate, dueDate(+7일), taxAmount(10%), totalAmount
+- 공개 링크: /public/invoice/[uuid] (로그인 불필요)
+- PDF 생성: React Email + @react-pdf/renderer (D11 해결)
+- 알림: Alimtalk(INVOICE_SENT 템플릿) + Email(BOOKING_CONFIRMED 템플릿)
+### 2.2.4 바우처
+- voucherNumber: VCH\{timestamp\}\{random3digits\} (고유)
+- 전제조건: status = PAYMENT_COMPLETED
+- 상태: ISSUED → SENT → USED / EXPIRED / CANCELLED
+- 공개 링크: /public/voucher/[uuid] (로그인 불필요)
+- PDF 생성: React Email + @react-pdf/renderer (D11 해결)
+- 알림: Alimtalk(VOUCHER_SENT 템플릿) + Email
+### 2.2.5 비회원 예약 (D3 해결)
+- userId nullable (v1에서 필수 → v2에서 선택)
+- 비회원 조회: GET /bookings/guest?ref=\{bookingReference\}&email=\{guestEmail\}
+- guestToken: 예약 생성 시 UUID 발급, 이메일로 전송
+- 비회원도 예약 상태 조회, 인보이스/바우처 확인 가능
