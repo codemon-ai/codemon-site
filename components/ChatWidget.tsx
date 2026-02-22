@@ -176,26 +176,29 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
   return (
     <>
       {/* Floating Button */}
-      <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="문의하기"
-          style={{
-            width: '72px', height: '72px', borderRadius: '50%',
-            background: colors.floatBg, color: colors.floatColor,
-            border: 'none', cursor: 'pointer', fontSize: '30px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)', transition: 'transform 0.2s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        >
-          {isOpen ? '✕' : '💬'}
-        </button>
-        {!isOpen && (
-          <span style={{ fontSize: '13px', fontWeight: 700, color: dark ? '#e5e7eb' : '#111827', letterSpacing: '0.02em' }}>💬 문의하기</span>
-        )}
-      </div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="문의하기"
+        style={{
+          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
+          height: '56px',
+          padding: isOpen ? '0' : '0 24px',
+          width: isOpen ? '56px' : 'auto',
+          borderRadius: isOpen ? '50%' : '28px',
+          background: dark ? '#fff' : '#111827',
+          color: dark ? '#000' : '#fff',
+          border: 'none', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+          transition: 'all 0.2s',
+          fontSize: isOpen ? '24px' : '15px',
+          fontWeight: 700,
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+      >
+        {isOpen ? '✕' : (<>💬 문의하기</>)}
+      </button>
 
       {/* Chat Panel */}
       {isOpen && (
