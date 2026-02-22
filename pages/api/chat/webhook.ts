@@ -13,12 +13,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   // Debug: log what we receive
   const debugInfo: string[] = []
-  debugInfo.push(`from_id=${msg?.from?.id}, admin_id=${ADMIN_ID}`)
+  const fromId = String(msg?.from?.id || '').trim()
+  const adminId = (ADMIN_ID || '').trim()
+  
+  debugInfo.push(`from_id=[${fromId}] len=${fromId.length}`)
+  debugInfo.push(`admin_id=[${adminId}] len=${adminId.length}`)
   debugInfo.push(`text=${msg?.text?.slice(0, 50)}`)
-  debugInfo.push(`match=${String(msg?.from?.id) === ADMIN_ID}`)
+  debugInfo.push(`match=${fromId === adminId}`)
 
-  if (!msg?.text || String(msg.from?.id) !== ADMIN_ID) {
-    // Send debug info to telegram
+  if (!msg?.text || !fromId || !adminId || fromId !== adminId) {
     await sendTelegram(`🔍 Debug: rejected\n${debugInfo.join('\n')}`)
     return res.status(200).json({ ok: true })
   }
