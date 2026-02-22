@@ -132,7 +132,7 @@ async function addMessageToBlob(sessionId: string, role: string, text: string): 
     const blobs = await blobList(`chat/sessions/${sessionId}.json`)
     if (blobs.length === 0) return false
 
-    const res = await fetch(blobs[0].url)
+    const res = await fetch(blobs[0].url + '?t=' + Date.now(), { cache: 'no-store' })
     if (!res.ok) return false
     const session = await res.json()
 
