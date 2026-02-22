@@ -11,8 +11,8 @@ export default {
       pagination: false
     }
   },
-  about: {
-    title: 'About',
+  blog: {
+    title: 'Blog',
     type: 'page'
   },
   showcase: {
@@ -26,16 +26,22 @@ export default {
       pagination: false
     }
   },
+  tools: {
+    title: 'Tools',
+    type: 'page',
+    href: 'https://tools.codemon.ai',
+    newWindow: true
+  },
+  docs: {
+    title: 'Docs',
+    type: 'page'
+  },
   projects: {
     title: 'Projects',
     type: 'page'
   },
-  blog: {
-    title: 'Blog',
-    type: 'page'
-  },
-  docs: {
-    title: 'Docs',
+  about: {
+    title: 'About',
     type: 'page'
   },
   p: {
