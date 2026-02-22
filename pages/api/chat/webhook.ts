@@ -136,10 +136,12 @@ async function addMessageToBlob(sessionId: string, role: string, text: string): 
     if (!res.ok) return false
     const session = await res.json()
 
+    const now = Date.now()
     session.messages.push({
+      id: `msg_${now}`,
       role,
       text,
-      timestamp: Date.now(),
+      timestamp: now,
     })
     session.updatedAt = Date.now()
 
