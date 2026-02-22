@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/react'
+import { ChatWidget } from '../components/ChatWidget'
 import 'nextra-theme-docs/style.css'
 import '../styles/globals.css'
 
@@ -39,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </>
       )}
       <Component {...pageProps} />
+      <ChatWidget />
       <Analytics />
     </>
   )
