@@ -14,6 +14,34 @@ interface Post {
 
 const posts: Post[] = [
   {
+    slug: 'sonnet46-opus-killer-budget',
+    title: 'Sonnet 4.6 — Opus의 1/5 가격인데, 70%가 더 좋다고?',
+    date: '2026-02-22',
+    tags: ['news', 'insight'],
+    description: '커뮤니티 팩트체크 + 2주 실사용 후기. codemon-make 에이전트 파이프라인에서 체감한 것들.'
+  },
+  {
+    slug: 'agent-skills-ecosystem',
+    title: 'AI 코딩 에이전트의 npm — Agent Skills 생태계 완전 정복',
+    date: '2026-02-21',
+    tags: ['AI', 'tips'],
+    description: 'skills.sh, Anthropic Agent Skills 표준, 69K+ 설치. 에이전트에게 스킬을 가르치는 새로운 생태계.'
+  },
+  {
+    slug: 'gemini-3-vs-31-pro-real-code-review',
+    title: 'Gemini 3 Pro vs 3.1 Pro: 실제 코드 11만 자를 던져봤다',
+    date: '2026-02-20',
+    tags: ['AI', 'insight'],
+    description: '같은 코드베이스(112K chars)를 두 모델에 던지고 비교. 3.1 Pro가 보안 취약점까지 찾았다.'
+  },
+  {
+    slug: 'opus-surrounded',
+    title: 'Opus가 포위됐다 — Sonnet 4.6과 Gemini 3.1 Pro, 48시간의 협공',
+    date: '2026-02-20',
+    tags: ['AI', 'insight'],
+    description: 'Sonnet 4.6은 아래에서, Gemini 3.1 Pro는 옆에서. Opus의 존재 이유가 흔들린다.'
+  },
+  {
     slug: 'gemini-cli-google-mcp-handson',
     title: 'Gemini CLI + Google MCP로 풀스택 앱 클라우드 배포하기',
     date: '2026-02-19',
