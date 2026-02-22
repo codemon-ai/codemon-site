@@ -17,8 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Notify telegram
     if (BOT_TOKEN && NOTIFY_ID) {
-      const text = `💬 *추가 메시지* \\[#${sessionId.slice(0, 8)}\\]\n\n${escapeMarkdown(message)}`
-      await sendTelegram(text)
+      const text = `💬 추가 메시지 [#${sessionId.slice(0, 8)}]\n${session.name}: ${message}`
+      await sendTelegramWithButtons(text, sessionId.slice(0, 8))
     }
 
     return res.status(200).json({ ok: true, session })
@@ -39,52 +39,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     message: message.trim(),
   })
 
-  // Notify telegram with session ID for reply matching
+  // Notify telegram with inline buttons
   if (BOT_TOKEN && NOTIFY_ID) {
-    const text = [
-      `📩 *새 문의* \\[#${id.slice(0, 8)}\\]`,
+    const lines = [
+      `📩 새 문의 [#${id.slice(0, 8)}]`,
       ``,
-      `*이름:* ${escapeMarkdown(name.trim())}`,
-      `*이메일:* ${escapeMarkdown(contact.trim())}`,
-      phone ? `*전화:* ${escapeMarkdown(phone.trim())}` : '',
-      `*페이지:* ${escapeMarkdown(page || 'unknown')}`,
+      `이름: ${name.trim()}`,
+      `이메일: ${contact.trim()}`,
+      phone ? `전화: ${phone.trim()}` : '',
+      `페이지: ${page || 'unknown'}`,
       ``,
-      `*내용:*`,
-      escapeMarkdown(message.trim()),
-      ``,
-      `💡 답장하려면: \`/reply ${id.slice(0, 8)} 메시지\``,
-    ].join('\n')
+      `내용:`,
+      message.trim(),
+    ].filter(Boolean).join('\n')
 
-    await sendTelegram(text)
+    await sendTelegramWithButtons(lines, id.slice(0, 8))
   }
 
   return res.status(200).json({ ok: true, sessionId: id, session })
 }
 
-function escapeMarkdown(text: string): string {
-  return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1')
-}
-
-async function sendTelegram(text: string) {
+async function sendTelegramWithButtons(text: string, sessionPrefix: string) {
+  if (!BOT_TOKEN || !NOTIFY_ID) return
   try {
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: NOTIFY_ID,
         text,
-        parse_mode: 'MarkdownV2',
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: '👋 인사 답변', callback_data: `greet_${sessionPrefix}` },
+              { text: '📝 견적 문의', callback_data: `quote_${sessionPrefix}` },
+            ],
+            [
+              { text: '✍️ 직접 답변', callback_data: `custom_${sessionPrefix}` },
+            ],
+          ],
+        },
       }),
     })
-    if (!res.ok) {
-      // Fallback to plain text
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: NOTIFY_ID, text: text.replace(/\\([_*\[\]()~`>#+\-=|{}.!\\])/g, '$1') }),
-      })
-    }
-  } catch (e) {
-    console.error('Telegram send failed:', e)
-  }
+  } catch {}
 }
