@@ -5,7 +5,7 @@ export const config = {
     bodyParser: false,
   },
 }
-import { addMessage } from '../../../lib/chat'
+import { addMessage } from '../../lib/chat'
 import { list } from '@vercel/blob'
 
 const BOT_TOKEN = process.env.TELEGRAM_CHAT_BOT_TOKEN
