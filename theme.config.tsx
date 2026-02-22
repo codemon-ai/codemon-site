@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
+import { ChatWidget } from './components/ChatWidget'
 
 const SITE_URL = 'https://codemon.ai'
 const SITE_NAME = 'codemon'
@@ -115,6 +116,12 @@ const config: DocsThemeConfig = {
     next: true,
   },
   darkMode: true,
+  main: ({ children }) => (
+    <>
+      {children}
+      <ChatWidget />
+    </>
+  ),
 }
 
 export default config
