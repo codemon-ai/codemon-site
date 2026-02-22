@@ -116,7 +116,6 @@ const config: DocsThemeConfig = {
     next: true,
   },
   darkMode: true,
-  ),
 }
 
 export default config

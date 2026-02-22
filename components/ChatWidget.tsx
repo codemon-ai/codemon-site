@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 
 interface ChatWidgetProps {
   page?: string
@@ -13,6 +14,8 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const { resolvedTheme } = useTheme()
+  const dark = resolvedTheme === 'dark'
 
   useEffect(() => {
     if (isOpen && step === 'form' && inputRef.current) {
@@ -53,6 +56,29 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
     setError('')
   }
 
+  // Theme-aware colors
+  const colors = {
+    panelBg: dark ? '#1a1a1a' : '#ffffff',
+    panelBorder: dark ? '#333' : '#e5e7eb',
+    panelShadow: dark ? '0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.12)',
+    headerBg: dark ? '#000' : '#111827',
+    label: dark ? '#d1d5db' : '#374151',
+    inputBg: dark ? '#2a2a2a' : '#fff',
+    inputBorder: dark ? '#444' : '#d1d5db',
+    inputText: dark ? '#f3f4f6' : '#111827',
+    placeholder: dark ? '#6b7280' : '#9ca3af',
+    btnBg: dark ? '#fff' : '#111827',
+    btnText: dark ? '#000' : '#fff',
+    btnDisabled: dark ? '#555' : '#9ca3af',
+    bodyText: dark ? '#9ca3af' : '#6b7280',
+    sentTitle: dark ? '#f3f4f6' : '#111827',
+    resetBorder: dark ? '#444' : '#e5e7eb',
+    resetBg: dark ? '#2a2a2a' : '#fff',
+    resetText: dark ? '#d1d5db' : '#374151',
+    floatBg: dark ? '#fff' : '#111827',
+    floatColor: dark ? '#000' : '#fff',
+  }
+
   return (
     <>
       {/* Floating Button */}
@@ -66,8 +92,8 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          background: '#111827',
-          color: '#fff',
+          background: colors.floatBg,
+          color: colors.floatColor,
           border: 'none',
           cursor: 'pointer',
           fontSize: '24px',
@@ -95,9 +121,9 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
             maxWidth: 'calc(100vw - 48px)',
             maxHeight: '480px',
             borderRadius: '16px',
-            background: '#ffffff',
-            border: '1px solid #e5e7eb',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+            background: colors.panelBg,
+            border: `1px solid ${colors.panelBorder}`,
+            boxShadow: colors.panelShadow,
             zIndex: 9998,
             overflow: 'hidden',
             display: 'flex',
@@ -108,7 +134,7 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
           <div
             style={{
               padding: '16px 20px',
-              background: '#111827',
+              background: colors.headerBg,
               color: '#fff',
             }}
           >
@@ -123,28 +149,28 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
             {step === 'form' ? (
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '12px' }}>
-                  <label style={labelStyle}>이름 *</label>
+                  <label style={{ ...labelBase, color: colors.label }}>이름 *</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="홍길동"
                     required
-                    style={inputStyle}
+                    style={{ ...inputBase, background: colors.inputBg, border: `1px solid ${colors.inputBorder}`, color: colors.inputText }}
                   />
                 </div>
                 <div style={{ marginBottom: '12px' }}>
-                  <label style={labelStyle}>연락처 (선택)</label>
+                  <label style={{ ...labelBase, color: colors.label }}>연락처 (선택)</label>
                   <input
                     type="text"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="이메일 또는 전화번호"
-                    style={inputStyle}
+                    style={{ ...inputBase, background: colors.inputBg, border: `1px solid ${colors.inputBorder}`, color: colors.inputText }}
                   />
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <label style={labelStyle}>문의 내용 *</label>
+                  <label style={{ ...labelBase, color: colors.label }}>문의 내용 *</label>
                   <textarea
                     ref={inputRef}
                     value={message}
@@ -152,7 +178,7 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
                     placeholder="어떤 사이트를 만들고 싶으신가요?"
                     required
                     rows={4}
-                    style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }}
+                    style={{ ...inputBase, background: colors.inputBg, border: `1px solid ${colors.inputBorder}`, color: colors.inputText, resize: 'vertical', minHeight: '80px' }}
                   />
                 </div>
                 {error && (
@@ -168,8 +194,8 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
                     padding: '10px',
                     borderRadius: '8px',
                     border: 'none',
-                    background: sending ? '#9ca3af' : '#111827',
-                    color: '#fff',
+                    background: sending ? colors.btnDisabled : colors.btnBg,
+                    color: sending ? '#fff' : colors.btnText,
                     fontWeight: 600,
                     fontSize: '14px',
                     cursor: sending ? 'not-allowed' : 'pointer',
@@ -181,10 +207,10 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
             ) : (
               <div style={{ textAlign: 'center', padding: '20px 0' }}>
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
-                <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px' }}>
+                <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px', color: colors.sentTitle }}>
                   문의가 전송되었습니다!
                 </div>
-                <div style={{ color: '#6b7280', fontSize: '14px', lineHeight: 1.5 }}>
+                <div style={{ color: colors.bodyText, fontSize: '14px', lineHeight: 1.5 }}>
                   빠른 시간 내에 답변드리겠습니다.
                   <br />
                   감사합니다 🙏
@@ -195,8 +221,9 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
                     marginTop: '20px',
                     padding: '8px 20px',
                     borderRadius: '8px',
-                    border: '1px solid #e5e7eb',
-                    background: '#fff',
+                    border: `1px solid ${colors.resetBorder}`,
+                    background: colors.resetBg,
+                    color: colors.resetText,
                     cursor: 'pointer',
                     fontSize: '13px',
                   }}
@@ -212,19 +239,17 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
   )
 }
 
-const labelStyle: React.CSSProperties = {
+const labelBase: React.CSSProperties = {
   display: 'block',
   fontSize: '13px',
   fontWeight: 600,
-  color: '#374151',
   marginBottom: '4px',
 }
 
-const inputStyle: React.CSSProperties = {
+const inputBase: React.CSSProperties = {
   width: '100%',
   padding: '8px 12px',
   borderRadius: '8px',
-  border: '1px solid #d1d5db',
   fontSize: '14px',
   outline: 'none',
   boxSizing: 'border-box',
