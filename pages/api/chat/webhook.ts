@@ -1,4 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 import { addMessage } from '../../../lib/chat'
 import { list } from '@vercel/blob'
 
@@ -16,7 +22,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ ok: true, debug: `method=${req.method}` })
   }
 
-  const update = req.body
+  // Manual body parsing (bodyParser disabled to avoid Vercel WAF issues)
+  const chunks: Buffer[] = []
+  for await (const chunk of req) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
+  }
+  const rawBody = Buffer.concat(chunks).toString('utf-8')
+  let update: any
+  try {
+    update = JSON.parse(rawBody)
+  } catch {
+    return res.status(200).json({ ok: true })
+  }
 
   // Handle callback query (inline button press)
   if (update?.callback_query) {
