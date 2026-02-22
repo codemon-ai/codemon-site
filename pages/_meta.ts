@@ -15,6 +15,17 @@ export default {
     title: 'About',
     type: 'page'
   },
+  showcase: {
+    title: 'Showcase',
+    type: 'page',
+    theme: {
+      layout: 'default',
+      breadcrumb: false,
+      sidebar: false,
+      toc: false,
+      pagination: false
+    }
+  },
   projects: {
     title: 'Projects',
     type: 'page'
