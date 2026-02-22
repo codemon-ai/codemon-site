@@ -12,7 +12,9 @@ const TEMPLATES: Record<string, string> = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end()
+  if (req.method !== 'POST') {
+    return res.status(200).json({ ok: true, debug: `method=${req.method}` })
+  }
 
   const update = req.body
 
