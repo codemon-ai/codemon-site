@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { addMessage } from '../../../lib/chat'
+import { list } from '@vercel/blob'
 
 export const config = {
   api: {
     bodyParser: false,
   },
 }
-import { addMessage } from '../../../lib/chat'
-import { list } from '@vercel/blob'
 
 const BOT_TOKEN = process.env.TELEGRAM_CHAT_BOT_TOKEN
 const NOTIFY_ID = process.env.TELEGRAM_CHAT_NOTIFY_ID
