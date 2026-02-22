@@ -60,7 +60,9 @@ export async function getSession(sessionId: string): Promise<ChatSession | null>
     const { blobs } = await list({ prefix: `chat/sessions/${sessionId}` })
     if (blobs.length === 0) return null
 
-    const res = await fetch(blobs[0].url)
+    const url = new URL(blobs[0].url)
+    url.searchParams.set('t', String(Date.now()))
+    const res = await fetch(url.toString(), { cache: 'no-store' })
     if (!res.ok) return null
     return await res.json()
   } catch {

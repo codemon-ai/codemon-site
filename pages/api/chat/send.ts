@@ -8,7 +8,7 @@ const NOTIFY_ID = process.env.TELEGRAM_CHAT_NOTIFY_ID
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  const { name, contact, message, page, sessionId } = req.body
+  const { name, contact, phone, message, page, sessionId } = req.body
 
   // Existing session — add message
   if (sessionId && message) {
@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ``,
       `*이름:* ${escapeMarkdown(name.trim())}`,
       `*이메일:* ${escapeMarkdown(contact.trim())}`,
+      phone ? `*전화:* ${escapeMarkdown(phone.trim())}` : '',
       `*페이지:* ${escapeMarkdown(page || 'unknown')}`,
       ``,
       `*내용:*`,

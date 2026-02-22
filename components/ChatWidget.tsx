@@ -17,6 +17,7 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
   const [step, setStep] = useState<'form' | 'chat'>('form')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -90,7 +91,7 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
       const res = await fetch('/api/chat/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), contact: email.trim(), message: message.trim(), page }),
+        body: JSON.stringify({ name: name.trim(), contact: email.trim(), phone: phone.trim(), message: message.trim(), page }),
       })
 
       if (res.ok) {
@@ -145,6 +146,7 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
     setMessages([])
     setName('')
     setEmail('')
+    setPhone('')
     setMessage('')
     setStep('form')
   }
@@ -191,7 +193,7 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
           {isOpen ? '✕' : '💬'}
         </button>
         {!isOpen && (
-          <span style={{ fontSize: '11px', fontWeight: 600, color: dark ? '#d1d5db' : '#374151' }}>문의하기</span>
+          <span style={{ fontSize: '13px', fontWeight: 700, color: dark ? '#e5e7eb' : '#111827', letterSpacing: '0.02em' }}>💬 문의하기</span>
         )}
       </div>
 
@@ -229,6 +231,13 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
                 <div style={{ marginBottom: '12px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: colors.label, marginBottom: '4px' }}>이메일 *</label>
                   <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="답변 받으실 이메일" required
+                    pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                    title="올바른 이메일 형식을 입력해주세요"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: `1px solid ${colors.inputBorder}`, background: colors.inputBg, color: colors.inputText, fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: colors.label, marginBottom: '4px' }}>전화번호 (선택)</label>
+                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="010-0000-0000"
                     style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: `1px solid ${colors.inputBorder}`, background: colors.inputBg, color: colors.inputText, fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
                 </div>
                 <div style={{ marginBottom: '16px' }}>
