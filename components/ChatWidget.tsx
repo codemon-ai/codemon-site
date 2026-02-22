@@ -82,40 +82,54 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
   return (
     <>
       {/* Floating Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="문의하기"
+      <div
         style={{
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          background: colors.floatBg,
-          color: colors.floatColor,
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
           zIndex: 9999,
-          transition: 'transform 0.2s',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '6px',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
       >
-        {isOpen ? '✕' : '💬'}
-      </button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="문의하기"
+          style={{
+            width: '72px',
+            height: '72px',
+            borderRadius: '50%',
+            background: colors.floatBg,
+            color: colors.floatColor,
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '30px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+            transition: 'transform 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+        >
+          {isOpen ? '✕' : '💬'}
+        </button>
+        {!isOpen && (
+          <span style={{ fontSize: '11px', fontWeight: 600, color: dark ? '#d1d5db' : '#374151' }}>
+            문의하기
+          </span>
+        )}
+      </div>
 
       {/* Chat Panel */}
       {isOpen && (
         <div
           style={{
             position: 'fixed',
-            bottom: '92px',
+            bottom: '112px',
             right: '24px',
             width: '360px',
             maxWidth: 'calc(100vw - 48px)',
@@ -160,12 +174,13 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
                   />
                 </div>
                 <div style={{ marginBottom: '12px' }}>
-                  <label style={{ ...labelBase, color: colors.label }}>연락처 (선택)</label>
+                  <label style={{ ...labelBase, color: colors.label }}>이메일 *</label>
                   <input
-                    type="text"
+                    type="email"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="이메일 또는 전화번호"
+                    placeholder="답변 받으실 이메일"
+                    required
                     style={{ ...inputBase, background: colors.inputBg, border: `1px solid ${colors.inputBorder}`, color: colors.inputText }}
                   />
                 </div>
@@ -188,7 +203,7 @@ export function ChatWidget({ page = 'showcase' }: ChatWidgetProps) {
                 )}
                 <button
                   type="submit"
-                  disabled={sending || !name.trim() || !message.trim()}
+                  disabled={sending || !name.trim() || !contact.trim() || !message.trim()}
                   style={{
                     width: '100%',
                     padding: '10px',
