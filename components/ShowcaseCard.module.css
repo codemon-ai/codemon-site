@@ -20,23 +20,12 @@
 .card {
   position: relative;
   border-radius: 12px;
-  padding: 1.5rem;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--card-color, #6366f1);
 }
 
 .card:hover {
@@ -53,19 +42,91 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
+/* Image */
+.imageLink {
+  display: block;
+  text-decoration: none;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+:global(.dark) .imageWrapper {
+  background: #111827;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.03);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.card:hover .imageOverlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.imageOverlayText {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .imageOverlayText {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Color bar fallback (no image) */
+.colorBar {
+  height: 4px;
+  background: var(--card-color, #6366f1);
+}
+
+/* Content area */
+.content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .titleRow {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
   color: #111827;
@@ -76,7 +137,7 @@
 }
 
 .badgeLive {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   padding: 0.15rem 0.5rem;
   border-radius: 9999px;
@@ -84,10 +145,11 @@
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex-shrink: 0;
 }
 
 .badgeSoon {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   padding: 0.15rem 0.5rem;
   border-radius: 9999px;
@@ -95,13 +157,14 @@
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex-shrink: 0;
 }
 
 .description {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #6b7280;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 :global(.dark) .description {
@@ -111,13 +174,13 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
 }
 
 .tag {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
   border-radius: 6px;
   background: #f3f4f6;
   color: #4b5563;
@@ -132,14 +195,14 @@
 .features {
   list-style: none;
   padding: 0;
-  margin: 0 0 1.25rem 0;
+  margin: 0 0 1rem 0;
   flex: 1;
 }
 
 .features li {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #4b5563;
-  padding: 0.2rem 0;
+  padding: 0.15rem 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -148,8 +211,8 @@
 .features li::before {
   content: '';
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--card-color, #6366f1);
   flex-shrink: 0;
@@ -167,9 +230,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   color: #ffffff;
@@ -184,9 +247,9 @@
 .demoBtnDisabled {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #9ca3af;
   background: #f3f4f6;
