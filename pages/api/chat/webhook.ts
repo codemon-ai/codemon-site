@@ -56,7 +56,7 @@ export default async function handler(req: NextRequest) {
   if (!msg?.text) return new Response(JSON.stringify({ ok: true }), { status: 200 })
 
   const text = msg.text.trim()
-  const replyMatch = text.match(/^\/r(?:eply)?\s+([a-f0-9]+)\s+(.+)/is)
+  const replyMatch = text.match(/^\/r(?:eply)?\s+([a-f0-9]+)\s+([\s\S]+)/i)
   if (!replyMatch) return new Response(JSON.stringify({ ok: true }), { status: 200 })
 
   const prefix = replyMatch[1].toLowerCase()
