@@ -1,5 +1,4 @@
 import type { NextRequest } from 'next/server'
-import { list, put, head } from '@vercel/blob'
 
 export const config = {
   runtime: 'edge',
@@ -7,6 +6,7 @@ export const config = {
 
 const BOT_TOKEN = process.env.TELEGRAM_CHAT_BOT_TOKEN
 const NOTIFY_ID = process.env.TELEGRAM_CHAT_NOTIFY_ID
+const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN
 
 const TEMPLATES: Record<string, string> = {
   greet: '안녕하세요! 문의해 주셔서 감사합니다. 😊\n확인 후 빠르게 답변드리겠습니다.',
@@ -34,30 +34,35 @@ export default async function handler(req: NextRequest) {
     if (action === 'custom') {
       await answerCallback(cb.id, '💬 답변을 입력해주세요')
       await sendTelegram(`✍️ 직접 답변 모드 [#${prefix}]\n\n아래처럼 입력하세요:\n/r ${prefix} 답변내용`)
-      return new Response(JSON.stringify({ ok: true }), { status: 200 })
+      return ok()
     }
 
     const template = TEMPLATES[action]
     if (template && prefix) {
       const sessionId = await findSessionByPrefix(prefix)
       if (sessionId) {
-        await addMessageToBlob(sessionId, 'admin', template)
-        await answerCallback(cb.id, '✅ 답변 전송됨!')
-        await sendTelegram(`✅ #${prefix} 답변 전송됨`)
+        const saved = await addMessageToBlob(sessionId, 'admin', template)
+        if (saved) {
+          await answerCallback(cb.id, '✅ 답변 전송됨!')
+          await sendTelegram(`✅ #${prefix} 답변 전송됨`)
+        } else {
+          await answerCallback(cb.id, '❌ 저장 실패')
+          await sendTelegram(`❌ #${prefix} Blob 저장 실패`)
+        }
       } else {
         await answerCallback(cb.id, '❌ 세션을 찾을 수 없습니다')
       }
     }
-    return new Response(JSON.stringify({ ok: true }), { status: 200 })
+    return ok()
   }
 
   // Handle text message (/r prefix message)
   const msg = update?.message
-  if (!msg?.text) return new Response(JSON.stringify({ ok: true }), { status: 200 })
+  if (!msg?.text) return ok()
 
   const text = msg.text.trim()
   const replyMatch = text.match(/^\/r(?:eply)?\s+([a-f0-9]+)\s+([\s\S]+)/i)
-  if (!replyMatch) return new Response(JSON.stringify({ ok: true }), { status: 200 })
+  if (!replyMatch) return ok()
 
   const prefix = replyMatch[1].toLowerCase()
   const replyText = replyMatch[2].trim()
@@ -65,18 +70,53 @@ export default async function handler(req: NextRequest) {
   const sessionId = await findSessionByPrefix(prefix)
   if (!sessionId) {
     await sendTelegram(`❌ 세션 #${prefix}를 찾을 수 없습니다.`)
-    return new Response(JSON.stringify({ ok: true }), { status: 200 })
+    return ok()
   }
 
-  await addMessageToBlob(sessionId, 'admin', replyText)
-  await sendTelegram(`✅ #${prefix} 답변 전송됨`)
+  const saved = await addMessageToBlob(sessionId, 'admin', replyText)
+  if (saved) {
+    await sendTelegram(`✅ #${prefix} 답변 전송됨`)
+  } else {
+    await sendTelegram(`❌ #${prefix} Blob 저장 실패`)
+  }
 
+  return ok()
+}
+
+function ok() {
   return new Response(JSON.stringify({ ok: true }), { status: 200 })
+}
+
+// --- Blob operations using raw fetch (Edge-compatible) ---
+
+const BLOB_API = 'https://blob.vercel-storage.com'
+
+async function blobList(prefix: string): Promise<Array<{ pathname: string; url: string }>> {
+  const res = await fetch(`${BLOB_API}?prefix=${encodeURIComponent(prefix)}&limit=5`, {
+    headers: { authorization: `Bearer ${BLOB_TOKEN}` },
+  })
+  if (!res.ok) return []
+  const data = await res.json()
+  return data.blobs || []
+}
+
+async function blobPut(pathname: string, body: string): Promise<boolean> {
+  const res = await fetch(`${BLOB_API}/${pathname}`, {
+    method: 'PUT',
+    headers: {
+      authorization: `Bearer ${BLOB_TOKEN}`,
+      'x-content-type': 'application/json',
+      'x-add-random-suffix': 'false',
+      'x-cache-control-max-age': '0',
+    },
+    body,
+  })
+  return res.ok
 }
 
 async function findSessionByPrefix(prefix: string): Promise<string | null> {
   try {
-    const { blobs } = await list({ prefix: `chat/sessions/${prefix}` })
+    const blobs = await blobList(`chat/sessions/${prefix}`)
     if (blobs.length > 0) {
       const match = blobs[0].pathname.match(/chat\/sessions\/([^.]+)\.json/)
       return match ? match[1] : null
@@ -87,13 +127,13 @@ async function findSessionByPrefix(prefix: string): Promise<string | null> {
   }
 }
 
-async function addMessageToBlob(sessionId: string, role: string, text: string) {
+async function addMessageToBlob(sessionId: string, role: string, text: string): Promise<boolean> {
   try {
-    const path = `chat/sessions/${sessionId}.json`
-    const { blobs } = await list({ prefix: path })
-    if (blobs.length === 0) return null
+    const blobs = await blobList(`chat/sessions/${sessionId}.json`)
+    if (blobs.length === 0) return false
 
     const res = await fetch(blobs[0].url)
+    if (!res.ok) return false
     const session = await res.json()
 
     session.messages.push({
@@ -103,14 +143,9 @@ async function addMessageToBlob(sessionId: string, role: string, text: string) {
     })
     session.updatedAt = Date.now()
 
-    await put(path, JSON.stringify(session), {
-      access: 'public',
-      contentType: 'application/json',
-      addRandomSuffix: false,
-    })
-    return session
-  } catch {
-    return null
+    return await blobPut(`chat/sessions/${sessionId}.json`, JSON.stringify(session))
+  } catch (e) {
+    return false
   }
 }
 
