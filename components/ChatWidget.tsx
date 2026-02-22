@@ -216,8 +216,8 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
               <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '2px' }}>AI 기반 외주 개발 문의</div>
             </div>
             {step === 'chat' && (
-              <button onClick={handleNewChat} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '12px' }}>
-                새 문의
+              <button onClick={handleNewChat} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '6px', color: '#fff', cursor: 'pointer', fontSize: '12px', padding: '4px 10px', fontWeight: 600 }}>
+                + 새 문의
               </button>
             )}
           </div>
