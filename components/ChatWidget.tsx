@@ -181,17 +181,17 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
         aria-label="문의하기"
         style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
-          height: '56px',
+          height: '60px',
           padding: isOpen ? '0' : '0 24px',
-          width: isOpen ? '56px' : 'auto',
-          borderRadius: isOpen ? '50%' : '28px',
+          width: isOpen ? '60px' : 'auto',
+          borderRadius: isOpen ? '50%' : '30px',
           background: dark ? '#fff' : '#111827',
           color: dark ? '#000' : '#fff',
           border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
           boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
           transition: 'all 0.2s',
-          fontSize: isOpen ? '24px' : '15px',
+          fontSize: isOpen ? '24px' : '17px',
           fontWeight: 700,
         }}
         onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
