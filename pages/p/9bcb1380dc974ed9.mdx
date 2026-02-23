@@ -292,14 +292,14 @@ PENDING → INVOICE_SENT → PAYMENT_COMPLETED → VOUCHER_SENT → COMPLETED
 - instantInvoice=true: 예약 즉시 INVOICE_SENT 자동 전이
 
 #### 인보이스
-- invoiceNumber: INV{timestamp}{random3digits}
+- invoiceNumber: INV\{timestamp\}\{random3digits\}
 - 자동 생성: issuedDate, dueDate(+7일), taxAmount(10%), totalAmount
 - 공개 링크: /public/invoice/[uuid] (로그인 불필요)
 - PDF 생성: React Email + @react-pdf/renderer
 - 알림: 알림톡 + Email
 
 #### 바우처
-- voucherNumber: VCH{timestamp}{random3digits}
+- voucherNumber: VCH\{timestamp\}\{random3digits\}
 - 전제조건: status = PAYMENT_COMPLETED
 - 상태: ISSUED → SENT → USED / EXPIRED / CANCELLED
 - 공개 링크: /public/voucher/[uuid]
@@ -423,7 +423,7 @@ PENDING → INVOICE_SENT → PAYMENT_COMPLETED → VOUCHER_SENT → COMPLETED
 
 #### 정산 목록 (/settlements)
 - 공급처(Supplier)별 월 단위 정산
-- settlementNumber: ST{YY}{MM}{supplierID}
+- settlementNumber: ST\{YY\}\{MM\}\{supplierID\}
 - 정산 계산:
   ```
   commissionAmount = bookingPrice × supplier.commissionRate / 100
