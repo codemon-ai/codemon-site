@@ -1,0 +1,137 @@
+---
+title: "Vercel + Telegram 실시간 채팅 위젯 — DB 없이, 서버 없이"
+description: "Vercel Blob + Telegram Bot으로 실시간 양방향 채팅 위젯을 만든 실전 기록. WAF 함정과 Edge Runtime 우회법까지."
+date: 2026-02-23
+author: codemon
+tags: [project, tips]
+---
+
+# Vercel + Telegram 실시간 채팅 위젯 — DB 없이, 서버 없이
+
+![Vercel + Telegram 실시간 채팅 위젯 히어로](/images/blog/vercel-telegram-realtime-chat/hero.png)
+
+외주 문의를 받을 채팅 위젯이 필요했다. Tawk.to 같은 서드파티를 붙이면 빠르겠지만, 브랜드 톤이 깨지고 텔레그램으로 바로 알림받고 싶었다. 직접 만들기로 했다.
+
+결론부터 말하면 — DB 없이, 서버 없이, Vercel Hobby 무료 티어만으로 양방향 실시간 채팅을 완성했다. 5시간 걸렸고, 총 코드는 400줄 남짓이다.
+
+다만 그 과정에서 **Vercel WAF의 문서화되지 않은 동작**을 발견했다. 구글링해도 안 나온다. 이 글의 핵심은 거기에 있다.
+
+## 아키텍처
+
+```
+[웹 ChatWidget] → /api/chat/send → Vercel Blob 저장 + Telegram 알림
+                                         ↕
+[Telegram 인라인 버튼] → /api/chat/webhook → Blob 업데이트
+                                         ↕
+[웹 3초 폴링] → /api/chat/messages → Blob 읽기 → 실시간 표시
+```
+
+핵심은 **Vercel Blob을 DB처럼 쓴 것**이다. `chat/sessions/{id}.json` 형태로 세션별 대화를 JSON 파일로 저장한다. 별도의 DB 설정 없이 `put()`과 `get()`만으로 충분했다.
+
+## Vercel Blob — DB 대용으로 쓰기
+
+Vercel Blob은 원래 파일 저장소지만, JSON을 넣으면 간이 DB가 된다.
+
+```typescript
+// 저장
+await put(`chat/sessions/${sessionId}.json`, JSON.stringify(data), {
+  access: 'public',
+  addRandomSuffix: false,  // 이거 필수!
+})
+
+// 읽기
+const res = await fetch(blobUrl, { cache: 'no-store' })
+const data = await res.json()
+```
+
+`addRandomSuffix: false`를 빼먹으면 Vercel이 파일명에 랜덤 문자열을 붙인다. 같은 세션을 다시 읽을 수 없게 된다. 공식 문서에 있긴 한데, 기본값이 `true`라 한 번은 실수한다.
+
+**장점:** 무료, 설정 제로, CDN 캐시 자동.
+**단점:** read-modify-write에서 race condition 가능. 채팅 위젯 수준에선 문제없지만, 동시 접속이 많으면 쓰면 안 된다.
+
+## Telegram 인라인 버튼으로 원클릭 답변
+
+문의가 오면 텔레그램에 인라인 버튼 3개가 뜬다:
+
+- **👋 인사답변** — 미리 작성한 인사 템플릿 전송
+- **📝 견적문의** — 3가지 질문이 담긴 견적 양식 전송
+- **✍️ 직접답변** — `/r {prefix} 메시지`로 자유 입력
+
+버튼 하나 누르면 웹 채팅에 실시간으로 반영된다. 이 부분은 쉬웠다. 문제는 그 다음이었다.
+
+## Vercel WAF의 숨겨진 함정
+
+**이게 이 글의 핵심이다.**
+
+Telegram webhook은 `callback_query`라는 키를 포함한 JSON을 보낸다. 그런데 이걸 받는 Node.js API Route가 **405를 리턴**했다.
+
+처음엔 내 코드 문제인 줄 알았다. 라우트 설정, HTTP 메서드, bodyParser 옵션 전부 바꿔봤다. 안 됐다. Vercel 로그에도 내 핸들러가 실행된 흔적이 없었다.
+
+**WAF가 요청 파싱 전에 차단하고 있었다.**
+
+`callback_query`라는 JSON 키가 Vercel의 Web Application Firewall 규칙에 걸린다. 정확히 어떤 규칙인지는 모르겠지만, 이 키가 있으면 405가 내려온다. 구글링해도 나오지 않는다. GitHub Issues에도 없다.
+
+**해결: Edge Runtime**
+
+```typescript
+// pages/api/chat/webhook.ts
+export const config = { runtime: 'edge' }
+```
+
+Edge Runtime으로 전환하니 WAF를 우회했다. Node.js Runtime은 WAF 뒤에서 실행되지만, Edge Runtime은 다른 경로를 탄다.
+
+## Edge Runtime에서 Blob SDK가 안 되는 문제
+
+WAF를 우회하고 나니 새로운 문제가 생겼다. Edge Runtime에서 `@vercel/blob`의 `put()`이 **조용히 실패**한다. 에러도 안 던진다. 그냥 저장이 안 된다.
+
+해결은 raw fetch였다:
+
+```typescript
+await fetch(`https://blob.vercel-storage.com/${pathname}`, {
+  method: 'PUT',
+  headers: {
+    authorization: `Bearer ${BLOB_TOKEN}`,
+    'x-content-type': 'application/json',
+    'x-add-random-suffix': 'false',
+  },
+  body: JSON.stringify(data),
+})
+```
+
+SDK 대신 HTTP API를 직접 때리면 Edge에서도 잘 된다.
+
+## 메시지 id 누락 → 디버깅 30분
+
+마지막 함정. 관리자 답변이 하나만 표시되고 나머지가 안 보였다.
+
+원인은 단순했다. admin 메시지에 `id` 필드를 안 넣었다. 프론트에서 중복 제거용으로 쓰던 `new Set(messages.map(m => m.id))`가 `undefined`를 하나로 합쳐버렸다.
+
+```typescript
+// 수정 전
+{ role: 'admin', text: '안녕하세요!' }
+
+// 수정 후
+{ id: `msg_${Date.now()}`, role: 'admin', text: '안녕하세요!' }
+```
+
+**교훈: 데이터 스키마는 처음부터 통일하자.** 나중에 필드 추가하면 기존 데이터와 호환 안 될 수 있다.
+
+## 결과
+
+| 항목 | 내용 |
+|------|------|
+| 개발 시간 | 5시간 (Phase 1: 2h, Phase 2: 3h) |
+| 총 코드 | ~400줄 |
+| 인프라 비용 | $0 (Vercel Hobby + Blob 무료) |
+| 파일 구성 | ChatWidget.tsx + 3 API routes + lib/chat.ts |
+
+실제로 [codemon.ai](https://codemon.ai) 우측 하단에 붙어있다. 문의 보내면 내 텔레그램으로 바로 온다.
+
+## 정리
+
+- **Vercel Blob은 간이 DB로 쓸 만하다.** 소규모 채팅, 폼 데이터 수준에선 충분하다.
+- **Vercel WAF는 문서화되지 않은 차단 규칙이 있다.** `callback_query` 같은 키가 걸릴 수 있다. Edge Runtime으로 우회 가능.
+- **Edge Runtime에서 SDK가 안 되면 raw fetch를 쓰자.** 공식 SDK가 모든 런타임을 지원하진 않는다.
+- **데이터 id 필드는 처음부터 넣자.**
+
+다음에는 이 쇼케이스를 위해 7개 데모 사이트를 하나의 Next.js 앱에서 운영하는 아키텍처를 다룰 예정이다. 그리고 문서화 프레임워크 **CODA**(Context-Oriented Documentation Architecture)도 소개할 계획이다.
