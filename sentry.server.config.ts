@@ -8,4 +8,8 @@ Sentry.init({
   enabled: process.env.NODE_ENV === 'production',
 
   enableLogs: true,
+
+  integrations: [
+    Sentry.consoleLoggingIntegration({ levels: ['warn', 'error', 'log'] }),
+  ],
 })
