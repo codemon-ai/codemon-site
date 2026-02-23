@@ -1,0 +1,125 @@
+---
+title: "Next.js 하나로 7개 데모 사이트 만들기 — AI 외주 쇼케이스 구축기"
+description: "단일 Next.js 15 앱에서 서브도메인 미들웨어로 7개 독립 데모 사이트를 운영하는 아키텍처. Claude Code로 각 데모를 10~15분에 생성한 실전 기록."
+date: 2026-02-23
+author: codemon
+tags: [project]
+---
+
+# Next.js 하나로 7개 데모 사이트 만들기 — AI 외주 쇼케이스 구축기
+
+![AI 외주 쇼케이스 히어로](/images/blog/ai-showcase-7demos-one-app/hero.png)
+
+AI 외주 사업을 시작하면서 포트폴리오가 필요했다. 스크린샷 몇 장이 아니라 **실제로 클릭하고 돌아다닐 수 있는 데모**. "이런 거 만들 수 있어요"가 아니라 "여기 들어가서 써보세요"를 보여주고 싶었다.
+
+실제로 납품했지만 이름을 밝히기 어려운 프로젝트들이 있었다. 동일한 수준의 데모를 새로 만들기로 했다. 7개. 병원, 쇼핑몰, 대시보드, 공간대여, 주문관리, 여행, 패션커머스.
+
+문제는 이걸 7개 레포로 관리하면 배포도 7번, 의존성도 7벌이라는 것이다. **단일 Next.js 앱에 전부 넣기로** 했다.
+
+## 아키텍처: 서브도메인 미들웨어
+
+```
+clinic.codemon.ai  ─┐
+store.codemon.ai   ─┤
+dashboard.codemon.ai ─┤→ middleware.ts → /sites/{site}/page
+space.codemon.ai   ─┤
+order.codemon.ai   ─┤
+travel.codemon.ai  ─┤
+shop.codemon.ai    ─┘
+```
+
+`src/middleware.ts`에서 요청의 서브도메인을 감지하고 내부 경로로 rewrite한다. `clinic.codemon.ai`로 접속하면 실제로는 `/sites/clinic` 페이지를 렌더링한다.
+
+```typescript
+// src/middleware.ts (핵심 로직)
+const hostname = request.headers.get('host') || ''
+const subdomain = hostname.split('.')[0]
+
+if (VALID_SITES.includes(subdomain)) {
+  return NextResponse.rewrite(
+    new URL(`/sites/${subdomain}${pathname}`, request.url)
+  )
+}
+```
+
+각 사이트는 독립된 디자인 시스템을 갖지만, 레이아웃 컴포넌트와 유틸리티는 공유한다. 데이터는 정적 TypeScript 파일이다. DB 없다.
+
+## Claude Code로 데모 생성: 10~15분
+
+각 데모의 PRD(Product Requirements Document)를 2페이지 정도 작성하고 Claude Code에 넘겼다.
+
+```bash
+claude -p --dangerously-skip-permissions \
+  --disallowedTools "Bash(rm:*)" \
+  --verbose --output-format stream-json \
+  "PRD 내용..."
+```
+
+**`-p` 플래그가 핵심이다.** 이게 없으면 interactive 모드로 떠서 입력을 기다리며 멈춘다. `--verbose`도 `stream-json`과 함께 반드시 넣어야 한다. 이 조합을 찾기까지 꽤 삽질했다.
+
+한 번 돌리면 10~15분에 37개 파일, 7000줄이 나온다. 페이지 구조, 컴포넌트, 데이터, 스타일까지 전부.
+
+### 타입 에러와의 전쟁
+
+다만 **타입 에러는 직접 잡아야 했다.** Claude Code가 만든 데이터 스키마와 컴포넌트의 타입이 안 맞는 경우가 있다. 예를 들어 주문 데이터에서:
+
+```typescript
+// Claude Code가 만든 타입
+order.totalPrice       // ❌ 없는 필드
+order.date             // ❌ 없는 필드
+
+// 실제 타입
+order.payment.amount   // ✅
+order.createdAt        // ✅
+```
+
+중첩된 객체 구조에서 이런 불일치가 5라운드 정도 발생했다. AI가 만든 코드를 "그냥 돌린다"는 아직 현실이 아니다. 검수는 사람 몫이다.
+
+## 각 데모 사이트
+
+| 사이트 | 컨셉 | 색상 |
+|--------|------|------|
+| [clinic.codemon.ai](https://clinic.codemon.ai) | 병원/의원 (예시) | 블루/스카이 |
+| [store.codemon.ai](https://store.codemon.ai) | 쇼핑몰 (예시) | 오렌지/앰버 |
+| [dashboard.codemon.ai](https://dashboard.codemon.ai) | SaaS 대시보드 (예시) | 바이올렛/퍼플 다크 |
+| [space.codemon.ai](https://space.codemon.ai) | 공간대여 (예시) | 에메랄드/그린 |
+| [order.codemon.ai](https://order.codemon.ai) | 주문관리 (예시) | 레드/로즈 |
+| [travel.codemon.ai](https://travel.codemon.ai) | 여행 (예시) | 시안/틸 |
+| [shop.codemon.ai](https://shop.codemon.ai) | 패션 이커머스 (예시) | 핑크/로즈골드 |
+
+상품 이미지 40장은 Gemini 3 Pro Image로 생성했다.
+
+## Vercel 배포: 로컬 빌드는 포기
+
+7개 사이트를 합치면 43개 이상의 페이지가 된다. **로컬에서 `npm run build`를 돌리면 OOM(Out of Memory)으로 SIGKILL 당한다.**
+
+해결법은 간단했다. 로컬 빌드를 포기하고 Vercel에 맡겼다. Vercel 빌드 환경은 30코어, 60GB 메모리다. git push만 하면 된다.
+
+서브도메인 7개는 Vercel 프로젝트 설정에서 전부 연결했다. 한 번의 배포로 7개 사이트가 동시에 업데이트된다.
+
+## 교훈
+
+**단일 앱의 장점:**
+- 공유 컴포넌트로 일관성 유지
+- 한 번 배포로 전체 업데이트
+- 의존성 관리가 하나
+
+**단일 앱의 단점:**
+- 빌드 시간 증가 (Vercel에서도 60초 이상)
+- 사이트 하나 수정해도 전체 재배포
+- OOM 위험 — 로컬 개발 시 특정 사이트만 빌드하는 설정 필요
+
+**AI 코딩의 현실:**
+- PRD만 잘 쓰면 구조물은 10분에 나온다
+- 하지만 타입 안정성, 엣지 케이스, 데이터 일관성은 사람이 잡아야 한다
+- "AI가 짰으니 끝"이 아니라 "AI가 초안 짰으니 검수 시작"
+
+비슷한 프로젝트를 만들고 싶다면, 우리가 외주 납품용으로 쓰는 Next.js 풀스택 보일러플레이트를 오픈소스로 공개해뒀다:
+
+👉 [codemon-ai/nextjs-fullstack-template](https://github.com/codemon-ai/nextjs-fullstack-template)
+
+Next.js 15 + Drizzle ORM + Better Auth + shadcn/ui 조합이다. 이 쇼케이스도 같은 기반 위에 만들었다. 다음 글에서 이 템플릿을 자세히 소개할 예정이다.
+
+이 쇼케이스에 관심이 있다면 [codemon.ai](https://codemon.ai)에서 문의할 수 있다. 비슷한 구조의 멀티 사이트가 필요하면 상담을 통해 맞춤 제작이 가능하다.
+
+그리고 AI 에이전트 간 협업을 구조화하는 문서 프레임워크 **CODA**(Context-Oriented Documentation Architecture)도 이 쇼케이스 프로젝트에 적용할 계획이다. CODA에 대해서도 곧 다룰 예정이다.
