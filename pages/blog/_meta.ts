@@ -9,6 +9,7 @@ export default {
       pagination: false
     }
   },
+  'ai-bot-collaboration': 'AI 봇 2마리가 협업하는 법 — OpenClaw 멀티 에이전트 실전기',
   'ai-showcase-7demos-one-app': 'Next.js 하나로 7개 데모 사이트 만들기 — AI 외주 쇼케이스 구축기',
   'vercel-telegram-realtime-chat': 'Vercel + Telegram 실시간 채팅 위젯 — DB 없이, 서버 없이',
   'sonnet46-opus-killer-budget': 'Sonnet 4.6 — Opus의 1/5 가격인데, 70%가 더 좋다고?',
