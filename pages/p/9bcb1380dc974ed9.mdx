@@ -1,0 +1,538 @@
+---
+title: BlueMango v2 — Admin PRD
+description: 블루망고 v2 어드민 사이트 재구축 PRD
+tags: [bluemango, prd, admin]
+created: 2026-02-23
+---
+
+# BlueMango v2 — Admin PRD
+
+> 태국 여행 예약 플랫폼 어드민 사이트 재구축 PRD
+> 기준일: 2026-02-23
+
+---
+
+## 1. 개요
+
+### 1.1 배경
+BlueMango v1 Admin은 **Refine + Ant Design** 기반으로 개발되었으나 다음 문제가 있어 전면 재구축한다:
+- Refine + Ant Design 프레임워크 과중 — 에러 빈번, 번들 사이즈 과대
+- 카테고리별 별도 페이지/컨트롤러 (NestJS 21개 컨트롤러, 230개 엔드포인트)
+- LEGACY 코드 부채 — 무통장입금 독립, 이중 상태, Order 잔재 등
+
+### 1.2 목표
+- **shadcn/ui 기반** 모던 어드민 UI 전면 재구축
+- 카테고리별 분리 → **통합 상품 관리** (타입/카테고리 필터)
+- LEGACY 문제점 전면 해결 (무통장입금 통합, 이중 상태 제거 등)
+- **1인 개발자(+AI) 유지보수** 최적화
+- 라우트 수 80+ → 35개로 대폭 축소
+
+### 1.3 기술 스택
+
+| 영역 | 기술 | 선택 이유 |
+|------|------|-----------|
+| 프레임워크 | Next.js 15 (App Router) | 서버리스, Vercel 네이티브 |
+| Backend | Next.js API Routes + Server Actions | NestJS 제거 |
+| DB | Supabase PostgreSQL (Seoul) | 통합 인프라 |
+| ORM | Drizzle ORM | 35KB, 서버리스 최적 |
+| Auth | Better Auth (Drizzle 어댑터) | 카카오/구글/네이버 지원 |
+| Storage | Supabase Storage | S3 대체, CDN |
+| UI | shadcn/ui + Tailwind CSS | 경량, 프리미엄 DS |
+| 에디터 | Tiptap | 리치텍스트 (상품 설명, 콘텐츠) |
+| 차트 | Recharts | 대시보드 통계 |
+| 유효성검사 | Zod | 전 레이어 통일 |
+| 테스트 | Playwright | E2E |
+| 배포 | Vercel | 서버리스, 자동 스케일링 |
+
+### 1.4 모노레포 위치
+```
+bluemango-v2/
+├── apps/
+│   └── admin/          ← Next.js 15 (어드민 사이트 + Admin API)
+├── packages/
+│   ├── db/             ← Drizzle 스키마 (공유)
+│   ├── auth/           ← Better Auth 설정 (공유)
+│   ├── ui/             ← shadcn/ui 공유 컴포넌트
+│   ├── email/          ← React Email 템플릿 (공유)
+│   └── shared/         ← 공유 타입, Zod 스키마, 유틸
+```
+
+---
+
+## 2. 사용자 역할 및 권한 (RBAC)
+
+### 2.1 역할 계층
+```
+SUPER_ADMIN > MANAGER > ADMIN > STAFF > SUPPLIER
+```
+상위 역할은 하위 역할의 모든 권한 포함.
+
+| 역할 | 설명 |
+|------|------|
+| SUPER_ADMIN | 최고 관리자 (모든 기능 + 시스템 설정) |
+| MANAGER | 매니저 (ADMIN + 직원 관리 + 약관/설정) |
+| ADMIN | 관리자 (대부분의 어드민 기능) |
+| STAFF | 직원 (조회 + 제한된 수정) |
+| SUPPLIER | 공급처 (자기 상품/정산만) |
+
+### 2.2 인증
+- 이메일/비밀번호 로그인 (bcrypt salt 10)
+- JWT: Access Token 1시간 / Refresh Token 1일
+- 관리자 활동 로그: 모든 작업 기록 (action, resource, resourceId, data, ipAddress, userAgent)
+
+---
+
+## 3. 메뉴 구조 (IA)
+
+### 3.1 v1 → v2 변경 요약
+```
+                    v1              v2              변경
+메뉴 그룹          9개             8개             -1
+메뉴 항목          27개            ~20개           -7
+전체 라우트        80+개           35개            -45+
+신규 메뉴          -               7개             +7
+제거 메뉴          -               10개            -10
+```
+
+### 3.2 전체 메뉴 구조
+
+```
+Admin v2 (8 그룹, ~20개 메뉴)
+│
+├── 📊 대시보드                        /
+│
+├── 📋 예약관리
+│   ├── 예약 목록                      /bookings
+│   │   ├── (상세)                     /bookings/[id]
+│   │   ├── (생성)                     /bookings/create
+│   │   ├── (인보이스)                 /bookings/[id]/invoice
+│   │   └── (바우처)                   /bookings/[id]/voucher
+│   └── 결제 관리 🆕                   /payments
+│       └── (상세)                     /payments/[id]
+│
+├── 📦 상품관리
+│   ├── 상품 목록                      /products
+│   │   ├── (상세)                     /products/[id]
+│   │   ├── (생성)                     /products/create?type=HOTEL
+│   │   └── (수정)                     /products/[id]/edit
+│   └── 상품 분류                      /categories
+│       └── (계층 관리)                /categories/hierarchy
+│
+├── 👥 회원관리
+│   ├── 회원 목록                      /users
+│   │   └── (상세)                     /users/[id]
+│   └── 포인트 관리 🆕                 /points
+│
+├── 📝 콘텐츠관리 🆕
+│   ├── 여행 팁                        /content/tips
+│   ├── 공지사항                       /content/notices
+│   ├── 약관 관리                      /content/terms
+│   ├── Q&A (상품문의)                 /content/qna
+│   └── 리뷰 관리                      /content/reviews
+│
+├── 💰 정산관리 🆕
+│   ├── 정산 목록                      /settlements
+│   │   └── (상세)                     /settlements/[id]
+│   └── 공급처 관리                    /suppliers
+│       └── (상세)                     /suppliers/[id]
+│
+├── ⚙️ 사이트관리
+│   ├── 일반 설정                      /site/general
+│   ├── 네비게이션                     /site/navigation
+│   ├── SEO 설정                       /site/seo
+│   └── 환율 관리                      /site/exchange-rate
+│
+├── 📈 통계
+│   └── 통계 대시보드                  /statistics
+│
+└── 🔧 시스템
+    ├── 활동 로그                      /system/logs
+    ├── 알림 로그 🆕                   /system/notifications
+    └── 데이터 관리                    /system/database
+```
+
+### 3.3 라우트별 권한 매트릭스
+
+| # | 라우트 | 메뉴 | CRUD | 최소 권한 |
+|---|--------|------|------|-----------|
+| 1 | / | 대시보드 | R | STAFF |
+| 2 | /bookings | 예약 목록 | R | STAFF |
+| 3 | /bookings/create | 예약 생성 | C | ADMIN |
+| 4 | /bookings/[id] | 예약 상세 | R/U | STAFF |
+| 5 | /bookings/[id]/invoice | 인보이스 | R/U | STAFF |
+| 6 | /bookings/[id]/voucher | 바우처 | R/U | STAFF |
+| 7 | /payments | 결제 목록 | R | STAFF |
+| 8 | /payments/[id] | 결제 상세 | R/U | ADMIN |
+| 9 | /products | 상품 목록 | R | STAFF |
+| 10 | /products/create | 상품 생성 | C | ADMIN |
+| 11 | /products/[id] | 상품 상세 | R | STAFF |
+| 12 | /products/[id]/edit | 상품 수정 | U | ADMIN |
+| 13 | /categories | 상품 분류 | R | STAFF |
+| 14 | /categories/hierarchy | 분류 계층 | R/U | ADMIN |
+| 15 | /users | 회원 목록 | R | STAFF |
+| 16 | /users/[id] | 회원 상세 | R/U | ADMIN |
+| 17 | /points | 포인트 관리 | R/C | ADMIN |
+| 18 | /content/tips | 여행 팁 | CRUD | STAFF |
+| 19 | /content/notices | 공지사항 | CRUD | STAFF |
+| 20 | /content/terms | 약관 관리 | R/U | MANAGER |
+| 21 | /content/qna | Q&A | R/U | STAFF |
+| 22 | /content/reviews | 리뷰 관리 | R/U/D | STAFF |
+| 23 | /settlements | 정산 목록 | R | ADMIN |
+| 24 | /settlements/[id] | 정산 상세 | R/U | ADMIN |
+| 25 | /suppliers | 공급처 목록 | R | STAFF |
+| 26 | /suppliers/[id] | 공급처 상세 | CRUD | ADMIN |
+| 27 | /site/general | 일반 설정 | R/U | MANAGER |
+| 28 | /site/navigation | 네비게이션 | R/U | MANAGER |
+| 29 | /site/seo | SEO | R/U | MANAGER |
+| 30 | /site/exchange-rate | 환율 | R/U | ADMIN |
+| 31 | /statistics | 통계 | R | STAFF |
+| 32 | /system/logs | 활동 로그 | R | MANAGER |
+| 33 | /system/notifications | 알림 로그 | R | ADMIN |
+| 34 | /system/database | 데이터 관리 | R/U | SUPER_ADMIN |
+| 35 | /login | 로그인 | - | PUBLIC |
+
+---
+
+## 4. v1 → v2 상세 변경점
+
+### 4.1 예약관리 (11개 → 3개 메뉴)
+
+| v1 메뉴 | v1 경로 | v2 | 변경 이유 |
+|---------|---------|-----|-----------|
+| 예약 목록 | /bookings | ✅ 유지 | 핵심 기능 |
+| 예약 상세 | /bookings/show/:id | ✅ 유지 | 핵심 기능 |
+| 예약 생성 | /bookings/create | ✅ 유지 | 관리자 직접 생성 |
+| 예약 수정 | /bookings/edit/:id | ✅ 상세 내 인라인 | |
+| 인보이스 상세 | /bookings/invoice/:id | ✅ 예약 상세 탭 | |
+| 바우처 상세 | /bookings/voucher/:id | ✅ 예약 상세 탭 | |
+| 무통장입금 | /bank-transfers | ❌ 제거 | Payment로 통합 (L3) |
+| 무통장입금 상세 | /bank-transfers/show/:id | ❌ 제거 | 결제 관리에서 확인 |
+| 무통장입금 수정 | /bank-transfers/edit/:id | ❌ 제거 | 결제 관리에서 처리 |
+| 차량예약 | /car-bookings | ❌ 제거 | 상품타입 필터로 대체 |
+| 차량예약 상세 | /car-bookings/show/:id | ❌ 제거 | 예약 상세에서 확인 |
+| 🆕 결제 관리 | /payments | 신규 | Payment 엔티티 중심 |
+
+### 4.2 상품관리 (7개 → 2개 메뉴)
+
+| v1 메뉴 | v1 경로 | v2 | 변경 이유 |
+|---------|---------|-----|-----------|
+| 호텔 | /hotels | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 골프 | /golf | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 차량 | /cars | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 투어 | /tours | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 비자 | /visa | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 기타 | /etc-products | ❌ 통합 | 상품 목록 + 타입 필터 |
+| 항공 | /flights | ❌ 삭제 | v1에서도 미사용 |
+| 🆕 상품 목록 | /products | 신규 | 통합 (타입/카테고리/상태 필터) |
+| 상품 분류 | /product-categories | ✅ 유지 | 4단계 카테고리 계층 |
+
+### 4.3 신규 추가 메뉴
+
+| 메뉴 | 경로 | 설명 |
+|------|------|------|
+| 🆕 결제 관리 | /payments | Payment 엔티티 중심 관리 (무통장입금 포함) |
+| 🆕 정산 관리 | /settlements | 공급처별 월 정산 |
+| 🆕 포인트 관리 | /points | 이력/정책/수동지급 |
+| 🆕 콘텐츠 관리 | /content/* | 여행팁/공지/약관/Q&A/리뷰 |
+| 🆕 알림 로그 | /system/notifications | 발송 이력 조회 |
+| 🆕 데이터 관리 | /system/database | 엑셀 내보내기/가져오기, 백업 |
+
+---
+
+## 5. 도메인별 어드민 기능 상세
+
+### 5.1 대시보드 (/)
+- 매출 요약 (일/주/월) — Recharts
+- 예약 현황 (상태별 카운트)
+- 인기 상품 (예약 수/매출 기준)
+- 최근 예약 목록
+- 사용자 통계
+
+### 5.2 예약관리
+
+#### 예약 목록 (/bookings)
+**필터 체계** (v1의 별도 메뉴 대체):
+- 상태: PENDING | INVOICE_SENT | PAYMENT_COMPLETED | VOUCHER_SENT | COMPLETED | CANCELLED
+- 상품타입: ALL | HOTEL | GOLF | VEHICLE | TOUR | ETC
+- 결제방법: ALL | CREDIT_CARD | BANK_TRANSFER | VIRTUAL_ACCOUNT ← 무통장입금 필터
+- 기간: 예약일 / 이용일 range
+- 검색: 예약번호 / 고객명 / 상품명
+- 정렬: 최신순 / 이용일순 / 금액순
+
+#### 예약 상세 (/bookings/[id])
+- 예약 기본 정보 (bookingReference, 상태, 날짜, 고객 정보)
+- 상태 변경 (상태 머신 규칙 적용)
+- 인보이스 탭: 생성/발송/PDF 생성
+- 바우처 탭: 생성/발송/PDF 생성
+- 결제 내역
+- 상태 변경 이력 (BookingStatusHistory)
+
+#### 예약 상태 머신
+```
+PENDING → INVOICE_SENT → PAYMENT_COMPLETED → VOUCHER_SENT → COMPLETED
+   │                           │                    │
+   │         CANCEL_REQUESTED ←┘                    │
+   │                │                               │
+   └────────────────┴─────────→ CANCELLED ←─────────┘
+```
+
+| 상태 | 의미 | 트리거 |
+|------|------|--------|
+| PENDING | 예약 접수 | 예약 생성 시 |
+| INVOICE_SENT | 인보이스 발송 | 관리자 또는 자동(instantInvoice) |
+| PAYMENT_COMPLETED | 결제 완료 | PG 콜백 |
+| VOUCHER_SENT | 바우처 발송 (확정) | 관리자 발송 |
+| COMPLETED | 서비스 완료 | 이용일 종료 |
+| CANCEL_REQUESTED | 취소 요청 | 사용자 요청 |
+| CANCELLED | 취소 완료 | 관리자 승인 |
+
+- 모든 상태 변경은 BookingStatusHistory에 기록 (누가, 언제, 왜)
+- CANCELLED는 terminal (변경 불가)
+- requiresConsultation=true: PENDING에서 관리자 확인 필수
+- instantInvoice=true: 예약 즉시 INVOICE_SENT 자동 전이
+
+#### 인보이스
+- invoiceNumber: INV{timestamp}{random3digits}
+- 자동 생성: issuedDate, dueDate(+7일), taxAmount(10%), totalAmount
+- 공개 링크: /public/invoice/[uuid] (로그인 불필요)
+- PDF 생성: React Email + @react-pdf/renderer
+- 알림: 알림톡 + Email
+
+#### 바우처
+- voucherNumber: VCH{timestamp}{random3digits}
+- 전제조건: status = PAYMENT_COMPLETED
+- 상태: ISSUED → SENT → USED / EXPIRED / CANCELLED
+- 공개 링크: /public/voucher/[uuid]
+- PDF 생성 + 알림 발송
+
+#### 예약 생성 (/bookings/create)
+- 관리자가 직접 예약 생성 (개인결제 상품 등)
+- 필수: productId, quantity, startDate, endDate, guestName, guestEmail, guestPhone
+
+#### 결제 관리 (/payments) 🆕
+- Payment 엔티티 중심 관리
+- 결제 수단별 필터: CREDIT_CARD | BANK_TRANSFER | VIRTUAL_ACCOUNT
+- **무통장입금 관리** (v1의 /bank-transfers 대체):
+  - method=BANK_TRANSFER, status=PENDING인 결제 필터
+  - 관리자 입금 확인: PENDING → COMPLETED
+  - 입금 카테고리: PaymentCategory 테이블 (카카오뱅크, 방콕은행 등)
+  - 통화: KRW 또는 THB
+- 환불 처리: 전액/부분 환불
+
+### 5.3 상품관리
+
+#### 상품 목록 (/products) 🆕
+- **통합 목록** (v1의 카테고리별 분리 대체)
+- 필터: 상품타입(HOTEL/GOLF/VEHICLE/TOUR/ETC), 카테고리, 상태(DRAFT/ACTIVE/INACTIVE)
+- 검색: 상품명, 상품코드
+
+#### 상품 생성/수정 — 타입별 동적 폼
+```
+상품 폼
+│
+├── [공통 필드] ─── 항상 노출
+│   name, nameEn, description, category, price, costPrice,
+│   discountPrice, status, supplier, images, tags, memo
+│
+├── HOTEL ─── 호텔 전용
+│   rooms[], checkInTime, checkOutTime, amenities[], facilities[]
+│   roomAvailability (날짜별 가격/잔여)
+│
+├── GOLF ─── 골프 전용
+│   holes, courseType, greenFee, caddyFee, cartFee, availableTimeSlots[]
+│
+├── VEHICLE ─── 차량 전용 (v2 신규 엔티티)
+│   vehicleType, seatingCapacity, driverIncluded, fuelType
+│   pickupLocations[], dropoffLocations[], pricePerHour, pricePerDay
+│
+├── TOUR ─── 투어 전용 (v2 신규 엔티티)
+│   tourType(private/land/ocean), duration, maxParticipants
+│   itinerary[], inclusions[], exclusions[], meetingPoint, meetingTime
+│
+└── ETC ─── 기타 전용
+    etcType(spa/restaurant/show/fast-track/visa), operatingHours, duration
+```
+
+#### 상품 공통 필드
+- 식별: code(고유, 자동생성), name(KR), nameEn(EN)
+- 설명: description (Tiptap 리치텍스트)
+- 분류: productType, categoryId(FK, 필수)
+- 가격: price(판매가), costPrice(매입가), discountPrice(할인가)
+- 위치: address, latitude, longitude, regionCode
+- 상태: status (DRAFT / ACTIVE / INACTIVE)
+- 이미지: ProductImage 엔티티 (1:N) — imageType(MAIN/ROOM/FACILITY/MENU/OTHER)
+- 예약설정: maxQuantity, minQuantity, requiresConsultation, instantInvoice
+- 공급처: supplierId (FK, 필수)
+
+#### 상품 분류 (/categories)
+- 4단계 계층: 대분류 → 중분류 → 소분류 → 세부분류
+- 트리 뷰 UI로 관리
+- 드래그앤드롭 순서 변경
+
+#### 14개 카테고리
+
+| # | 카테고리 | slug | productType |
+|---|---------|------|-------------|
+| 1 | 호텔 | hotel | HOTEL |
+| 2 | 풀빌라 | pool-villa | HOTEL |
+| 3 | 골프텔 | golftel | HOTEL |
+| 4 | 골프장 | golf | GOLF |
+| 5 | 차량 | vehicle | VEHICLE |
+| 6 | 단독투어 | private-tour | TOUR |
+| 7 | 지상투어 | land-tour | TOUR |
+| 8 | 해양투어 | ocean-tour | TOUR |
+| 9 | 가이드 | guide | TOUR |
+| 10 | 스파/마사지 | spa | ETC |
+| 11 | 레스토랑 | restaurant | ETC |
+| 12 | 쇼/입장권 | show | ETC |
+| 13 | 공항패스트트랙 | fast-track | ETC |
+| 14 | 비자 | visa | ETC |
+
+### 5.4 회원관리
+
+#### 회원 목록 (/users)
+- 목록/검색/필터 (역할, 상태, 가입일)
+- 회원 상세: 프로필, 예약 이력, 포인트 이력
+
+#### 포인트 관리 (/points) 🆕
+- 포인트 이력 조회 (적립/사용/만료/조정)
+- 수동 지급/차감 (ADMIN_MANUAL)
+- 포인트 정책 설정 (earnRate, maxUseRate 등)
+
+| 적립 소스 | 금액 | 트리거 |
+|-----------|------|--------|
+| SIGNUP | 1,000pt | 회원가입 즉시 |
+| BOOKING | 금액 × earnRate(기본 5%) | 예약 완료 시 |
+| ADMIN_MANUAL | 변동 | 관리자 수동 지급 |
+| PROMOTION | 변동 | 프로모션 이벤트 |
+
+- 최소 사용: 100pt / 최대 사용: 예약 금액의 50%
+- 만료: 적립일로부터 1년 (pg_cron 자동 배치)
+
+### 5.5 콘텐츠관리 🆕
+
+| 메뉴 | 기능 |
+|------|------|
+| 여행 팁 (/content/tips) | CRUD, Tiptap 에디터, 카테고리/태그 분류 |
+| 공지사항 (/content/notices) | CRUD, 고정(pinned) 기능 |
+| 약관 관리 (/content/terms) | 이용약관/개인정보/마케팅/취소환불, 버전 관리 |
+| Q&A (/content/qna) | 상품별 문의, 답변 작성, 답변완료 상태 |
+| 리뷰 (/content/reviews) | 리뷰 조회/삭제, 별점 관리 |
+
+### 5.6 정산관리 🆕
+
+#### 정산 목록 (/settlements)
+- 공급처(Supplier)별 월 단위 정산
+- settlementNumber: ST{YY}{MM}{supplierID}
+- 정산 계산:
+  ```
+  commissionAmount = bookingPrice × supplier.commissionRate / 100
+  settlementAmount = bookingPrice - commissionAmount
+  ```
+- 상태: PENDING → CONFIRMED → PAID (또는 CANCELLED)
+
+#### 공급처 관리 (/suppliers)
+- CRUD: name, businessNumber, contactPerson, phone, email
+- 은행: bankName, bankAccount, accountHolder
+- 정산: commissionRate(%), settlementCycle, settlementDay
+- 계약: 시작일, 종료일, 계약서 URL
+- 상태: active / inactive / suspended
+
+### 5.7 사이트관리
+
+| 메뉴 | 기능 |
+|------|------|
+| 일반 설정 | 사이트명, 로고, 연락처, 운영 파라미터 |
+| 네비게이션 | 메뉴 구조, 노출 순서 |
+| SEO 설정 | 메타 태그, 사이트맵 |
+| 환율 관리 | KRW ↔ THB 환율, 자동 갱신 + 수동 설정, 이력 관리 |
+
+### 5.8 통계 (/statistics)
+- 매출 요약 (일/주/월) — Recharts
+- 예약 현황 (상태별)
+- 인기 상품 (예약 수/매출 기준)
+- 사용자 통계
+
+### 5.9 시스템
+
+| 메뉴 | 기능 | 권한 |
+|------|------|------|
+| 활동 로그 | 관리자 작업 기록 조회 (action, resource, IP 등) | MANAGER+ |
+| 알림 로그 🆕 | 알림톡/이메일 발송 이력, 실패 추적 | ADMIN+ |
+| 데이터 관리 | 엑셀 내보내기/가져오기, 백업 | SUPER_ADMIN |
+
+---
+
+## 6. 알림 시스템 (어드민 트리거)
+
+| 이벤트 | 알림톡 | Email | 어드민 트리거 |
+|--------|--------|-------|---------------|
+| 예약 접수 (PENDING) | ✅ RECEPTION_COMPLETE | ✅ | 자동 |
+| 인보이스 발송 | ✅ INVOICE_SENT | ✅ BOOKING_CONFIRMED | 관리자 발송 버튼 |
+| 결제 완료 | ✅ PAYMENT_COMPLETED | ❌ | PG 콜백 자동 |
+| 바우처 발송 | ✅ VOUCHER_SENT | ✅ | 관리자 발송 버튼 |
+| 취소 | ✅ CANCEL_REQUEST | ✅ | 관리자 승인 |
+
+- 모든 알림은 best-effort (실패해도 비즈니스 플로우 중단 안 함)
+- 실패 시 /system/notifications에서 확인 가능
+
+---
+
+## 7. LEGACY 해결 (어드민 관련)
+
+| # | 문제 | v2 해결 | 어드민 영향 |
+|---|------|---------|-------------|
+| L2 | Order 잔재 (orderId 3곳) | Booking.orderId 삭제, Payment.orderId→pgOrderId | 예약/결제 상세 |
+| L3 | BankTransfer 독립 | Payment.method=BANK_TRANSFER로 통합 | /bank-transfers 제거 → /payments로 통합 |
+| L4 | Product 이중 상태 | isActive 제거, status만 | 상품 목록/수정 |
+| L5 | Vehicle 필드 오염 | VehicleProduct 분리 | 상품 생성/수정 폼 |
+| D1 | 상태 이력 미추적 | 모든 Booking에 StatusHistory | 예약 상세 이력 탭 |
+| D6 | 이미지 이중 (imageUrls) | ProductImage만 | 상품 이미지 관리 |
+| D8 | Supplier 옵셔널 | 필수 FK | 상품 생성 시 공급처 필수 |
+| D11 | PDF 미완 | React Email + react-pdf | 인보이스/바우처 PDF 버튼 |
+| D13 | Admin API 230개 | Next.js API Routes 재작성 | 전체 API 축소 |
+
+---
+
+## 8. 우선순위
+
+### MVP (Phase 1 — 필수)
+1. 프로젝트 설정 (모노레포, Supabase, Drizzle 스키마)
+2. 인증 (Better Auth + 관리자 로그인)
+3. 상품 관리 (통합 CRUD + 타입별 동적 폼)
+4. 예약 관리 (목록/상세/상태변경)
+5. 결제 관리 (PG 연동 + 무통장입금)
+6. 대시보드
+
+### Phase 2 — 중요
+1. 정산 관리
+2. 인보이스/바우처 PDF 생성
+3. 포인트 관리
+4. 콘텐츠 관리
+5. 알림 시스템 (알림톡 + Email)
+
+### Phase 3 — 완성
+1. 리뷰 관리
+2. SEO/환율 관리
+3. 데이터 내보내기/가져오기
+4. 통계 고도화
+5. 데이터 마이그레이션 (v1 → v2)
+
+---
+
+## 9. 비기능 요구사항
+
+| 항목 | 기준 |
+|------|------|
+| 페이지 로드 | < 3초 (LCP) |
+| API 응답 | < 500ms (p95) |
+| 보안 | HTTPS, JWT httpOnly, RBAC |
+| 배포 | Vercel 서버리스 자동 배포 |
+| 테스트 | Playwright E2E (페이지별) |
+| 모니터링 | Vercel Analytics + Supabase Dashboard |
+
+---
+
+*이 문서는 BlueMango v2 전체 PRD에서 어드민 관련 내용만 추출한 것입니다.*
+*전체 PRD: [Notion 문서](https://coffeemon.notion.site/bluemangov1)*
+*생성일: 2026-02-23*
