@@ -23,11 +23,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Script
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2049212498619879"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
+      {router.asPath.startsWith('/blog') && (
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2049212498619879"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      )}
       {GA_ID && (
         <>
           <Script
