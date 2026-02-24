@@ -52,5 +52,10 @@ export default {
     title: 'English',
     type: 'page',
     display: 'hidden'
+  },
+  privacy: {
+    title: '개인정보처리방침',
+    type: 'page',
+    display: 'hidden'
   }
 }
