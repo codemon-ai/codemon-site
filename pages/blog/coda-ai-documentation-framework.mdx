@@ -1,0 +1,198 @@
+---
+title: "CODA — AI 코딩 에이전트를 위한 문서화 프레임워크"
+description: "CLAUDE.md 하나로는 부족하다. AI 에이전트가 최소한의 읽기로 최대한의 맥락을 얻도록 설계된 문서화 프레임워크 CODA를 소개한다."
+date: 2026-02-24
+author: codemon
+tags: [project, tips]
+---
+
+import { Callout } from 'nextra/components'
+
+# CODA — AI 코딩 에이전트를 위한 문서화 프레임워크
+
+> "CLAUDE.md 하나로 충분하다고 생각했다. 프로젝트가 커지기 전까지는."
+
+## AI 에이전트의 치명적 약점
+
+Claude Code, Cursor, Copilot — 요즘 AI 코딩 에이전트는 놀라울 정도로 똑똑하다. 하지만 하나같이 공유하는 약점이 있다.
+
+**세션 건망증(Session Amnesia).**
+
+어제 밤새워 같이 만든 API가 있다. 오늘 아침 새 세션을 열면? 그 API를 처음 보는 것처럼 행동한다. 컨텍스트 윈도우에 안 들어가면 존재하지 않는 셈이다. 그리고 최악의 경우, 없는 걸 있는 것처럼 만들어낸다(환각).
+
+CLAUDE.md 하나에 모든 걸 우겨넣는 건 소규모 프로젝트에서는 통한다. 하지만 파일이 100개를 넘고, API 엔드포인트가 20개를 넘으면? 30줄짜리 CLAUDE.md로는 부족하다.
+
+**그래서 CODA를 만들었다.**
+
+## CODA란?
+
+**CODA(Context-Oriented Documentation Architecture)** — AI 에이전트가 최소한의 읽기로 최대한의 맥락을 얻을 수 있도록 설계된 문서화 프레임워크다.
+
+기존에도 좋은 문서화 방법론은 있었다. [Diátaxis](https://diataxis.fr/)는 튜토리얼/가이드/레퍼런스/설명의 4분면으로 기술 문서를 체계화했고, [Arc42](https://arc42.org/)는 소프트웨어 아키텍처 문서의 12 섹션 템플릿을, [C4 Model](https://c4model.com/)은 4단계 추상화로 시스템 구조를 시각화하는 접근을 제시했다.
+
+하지만 이들은 모두 **인간이 읽는 문서**를 전제로 한다. AI 에이전트는 다르다. 전체를 읽을 여유가 없고, "지금 이 작업에 뭐가 필요한지"만 빠르게 알면 된다.
+
+| | [Diátaxis](https://diataxis.fr/) | [Arc42](https://arc42.org/) | [C4 Model](https://c4model.com/) | **CODA** |
+|---|---------|-------|-----|----------|
+| 대상 | 인간 독자 | 아키텍트 | 개발팀 | **AI 에이전트** |
+| 진입점 | 4분면 | 12 섹션 | 4 레벨 | **INDEX.md 1개** |
+| 강제 메커니즘 | 없음 | 없음 | 없음 | **CI + DoD** |
+| 토큰 효율 | 낮음 | 낮음 | 보통 | **높음** |
+
+CODA는 기존 방법론을 부정하지 않는다. 인간용 문서에는 Diátaxis가 여전히 훌륭하다. CODA는 **AI 에이전트라는 새로운 독자**를 위한 보완이다.
+
+## 핵심 원칙 5가지
+
+### 1. 포인터 우선 — 토큰을 아껴라
+
+AI 에이전트에게 모든 문서를 읽히면 컨텍스트 윈도우를 낭비한다. 그리고 컨텍스트 윈도우가 포화되면 정확도가 급락한다.
+
+실제 수치로 보면 차이가 명확하다:
+
+![CODA 포인터 우선 원칙 — 토큰 비용 비교](/images/blog/coda-ai-documentation-framework/01_pointer_diagram.png)
+
+**CODA 없이**: 에이전트가 프로젝트의 모든 문서를 읽는다. 중간 규모 프로젝트 기준 약 50,000 토큰. 200K 컨텍스트 윈도우의 25%를 문서 읽기에만 소진한다. 정작 코드 작성에 쓸 공간이 줄어들고, 문서가 많아질수록 앞쪽 내용을 "잊는" 현상이 생긴다.
+
+**CODA 적용 시**: INDEX.md(약 500토큰)만 먼저 읽는다. 라우팅 테이블을 보고 현재 작업에 필요한 문서 1~2개(각 2,000토큰)만 추가로 읽는다. 총 4,500토큰 — **토큰 사용량 91% 절감.** 남은 컨텍스트를 온전히 코드 작성에 쓸 수 있다.
+
+이건 단순히 비용 절감이 아니다. **정확도의 문제다.** 2025년 Anthropic의 연구에서도 컨텍스트가 길어질수록 중간 부분의 정보 회수율이 떨어진다는 "Lost in the Middle" 현상이 확인됐다. 적게 읽되 정확히 읽는 게 핵심이다.
+
+### 2. 라이프사이클 분류
+
+문서를 4가지 질문으로 나눈다:
+
+![CODA 디렉토리 구조 — 라이프사이클 분류](/images/blog/coda-ai-documentation-framework/02_directory_structure.png)
+
+- **prd/** — **왜** 만드나? (확정된 의도, 거의 안 바뀜)
+- **spec/** — **어떻게** 만드나? (구현 전 약속, 변경 시 새 버전)
+- **wiki/** — **지금** 뭐가 돌아가나? (항상 최신 상태)
+- **changelog/** — **뭘 왜** 바꿨나? (변경 기록)
+
+<Callout type="warning">
+**핵심 규칙:** spec은 "원래 계획"이고 wiki는 "실제 상태"다. 둘이 다르면 wiki가 맞다.
+</Callout>
+
+이 규칙이 없으면 AI 에이전트가 spec만 보고 이미 변경된 구조로 코드를 짜는 실수를 한다. 실제로 겪어봤다 — 3주 전 spec에 있던 DB 스키마대로 마이그레이션을 짜더라. 이미 wiki에 변경된 상태인데.
+
+### 3. 행동과 지식 분리
+
+```
+CLAUDE.md → "넌 이렇게 행동해" (규칙, 30줄 이내)
+docs/     → "이 프로젝트는 이런 상태야" (지식, 무제한)
+```
+
+CLAUDE.md에 아키텍처 설명을 쓰지 않는다. CLAUDE.md는 "INDEX.md 먼저 읽어라", "작업 끝나면 changelog 써라" 같은 **행동 규칙**만 담는다. 지식은 docs/에.
+
+왜? CLAUDE.md는 에이전트가 **매 세션마다** 읽는 파일이다. 여기에 아키텍처, API 스펙, 배포 가이드까지 넣으면 금세 300줄이 되고, 정작 중요한 행동 규칙이 묻힌다.
+
+### 4. 레포가 진실
+
+노션, 옵시디언, 구글독스 — 외부 문서 도구는 스크래치패드로만 쓴다. **레포의 docs/ 폴더가 canonical source.** AI 에이전트가 접근할 수 있고, git으로 버전 관리되고, CI로 검증할 수 있는 유일한 장소다.
+
+노션에 PRD를 쓰는 건 괜찮다. 하지만 최종본은 반드시 `docs/prd/`로 옮겨야 한다. AI 에이전트는 노션 링크를 클릭할 수 없다.
+
+### 5. 강제 메커니즘
+
+> "문서화를 기대하면 안 된다. 강제해야 한다."
+
+- CLAUDE.md의 DoD(Definition of Done)에 "changelog 업데이트" 필수
+- GitHub Actions로 코드 변경 시 동일 날짜 changelog 존재 확인
+- PR 체크리스트에 docs 영향도 확인 항목
+
+문서화는 강제 안 하면 3개월 안에 무너진다. 인간도 AI도 마찬가지. CODA는 이걸 시스템으로 해결한다.
+
+## 실전 구조
+
+```
+project/
+├── CLAUDE.md                  ← 30줄 행동 규칙
+├── docs/
+│   ├── INDEX.md               ← 라우팅 테이블 (에이전트 진입점)
+│   ├── prd/
+│   │   └── v1.md              ← 왜 만드나
+│   ├── spec/
+│   │   ├── api.md             ← API 스펙
+│   │   └── data-model.md      ← DB 스키마
+│   ├── wiki/
+│   │   ├── architecture.md    ← 현재 아키텍처
+│   │   ├── deployment.md      ← 배포 가이드
+│   │   └── decisions.md       ← ADR 모음
+│   └── changelog/
+│       └── 2026-02-24.md      ← 오늘의 변경
+```
+
+## INDEX.md 실전 예시
+
+실제 운영 중인 프로젝트([newsmon](https://news.codemon.ai))의 INDEX.md:
+
+```markdown
+# Newsmon Docs Index
+
+## 시스템 요약
+- Next.js 15 + Vercel Postgres + Gemini 2.5 Flash
+- 현재 Phase: Phase 2 (AI 요약 + 다이제스트)
+- 배포: https://news.codemon.ai
+
+## 작업별 경로
+| 작업 | 읽을 문서 |
+|------|-----------|
+| RSS 소스 추가 | spec/rss-sources.md |
+| AI 요약 수정 | spec/summarize.md + wiki/architecture.md |
+| 다이제스트 개선 | prd/digest-v1.md + spec/digest.md |
+| API 타임아웃 | wiki/known-limitations.md |
+
+## 최근 주요 변경
+- [2026-02-24] RSS fetch 주기 30분→1시간
+- [2026-02-23] 뉴스 다이제스트 Phase 1 배포
+- [2026-02-22] 경제/크립토 RSS 19개 확장
+```
+
+이것만 읽으면 AI 에이전트가 "RSS 소스 추가하려면 spec/rss-sources.md를 보면 되는구나"를 즉시 파악한다. 전체 docs 폴더를 스캔할 필요 없이.
+
+## 적용 전 vs 후
+
+![CODA 적용 전후 비교](/images/blog/coda-ai-documentation-framework/03_before_after.png)
+
+**Before — CLAUDE.md만 사용**
+- 에이전트가 매번 코드베이스 전체를 탐색 (느림)
+- 이전 세션에서 결정한 사항을 반복 질문
+- spec과 실제 코드가 어긋나도 감지 못함
+- 문서가 점점 outdated → 환각 증가
+
+**After — CODA 적용**
+- INDEX.md → 필요한 문서 1~2개만 읽기 (빠름)
+- changelog에서 최근 맥락 즉시 파악
+- wiki가 항상 최신이라 환각 감소
+- DoD 강제로 문서가 코드와 동기화
+
+실제로 newsmon, codemon-make 등 여러 프로젝트에 적용하면서 체감한 가장 큰 변화는 **에이전트의 "멍때리는 시간"이 줄어든 것**이다. 코드베이스를 탐색하느라 5분 걸리던 게 INDEX.md 한 번 읽고 바로 작업에 들어간다.
+
+## 시작하기
+
+```bash
+# 1. docs 폴더 생성
+mkdir -p docs/{prd,spec,wiki,changelog}
+
+# 2. INDEX.md 작성 (위 예시 참고)
+touch docs/INDEX.md
+
+# 3. CLAUDE.md에 DoD 추가
+# "작업 완료 시 changelog 필수"
+```
+
+GitHub에 템플릿을 공개해뒀다: **[codemon-ai/coda](https://github.com/codemon-ai/coda)**
+
+INDEX.md, CLAUDE.md, ADR 템플릿을 바로 복사해서 쓸 수 있다.
+
+## 마무리
+
+CODA는 거창한 프레임워크가 아니다. **INDEX.md 하나 + 4개 폴더 + CLAUDE.md DoD.** 그게 전부다.
+
+AI 에이전트와의 협업에서 문서화는 선택이 아니라 인프라다. 코드가 돌아가게 만드는 건 AI가 하지만, 코드가 **계속** 돌아가게 만드는 건 문서다.
+
+> "AI에게 코드를 시키는 건 쉽다. AI에게 맥락을 주는 게 어렵다."
+> CODA는 그 어려운 걸 구조로 해결한다.
+
+---
+
+*CODA는 오픈소스입니다. [GitHub](https://github.com/codemon-ai/coda)에서 템플릿을 받아 바로 적용해보세요.*
