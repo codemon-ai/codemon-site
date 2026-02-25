@@ -9,6 +9,8 @@ export default {
       pagination: false
     }
   },
+  'openclaw-100days-real-experience': 'OpenClaw 100일 실전기 — "초보자에겐 어렵다"는 리뷰가 놓친 것',
+  'cloud-blog-skill-reference': 'Cloud Blog Skill 분석 — Claude Code 블로그 자동화의 끝판왕?',
   'skill-engineering-real-practice': 'AI 에이전트 스킬 엔지니어링 — 이론은 됐고, 실전에서 뭐가 달라지는지 보여준다',
   'claudemd-delete-paper-webmcp': '"CLAUDE.md 지워라" 논문의 진짜 의미 — AI 에이전트 컨텍스트의 미래',
   'coda-ai-documentation-framework': 'CODA — AI 코딩 에이전트를 위한 문서화 프레임워크',
