@@ -1,0 +1,197 @@
+---
+title: "BlueMango — 클라이언트 미팅 정리 (2026-02-25)"
+description: "COO 운영객체 정의, v2 반영 필요 요구사항, Order 도입 논의"
+tags: [bluemango, v2, meeting, coo]
+created: 2026-02-25
+---
+
+# 블루망고 클라이언트 미팅 정리 (2026-02-25)
+
+> **참석**: 개발팀 ↔ 클라이언트 COO
+> **핵심**: COO가 운영 관점의 객체/상태 정의를 제공. v2 PRD에 대폭 반영 필요.
+
+---
+
+## 📌 미팅 핵심 요구사항 요약
+
+### 1. Order 객체 신규 도입 🔴
+
+**현재 v2**: Booking이 최상위 단위. Invoice도 Booking 기준 발송.
+**COO 요구**: Order(주문) → 여러 Booking을 묶는 상위 객체
+
+- **이유**: 고객이 호텔+골프+차량을 한 번에 주문 → Booking 3개가 생기는데, 각각 인보이스 보내면 고객 피로감
+- **Invoice는 Order 단위로 발송** (booking별 ❌)
+- **계약금/잔금** 결제도 Order 단위
+
+```
+Order (주문)
+  ├── Booking 1 (호텔)
+  ├── Booking 2 (골프)
+  └── Booking 3 (차량)
+  └── Invoice (Order 기준 1개)
+  └── Payment (계약금 + 잔금)
+```
+
+**COO 정의 Order 상태 (11단계)**:
+```
+Requested → Pending_check → Payment_requested → Payment_received
+→ Vendor_requested → Confirmed → Voucher_sent
+→ In_service → Completed
+         ↘ Cancel_requested → Cancelled
+```
+
+### 2. Payment 상태 확장 🔴
+
+**현재 v2**: PENDING → COMPLETED → REFUNDED (단순)
+**COO 요구**: 계약금/잔금 2단계 결제 커버
+
+```
+Pending → Deposit_paid (계약금) → Paid (완납) → Failed / Refunded
+```
+
+- 무통장입금 자동화: "페이 액션" 같은 걸로 최대한 자동 매칭
+- **입금 매칭 테이블 필요**: 입금통장 내역 ↔ Order(Booking) + 금액 매칭
+
+### 3. Booking 상태/필드 추가 🟠
+
+- **벤더 확정 상태**: 공급처에 예약 요청 → 확정됐는지 상태 표시
+- **바우처 발송 조건**: 벤더 예약 확정된 건만 바우처 발송 가능
+- **Booking 변경 시나리오**: 일자/인원수/상품/벤더사 변경 시
+  - 인보이스 재발행?
+  - Payment 상태 변이?
+  - 차액 정산?
+
+### 4. Change_Request 객체 신규 🟠
+
+COO가 별도 객체로 정의:
+```
+Requested → Reviewed → Approved / Rejected / Expired
+```
+- 고객 요청, 내부 요청, 벤더 요청 모두 커버
+- 변경 승인 시 Order/Booking에 실제 변경 실행
+
+### 5. 패키지 상품 (복합상품) 🔴
+
+**현재 v2**: 단일 상품만. 복합상품 미지원.
+**COO 요구**: 미리 만들어놓은 복합 패키지 상품
+
+- 예: "방콕 3박4일 패키지" = 호텔 + 공항픽업 + 시티투어 + 스파
+- 프로모션은 현재 수기 견적 → 패키지 상품으로 시스템화 원함
+
+### 6. Settlement (정산) 🟡 우선순위 낮음
+
+- Booking completed + cancelled 기준
+- 벤더별 정산주기 기준
+- 정산 명세 작성
+
+---
+
+## 🔄 v2 현재 설계 vs COO 요구사항 GAP
+
+| 영역 | v2 현재 | COO 요구 | GAP |
+|------|---------|----------|-----|
+| 최상위 단위 | Booking | **Order → Booking** | 🔴 구조 변경 |
+| 인보이스 발송 | Booking별 | **Order별** | 🔴 로직 변경 |
+| 결제 방식 | 일시불 | **계약금 + 잔금** | 🔴 Payment 확장 |
+| 무통장 | Payment 통합 | **입금 매칭 테이블** | 🟠 테이블 추가 |
+| 벤더 확정 | 없음 | **Vendor_requested → Confirmed** | 🟠 상태 추가 |
+| 변경 관리 | 없음 | **Change_Request 객체** | 🟠 신규 |
+| 복합상품 | 없음 | **패키지 상품** | 🔴 Product 확장 |
+
+---
+
+## 📋 단계별 로드맵
+
+### Phase 0: 현황 파악 + 문서화 ✅ 완료
+
+| # | 작업 | 산출물 |
+|---|------|--------|
+| 0-1 | v2 현재 코드베이스 전수조사 | [코드베이스 현황](/p/fed4128f4e7f4064) |
+| 0-2 | COO 운영객체 → v2 DB 스키마 매핑 | [상태 매핑](/p/3e555e779033419f) |
+| 0-3 | Order 도입 영향 분석 | [Order 영향 분석](/p/64f6835104444495) |
+| 0-4 | 패키지 상품 설계 초안 | [패키지 상품 설계](/p/040024af5c034ae8) |
+| 0-5 | 결정 필요 사항 정리 | [결정 사항](/p/17c45ac440f4413a) |
+
+### Phase 1: PRD v2.1 개정 (~1주)
+
+| # | 작업 | 산출물 |
+|---|------|--------|
+| 1-1 | PRD v2-overview.md 개정 | `prd/v2-overview-v2.md` |
+| 1-2 | 데이터 모델 재설계 | `spec/data-model-v2.md` |
+| 1-3 | 비즈니스 로직 재정의 | `spec/business-logic-v2.md` |
+| 1-4 | IA (정보 구조) 갱신 | `spec/information-architecture-v2.md` |
+| 1-5 | 기능명세서 갱신 | `spec/functional-spec-v2.md` |
+
+### Phase 2: 기술 설계 (~1주)
+
+| # | 작업 | 산출물 |
+|---|------|--------|
+| 2-1 | Drizzle 스키마 설계 | `spec/drizzle-schema-v2.md` |
+| 2-2 | API Routes 재설계 | `spec/api-routes-v2.md` |
+| 2-3 | 어드민 페이지 구조 재설계 | `spec/admin-pages-v2.md` |
+| 2-4 | TC (Test Cases) 작성 | `spec/test-cases-v2.md` |
+
+### Phase 3: 구현
+
+> Phase 0~2 완료 후 개발 착수
+
+---
+
+## 🤔 Order 객체 도입 옵션
+
+### 옵션 A: Order 테이블 신규 도입 (COO 원안) ✅ 추천
+
+```
+orders (신규)
+  ├── id, orderNumber, status, customerId
+  ├── totalAmount, depositAmount, balanceAmount
+  └── createdAt, updatedAt
+
+bookings
+  └── orderId (FK, 필수) ← 추가
+
+invoices
+  └── orderId (FK) ← bookingId 대신 orderId
+
+payments
+  └── orderId (FK) ← bookingId 대신 orderId
+  └── paymentType: DEPOSIT | BALANCE | FULL
+```
+
+**장점**: COO 운영 모델과 1:1 매핑. 깔끔한 구조.
+**단점**: 기존 Booking 중심 로직 전면 수정 (61건).
+
+### 옵션 B: Booking Group (가벼운 묶음)
+
+기존 구조 최소 변경. 단일 예약은 그룹 없이 기존대로.
+**단점**: COO 상태 머신(11단계)을 어디에 둘지 애매.
+
+### 옵션 C: Booking 확장 (Order 역할 겸용)
+
+테이블 추가 없음. 기존 코드 변경 최소.
+**단점**: Booking이 너무 많은 책임. 복잡해지면 결국 분리해야 함.
+
+---
+
+## 📎 COO 운영객체 전체 목록
+
+> 출처: `bluemango_op_state.md` (POL-GEN-000)
+
+| # | 객체 | 상태 수 | v2 반영 |
+|---|------|--------|---------|
+| 1 | Order | 11 | 🔴 필수 |
+| 2 | Payment | 5 | 🔴 필수 |
+| 3 | Change_Request | 5 | 🟠 Phase 2 |
+| 4 | Settlement | 5 | 🟡 Phase 3 |
+| 5 | Case | 4 | ⚪ 미정 |
+| 6 | Product | 6 | 🟠 상태 확장 |
+| 7 | Campaign | 5 | ⚪ 미정 |
+| 8~12 | DI/Task/Ticket/Project/Employee | - | ❌ 제외 |
+
+---
+
+## ✅ 다음 액션
+
+1. **결정 필요**: [13개 결정 사항](/p/17c45ac440f4413a) 확정
+2. **Phase 1 시작**: PRD 개정 착수
+3. **COO 추가 확인**: 패키지 상품 상세 (구성 방식, 가격 정책, 재고 관리)

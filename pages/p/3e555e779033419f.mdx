@@ -1,0 +1,247 @@
+---
+title: "BlueMango v2 — Phase 0-2: COO 운영객체 → DB 스키마 매핑"
+description: "COO 정의(POL-GEN-000)를 v2 DB에 어떻게 반영할지 매핑 + 스키마 제안"
+tags: [bluemango, v2, phase0, schema, mapping]
+created: 2026-02-25
+---
+
+# Phase 0-2: COO 운영객체 → v2 DB 스키마 매핑
+
+> **작성일**: 2026-02-25
+> **목적**: COO 정의(POL-GEN-000)를 v2 DB에 어떻게 반영할지 매핑
+
+---
+
+## 1. Order → 신규 테이블 필요
+
+### COO 정의 (11단계)
+
+```
+Requested → Pending_check → Payment_requested → Payment_received
+→ Vendor_requested → Confirmed → Voucher_sent
+→ In_service → Completed
+         ↘ Cancel_requested → Cancelled
+```
+
+### v2 DB 매핑 제안
+
+COO 11단계를 그대로 쓰되, **운영 상태 vs 시스템 상태**를 구분:
+
+| COO 상태 | DB enum | 트리거 | 비고 |
+|----------|---------|--------|------|
+| `Requested` | `REQUESTED` | 고객 주문 생성 시 | 자동 |
+| `Pending_check` | `PENDING_CHECK` | 관리자가 검증 시작 | 수동 |
+| `Payment_requested` | `PAYMENT_REQUESTED` | 인보이스 발송 시 | 수동/자동 |
+| `Payment_received` | `DEPOSIT_PAID` or `FULLY_PAID` | PG 콜백 or 관리자 확인 | ⚠️ 분기 |
+| `Vendor_requested` | `VENDOR_REQUESTED` | 관리자가 벤더에 요청 | 수동 |
+| `Confirmed` | `CONFIRMED` | 벤더 확정 응답 | 수동 |
+| `Voucher_sent` | `VOUCHER_SENT` | 바우처 발송 시 | 수동 |
+| `In_service` | `IN_SERVICE` | 이용일 도래 시 | 자동(cron) |
+| `Completed` | `COMPLETED` | 이용 종료 시 | 자동(cron) |
+| `Cancel_requested` | `CANCEL_REQUESTED` | 고객 취소 요청 | 자동 |
+| `Cancelled` | `CANCELLED` | 관리자 승인 | 수동 |
+
+### 제안 스키마
+
+```typescript
+// orders 테이블
+export const orders = pgTable('orders', {
+  id: serial('id').primaryKey(),
+  orderNumber: varchar('order_number', { length: 30 }).unique().notNull(),
+  
+  userId: text('user_id').references(() => users.id),
+  
+  status: varchar('status', { length: 30 }).default('REQUESTED').notNull(),
+  // REQUESTED | PENDING_CHECK | PAYMENT_REQUESTED | PAYMENT_RECEIVED
+  // | VENDOR_REQUESTED | CONFIRMED | VOUCHER_SENT
+  // | IN_SERVICE | COMPLETED | CANCEL_REQUESTED | CANCELLED
+  
+  // 금액 요약
+  totalAmount: decimal('total_amount', { precision: 12, scale: 2 }),
+  depositAmount: decimal('deposit_amount', { precision: 12, scale: 2 }),
+  paidAmount: decimal('paid_amount', { precision: 12, scale: 2 }),
+  currency: varchar('currency', { length: 3 }).default('THB'),
+  
+  // 결제 방식
+  paymentPlan: varchar('payment_plan', { length: 20 }),
+  // FULL | DEPOSIT_BALANCE
+  
+  // 예약자 정보 (Order 레벨)
+  reserverName: varchar('reserver_name', { length: 100 }),
+  reserverEmail: varchar('reserver_email', { length: 255 }),
+  reserverPhoneKr: varchar('reserver_phone_kr', { length: 20 }),
+  reserverPhoneTh: varchar('reserver_phone_th', { length: 20 }),
+  
+  adminMemo: text('admin_memo'),
+  cancelReason: text('cancel_reason'),
+  
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+```
+
+---
+
+## 2. Payment → 상태 확장 + 타입 추가
+
+### COO 정의 (5단계)
+
+```
+Pending → Deposit_paid → Paid → Failed → Refunded
+```
+
+### 매핑 제안
+
+| COO | v2 현재 | v2 개정안 | 비고 |
+|-----|---------|----------|------|
+| Pending | PENDING | `PENDING` | 유지 |
+| Deposit_paid | ❌ | `DEPOSIT_PAID` | **신규** |
+| Paid | COMPLETED | `PAID` | 리네임 (의미 명확) |
+| Failed | FAILED | `FAILED` | 유지 |
+| Refunded | REFUNDED | `REFUNDED` | 유지 |
+
+### 입금 매칭 테이블 (신규)
+
+```typescript
+export const depositMatches = pgTable('deposit_matches', {
+  id: serial('id').primaryKey(),
+  
+  // 입금 정보
+  bankName: varchar('bank_name', { length: 50 }),
+  depositorName: varchar('depositor_name', { length: 100 }),
+  amount: decimal('amount', { precision: 12, scale: 2 }).notNull(),
+  depositedAt: timestamp('deposited_at'),
+  
+  // 매칭 결과
+  orderId: integer('order_id').references(() => orders.id),
+  paymentId: integer('payment_id').references(() => payments.id),
+  matchStatus: varchar('match_status', { length: 20 }).default('UNMATCHED'),
+  // UNMATCHED | AUTO_MATCHED | MANUAL_MATCHED | REJECTED
+  
+  matchedBy: text('matched_by'),
+  matchedAt: timestamp('matched_at'),
+  rawData: jsonb('raw_data'),
+  
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+```
+
+---
+
+## 3. Booking → 벤더 확정 상태 + Order 연결
+
+### 개정안: Order 하위 객체로 변경
+
+Order가 전체 상태를 관리하므로, Booking은 **개별 상품의 벤더 확정 상태**에 집중:
+
+```
+PENDING → VENDOR_REQUESTED → VENDOR_CONFIRMED → VOUCHER_READY → COMPLETED
+                                                       ↘ CANCELLED
+```
+
+### 추가 필드
+
+```typescript
+// bookings 테이블 변경
+orderId: integer('order_id').references(() => orders.id), // 신규 FK
+vendorStatus: varchar('vendor_status', { length: 30 }),
+// PENDING | REQUESTED | CONFIRMED | REJECTED
+vendorRequestedAt: timestamp('vendor_requested_at'),
+vendorConfirmedAt: timestamp('vendor_confirmed_at'),
+vendorRejectedReason: text('vendor_rejected_reason'),
+```
+
+---
+
+## 4. Change_Request → 신규 테이블
+
+### COO 정의 (5단계)
+
+```
+Requested → Reviewed → Approved / Rejected / Expired
+```
+
+### 제안 스키마
+
+```typescript
+export const changeRequests = pgTable('change_requests', {
+  id: serial('id').primaryKey(),
+  
+  orderId: integer('order_id').references(() => orders.id),
+  bookingId: integer('booking_id').references(() => bookings.id),
+  
+  requestType: varchar('request_type', { length: 30 }).notNull(),
+  // DATE_CHANGE | GUEST_COUNT | PRODUCT_CHANGE | VENDOR_CHANGE | CANCEL
+  
+  requestSource: varchar('request_source', { length: 20 }).notNull(),
+  // CUSTOMER | INTERNAL | VENDOR
+  
+  status: varchar('status', { length: 20 }).default('REQUESTED').notNull(),
+  // REQUESTED | REVIEWED | APPROVED | REJECTED | EXPIRED
+  
+  changeBefore: jsonb('change_before'),
+  changeAfter: jsonb('change_after'),
+  priceDifference: decimal('price_difference', { precision: 12, scale: 2 }),
+  requiresNewInvoice: boolean('requires_new_invoice').default(false),
+  
+  reviewedBy: text('reviewed_by'),
+  reviewedAt: timestamp('reviewed_at'),
+  reviewNote: text('review_note'),
+  expiresAt: timestamp('expires_at'),
+  
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+```
+
+---
+
+## 5. Product → 상태 확장 (선택)
+
+### COO 정의 (6단계)
+
+```
+Draft → Reviewed → Approved → Sellable → Suspended → Archived
+```
+
+### 현재 v2 (4단계)
+
+```
+DRAFT → ACTIVE → HIDDEN → ARCHIVED
+```
+
+> `Reviewed` + `Approved` 단계는 운영 규모가 커지면 필요하지만, **현재는 DRAFT → ACTIVE로 충분**할 수 있음.
+
+---
+
+## 6. 패키지 상품 → 신규 테이블
+
+```typescript
+// package_items — 패키지 구성 상품
+export const packageItems = pgTable('package_items', {
+  id: serial('id').primaryKey(),
+  packageProductId: integer('package_product_id')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+  childProductId: integer('child_product_id')
+    .notNull()
+    .references(() => products.id),
+  quantity: integer('quantity').default(1),
+  isOptional: boolean('is_optional').default(false),
+  sortOrder: integer('sort_order').default(0),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+```
+
+---
+
+## 요약: 변경 규모
+
+| 영역 | 신규 테이블 | 수정 테이블 | 신규 enum/상태 |
+|------|------------|------------|---------------|
+| Order | `orders` | - | 11개 상태 |
+| Booking | - | `bookings` (FK + 벤더상태) | vendor_status 4개 |
+| Payment | `deposit_matches` | `payments` (타입 + orderId) | `DEPOSIT_PAID` + paymentType |
+| Change_Request | `change_requests` | - | 5개 상태 |
+| Package | `package_items` | `products` (PACKAGE 타입) | PACKAGE 타입 |
+| **합계** | **4개 신규** | **3개 수정** | **~25개 신규 상태** |

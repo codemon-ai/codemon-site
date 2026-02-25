@@ -1,0 +1,201 @@
+---
+title: "BlueMango v2 — Phase 0-1: 코드베이스 현황"
+description: "v2 현재 구현 상태 전수조사 (DB 28테이블, API 92개, 페이지 60개)"
+tags: [bluemango, v2, phase0, codebase]
+created: 2026-02-25
+---
+
+# Phase 0-1: v2 코드베이스 현황 전수조사
+
+> **작성일**: 2026-02-25
+> **목적**: v2 현재 구현 상태를 정확히 파악하여 COO 요구사항 반영 범위 산정
+
+---
+
+## 1. 프로젝트 구조
+
+```
+bluemango-v2/
+├── apps/
+│   ├── web/          ← 고객 사이트 (Next.js 15)
+│   └── admin/        ← 어드민 사이트 (Next.js 15)
+├── packages/
+│   ├── db/           ← Drizzle 스키마 + 클라이언트
+│   ├── auth/         ← Better Auth 설정
+│   ├── shared/       ← Zod 스키마, 타입, 상수
+│   ├── email/        ← React Email 템플릿
+│   └── ui/           ← shadcn/ui 공유 컴포넌트
+├── scripts/          ← 마이그레이션, 시드
+├── docs/             ← PRD, spec, wiki
+└── supabase/         ← Supabase 설정
+```
+
+---
+
+## 2. DB 스키마 (16개 파일, 28개 테이블)
+
+### 핵심 도메인
+
+| 파일 | 테이블 | 비고 |
+|------|--------|------|
+| **auth.ts** | `users`, `sessions`, `accounts`, `verifications` | Better Auth 관리 |
+| **bookings.ts** | `invoices`, `bookings`, `vouchers`, `payments`, `public_links` | 예약 핵심 |
+| **products.ts** | `categories`, `products`, `product_images`, `hotel_rooms`, `room_availability`, `golf_rates`, `golf_rate_calendar`, `vehicle_pricing` | 상품 핵심 |
+| **suppliers.ts** | `suppliers`, `settlements` | 공급처/정산 |
+| **members.ts** | `member_points`, `activity_logs` | 포인트/활동 |
+| **cart.ts** | `carts`, `cart_items` | 장바구니 |
+| **content.ts** | `travel_tips`, `notices`, `terms`, `faqs`, `reviews` | 콘텐츠 |
+| **coupons.ts** | `coupons`, `user_coupons` | 쿠폰 |
+| **notifications.ts** | `notifications` | 알림 |
+| **questions.ts** | `questions` | Q&A |
+| **schedules.ts** | `schedules`, `schedule_items` | 여행일정 |
+| **search-terms.ts** | `search_terms`, `search_history` | 검색 |
+| **system.ts** | `site_settings`, `exchange_rates`, `email_logs` | 시스템 |
+
+### ⚠️ 현재 없는 테이블 (COO 요구사항 관련)
+
+| 필요 테이블 | COO 요구 | 현재 상태 |
+|-------------|----------|----------|
+| `orders` | Order 객체 (Booking 묶음) | ❌ 없음 |
+| `order_items` | Order ↔ Booking 연결 | ❌ 없음 |
+| `deposit_matches` | 입금 매칭 테이블 | ❌ 없음 |
+| `change_requests` | 변경 요청 관리 | ❌ 없음 |
+| `booking_status_history` | 상태 이력 추적 | ❌ 없음 (PRD에는 있음) |
+| `package_products` | 패키지(복합) 상품 | ❌ 없음 |
+| `package_items` | 패키지 구성 상품 | ❌ 없음 |
+
+---
+
+## 3. API Routes (43 web + 49 admin = 92개)
+
+### Web API (43개)
+
+| 도메인 | API 수 | 주요 엔드포인트 |
+|--------|--------|----------------|
+| Auth | 2 | [...all], debug |
+| Bookings | 4 | CRUD, guest-lookup, guest |
+| Cart | 3 | cart, items, items/[id] |
+| Categories | 1 | list |
+| Coupons | 2 | my, validate |
+| Invoice/Voucher | 4 | pdf, public view |
+| Notifications | 3 | list, read, read-all |
+| Payments | 3 | request, confirm, webhook |
+| Points | 1 | balance |
+| Products | 5 | list, detail, rooms, vehicle-pricing, vehicle-lookup |
+| Questions | 3 | CRUD |
+| Reviews | 3 | CRUD |
+| Schedules | 4 | CRUD + items |
+| Search | 2 | history, popular |
+| Tips/Notices | 4 | list, detail |
+| Upload | 1 | file upload |
+| User | 3 | profile, password, points |
+
+### Admin API (49개)
+
+| 도메인 | API 수 | 주요 엔드포인트 |
+|--------|--------|----------------|
+| Auth | 1 | [...all] |
+| Bookings | 7 | CRUD, status, invoice, voucher, booking-info, resend-email |
+| Categories | 2 | CRUD |
+| Content | 10 | faqs, notices, reviews, terms, travel-tips (각 CRUD) |
+| Dashboard | 4 | kpi, kanban, revenue, distribution |
+| Email Logs | 1 | list |
+| Exchange Rates | 1 | CRUD |
+| Members | 3 | list, detail, points |
+| Payments | 3 | list, confirm, refund |
+| Products | 6 | CRUD, rooms, room availability, vehicle-pricing |
+| Settings | 1 | site settings |
+| Settlements | 2 | list, detail |
+| Suppliers | 3 | CRUD, settlements |
+| Upload | 1 | file upload |
+
+---
+
+## 4. 페이지 (38 web + 22 admin = 60개)
+
+### Web 페이지 (38개)
+
+| 그룹 | 페이지 수 | 주요 |
+|------|----------|------|
+| Auth | 4 | login, signup, forgot/reset-password |
+| Main | 1 | 홈 |
+| Category | 4 | 전체, 슬러그, 상품상세, 차량 |
+| Booking | 1 | 예약 상세 |
+| Cart/Checkout | 2 | 장바구니, 결제 |
+| Payment | 2 | success, fail |
+| My | 14 | 마이페이지, 예약, 포인트, 프로필, 일정, 리뷰, Q&A, 공지, 팁, 알림, 입금정보 |
+| Public | 3 | guest-order, invoice, voucher |
+| Static | 5 | about, contact, terms, privacy, cancellation-policy |
+| Search | 1 | 검색 |
+| Schedule | 1 | 일정 만들기 |
+
+### Admin 페이지 (22개)
+
+| 그룹 | 페이지 수 | 주요 |
+|------|----------|------|
+| Dashboard | 1 | 대시보드 |
+| Bookings | 2 | 목록, 상세 |
+| Products | 3 | 목록, 상세, 신규 |
+| Categories | 1 | 분류 관리 |
+| Members | 1 | 회원 관리 |
+| Payments | 1 | 결제 관리 |
+| Suppliers | 1 | 공급처 관리 |
+| Settlements | 1 | 정산 관리 |
+| Content | 5 | faqs, notices, reviews, terms, tips |
+| Settings | 2 | 일반, 환율 |
+| System | 2 | email-logs, activity-logs |
+| Statistics | 1 | 통계 |
+| Auth | 2 | login, root |
+
+---
+
+## 5. Shared 패키지 (Zod 스키마 + 타입)
+
+### 현재 정의된 상태값
+
+**BookingStatus**: `PENDING | INVOICE_SENT | PAYMENT_COMPLETED | VOUCHER_SENT | COMPLETED | CANCELLED | CANCEL_REQUESTED` (7개)
+
+**PaymentStatus**: `CREATED | PENDING | COMPLETED | FAILED | CANCELLED | REFUNDED` (6개)
+
+**ProductStatus**: `DRAFT | ACTIVE | HIDDEN | ARCHIVED` (4개)
+
+**UserRole**: `USER | ADMIN | SUPER_ADMIN` (3개)
+
+**ProductType**: `HOTEL | GOLF | VEHICLE | TOUR_PRIVATE | TOUR_GROUND | TOUR_MARINE | SPA | RESTAURANT | SHOW | GUIDE | AIRPORT_FASTTRACK | VISA` (12개)
+
+### ⚠️ COO 대비 부족한 상태
+
+| 객체 | COO 상태 | v2 현재 | GAP |
+|------|----------|---------|-----|
+| Order | 11개 | ❌ 없음 | 전체 신규 |
+| Payment | `Deposit_paid` | ❌ 없음 | 계약금 상태 추가 |
+| Booking | `Vendor_requested`, `Confirmed`, `In_service` | ❌ 없음 | 벤더확정 + 서비스중 |
+| Change_Request | 5개 | ❌ 없음 | 전체 신규 |
+| Settlement | 5개 | 4개 | `Open`, `Calculated` 추가 |
+| Product | 6개 | 4개 | `Reviewed`, `Approved`, `Sellable`, `Suspended` 추가 |
+
+---
+
+## 6. 현재 비즈니스 플로우 (코드 기준)
+
+### 예약 플로우
+```
+고객 상품 선택 → 장바구니 → 결제(토스) → Booking(PENDING)
+  → 관리자 인보이스 발행(INVOICE_SENT) → 결제확인(PAYMENT_COMPLETED)
+  → 관리자 바우처 발행(VOUCHER_SENT) → 이용완료(COMPLETED)
+```
+
+### ⚠️ COO가 원하는 플로우
+```
+고객 상품 선택 → 장바구니 → Order 생성(Requested)
+  → 관리자 검증(Pending_check) → 인보이스 발송(Payment_requested)
+  → 계약금 또는 완납(Payment_received) → 벤더 예약 요청(Vendor_requested)
+  → 벤더 확정(Confirmed) → 바우처 발송(Voucher_sent)
+  → 서비스 제공(In_service) → 완료(Completed)
+```
+
+**핵심 차이점**:
+1. Order가 Booking 위에 존재
+2. 계약금/잔금 2단계 결제
+3. 벤더 확정 단계가 결제 후에 별도 존재
+4. In_service 상태 별도
