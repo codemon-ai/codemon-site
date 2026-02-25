@@ -9,6 +9,7 @@ export default {
       pagination: false
     }
   },
+  'claudemd-delete-paper-webmcp': '"CLAUDE.md 지워라" 논문의 진짜 의미 — AI 에이전트 컨텍스트의 미래',
   'coda-ai-documentation-framework': 'CODA — AI 코딩 에이전트를 위한 문서화 프레임워크',
   'ai-bot-collaboration': 'AI 봇 2마리가 협업하는 법 — OpenClaw 멀티 에이전트 실전기',
   'ai-showcase-7demos-one-app': 'Next.js 하나로 7개 데모 사이트 만들기 — AI 외주 쇼케이스 구축기',
