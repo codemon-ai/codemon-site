@@ -9,6 +9,7 @@ export default {
       pagination: false
     }
   },
+  'skill-engineering-real-practice': 'AI 에이전트 스킬 엔지니어링 — 이론은 됐고, 실전에서 뭐가 달라지는지 보여준다',
   'claudemd-delete-paper-webmcp': '"CLAUDE.md 지워라" 논문의 진짜 의미 — AI 에이전트 컨텍스트의 미래',
   'coda-ai-documentation-framework': 'CODA — AI 코딩 에이전트를 위한 문서화 프레임워크',
   'ai-bot-collaboration': 'AI 봇 2마리가 협업하는 법 — OpenClaw 멀티 에이전트 실전기',
