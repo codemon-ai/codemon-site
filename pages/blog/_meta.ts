@@ -1,5 +1,6 @@
 export default {
-  index: {
+    'claude-code-ban-risk-gemini-exchange': 'Claude Code 자동화의 함정: 계정 밴 리스크와 Gemini 3.1 Pro 두뇌 이식기',
+index: {
     title: '전체 글',
     theme: {
       layout: 'raw',
