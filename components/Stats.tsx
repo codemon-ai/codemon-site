@@ -2,36 +2,32 @@
 
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { Code2, FolderGit2, Clock, Coffee } from 'lucide-react'
+import { Clock, FolderGit2, Bot, Repeat } from 'lucide-react'
 
 const stats = [
   {
     label: '경력',
-    value: 15,
+    value: 20,
     suffix: '년+',
     icon: Clock,
-    gradient: 'from-blue-500 to-cyan-500',
   },
   {
-    label: '운영 중인 서비스',
+    label: '런칭한 서비스',
     value: 10,
     suffix: '+',
     icon: FolderGit2,
-    gradient: 'from-accent-purple to-accent-pink',
   },
   {
-    label: 'AI 에이전트',
-    value: 7,
-    suffix: '개',
-    icon: Code2,
-    gradient: 'from-orange-500 to-red-500',
+    label: 'AI 에이전트 팀',
+    value: null,
+    displayText: 'n+',
+    icon: Bot,
   },
   {
-    label: '커피',
-    value: 9999,
+    label: '자동화한 업무',
+    value: 100,
     suffix: '+',
-    icon: Coffee,
-    gradient: 'from-amber-500 to-yellow-500',
+    icon: Repeat,
   },
 ]
 
@@ -61,11 +57,8 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
 
 export function Stats() {
   return (
-    <section className="py-16 px-6 bg-background relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-accent-purple/5 via-transparent to-transparent" />
-
-      <div className="max-w-5xl mx-auto relative z-10">
+    <section className="py-16 px-6 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-6"
           initial="hidden"
@@ -90,18 +83,19 @@ export function Stats() {
                 }}
                 className="relative group"
               >
-                <div className="text-center p-6 rounded-2xl glass hover:bg-white/10 transition-all duration-300">
-                  {/* Icon */}
-                  <div className={`inline-flex w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6 text-white" />
+                <div className="text-center p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/30 transition-all duration-300">
+                  <div className="inline-flex w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-6 h-6 text-purple-400" />
                   </div>
 
-                  {/* Value */}
-                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-1">
-                    <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                  <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">
+                    {stat.value !== null ? (
+                      <AnimatedNumber value={stat.value} suffix={stat.suffix!} />
+                    ) : (
+                      <span className="font-mono text-purple-400">{stat.displayText}</span>
+                    )}
                   </div>
 
-                  {/* Label */}
                   <div className="text-sm text-foreground/60">
                     {stat.label}
                   </div>

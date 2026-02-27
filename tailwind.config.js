@@ -12,19 +12,6 @@ module.exports = {
         foreground: '#fafafa',
         accent: {
           purple: '#a855f7',
-          pink: '#ec4899',
-        },
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
         },
       },
       animation: {
@@ -35,7 +22,7 @@ module.exports = {
       keyframes: {
         glow: {
           '0%': { boxShadow: '0 0 20px rgba(168, 85, 247, 0.3)' },
-          '100%': { boxShadow: '0 0 30px rgba(236, 72, 153, 0.4)' },
+          '100%': { boxShadow: '0 0 30px rgba(168, 85, 247, 0.5)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },

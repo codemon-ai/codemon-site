@@ -3,13 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
-interface HeroProps {
-  title: string
-  subtitle: string
-  description?: string
-}
-
-export function Hero({ title, subtitle, description }: HeroProps) {
+export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center min-h-screen px-6 py-20 overflow-hidden bg-white dark:bg-black">
       {/* Subtle grid */}
@@ -26,24 +20,48 @@ export function Hero({ title, subtitle, description }: HeroProps) {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black dark:text-white tracking-tight leading-[1.1]">
-            Pro Vibe Coder
-            <br />
-            <span className="text-black/30 dark:text-white/40">&</span>
-            <br />
-            Cracked Engineer
+            codemon.ai
           </h1>
         </motion.div>
 
         <motion.p
-          className="mt-8 text-lg md:text-xl text-black/50 dark:text-white/50 max-w-lg mx-auto leading-relaxed"
+          className="mt-6 text-xl md:text-2xl text-black/70 dark:text-white/70 font-semibold"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          혼자서 팀을 대체합니다
+          AI로 일하는 방식을 바꾸는 엔지니어
         </motion.p>
 
-        {/* CTA buttons removed — navigation via header */}
+        <motion.p
+          className="mt-4 text-lg md:text-xl text-black/50 dark:text-white/50 max-w-lg mx-auto leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          AI 에이전트와 함께 설계하고, 직접 만들고, 바로 배포합니다.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <button
+            onClick={() => window.dispatchEvent(new Event('open-chat'))}
+            className="px-8 py-3 rounded-full bg-accent-purple text-white font-semibold text-base hover:opacity-80 transition-opacity cursor-pointer"
+          >
+            문의하기
+          </button>
+          <Link
+            href="/showcase"
+            className="px-8 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-semibold text-base hover:opacity-80 transition-opacity no-underline"
+          >
+            쇼케이스 보기 →
+          </Link>
+        </motion.div>
       </div>
     </section>
   )

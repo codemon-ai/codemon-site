@@ -2,6 +2,9 @@
 
 import { motion } from 'framer-motion'
 import {
+  SiC,
+  SiCplusplus,
+  SiDotnet,
   SiTypescript,
   SiPython,
   SiGo,
@@ -29,6 +32,9 @@ const techCategories = [
   {
     name: 'Languages & Frameworks',
     items: [
+      { name: 'C', icon: SiC, color: '#a8b9cc' },
+      { name: 'C++', icon: SiCplusplus, color: '#00599c' },
+      { name: 'C#', icon: SiDotnet, color: '#512bd4' },
       { name: 'TypeScript', icon: SiTypescript, color: '#3178c6' },
       { name: 'Python', icon: SiPython, color: '#3776ab' },
       { name: 'Go', icon: SiGo, color: '#00add8' },

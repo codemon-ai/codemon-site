@@ -10,21 +10,21 @@ const links = [
     description: '혼자 만들고 운영 중인 서비스들',
     href: '/projects',
     icon: FolderOpen,
-    gradient: 'from-accent-purple to-accent-pink',
+    gradient: 'from-purple-500 to-purple-700',
   },
   {
     title: 'Blog',
     description: '만들면서 배운 것들. 기술, AI, 자동화.',
     href: '/blog',
     icon: BookOpen,
-    gradient: 'from-blue-500 to-cyan-500',
+    gradient: 'from-purple-500 to-purple-700',
   },
   {
     title: 'Docs',
     description: '기술 가이드와 문서',
     href: '/docs',
     icon: FileText,
-    gradient: 'from-orange-500 to-red-500',
+    gradient: 'from-purple-500 to-purple-700',
   },
 ]
 

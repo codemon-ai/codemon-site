@@ -12,7 +12,7 @@ const projects = [
     subtitle: 'AI 에이전트 외주 플랫폼',
     description: 'AI 에이전트 7명이 기획·개발·QA를 수행하는 자동화 외주 플랫폼. PM이 PRD를 쓰고, Dev가 코드를 짜고, QA가 검증한다.',
     icon: Sparkles,
-    gradient: 'from-accent-purple to-accent-pink',
+    gradient: 'from-purple-500 to-purple-700',
     thumbnail: '/projects/codemon-make.png',
     tags: ['AI Agents', 'Next.js 15', 'BullMQ', 'Claude'],
     links: {
@@ -38,7 +38,7 @@ const projects = [
     subtitle: 'AI 타로 리딩',
     description: 'AI 기반 타로 카드 리딩 서비스. 직관적인 UI와 깊이 있는 해석을 제공합니다.',
     icon: Sparkles,
-    gradient: 'from-purple-600 to-pink-600',
+    gradient: 'from-purple-500 to-purple-700',
     thumbnail: '/projects/taromon.png',
     tags: ['AI', 'OpenAI', 'Next.js'],
     links: {
