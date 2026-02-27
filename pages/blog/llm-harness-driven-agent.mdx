@@ -6,6 +6,8 @@ author: codemon
 tags: ["AI에이전트", "개발생산성", "프롬프트엔지니어링", "OpenClaw"]
 ---
 
+import AgentHarnessDiagram from '@/components/AgentHarnessDiagram';
+
 # LLM 벤치마크는 왜 현실 코딩에서 무너지는가: Harness 주도 에이전트 설계
 
 > 2025년이 '모델'의 해였다면, 2026년은 '하네스(Harness)'의 해다. 모델이 똑똑해져도 에이전트가 무한 루프에 빠지는 진짜 이유와 그 해결책.
@@ -48,42 +50,7 @@ Claude Code나 Cursor를 현업에서 하드코어하게 써본 개발자라면 
 
 최신 Agentic Workflow 패턴(Hugging Face, AWS Prescriptive Guidance 등)을 분석해 보면, 하네스는 단순한 껍데기가 아닙니다. LLM의 추론(Reasoning)을 실제 물리적인 '행동(Action)'으로 안전하고 정확하게 변환해 주는 오케스트레이션(Orchestration) 아키텍처입니다.
 
-```mermaid
-flowchart TB
-    subagent_user[👤 User / Trigger] --> |Task Request| Orchestrator
-
-    subgraph Harness["🛡️ Agent Harness (에이전트 구동 뼈대)"]
-        direction TB
-        
-        Orchestrator["🧠 Orchestrator (오케스트레이터)<br><small>ReAct Loop, 라우팅, 에러 복구</small>"]
-        
-        subgraph Memory["🗂️ State & Memory (상태 관리)"]
-            Progress["📄 Progress File<br><small>(todo.md, 작업일지)</small>"]
-            Context["📚 Context Augmentation<br><small>(RAG, 과거 세션 기록)</small>"]
-        end
-        
-        LLM(("🤖 Core LLM<br><small>(Claude 3.5, Gemini 3.1)</small>"))
-        
-        subgraph Execution["⚡ Execution Environment (실행 환경)"]
-            Tools["🔨 Tool/Skill Registry<br><small>(MCP, API, Script)</small>"]
-            Sandbox["💻 Bash / File System<br><small>(안전한 샌드박스)</small>"]
-        end
-
-        Orchestrator <--> |"Prompt & Routing"| LLM
-        Orchestrator <--> |"Read/Write State"| Memory
-        Orchestrator <--> |"Tool Call / Result"| Execution
-        
-        LLM -.-> |"Reasoning (Thought)"| LLM
-    end
-
-    Execution --> |"Action (Code, API)"| Output[🎯 Final Result / Output]
-    
-    style Harness fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#e2e8f0
-    style LLM fill:#4f46e5,stroke:#c7d2fe,stroke-width:3px,color:#fff
-    style Orchestrator fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
-    style Memory fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
-    style Execution fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
-```
+<AgentHarnessDiagram />
 
 생산성 높은 하네스는 다음 4가지 핵심 컴포넌트를 갖춥니다.
 
