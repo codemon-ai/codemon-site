@@ -101,7 +101,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site',
   footer: {
-    content: '© 2024 codemon.ai',
+    content: '© 2022 codemon.ai',
   },
   head: Head,
   sidebar: {
