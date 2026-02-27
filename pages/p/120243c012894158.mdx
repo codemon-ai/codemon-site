@@ -24,14 +24,16 @@ import { DocSection, ComparisonTable, StatusFlow, FeatureGrid, TimelineChart, In
 
 <DocSection title="미착수 기능 목록" accent="sky">
 
-현재 v2 개발 완료율은 약 90%이며, 아래 8개 항목이 미착수 상태입니다.
+현재 v2 개발 완료율은 약 90%이며, 아래 항목들이 미착수 상태입니다.
 
 <FeatureGrid items={[
   { name: 'PG사 전환 (이니시스)', description: '토스페이먼츠 → KG이니시스 전환', status: 'todo' },
   { name: '이메일/알림톡 발송', description: 'v1 Resend+BloomAI → v2 Mailgun+BloomAI 이관', status: 'todo' },
   { name: 'PDF 생성', description: '인보이스/바우처 PDF 다운로드 기능', status: 'todo' },
-  { name: '무통장입금 자동화', description: 'PayAction 가상계좌 연동', status: 'todo' },
-  { name: '패키지 상품', description: '호텔+골프+차량 묶음 상품 판매', status: 'todo' },
+  { name: '입금 매칭', description: 'PayAction 가상계좌 + 어드민 연동 시스템', status: 'todo', isNew: true },
+  { name: '패키지 상품', description: '호텔+골프+차량 묶음 상품 판매', status: 'todo', isNew: true },
+  { name: '계약금/잔금 2단계 결제', description: '예약 시 계약금 → 잔금 분할 결제', status: 'todo', isNew: true },
+  { name: '벤더 확정 상태 관리', description: '공급처별 예약 확정 상태 추적', status: 'todo', isNew: true },
   { name: '정산 관리', description: '공급업체별 월 정산 시스템', status: 'todo' },
   { name: '통계/리포트', description: '매출/예약 통계 대시보드', status: 'todo' },
   { name: '일정 관리', description: '캘린더 기반 일정 관리 (Phase 2)', status: 'todo' },

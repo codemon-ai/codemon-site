@@ -121,7 +121,7 @@ type FeatureStatus = 'done' | 'wip' | 'todo'
 export function FeatureGrid({
   items,
 }: {
-  items: { name: string; description?: string; status: FeatureStatus }[]
+  items: { name: string; description?: string; status: FeatureStatus; isNew?: boolean }[]
 }) {
   const badge: Record<FeatureStatus, { label: string; cls: string }> = {
     done: { label: '완료', cls: 'bg-emerald-500/20 text-emerald-300' },
@@ -138,10 +138,15 @@ export function FeatureGrid({
             className="rounded-lg border border-white/[0.06] bg-slate-900/30 p-4 hover:bg-white/[0.02] transition-colors"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-white/90 text-sm font-medium">
+              <span className="text-white/90 text-sm font-medium flex items-center gap-2">
                 {item.name}
+                {item.isNew && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30 font-semibold">
+                    신규 요청
+                  </span>
+                )}
               </span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${b.cls}`}>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium shrink-0 ${b.cls}`}>
                 {b.label}
               </span>
             </div>
