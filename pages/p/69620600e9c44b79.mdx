@@ -1,0 +1,240 @@
+---
+title: "BlueMango v2 — 패키지 상품 (복합 상품)"
+description: "여러 상품을 하나로 묶어 할인 판매하는 패키지 상품 기능 PRD"
+tags: [bluemango, v2, prd, client]
+created: 2026-02-27
+---
+
+import { DocSection, ComparisonTable, StatusFlow, FeatureGrid, DecisionTable, InfoCard } from '../../components/BlueMangoDocs'
+
+# BlueMango v2 — 패키지 상품 (복합 상품)
+
+> 여러 개별 상품(호텔+골프+차량 등)을 **하나의 패키지로 묶어 할인 판매**하는 기능을 추가합니다.
+
+<div className="flex flex-wrap gap-4 my-6">
+  <InfoCard label="문서 유형" value="PRD" accent="sky" />
+  <InfoCard label="대상" value="COO · PM" accent="violet" />
+  <InfoCard label="예상 기간" value="5~6주" accent="amber" />
+</div>
+
+---
+
+<DocSection title="배경 — 왜 필요한가" accent="sky">
+
+### 현재 (AS-IS)
+
+- 고객이 "방콕 골프 3박4일"을 원하면 → 호텔, 골프장, 차량을 **각각 따로 예약/결제**
+- 패키지 할인을 원하면 → **전화/카카오톡으로 문의** → 관리자가 수동 견적 → 개별 예약 생성
+- 관리자는 구성 상품 가격을 일일이 계산하여 합산 후 할인 적용
+
+### 문제점
+
+| 문제 | 영향 |
+|------|------|
+| 패키지 할인을 시스템에서 적용 불가 | 수동 견적 → 관리자 업무 부담, 응대 지연 |
+| 고객이 구성 상품을 일일이 찾아야 함 | 예약 과정이 복잡, 이탈률 증가 |
+| 패키지 매출 추적 불가 | 어떤 패키지가 인기인지 데이터 없음 |
+| 패키지 바우처를 수동 생성 | 구성 상품별 바우처를 개별 작성 |
+
+### 목표 (TO-BE)
+
+- "방콕 골프 3박4일" 같은 **패키지를 하나의 상품으로 등록**
+- 고객은 패키지 상세 페이지에서 **한 번에 예약/결제**
+- 관리자는 패키지 생성 화면에서 **구성 상품 선택 + 할인가 설정**
+
+</DocSection>
+
+<DocSection title="패키지 상품 구성" accent="emerald">
+
+### 패키지 = 메인 상품 + 구성 상품들
+
+| 구성 요소 | 설명 | 예시 |
+|----------|------|------|
+| 메인 상품 (Package) | 패키지 전체를 대표하는 상품 | 방콕 골프 3박4일 |
+| 구성 상품 (PackageItem) | 패키지에 포함된 개별 상품들 | 호텔 3박, 골프 2라운드, 공항픽업, 골프장 이동 |
+
+### 예시: "방콕 골프 패키지"
+
+| # | 구성 상품 | 상품 타입 | 개별 가격 |
+|---|----------|----------|----------|
+| 1 | 방콕 시내 호텔 3박 | HOTEL | 450,000원 |
+| 2 | 골프장 A 라운드 | GOLF | 200,000원 |
+| 3 | 골프장 B 라운드 | GOLF | 180,000원 |
+| 4 | 공항 ↔ 호텔 픽업 | VEHICLE | 80,000원 |
+| 5 | 호텔 ↔ 골프장 이동 (2회) | VEHICLE | 120,000원 |
+| | **개별 합산** | | **1,030,000원** |
+| | **패키지 가격** | | **899,000원 (13% 할인)** |
+
+</DocSection>
+
+<DocSection title="고객 경험 변화" accent="amber">
+
+<ComparisonTable
+  rows={[
+    { label: '예약 횟수', before: '상품 개수만큼 (3~5회)', after: '1회' },
+    { label: '결제 횟수', before: '상품 개수만큼', after: '1회' },
+    { label: '할인', before: '불가 (수동 견적만)', after: '패키지 할인가 자동 적용' },
+    { label: '바우처', before: '개별 수령', after: '한 번에 구성 상품별 바우처 수령' },
+    { label: '일정 관리', before: '각각 따로 확인', after: '마이페이지에서 패키지 일정 한눈에 확인' },
+  ]}
+/>
+
+### 예약 흐름 (TO-BE)
+
+<StatusFlow
+  steps={[
+    { label: '패키지 상세 페이지', color: 'sky' },
+    { label: '날짜/인원 선택', color: 'sky' },
+    { label: '한 번에 결제', color: 'amber' },
+    { label: '구성 상품별 바우처 자동 발행', color: 'emerald' },
+  ]}
+/>
+
+> 기존에는 호텔/골프/차량을 각각 검색 → 예약 → 결제해야 했지만,
+> 변경 후에는 패키지 상세 페이지에서 한 번에 예약/결제하고 구성 상품별 바우처가 자동 발행됩니다.
+
+</DocSection>
+
+<DocSection title="관리자 경험" accent="violet">
+
+### 패키지 상품 생성 절차
+
+1. **상품 관리 → 패키지 상품 생성** 메뉴 진입
+2. 패키지 기본 정보 입력 (이름, 설명, 대표 이미지, 카테고리)
+3. **구성 상품 선택**: 기존에 등록된 상품 중 원하는 것을 추가
+4. **패키지 가격 설정**: 개별 합산가 대비 패키지 판매가 입력
+5. 저장 → 고객 사이트에 패키지 상품 노출
+
+### 패키지 예약 관리
+
+- **예약 목록**에서 패키지 예약은 "패키지" 뱃지로 구분
+- **예약 상세**에서 구성 상품별 상태를 개별 관리 가능
+  - 예: 호텔은 바우처 발행 완료, 골프는 아직 확인 중
+- **부분 취소**: 구성 상품 중 일부만 취소 가능 (예: 골프 1회만 취소)
+
+### 패키지 바우처
+
+- 구성 상품별 **개별 바우처** 자동 생성
+- 각 바우처는 해당 공급처 정보 포함
+- 패키지 전체 일정을 보여주는 **종합 바우처**도 제공 (선택사항)
+
+</DocSection>
+
+<DocSection title="주문(Order) 시스템과의 관계" accent="sky">
+
+| 구조 | 설명 |
+|------|------|
+| 패키지 1개 | = Order(주문) 1개 |
+| 구성 상품 N개 | = Booking(예약) N개 |
+| 결제 | = Payment 1개 (패키지 전체 금액) |
+
+### 예시 구조
+
+```
+Order #1234 "방콕 골프 패키지"
+├── Booking #A: 호텔 3박 (VOUCHER_SENT)
+├── Booking #B: 골프 A 라운드 (PAYMENT_COMPLETED)
+├── Booking #C: 골프 B 라운드 (PAYMENT_COMPLETED)
+├── Booking #D: 공항 픽업 (VOUCHER_SENT)
+├── Booking #E: 골프장 이동 (VOUCHER_SENT)
+└── Payment #P1: 899,000원 (COMPLETED)
+```
+
+### 예약 상태 흐름
+
+<StatusFlow
+  steps={[
+    { label: '접수', color: 'sky' },
+    { label: '인보이스', color: 'amber' },
+    { label: '결제', color: 'amber' },
+    { label: '바우처', color: 'violet' },
+    { label: '완료', color: 'emerald' },
+  ]}
+/>
+
+### 부분 취소
+
+- 구성 상품 중 일부만 취소 가능
+- 취소된 상품의 가격만큼 환불 (패키지 할인 비율 안분 적용)
+- 예: 골프 A 라운드 취소 → 해당 금액 비례 환불
+
+</DocSection>
+
+<DocSection title="구현 범위" accent="emerald">
+
+### 1단계 (MVP)
+
+<FeatureGrid
+  items={[
+    { name: '패키지 상품 등록', description: '관리자가 구성 상품 선택 + 고정 패키지 가격 설정', status: 'todo' },
+    { name: '패키지 상세 페이지', description: '구성 상품 목록 + 패키지 가격 표시', status: 'todo' },
+    { name: '패키지 예약/결제', description: '한 번에 예약 + 결제', status: 'todo' },
+    { name: '구성 상품별 바우처', description: '개별 바우처 자동 생성', status: 'todo' },
+    { name: '예약 관리', description: '패키지 뱃지 + 구성 상품별 상태 관리', status: 'todo' },
+  ]}
+/>
+
+### 향후 (2단계 이후)
+
+<FeatureGrid
+  items={[
+    { name: '고객 커스텀 패키지', description: '고객이 직접 구성 상품 변경 (호텔 업그레이드 등)', status: 'todo' },
+    { name: '시즌별 패키지 가격', description: '성수기/비수기 자동 가격 변동', status: 'todo' },
+    { name: 'AI 패키지 추천', description: '고객 선호에 따른 패키지 자동 추천', status: 'todo' },
+    { name: '패키지 랭킹/통계', description: '인기 패키지, 매출 분석', status: 'todo' },
+  ]}
+/>
+
+</DocSection>
+
+<DocSection title="타임라인 (예상)" accent="amber">
+
+| 단계 | 기간 | 내용 |
+|------|------|------|
+| 설계 확정 | ~1주 | 아래 결정 사항 확정 + DB 설계 |
+| 백엔드 개발 | ~2주 | 패키지 CRUD + 예약/결제 연동 |
+| 어드민 UI | ~1주 | 패키지 등록/관리 화면 |
+| 고객 사이트 | ~1주 | 패키지 상세 + 예약 위자드 |
+| QA + 수정 | ~1주 | 통합 테스트 |
+
+**총 예상: 약 5~6주** (1단계 MVP 기준)
+
+</DocSection>
+
+<DocSection title="결정 필요 사항" accent="violet">
+
+<DecisionTable
+  items={[
+    {
+      id: 'P-01',
+      question: '패키지 할인 방식은? — (A) 정액할인 (5만원 할인) / (B) 정률할인 (10% 할인) / (C) 별도 패키지 가격 직접 입력',
+      recommendation: '(C) 별도 패키지 가격 직접 입력 — 가장 유연함, 관리자가 직접 판매가 입력',
+    },
+    {
+      id: 'P-02',
+      question: '패키지 내 개별 상품 날짜 변경 허용? — (A) 허용 (고객이 구성 상품별 날짜 선택) / (B) 불허 (패키지 기간 고정)',
+      recommendation: '(B) 불허 — 1단계에서는 패키지 전체 기간 고정, 향후 확장',
+    },
+    {
+      id: 'P-03',
+      question: '패키지 재고 관리 방식은? — (A) 구성 상품 재고 연동 (하나라도 품절이면 불가) / (B) 패키지 별도 재고 (수동 관리)',
+      recommendation: '(A) 구성 상품 재고 연동 — 실시간 가용성 반영이 고객 경험에 유리',
+    },
+    {
+      id: 'P-04',
+      question: '사이트 메뉴에서 패키지 위치는? — (A) 기존 카테고리에 "패키지" 추가 / (B) GNB에 별도 "패키지" 메뉴',
+      recommendation: '(A) 카테고리 추가 — 1단계에서는 카테고리 추가, 트래픽 보고 독립 메뉴 고려',
+    },
+    {
+      id: 'P-05',
+      question: '고객 커스텀 패키지 지원 시점은? — (A) 1단계에서 함께 / (B) 2단계 이후 (1단계는 고정 패키지만)',
+      recommendation: '(B) 2단계 이후 — 1단계는 빠른 출시 우선',
+    },
+  ]}
+/>
+
+</DocSection>
+
+---
+
+*이 문서는 패키지 상품 기능의 비즈니스 요구사항을 정리한 것입니다. 기술 상세 설계는 결정 사항 확정 후 별도 작성됩니다.*

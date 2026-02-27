@@ -1,0 +1,184 @@
+---
+title: "BlueMango v2 — 비즈니스 규칙 요약"
+description: "상품/예약/결제/정산/회원 핵심 비즈니스 규칙"
+tags: [bluemango, v2, prd, client]
+created: 2026-02-27
+---
+
+import { DocSection, StatusFlow, InfoCard } from '../../components/BlueMangoDocs'
+
+# BlueMango v2 — 비즈니스 규칙 요약
+
+> 태국 여행 상품(호텔, 골프, 차량, 투어, 기타)을 예약·결제·정산까지 한 곳에서 관리하는 플랫폼.
+
+<div className="flex flex-wrap gap-3 my-6">
+  <InfoCard label="상품 타입" value="5종" accent="sky" />
+  <InfoCard label="카테고리" value="14개" accent="sky" />
+  <InfoCard label="회원 등급" value="6단계" accent="violet" />
+</div>
+
+---
+
+<DocSection title="상품 규칙" accent="sky">
+
+### 상품 타입 (5가지)
+
+| 대분류 | 세부 카테고리 |
+|--------|--------------|
+| 호텔 | 호텔, 풀빌라, 골프텔 |
+| 골프장 | 골프장 |
+| 차량 | 차량 |
+| 투어 | 단독 투어, 지상 투어, 해양 투어, 가이드 |
+| 기타 | 스파, 레스토랑, 쇼, 패스트트랙, 비자 |
+
+### 상품 상태 흐름
+
+<StatusFlow steps={[
+  { label: '임시저장', color: 'amber' },
+  { label: '판매중', color: 'emerald' },
+  { label: '판매중단', color: 'red' },
+]} />
+
+> 판매중단 → 판매중 재활성화 가능
+
+### 가격 체계
+
+| 구분 | 설명 |
+|------|------|
+| 판매가 | 고객에게 보이는 최종 가격 |
+| 매입가 | 공급처(현지 업체)에 지불하는 원가 |
+| 할인가 | 프로모션 등 할인 적용 가격 |
+
+- **호텔**: 객실 단위로 날짜별 가격과 잔여 객실 수 개별 관리
+- **골프장**: 시즌(성수기/비수기)에 따라 가격 변동
+
+### 예약 방식
+
+| 유형 | 동작 |
+|------|------|
+| 즉시 예약 상품 | 고객이 예약하면 바로 인보이스 자동 발송 |
+| 상담 필요 상품 | 고객 접수 → 관리자가 확인 후 인보이스 발송 |
+
+</DocSection>
+
+---
+
+<DocSection title="예약/결제 규칙" accent="emerald">
+
+### 예약 상태 흐름 (정상)
+
+<StatusFlow steps={[
+  { label: '접수', color: 'sky' },
+  { label: '인보이스', color: 'sky' },
+  { label: '결제 완료', color: 'emerald' },
+  { label: '바우처', color: 'emerald' },
+  { label: '완료', color: 'emerald' },
+]} />
+
+### 취소 흐름
+
+<StatusFlow steps={[
+  { label: '취소 요청', color: 'amber' },
+  { label: '관리자 승인', color: 'amber' },
+  { label: '취소 완료', color: 'red' },
+]} />
+
+> 어느 단계에서든 취소 요청 가능
+
+### 주요 문서
+
+| 문서 | 용도 | 특징 |
+|------|------|------|
+| 인보이스 | 결제 요청서 | 링크로 공유 가능, 로그인 없이 열람 |
+| 바우처 | 예약 확정 증빙 | 링크로 공유 가능, 로그인 없이 열람, 향후 PDF 다운로드 지원 예정 |
+
+### 결제 수단
+
+| 수단 | 확인 방식 |
+|------|----------|
+| 카드 결제 | 자동 확인 |
+| 무통장입금 | 관리자 수동 확인 |
+| 가상계좌 | 입금 시 자동 확인 |
+
+### 환불
+
+- 전액 환불 또는 부분 환불 모두 가능
+
+### 비회원 예약
+
+- 회원가입 없이도 게스트 정보(이름, 연락처 등)를 입력하면 예약 가능
+
+</DocSection>
+
+---
+
+<DocSection title="회원/포인트" accent="violet">
+
+### 회원 등급 (6단계, 상위는 하위 권한 포함)
+
+<StatusFlow steps={[
+  { label: '일반회원', color: 'sky' },
+  { label: '공급처', color: 'sky' },
+  { label: '직원', color: 'amber' },
+  { label: '관리자', color: 'amber' },
+  { label: '매니저', color: 'violet' },
+  { label: '최고관리자', color: 'violet' },
+]} />
+
+### 소셜 로그인
+
+- 카카오 (필수)
+- 네이버
+- 구글
+
+### 포인트 정책
+
+| 항목 | 규칙 |
+|------|------|
+| 적립 | 예약 완료 시 자동 적립 + 관리자 수동 지급 가능 |
+| 사용 | 결제 시 할인 적용 (전액 또는 일부 사용 가능) |
+| 만료 | 정책에 따라 만료 처리 |
+| 이력 | 적립, 사용, 만료, 관리자 조정 모두 기록 |
+
+</DocSection>
+
+---
+
+<DocSection title="정산" accent="amber">
+
+### 정산 대상
+
+- 공급처(현지 호텔, 골프장 등 업체)별 **월 단위** 정산
+
+### 수수료 계산
+
+```
+매출액 x 수수료율 = 수수료
+정산액 = 매출액 - 수수료
+```
+
+### 정산 흐름
+
+<StatusFlow steps={[
+  { label: '생성', color: 'sky' },
+  { label: '확인', color: 'amber' },
+  { label: '지급', color: 'emerald' },
+]} />
+
+- 정산 내역은 예약 건별로 상세 확인 가능
+
+</DocSection>
+
+---
+
+<DocSection title="주요 비즈니스 제약조건" accent="sky">
+
+| 제약조건 | 설명 |
+|---------|------|
+| 수량 제한 | 상품별 최소/최대 예약 가능 수량 설정 |
+| 상담 필수 | 상담 필요 상품은 반드시 관리자 승인 후 진행 |
+| 인보이스 방식 | 상품별로 즉시 발송 또는 수동 발송 선택 가능 |
+| 환율 관리 | 원화(KRW)와 태국 바트(THB) 간 환율 — 실시간 환율 + 수동 설정 모두 지원 |
+| 상태 변경 이력 | 모든 예약 상태 변경 시 누가, 언제, 왜 변경했는지 기록 |
+
+</DocSection>
