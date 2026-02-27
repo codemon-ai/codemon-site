@@ -111,12 +111,28 @@ export function Footer() {
           ))}
         </motion.div>
 
-        {/* Copyright */}
+        {/* Legal Links */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
+          className="flex justify-center gap-4 mb-6 text-xs text-foreground/40"
+        >
+          <Link href="/terms" className="hover:text-foreground/60 transition-colors">
+            이용약관
+          </Link>
+          <Link href="/privacy" className="hover:text-foreground/60 transition-colors">
+            개인정보처리방침
+          </Link>
+        </motion.div>
+
+        {/* Copyright */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
           className="text-center text-sm text-foreground/40"
         >
           <p className="flex items-center justify-center gap-1">

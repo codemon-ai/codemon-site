@@ -7,10 +7,16 @@ export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center min-h-screen px-6 py-20 overflow-hidden bg-white dark:bg-black">
       {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.03]" style={{
+      <div className="absolute inset-0 opacity-[0.06] dark:opacity-[0.05]" style={{
         backgroundImage: 'linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)',
         backgroundSize: '60px 60px'
       }} />
+
+      {/* Main radial glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent-purple/[0.07] dark:bg-accent-purple/[0.05] rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Secondary glow for depth */}
+      <div className="absolute top-[40%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent-purple/[0.04] dark:bg-accent-purple/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">

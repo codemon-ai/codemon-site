@@ -60,5 +60,10 @@ export default {
     title: '개인정보처리방침',
     type: 'page',
     display: 'hidden'
+  },
+  terms: {
+    title: '이용약관',
+    type: 'page',
+    display: 'hidden'
   }
 }

@@ -101,7 +101,15 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site',
   footer: {
-    content: '© 2022 codemon.ai',
+    content: (
+      <div className="flex flex-col items-center gap-2 w-full">
+        <div className="flex gap-4 text-xs">
+          <a href="/terms" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">이용약관</a>
+          <a href="/privacy" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">개인정보처리방침</a>
+        </div>
+        <span>&copy; {new Date().getFullYear()} codemon.ai</span>
+      </div>
+    ),
   },
   head: Head,
   sidebar: {
