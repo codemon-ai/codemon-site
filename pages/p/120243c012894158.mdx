@@ -1,0 +1,200 @@
+---
+title: "BlueMango v2 — 프로젝트 일정 & 계약 조건"
+description: "블루망고 v2 잔여 개발 일정, 비용, 유지보수 조건 정리"
+tags: [bluemango, v2, timeline, contract, private]
+created: 2026-02-27
+---
+
+import { DocSection, ComparisonTable, StatusFlow, FeatureGrid, TimelineChart, InfoCard } from '../../components/BlueMangoDocs'
+
+# BlueMango v2 — 프로젝트 일정 & 계약 조건
+
+> 잔여 개발 범위, 주간 일정, 비용, 소프트오픈 계획, 유지보수 조건을 정리한 문서입니다.
+
+<div className="flex flex-wrap gap-4 my-6">
+  <InfoCard label="총 기간" value="약 6주" accent="sky" />
+  <InfoCard label="비용" value="1,000만원" accent="amber" />
+  <InfoCard label="미착수 항목" value="8건" accent="violet" />
+  <InfoCard label="목표" value="4월 소프트오픈" accent="emerald" />
+</div>
+
+---
+
+## 잔여 개발 범위 (미착수 항목)
+
+<DocSection title="미착수 기능 목록" accent="sky">
+
+현재 v2 개발 완료율은 약 90%이며, 아래 8개 항목이 미착수 상태입니다.
+
+<FeatureGrid items={[
+  { name: 'PG사 전환 (이니시스)', description: '토스페이먼츠 → KG이니시스 전환', status: 'todo' },
+  { name: '이메일/알림톡 발송', description: 'v1 Resend+BloomAI → v2 Mailgun+BloomAI 이관', status: 'todo' },
+  { name: 'PDF 생성', description: '인보이스/바우처 PDF 다운로드 기능', status: 'todo' },
+  { name: '무통장입금 자동화', description: 'PayAction 가상계좌 연동', status: 'todo' },
+  { name: '패키지 상품', description: '호텔+골프+차량 묶음 상품 판매', status: 'todo' },
+  { name: '정산 관리', description: '공급업체별 월 정산 시스템', status: 'todo' },
+  { name: '통계/리포트', description: '매출/예약 통계 대시보드', status: 'todo' },
+  { name: '일정 관리', description: '캘린더 기반 일정 관리 (Phase 2)', status: 'todo' },
+]} />
+
+> **콘텐츠 관리** (여행팁/공지/약관/Q&A/리뷰)는 현재 진행중이며, 곧 완료 예정입니다.
+
+</DocSection>
+
+---
+
+## 주간 일정
+
+<DocSection title="6주 로드맵" accent="emerald">
+
+<TimelineChart items={[
+  { phase: 'Week 1 (3월 1주) — PRD 확정 + 계약', duration: '~3/5(수)', status: 'active' },
+  { phase: 'Week 2 (3월 2주) — 미착수 개발 착수', duration: '3/3~3/7', status: 'pending' },
+  { phase: 'Week 3 (3월 3주) — 미착수 전체 완료 + TC 100%', duration: '3/10~3/14', status: 'pending' },
+  { phase: 'Week 4 (3월 4주) — 인간 QA + 버그 수정', duration: '3/17~3/21', status: 'pending' },
+  { phase: 'Week 5 (4월 1주) — 소프트오픈 준비', duration: '3/31~4/4', status: 'pending' },
+  { phase: 'Week 6 (4월 2주) — 소프트오픈 + TC 100%', duration: '4/7~4/11', status: 'pending' },
+]} />
+
+</DocSection>
+
+<DocSection title="주차별 상세" accent="sky">
+
+### Week 1 — PRD 확정 + 외부 계약 (3월 수요일까지)
+
+| 항목 | 내용 |
+|------|------|
+| PRD/TC 확정 | 전달된 8개 PRD 문서 검토 + 결정사항 확정 |
+| PG 계약 | KG이니시스 가맹점 계약 진행 (운영팀) |
+| PayAction 계약 | PayAction 서비스 계약 + 비용 확인 (운영팀) |
+| 마이그레이션 범위 | **회원만** v1→v2 이관 합의 (주문/결제는 제외) |
+| 알림 설정 | Mailgun DNS 설정 + BloomAI 크레덴셜 확인 (운영팀) |
+
+> **마이그레이션 범위**: 회원 데이터만 이관하기로 합의. 기존 주문/결제 데이터는 v1에서 조회 가능하도록 유지.
+
+### Week 2~3 — 미착수 전체 개발 + TC 100%
+
+- 8개 미착수 항목 순차 개발
+- 항목별 테스트케이스(TC) 작성 + 100% PASS 확인
+- **TC 기반 완료 판정** — TC 전체 PASS가 "완료"의 기준
+
+### Week 4 — 인간 QA + 버그 수정
+
+| 항목 | 내용 |
+|------|------|
+| QA 주체 | 클라이언트(운영팀) 직접 테스트 |
+| QA 기준 | TC 기반 시나리오 + 자유 탐색 테스트 |
+| 버그 수정 | QA에서 발견된 버그 즉시 수정 |
+| 완료 조건 | TC 기반 완료가 우선, QA 버그는 후속 수정 |
+
+> **핵심 원칙**: TC 100% PASS가 개발 완료 기준. QA에서 나오는 버그는 TC에 없는 엣지 케이스이므로 별도 수정.
+
+### Week 5 (4월 1주) — 소프트오픈 준비
+
+| 항목 | 내용 |
+|------|------|
+| 도메인 | bluemango-travel 기존 도메인과 **듀얼 도메인** 운영 |
+| 방식 | 새 도메인으로 v2 접속, 기존 도메인은 v1 유지 |
+| 소프트오픈 결정 | 클라이언트 최종 확인 후 오픈 여부 결정 |
+
+### Week 6 (4월 2주) — 소프트오픈
+
+| 항목 | 내용 |
+|------|------|
+| 도메인 전환 | 기존 bluemango-travel 도메인을 v2로 연결 |
+| 데이터 | 회원 마이그레이션 실행 |
+| TC 검증 | 프로덕션 환경에서 TC 100% 재확인 |
+| v1 보존 | v1은 별도 URL로 접근 가능 (기존 데이터 조회용) |
+
+</DocSection>
+
+---
+
+## 비용
+
+<DocSection title="프로젝트 비용" accent="amber">
+
+| 항목 | 금액 | 비고 |
+|------|------|------|
+| **총 비용** | **1,000만원** | 잔여 개발 전체 (협의 시 800만원 가능) |
+| 착수금 (20%) | 200만원 | 계약 시 지급 |
+| 잔금 (80%) | 800만원 | 소프트오픈 완료 후 지급 |
+
+### 포함 범위
+
+- 미착수 8개 기능 전체 개발
+- TC 작성 + 100% PASS 검증
+- QA 기간 버그 수정
+- 소프트오픈 + 도메인 전환
+- 회원 데이터 마이그레이션 (v1 → v2)
+
+### 미포함 (별도 협의)
+
+- v1 주문/결제 데이터 마이그레이션
+- 모바일 앱 개발
+- 다국어(영어) 지원
+- AI 추천 시스템
+
+</DocSection>
+
+---
+
+## 소프트오픈 이후
+
+<DocSection title="유지보수 & 지원 조건" accent="violet">
+
+### 소프트오픈 후 2주 (4월 3주~)
+
+| 조건 | 내용 |
+|------|------|
+| 유지보수 계약 **없을 경우** | 크리티컬 버그만 대응 (서비스 장애 수준) |
+| 일반 버그/기능 수정 | 유지보수 계약 필요 |
+| 신규 기능 개발 | 별도 프로젝트 계약 |
+
+### 유지보수 계약 (향후)
+
+| 옵션 | 비용 | 내용 |
+|------|------|------|
+| 월 유지보수 | ~700만원/월 | 버그 수정 + 소규모 기능 개선 + 모니터링 |
+| 건별 프로젝트 | 별도 견적 | 신규 기능, 대규모 변경 시 |
+
+> 유지보수 비용은 작업 범위에 따라 조정 가능합니다.
+
+</DocSection>
+
+---
+
+## 진행 현황 공유
+
+<DocSection title="투명한 진행 관리" accent="emerald">
+
+### 작업 트래킹 사이트
+
+- 이번 주말 중 미착수 항목별 **TODO 트래킹 사이트** 구축 예정
+- 각 항목의 진행 상태를 실시간으로 확인 가능
+- **화요일부터** 클라이언트가 바로 사용 가능
+
+### 기존 문서
+
+- [PRD 문서 전체 목록](/p/ca28263d909c4005) — 8개 PRD + Phase 0 문서
+- [기능 명세서](/p/b9e498d7bc4949ae) — 전체 기능 목록 + 현황
+
+</DocSection>
+
+---
+
+## 전체 일정 요약
+
+<StatusFlow steps={[
+  { label: 'PRD 확정', color: 'sky' },
+  { label: 'PG/PayAction 계약', color: 'sky' },
+  { label: '미착수 개발', color: 'amber' },
+  { label: 'TC 100%', color: 'emerald' },
+  { label: '인간 QA', color: 'violet' },
+  { label: '소프트오픈', color: 'emerald' },
+]} />
+
+---
+
+*이 문서는 내부 계약 협의용이며, 프로젝트 진행에 따라 업데이트됩니다.*
+*마지막 업데이트: 2026-02-27*
