@@ -1,78 +1,73 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Building2, Smartphone, Rocket } from 'lucide-react'
+import { Building2, Zap, Bot } from 'lucide-react'
 
 const timeline = [
   {
-    company: 'Samsung Electronics',
-    role: 'Software Engineer',
-    period: '삼성전자',
+    label: '대기업 10년',
+    period: '2005 — 2015',
     icon: Building2,
-    gradient: 'from-blue-500 to-blue-700',
-    description: '모바일 플랫폼 개발',
+    description: '삼성전자 종합기술연구소·생산기술연구소, SK텔레콤 네이트 드라이브 팀. 대규모 시스템과 프로세스를 배웠습니다.',
   },
   {
-    company: 'SK Telecom',
-    role: 'Senior Engineer',
-    period: 'SK텔레콤',
-    icon: Smartphone,
-    gradient: 'from-red-500 to-red-700',
-    description: 'AI/클라우드 서비스',
+    label: '스타트업 10년',
+    period: '2015 — 2025',
+    icon: Zap,
+    description: '빠르게 만들고, 빠르게 부수고, 빠르게 배웠습니다. 기획부터 배포까지 혼자 끝내는 법을 익혔습니다.',
   },
   {
-    company: 'Indie Builder',
-    role: 'Building Everything',
-    period: '현재',
-    icon: Rocket,
-    gradient: 'from-accent-purple to-accent-pink',
-    description: '10+ 서비스 운영 중',
+    label: 'AI/AX Engineer',
+    period: '2025 —',
+    icon: Bot,
+    description: 'AI 에이전트 팀과 함께 설계하고, 구축하고, 자동화합니다. 아이디어가 생기면 만듭니다.',
   },
 ]
 
 export function Career() {
   return (
-    <section className="py-16 px-6 bg-background relative overflow-hidden">
-      <div className="max-w-4xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8"
-        >
-          {timeline.map((item, i) => {
-            const Icon = item.icon
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="flex items-center gap-3"
-              >
-                {/* Connector arrow (not on first) */}
-                {i > 0 && (
-                  <span className="hidden md:block text-foreground/30 text-xl mr-2">→</span>
-                )}
+    <section className="py-16 px-6 relative overflow-hidden">
+      <div className="max-w-3xl mx-auto relative z-10">
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-5 top-0 bottom-0 w-px bg-purple-500/20 hidden md:block" />
 
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0`}>
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
+          <div className="space-y-8">
+            {timeline.map((item, i) => {
+              const Icon = item.icon
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.15 }}
+                  className="flex gap-5 items-start"
+                >
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0 relative z-10">
+                    <Icon className="w-5 h-5 text-purple-400" />
+                  </div>
 
-                <div>
-                  <div className="font-semibold text-foreground text-sm">
-                    {item.company}
+                  {/* Content */}
+                  <div className="flex-1 pb-2">
+                    <div className="flex items-baseline gap-3">
+                      <h4 className="font-semibold text-foreground text-base">
+                        {item.label}
+                      </h4>
+                      <span className="text-xs font-mono text-foreground/40">
+                        {item.period}
+                      </span>
+                    </div>
+                    <p className="text-sm text-foreground/60 mt-1 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
-                  <div className="text-xs text-foreground/50">
-                    {item.period} · {item.description}
-                  </div>
-                </div>
-              </motion.div>
-            )
-          })}
-        </motion.div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
       </div>
     </section>
   )

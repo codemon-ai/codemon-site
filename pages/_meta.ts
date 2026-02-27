@@ -11,8 +11,8 @@ export default {
       pagination: false
     }
   },
-  blog: {
-    title: 'Blog',
+  about: {
+    title: 'About',
     type: 'page'
   },
   showcase: {
@@ -26,6 +26,14 @@ export default {
       pagination: false
     }
   },
+  projects: {
+    title: 'Projects',
+    type: 'page'
+  },
+  blog: {
+    title: 'Blog',
+    type: 'page'
+  },
   tools: {
     title: 'Tools',
     type: 'page',
@@ -34,14 +42,6 @@ export default {
   },
   docs: {
     title: 'Docs',
-    type: 'page'
-  },
-  projects: {
-    title: 'Projects',
-    type: 'page'
-  },
-  about: {
-    title: 'About',
     type: 'page'
   },
   p: {

@@ -60,7 +60,7 @@ export function Footer() {
           {/* Email CTA */}
           <Link
             href="mailto:hello@codemon.ai"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-accent-purple to-accent-pink text-white rounded-xl font-semibold hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-accent-purple/25"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent-purple text-white rounded-xl font-semibold hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-accent-purple/25"
           >
             <Mail className="w-5 h-5" />
             <span>hello@codemon.ai</span>
@@ -120,7 +120,7 @@ export function Footer() {
           className="text-center text-sm text-foreground/40"
         >
           <p className="flex items-center justify-center gap-1">
-            Made with <Heart className="w-4 h-4 text-accent-pink fill-accent-pink" /> by codemon
+            Made with <Heart className="w-4 h-4 text-accent-purple fill-accent-purple" /> by codemon
           </p>
           <p className="mt-2">
             &copy; {currentYear} codemon. All rights reserved.

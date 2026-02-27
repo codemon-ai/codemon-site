@@ -44,6 +44,13 @@ export function ChatWidget({ page = 'unknown' }: ChatWidgetProps) {
     }
   }, [])
 
+  // Listen for open-chat event from other components
+  useEffect(() => {
+    const handleOpenChat = () => setIsOpen(true)
+    window.addEventListener('open-chat', handleOpenChat)
+    return () => window.removeEventListener('open-chat', handleOpenChat)
+  }, [])
+
   // Poll for new messages
   const pollMessages = useCallback(async () => {
     if (!sessionId) return
