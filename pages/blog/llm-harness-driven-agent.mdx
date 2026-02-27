@@ -42,7 +42,61 @@ Claude Code나 Cursor를 현업에서 하드코어하게 써본 개발자라면 
 
 내 프로젝트 환경에 완벽하게 세팅된 하네스를 갖춘 낡은 모델이, 프롬프트 창만 덩그러니 있는 최신 모델보다 훨씬 더 많은 일을 안정적으로 처리한다. 1인 개발자에게 이것은 엄청난 희소식이다. 새로운 모델이 출시될 때까지 기다릴 필요 없이, 지금 당장 내 환경의 하네스를 개선하는 것만으로 생산성을 퀀텀 점프시킬 수 있기 때문이다.
 
-## 솔로 개발자를 위한 강력한 에이전트 하네스 3계명
+## "하네스(Harness)"의 기술적 아키텍처 해부
+
+"LLM은 그저 텍스트 예측기일 뿐이다. 하네스가 그것을 '에이전트'로 만든다."
+
+최신 Agentic Workflow 패턴(Hugging Face, AWS Prescriptive Guidance 등)을 분석해 보면, 하네스는 단순한 껍데기가 아닙니다. LLM의 추론(Reasoning)을 실제 물리적인 '행동(Action)'으로 안전하고 정확하게 변환해 주는 오케스트레이션(Orchestration) 아키텍처입니다.
+
+```mermaid
+flowchart TB
+    subagent_user[👤 User / Trigger] --> |Task Request| Orchestrator
+
+    subgraph Harness["🛡️ Agent Harness (에이전트 구동 뼈대)"]
+        direction TB
+        
+        Orchestrator["🧠 Orchestrator (오케스트레이터)<br><small>ReAct Loop, 라우팅, 에러 복구</small>"]
+        
+        subgraph Memory["🗂️ State & Memory (상태 관리)"]
+            Progress["📄 Progress File<br><small>(todo.md, 작업일지)</small>"]
+            Context["📚 Context Augmentation<br><small>(RAG, 과거 세션 기록)</small>"]
+        end
+        
+        LLM(("🤖 Core LLM<br><small>(Claude 3.5, Gemini 3.1)</small>"))
+        
+        subgraph Execution["⚡ Execution Environment (실행 환경)"]
+            Tools["🔨 Tool/Skill Registry<br><small>(MCP, API, Script)</small>"]
+            Sandbox["💻 Bash / File System<br><small>(안전한 샌드박스)</small>"]
+        end
+
+        Orchestrator <--> |"Prompt & Routing"| LLM
+        Orchestrator <--> |"Read/Write State"| Memory
+        Orchestrator <--> |"Tool Call / Result"| Execution
+        
+        LLM -.-> |"Reasoning (Thought)"| LLM
+    end
+
+    Execution --> |"Action (Code, API)"| Output[🎯 Final Result / Output]
+    
+    style Harness fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#e2e8f0
+    style LLM fill:#4f46e5,stroke:#c7d2fe,stroke-width:3px,color:#fff
+    style Orchestrator fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
+    style Memory fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
+    style Execution fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
+```
+
+생산성 높은 하네스는 다음 4가지 핵심 컴포넌트를 갖춥니다.
+
+1. **오케스트레이터 (Orchestrator)**
+   단순한 프롬프트 전달을 넘어 **Thought-Action-Observation (TAO)** 루프를 통제합니다. LLM이 무한 루프에 빠지면 끊어주고(Max Iteration 제어), 에러가 나면 재시도(Self-Correction)를 지시하는 메인 컨트롤러입니다.
+2. **상태 관리와 영속성 (State & Memory)**
+   앞서 언급한 `Progress File` 패턴입니다. LLM의 컨텍스트 윈도우는 휘발성 메모리(RAM)와 같습니다. 하네스는 진행 상황을 물리적 마크다운 파일이나 DB에 실시간으로 쓰고 읽게 만들어(Disk), 에이전트의 단기 기억상실증을 막아줍니다.
+3. **실행 샌드박스 (Execution Environment)**
+   모델이 환각(Hallucination)으로 엉뚱한 코드를 짜도 시스템이 망가지지 않도록 격리된 터미널(Bash)과 파일 시스템 권한을 제공합니다.
+4. **도구 및 스킬 레지스트리 (MCP & Skills)**
+   외부 API나 특수 기능을 하드코딩하지 않고, **Model Context Protocol(MCP)**이나 모듈화된 스킬 파일 형태로 제공합니다. 엔진(LLM)이 언제든 플러그인처럼 꺼내 쓸 수 있는 무기고입니다.
+
+\n## 솔로 개발자를 위한 강력한 에이전트 하네스 3계명
 
 현실 코딩에서 에이전트가 길을 잃지 않게 만드는 하네스 구축의 핵심은 세 가지다.
 
