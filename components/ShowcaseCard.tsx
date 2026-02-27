@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import styles from './ShowcaseCard.module.css'
 
 interface ShowcaseCardProps {
@@ -38,7 +39,7 @@ export function ShowcaseCard({
           className={styles.imageLink}
         >
           <div className={styles.imageWrapper}>
-            <img src={image} alt={title} className={styles.image} />
+            <Image src={image} alt={title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className={styles.image} />
             <div className={styles.imageOverlay}>
               {status === 'live' && <span className={styles.imageOverlayText}>라이브 데모 보기 →</span>}
             </div>

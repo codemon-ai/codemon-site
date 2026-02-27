@@ -1,7 +1,22 @@
 import React from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
 // ChatWidget moved to _app.tsx
+
+const OptimizedImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ src, alt }) => {
+  if (!src || typeof src !== 'string') return null
+  return (
+    <Image
+      src={src}
+      alt={alt || ''}
+      width={0}
+      height={0}
+      sizes="(max-width: 768px) 100vw, 720px"
+      style={{ width: '100%', height: 'auto' }}
+    />
+  )
+}
 
 const SITE_URL = 'https://codemon.ai'
 const SITE_NAME = 'codemon'
@@ -124,6 +139,9 @@ const config: DocsThemeConfig = {
     next: true,
   },
   darkMode: true,
+  components: {
+    img: OptimizedImage,
+  },
 }
 
 export default config

@@ -8,6 +8,9 @@ const withNextra = nextra({
 
 const nextConfig = withNextra({
   reactStrictMode: true,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
 })
 
 export default withSentryConfig(nextConfig, {
