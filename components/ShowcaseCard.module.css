@@ -42,6 +42,15 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
+/* Private card style */
+.cardPrivate {
+  opacity: 0.75;
+}
+
+.cardPrivate:hover {
+  opacity: 0.9;
+}
+
 /* Image */
 .imageLink {
   display: block;
@@ -160,6 +169,18 @@
   flex-shrink: 0;
 }
 
+.badgePrivate {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: #4b5563;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
 .description {
   font-size: 0.85rem;
   color: #6b7280;
@@ -242,6 +263,26 @@
 
 .demoBtn:hover {
   opacity: 0.85;
+}
+
+.demoBtnPrivate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a855f7;
+  background: transparent;
+  border: 1px solid #a855f7;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.demoBtnPrivate:hover {
+  background: #a855f7;
+  color: #ffffff;
 }
 
 .demoBtnDisabled {

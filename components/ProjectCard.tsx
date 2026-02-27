@@ -39,8 +39,6 @@ export function ProjectCard({
             <a
               key={i}
               href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
               className={i === 0 ? styles.link : styles.linkSecondary}
             >
               {link.label}
