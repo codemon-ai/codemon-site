@@ -1,7 +1,5 @@
 export default {
-    'claude-code-ban-risk-gemini-exchange': 'Claude Code 자동화의 함정: 계정 밴 리스크와 Gemini 3.1 Pro 두뇌 이식기',
-  'llm-harness-driven-agent': 'LLM 벤치마크는 왜 현실 코딩에서 무너지는가: Harness 주도 에이전트 설계',
-index: {
+  index: {
     title: '전체 글',
     theme: {
       layout: 'raw',
@@ -11,6 +9,8 @@ index: {
       pagination: false
     }
   },
+  'llm-harness-driven-agent': 'LLM 벤치마크는 왜 현실 코딩에서 무너지는가: Harness 주도 에이전트 설계',
+  'claude-code-ban-risk-gemini-exchange': 'Claude Code 자동화의 함정: 계정 밴 리스크와 Gemini 3.1 Pro 두뇌 이식기',
   'openclaw-100days-real-experience': 'OpenClaw 100일 실전기 — "초보자에겐 어렵다"는 리뷰가 놓친 것',
   'cloud-blog-skill-reference': 'Cloud Blog Skill 분석 — Claude Code 블로그 자동화의 끝판왕?',
   'skill-engineering-real-practice': 'AI 에이전트 스킬 엔지니어링 — 이론은 됐고, 실전에서 뭐가 달라지는지 보여준다',
