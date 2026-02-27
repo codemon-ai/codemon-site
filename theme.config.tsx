@@ -10,8 +10,8 @@ const OptimizedImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ s
     <Image
       src={src}
       alt={alt || ''}
-      width={0}
-      height={0}
+      width={1200}
+      height={675}
       sizes="(max-width: 768px) 100vw, 720px"
       style={{ width: '100%', height: 'auto' }}
     />
