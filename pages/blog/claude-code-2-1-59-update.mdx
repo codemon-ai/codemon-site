@@ -1,0 +1,55 @@
+---
+title: "Claude Code 2.1.59 업데이트: 드디어 '기억(Memory)'을 탑재하다"
+description: "Claude Code가 세션을 넘나드는 영구 기억(Auto-memory)을 공식 지원하기 시작했다. 이번 업데이트의 핵심 3가지와 개발자에게 미치는 영향."
+date: "2026-02-27"
+author: codemon
+tags: ["Claude Code", "업데이트", "AI에이전트", "개발생산성"]
+---
+
+# Claude Code 2.1.59 업데이트: 드디어 '기억(Memory)'을 탑재하다
+
+> Claude Code가 드디어 세션을 넘나드는 영구 기억(Auto-memory)을 공식 지원하기 시작했다. 우리가 수동으로 구축했던 `MEMORY.md` 시스템이 점차 공식 툴 체인으로 흡수되고 있다.
+
+![A futuristic glowing digital brain surrounded by floating data fragments](/images/blog/claude-code-2-1-59-update/01_hero.png)
+
+최근 Claude Code 2.1.59 업데이트가 배포되었다. 자잘한 버그 픽스도 있지만, 이번 릴리즈의 핵심은 단연코 **'Auto-memory'**와 **오케스트레이션 안정성**이다. 
+
+현업에서 AI 에이전트를 하드코어하게 굴려본 개발자라면 이번 업데이트 로그가 얼마나 반가운지 알 것이다. 핵심 내용 3가지를 우리(OpenClaw)의 관점에서 해석해 보았다.
+
+## 1. Auto-memory와 `/memory` 커맨드 (Headline Feature)
+
+가장 중요한 변화다. 이제 Claude Code는 작업하면서 얻은 **프로젝트 패턴, 디버깅 인사이트, 사용자의 선호도 등을 자동으로 기억**하고 세션이 종료되어도 이를 유지한다.
+새롭게 추가된 `/memory` 명령어를 통해 Claude가 무엇을 기억하고 있는지 검토하고 관리할 수도 있다.
+
+**💡 Tech Lead Insight:**
+이는 우리가 OpenClaw 시스템에서 `MEMORY.md`와 `TODO.md`를 통해 수동으로 구축했던 **'상태 영속화(State Persistence)'**가 드디어 Claude Code 자체 기능으로 흡수되기 시작했다는 뜻이다. 에이전트가 "매번 똑같은 걸 다시 설명해야 하는" 단기 기억 상실증에서 벗어나고 있다. 다만, 이 자동 기억이 프로젝트 규모가 커졌을 때 얼마나 정확하게 컨텍스트를 유지할지는 벤치마크가 필요하다.
+
+## 2. Multi-agent 세션 최적화 및 동시성 문제 해결
+
+우리가 `sessions_spawn`으로 멀티 에이전트를 돌리는 것처럼, Claude Code 환경에서도 다중 인스턴스를 돌리는 유저들이 많아졌다. 이에 대한 치명적인 버그들이 잡혔다.
+
+![Multiple glowing AI nodes working in parallel on a complex digital task](/images/blog/claude-code-2-1-59-update/02_multi_agent.png)
+
+- **메모리 누수 해결:** 멀티 에이전트 세션에서 완료된 서브 에이전트의 태스크 상태를 제대로 해제(release)하도록 개선되어 메모리 최적화가 이루어졌다.
+- **MCP OAuth Race Condition 픽스:** 여러 Claude Code 인스턴스를 동시에 실행할 때 발생하던 MCP 인증 토큰 갱신 충돌 문제가 해결되었다.
+- **Config 파일 오염 방지:** 동시 실행 시 인증 정보(Auth)가 날아가 버리던 치명적 버그가 수정되었다.
+
+**💡 Tech Lead Insight:**
+단일 에이전트가 아니라 **병렬(Parallel) 에이전트 오케스트레이션**이 2026년의 표준 개발 워크플로우로 자리 잡았음을 방증하는 패치 내역이다. Anthropic 역시 파워 유저들이 여러 터미널에서 에이전트를 동시다발적으로 띄워놓고 쓴다는 것을 인지하고 최적화에 들어갔다.
+
+## 3. QoL (Quality of Life) 개선: `/copy`와 스마트 Allow
+
+사소하지만 매일 수백 번씩 터미널을 오가는 개발자들의 피로도를 크게 낮춰주는 기능들이다.
+
+- **`/copy` 대화형 피커:** 코드 블록이 여러 개일 때, 전체 응답을 복사할지 특정 코드 블록만 복사할지 선택할 수 있는 대화형 UI가 추가되었다.
+- **Smarter "Always Allow":** `cd /tmp && git fetch && git push` 같은 복합 Bash 명령어를 실행할 때, 전체를 하나의 거대한 문자열로 통째로 묶어 처리하지 않고 서브 커맨드 단위로 더 스마트하게 권한(Prefix)을 제안한다.
+
+## 맺음말
+
+이번 2.1.59 릴리즈는 단순한 편의성 개선을 넘어, AI 코딩 어시스턴트가 **'기억을 가진 영구적인 팀원'**으로 진화하고 있음을 보여준다. 
+
+도구(Harness)가 발전할수록 개발자는 에이전트에게 "무엇을 어떻게 할지" 미시적으로 지시하는 일에서 벗어나, 아키텍처를 설계하고 방향성을 조율하는 '오케스트레이터' 본연의 역할에 집중하게 될 것이다.
+
+---
+*참고: [Claude Code Changelog (GitHub)](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)*
+*작성: 코드몬 & 로디 🦊 | 2026-02-27*

@@ -1,6 +1,6 @@
 # codemon-site
 
-브랜드 랜딩 + 기술 문서 사이트
+AI/AX 엔지니어 CodeMon의 브랜드 사이트 + 기술 블로그 + 문서
 
 ## Tech Stack
 
@@ -8,34 +8,110 @@
 - **Runtime:** Next.js 14.x (Pages Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS + Nextra theme
+- **Animation:** Framer Motion
+- **Deploy:** Vercel (git push → auto deploy)
+- **Analytics:** Google Analytics + Vercel Analytics
+- **Error Tracking:** Sentry
 
 ## Project Structure
 
 ```
 codemon-site/
 ├── pages/              # Pages Router
-│   ├── _app.tsx        # App wrapper
+│   ├── _app.tsx        # App wrapper (GA, Analytics, ChatWidget)
 │   ├── _meta.ts        # Top-level navigation
-│   ├── index.mdx       # Brand landing page (layout: raw)
+│   ├── index.mdx       # Home (layout: raw)
 │   ├── about.mdx       # About page
-│   ├── projects/       # Projects section
-│   ├── blog/           # Blog section
-│   └── docs/           # Documentation section
+│   ├── showcase.mdx    # Showcase page
+│   ├── projects/       # Projects section (15 projects)
+│   ├── blog/           # Blog section (~35 articles)
+│   ├── docs/           # Documentation section
+│   ├── en/             # English version (i18n)
+│   ├── p/              # Private pages (hidden)
+│   └── api/            # API routes (OG image, Telegram chat)
 ├── components/         # React components
 │   ├── Hero.tsx        # Landing hero section
-│   └── Features.tsx    # Features cards
-├── theme.config.tsx    # Nextra theme config
-├── next.config.mjs     # Next.js config
-└── tailwind.config.js  # Tailwind config
+│   ├── Features.tsx    # 4 Pillars features cards
+│   ├── ContactCTA.tsx  # CTA section
+│   ├── BlogIndex.tsx   # Blog index with tag filtering
+│   ├── ProjectCard.tsx # Project card component
+│   ├── ShowcaseCard.tsx # Showcase card component
+│   ├── Career.tsx      # Career timeline
+│   ├── Stats.tsx       # Stats counter
+│   ├── TechStack.tsx   # Tech stack showcase
+│   ├── Footer.tsx      # Footer component
+│   └── ChatWidget.tsx  # Telegram chat widget
+├── styles/globals.css  # Global CSS (glass, animations)
+├── theme.config.tsx    # Nextra theme config + SEO
+├── next.config.mjs     # Next.js + Nextra + Sentry config
+├── tailwind.config.js  # Tailwind config (colors, animations)
+├── scripts/generate-posts.mjs  # Blog metadata extraction
+└── docs/               # Internal docs (not public pages)
+    ├── RENOVATION-PLAN.md  # ⭐ 사이트 리뉴얼 계획서
+    ├── DESIGN-GUIDE.md     # ⭐ 디자인 가이드라인
+    └── ...
 ```
 
 ## Commands
 
 ```bash
 npm run dev     # Development server (localhost:3000)
-npm run build   # Production build
+npm run build   # Production build (prebuild → build → postbuild)
 npm run start   # Start production server
 ```
+
+## 리뉴얼 진행 중 (2026.02~)
+
+> 상세 계획: `docs/RENOVATION-PLAN.md`
+> 디자인 가이드: `docs/DESIGN-GUIDE.md`
+
+### 포지셔닝 변경
+
+```
+Before: "Pro Vibe Coder & Cracked Engineer" + "혼자서 팀을 대체합니다"
+After:  "AI로 일하는 방식을 바꾸는 엔지니어" + AI 에이전트 팀과 함께
+```
+
+- "Pro Vibe Coder"는 About 페이지 스토리텔링 요소로 이동
+- Home에는 명확한 가치 제안 중심
+
+### 핵심 메시지 (4 Pillars)
+
+```
+01. AI 에이전트 설계 — 반복 업무를 AI 팀에게 넘기는 시스템
+02. 빠른 실증(PoC) — 아이디어를 동작하는 프로토타입으로
+03. End-to-End AX — 기획부터 배포, 자동화까지
+04. 현장 경험 — 대기업 시스템과 스타트업 속도
+```
+
+### CTA
+
+```
+"AI로 바꾸고 싶은 업무가 있나요?"
+[문의하기]  [쇼케이스 보기 →]
+```
+
+## Design Guide (요약)
+
+> 상세: `docs/DESIGN-GUIDE.md`
+
+### 컬러 — 흑백 + 보라 포인트
+
+```
+배경:   #0a0a0a (다크) / #ffffff (라이트)
+텍스트: #fafafa (다크) / #000000 (라이트)
+포인트: #a855f7 (보라) — 버튼, 링크, hover, 강조에만
+서브:   gray 계열만 (border, muted text)
+```
+
+- `accent.pink` 사용하지 않음 → 보라 단일
+- `primary` 블루 계열 사용 최소화 → 포인트는 보라
+- 그라디언트는 `보라→진보라` 방향으로만
+
+### 원칙
+- 색은 최소로, 여백은 넉넉히
+- 포인트 컬러는 "누르거나 봐야 할 곳"에만
+- 다크모드 기본, 라이트모드도 깔끔하게
 
 ## Conventions
 
@@ -47,10 +123,20 @@ npm run start   # Start production server
 - React functional components with TypeScript
 - Tailwind CSS for styling
 - Support dark mode with `dark:` variants
+- Framer Motion for animations (staggered reveal pattern)
 
-### Colors
-- Primary: Blue gradient (#3b82f6 → #8b5cf6)
-- Background: Light (#ffffff) / Dark (#0a0a0a)
+### AI 에이전트 팀
+
+```
+길벗 (CodeMon) — Founder & AI/AX Engineer
+├── 로디 🦊 PM & Orchestrator (Mac Mini M1)
+├── 누비 🐕 QA & Debugger (MacBook Air M2)
+├── 베어 🐻‍❄️ Design & Frontend (MacBook Pro 회사)
+├── 뉴비 🐣 Research & Scout (MacBook Pro 회사)
+├── 나래 🦜 Content & Marketing (TBD)
+├── 옥토 🐙 Backend & Infra (TBD)
+└── 아울 🦉 Data & Automation (TBD)
+```
 
 ## 팀 역할 분담
 
@@ -66,9 +152,7 @@ npm run start   # Start production server
 - 환경변수 값 커밋
 - `rm` 사용 (`trash` 사용)
 
-## 블로그 포스트 템플릿 (codemon.ai)
-
-기술 블로그. Tech Lead 관점, 개발자 대상.
+## 블로그 포스트 템플릿
 
 ```mdx
 ---
