@@ -6,6 +6,7 @@ author: codemon
 tags: ["AI에이전트", "개발생산성", "프롬프트엔지니어링", "OpenClaw"]
 ---
 
+import HarnessConceptDiagram from '@/components/HarnessConceptDiagram';
 import AgentHarnessDiagram from '@/components/AgentHarnessDiagram';
 
 # LLM 벤치마크는 왜 현실 코딩에서 무너지는가: Harness 주도 에이전트 설계
@@ -40,7 +41,7 @@ Claude Code나 Cursor를 현업에서 하드코어하게 써본 개발자라면 
 
 동일한 'Claude 3.5 Sonnet' 모델이라도, Claude Code 환경에서 돌릴 때와 Cursor에서 돌릴 때, 그리고 단순한 파이썬 스크립트에서 돌릴 때 그 퍼포먼스는 천지차이다.
 
-결국 코딩 생산성을 결정하는 것은 엔진(LLM) 자체보다, 그 엔진을 감싸고 있는 뼈대, 즉 **'하네스(Harness)'**다. 
+결국 코딩 생산성을 결정하는 것은 엔진(LLM) 자체보다, 그 엔진을 감싸고 있는 뼈대, 즉 '**하네스(Harness)**'다. 
 
 내 프로젝트 환경에 완벽하게 세팅된 하네스를 갖춘 낡은 모델이, 프롬프트 창만 덩그러니 있는 최신 모델보다 훨씬 더 많은 일을 안정적으로 처리한다. 1인 개발자에게 이것은 엄청난 희소식이다. 새로운 모델이 출시될 때까지 기다릴 필요 없이, 지금 당장 내 환경의 하네스를 개선하는 것만으로 생산성을 퀀텀 점프시킬 수 있기 때문이다.
 
@@ -72,14 +73,22 @@ Claude Code나 Cursor를 현업에서 하드코어하게 써본 개발자라면 
 모든 특수 툴을 제거하고, 딱 두 가지만 줘라: **Bash 터미널 접근권**과 **파일 시스템 읽기/쓰기 권한**. 
 프론티어 모델들은 당신이 짠 파이프라인보다 똑똑하다. 기본 도구만 쥐여주면 그들은 스스로 스크립트를 짜고 도구를 만들어 문제를 해결한다.
 
+<HarnessConceptDiagram />
+
 ### 2. 진행 상태 파일의 영속화 (Progress File)
 이것이 하네스의 핵심이다. 에이전트가 무한 루프에 빠지는 이유는 컨텍스트 윈도우 안에서 방향성을 잃기 때문이다.
 우리의 OpenClaw 시스템 역시 `TODO.md`, `MEMORY.md`, `작업일지.md` 같은 마크다운 파일을 활용한다. 에이전트는 작업을 시작할 때 이 파일을 읽어 '현재 위치'를 파악하고, 하나의 액션이 끝날 때마다 이 파일에 결과를 기록(Write)한다.
 기억을 LLM의 컨텍스트(RAM)에 의존하지 않고, 물리적인 파일 시스템(Disk)에 영속화하는 것이다. 이것이 에이전트의 닻(Anchor) 역할을 한다.
 
 ### 3. MCP와 Skills 도입
-도구를 줄이라고 해서 외부 연동을 하지 말라는 뜻은 아니다. 핵심은 '하드코딩'을 피하라는 것이다.
-Model Context Protocol (MCP)이나 독립적인 Skill 구조를 채택하라. 우리 팀이 `blog-publish`나 `nano-banana-pro` 같은 스킬을 `.md` 파일 형태로 분리해 둔 것처럼, 에이전트가 필요할 때 읽고 버릴 수 있는 모듈형 지식과 도구를 제공해야 한다.
+도구를 줄이라고 해서 외부 연동을 하지 말라는 뜻은 아니다. 핵심은 파이프라인 내부에 '하드코딩'하는 것을 피하라는 뜻이다.
+
+이때 필요한 것이 **[Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol)** 같은 표준화된 도구 연결 규격이나 독립적인 **Skill** 아키텍처다. 
+
+- **MCP (Model Context Protocol)**: Anthropic이 주도하는 오픈소스 표준으로, AI 모델이 로컬 파일, 데이터베이스, 외부 API 등 데이터 소스에 안전하게 접근할 수 있도록 해주는 범용 인터페이스다. (마치 AI를 위한 USB-C 포트와 같다)
+- **독립형 스킬 (Skills)**: 우리 팀이 `blog-publish`나 `nano-banana-pro` 같은 스킬을 `.md` 파일(자연어 프롬프트와 CLI 명령의 조합) 형태로 분리해 둔 것처럼, 에이전트가 특정 작업이 필요할 때만 읽고 실행한 뒤 메모리에서 지워버릴 수 있는 모듈형 지식 체계다.
+
+이렇게 환경을 구축하면, 모델이 업데이트되더라도 하네스와 도구들은 수정 없이 그대로 재사용할 수 있는 강력한 시스템이 완성된다.
 
 ![A glowing anchor holding down a bright digital core](/images/blog/llm-harness-driven-agent/03_anchor.png)
 
