@@ -5,8 +5,8 @@ interface ShowcaseCardProps {
   description: string
   color: string
   tags: string[]
-  demoUrl: string
-  status: 'live' | 'coming-soon'
+  demoUrl?: string
+  status: 'live' | 'coming-soon' | 'private'
   features: string[]
   image?: string
 }
@@ -25,8 +25,11 @@ export function ShowcaseCard({
   features,
   image,
 }: ShowcaseCardProps) {
+  const isPrivate = status === 'private'
+  const cardClassName = `${styles.card} ${isPrivate ? styles.cardPrivate : ''}`
+
   return (
-    <div className={styles.card} style={{ '--card-color': color } as React.CSSProperties}>
+    <div className={cardClassName} style={{ '--card-color': color } as React.CSSProperties}>
       {image ? (
         <a
           href={status === 'live' ? demoUrl : undefined}
@@ -51,6 +54,8 @@ export function ShowcaseCard({
             <h3 className={styles.title}>{title}</h3>
             {status === 'live' ? (
               <span className={styles.badgeLive}>Live</span>
+            ) : status === 'private' ? (
+              <span className={styles.badgePrivate}>Private</span>
             ) : (
               <span className={styles.badgeSoon}>Coming Soon</span>
             )}
@@ -75,6 +80,13 @@ export function ShowcaseCard({
             <a href={demoUrl} target="_blank" rel="noopener noreferrer" className={styles.demoBtn}>
               라이브 데모 →
             </a>
+          ) : status === 'private' ? (
+            <button
+              className={styles.demoBtnPrivate}
+              onClick={() => window.dispatchEvent(new Event('open-chat'))}
+            >
+              문의하기
+            </button>
           ) : (
             <span className={styles.demoBtnDisabled}>준비 중</span>
           )}
