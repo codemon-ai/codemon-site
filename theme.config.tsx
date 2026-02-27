@@ -5,7 +5,7 @@ import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
 
 const SITE_URL = 'https://codemon.ai'
 const SITE_NAME = 'codemon'
-const DEFAULT_DESCRIPTION = 'Pro Vibe Coder & Cracked Engineer'
+const DEFAULT_DESCRIPTION = 'AI로 일하는 방식을 바꾸는 엔지니어'
 const Head = () => {
   const { asPath, locale } = useRouter()
   const { frontMatter, title } = useConfig()

@@ -89,7 +89,7 @@ export default function handler(req: NextRequest) {
               color: '#666666',
             }}
           >
-            Pro Vibe Coder &amp; Cracked Engineer
+            AI/AX Engineer
           </span>
         </div>
       </div>
