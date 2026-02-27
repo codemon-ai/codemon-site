@@ -64,23 +64,20 @@ bluemango-v2/
 └── CLAUDE.md
 ```
 ---
+
+import { DomainMap } from '../../components/BlueMangoDocs'
+
 ## 2. 도메인 요구사항
-```plain text
-┌─────────────────────────────────────────────────────────┐
-│                  BlueMango v2 Platform                    │
-│                                                          │
-│  ┌──────────┐   ┌──────────┐   ┌──────────────────┐    │
-│  │ 상품관리  │   │ 예약관리  │   │  결제/정산       │    │
-│  │ Product   │──→│ Booking   │──→│  Payment         │    │
-│  │ Domain    │   │ Domain    │   │  Settlement      │    │
-│  └──────────┘   └──────────┘   └──────────────────┘    │
-│                                                          │
-│  ┌──────────┐   ┌──────────┐   ┌──────────────────┐    │
-│  │ 회원/인증 │   │ 콘텐츠   │   │  사이트운영      │    │
-│  │ User/Auth │   │ Content   │   │  SiteOps         │    │
-│  └──────────┘   └──────────┘   └──────────────────┘    │
-└─────────────────────────────────────────────────────────┘
-```
+
+<DomainMap domains={[
+  { name: '상품관리', sub: 'Product Domain', accent: 'sky' },
+  { name: '예약관리', sub: 'Booking Domain', accent: 'emerald' },
+  { name: '결제/정산', sub: 'Payment · Settlement', accent: 'amber' },
+  { name: '회원/인증', sub: 'User / Auth', accent: 'violet' },
+  { name: '콘텐츠', sub: 'Content', accent: 'sky' },
+  { name: '사이트운영', sub: 'SiteOps', accent: 'emerald' },
+]} />
+
 ---
 ### 2.1 상품 도메인 (Product)
 ### 2.1.1 상품 타입 체계

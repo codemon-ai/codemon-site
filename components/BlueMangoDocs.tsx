@@ -277,6 +277,63 @@ export function DecisionTable({
   )
 }
 
+/* ── DomainMap (6개 도메인 시각화) ────────── */
+export function DomainMap({
+  domains,
+}: {
+  domains: {
+    name: string
+    sub: string
+    accent?: 'sky' | 'emerald' | 'amber' | 'violet'
+  }[]
+}) {
+  const bg: Record<string, string> = {
+    sky: 'border-sky-500/30 bg-sky-500/[0.08]',
+    emerald: 'border-emerald-500/30 bg-emerald-500/[0.08]',
+    amber: 'border-amber-500/30 bg-amber-500/[0.08]',
+    violet: 'border-violet-500/30 bg-violet-500/[0.08]',
+  }
+  const txt: Record<string, string> = {
+    sky: 'text-sky-300',
+    emerald: 'text-emerald-300',
+    amber: 'text-amber-300',
+    violet: 'text-violet-300',
+  }
+  // split into rows of 3
+  const top = domains.slice(0, 3)
+  const bottom = domains.slice(3)
+  const renderRow = (row: typeof domains) => (
+    <div className="flex flex-wrap gap-3 justify-center">
+      {row.map((d, i) => {
+        const a = d.accent ?? 'sky'
+        const isLast = i === row.length - 1
+        return (
+          <span key={i} className="flex items-center gap-3">
+            <div
+              className={`rounded-xl border px-6 py-4 text-center min-w-[140px] ${bg[a]}`}
+            >
+              <div className={`text-sm font-semibold ${txt[a]}`}>{d.name}</div>
+              <div className="text-[11px] text-white/40 mt-1">{d.sub}</div>
+            </div>
+            {!isLast && <span className="text-white/20 text-lg">→</span>}
+          </span>
+        )
+      })}
+    </div>
+  )
+  return (
+    <div className="my-6 rounded-xl border border-white/10 bg-[#0a0f1a] p-6">
+      <div className="text-center text-white/50 text-xs tracking-widest uppercase mb-5">
+        BlueMango v2 Platform
+      </div>
+      <div className="space-y-4">
+        {renderRow(top)}
+        {bottom.length > 0 && renderRow(bottom)}
+      </div>
+    </div>
+  )
+}
+
 /* ── InfoCard (간단한 강조 박스) ─────────── */
 export function InfoCard({
   label,
