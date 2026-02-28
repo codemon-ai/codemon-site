@@ -9,6 +9,8 @@ export default {
       pagination: false
     }
   },
+  'system-separation-moves-complexity': '시스템 분리는 복잡성을 줄이는 게 아니라 옮기는 것이다',
+  'reading-vs-understanding-api-docs': 'API 문서를 읽는 것과 API를 이해하는 것은 다르다',
   'claude-code-2-1-59-update': 'Claude Code 2.1.59 업데이트: 드디어 \'기억(Memory)\'을 탑재하다',
   'llm-harness-driven-agent': 'LLM 벤치마크는 왜 현실 코딩에서 무너지는가: Harness 주도 에이전트 설계',
   'claude-code-ban-risk-gemini-exchange': 'Claude Code 자동화의 함정: 계정 밴 리스크와 Gemini 3.1 Pro 두뇌 이식기',
