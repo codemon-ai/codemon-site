@@ -1,0 +1,159 @@
+---
+title: 일정관리 기술 설계
+description: 일정관리 Phase 1 구현 + Phase 2 설계
+created: 2026-03-05
+---
+
+# 일정관리 (Schedule Management) — 기술 설계
+
+> **작성일:** 2026-03-03
+> **상태:** Phase 1 완료 (기본 CRUD), Phase 2 대기 (예약 연결 + 캘린더 뷰)
+
+---
+
+## 1. 현재 구현 현황
+
+### 1.1 DB 스키마
+
+**파일:** `packages/db/src/schema/schedules.ts`
+
+#### `schedules` 테이블
+
+| 컬럼 | 타입 | 제약 | 설명 |
+|------|------|------|------|
+| id | UUID | PK, auto | 일정 ID |
+| userId | TEXT | NOT NULL, FK→users.id | 소유자 |
+| title | VARCHAR(200) | NOT NULL | 일정 제목 |
+| description | TEXT | nullable | 설명 |
+| startDate | VARCHAR(10) | nullable | 시작일 (YYYY-MM-DD) |
+| endDate | VARCHAR(10) | nullable | 종료일 (YYYY-MM-DD) |
+| createdAt | TIMESTAMP | NOT NULL, default NOW() | 생성일 |
+| updatedAt | TIMESTAMP | NOT NULL, default NOW() | 수정일 |
+| deletedAt | TIMESTAMP | nullable | 소프트 삭제 |
+
+#### `schedule_items` 테이블
+
+| 컬럼 | 타입 | 제약 | 설명 |
+|------|------|------|------|
+| id | UUID | PK, auto | 항목 ID |
+| scheduleId | UUID | NOT NULL, FK→schedules.id | 소속 일정 |
+| day | INTEGER | NOT NULL, default 1 | 여행 N일차 |
+| order | INTEGER | NOT NULL, default 0 | 같은 날 내 정렬 |
+| type | VARCHAR(20) | NOT NULL, default 'ACTIVITY' | 항목 타입 |
+| title | VARCHAR(200) | NOT NULL | 항목 제목 |
+| description | TEXT | nullable | 메모 |
+| time | VARCHAR(5) | nullable | 시간 (HH:MM) |
+| location | VARCHAR(200) | nullable | 장소 |
+| bookingId | UUID | nullable | 예약 연결 (FK) |
+| isCompleted | BOOLEAN | NOT NULL, default false | 완료 여부 |
+| createdAt | TIMESTAMP | NOT NULL, default NOW() | 생성일 |
+| updatedAt | TIMESTAMP | NOT NULL, default NOW() | 수정일 |
+
+**항목 타입 (`type`):**
+- `ACTIVITY` — 관광/체험 (파란색)
+- `TRANSPORT` — 교통/이동 (노란색)
+- `MEAL` — 식사 (초록색)
+- `HOTEL` — 숙소 (보라색)
+- `OTHER` — 기타 (회색)
+
+### 1.2 API 라우트
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| GET | `/api/schedules` | 내 일정 목록 (항목 수 포함) |
+| POST | `/api/schedules` | 일정 생성 |
+| GET | `/api/schedules/[id]` | 일정 상세 + 항목 전체 |
+| PATCH | `/api/schedules/[id]` | 일정 수정 |
+| DELETE | `/api/schedules/[id]` | 일정 소프트 삭제 |
+| POST | `/api/schedules/[id]/items` | 항목 추가 |
+| PATCH | `/api/schedules/[id]/items/[itemId]` | 항목 수정 |
+| DELETE | `/api/schedules/[id]/items/[itemId]` | 항목 삭제 |
+
+모든 API는 세션 인증 필수, 소유권 검증 포함.
+
+### 1.3 UI 구현
+
+| 경로 | 컴포넌트 | 기능 |
+|------|----------|------|
+| `/my/schedules` | SchedulesList | 일정 목록, 생성 모달 (BottomSheet) |
+| `/my/schedules/[id]` | 상세 페이지 | Day 탭, 항목 목록, 드래그앤드롭, 항목 추가/삭제/완료 |
+| `/schedule` | 리다이렉트 | → `/my/schedules` |
+
+**주요 기능:**
+- Day 탭: startDate~endDate 기반 N일차 탭 (스티키)
+- 드래그앤드롭: `@dnd-kit/core` + `@dnd-kit/sortable` (같은 날 내 순서 변경)
+- 항목 타입별 컬러 배지
+- 완료 체크박스 (취소선 + 색상 변경)
+- BottomSheet 모달: 제목, 타입 선택, 시간, 장소, 메모
+
+---
+
+## 2. 남은 작업 (Phase 2)
+
+### 2.1 예약-일정 자동 연결
+
+**트리거:** 결제 완료 (PAID 상태 전환)
+
+**로직:**
+1. 결제 완료 시 해당 booking의 상품 정보로 schedule_item 자동 생성
+2. `bookingId` FK로 예약과 연결
+3. 상품 타입에 따라 항목 타입 자동 매핑:
+   - 호텔/풀빌라 → `HOTEL`
+   - 차량/패스트트랙 → `TRANSPORT`
+   - 골프/가이드/기타 → `ACTIVITY`
+4. 사용자가 일정을 아직 생성하지 않은 경우 → 자동 일정 생성 (예약일 기반)
+5. 이미 같은 날짜 범위의 일정이 있으면 해당 일정에 추가
+
+**구현 위치:** 결제 완료 콜백 (`after()` 블록) 또는 별도 서비스 함수
+
+**API 변경:**
+- `POST /api/schedules/[id]/items` body에 `bookingId` 이미 지원 중
+- 추가: `POST /api/schedules/auto-create` — 결제 완료 시 자동 일정 생성/항목 추가
+
+### 2.2 예약-일정 UI 연결
+
+1. **일정 항목에서 예약 보기:** `bookingId`가 있는 항목 클릭 → 예약 상세(`/my/bookings/[id]`) 또는 바우처 링크
+2. **예약 목록에서 일정 보기:** `/my/bookings` 카드에 "일정에서 보기" 버튼 → 해당 일정 상세 페이지로 이동
+
+### 2.3 캘린더 뷰
+
+**라이브러리 후보:**
+- `@fullcalendar/react` — 가장 완성도 높음, 월간/주간/일간 뷰 내장
+- `react-big-calendar` — 경량, 커스터마이징 용이
+- 직접 구현 — shadcn/ui Calendar 기반 (의존성 최소)
+
+**기능:**
+- 월간 뷰: 날짜 셀에 일정 이벤트 표시 (클릭 → 상세)
+- 주간 뷰: 시간대별 항목 표시
+- 뷰 토글: 목록 ↔ 월간 ↔ 주간
+
+**구현 위치:** `/my/schedules` 페이지에 뷰 토글 추가
+
+### 2.4 일정 공유
+
+- 공유 URL 생성: `/schedules/shared/[shareToken]` (비로그인 접근 가능)
+- `schedules` 테이블에 `shareToken` 컬럼 추가 (VARCHAR, nullable, unique)
+- 공유 페이지: 읽기 전용, 일정 + 항목 표시
+- QR 코드 생성 (선택)
+
+---
+
+## 3. ER 다이어그램
+
+```
+users 1──N schedules 1──N schedule_items N──1? bookings
+                                              │
+                                              └── bookingId (nullable FK)
+```
+
+`bookingId`를 통해 예약과 일정 항목이 연결됨.
+하나의 예약이 여러 일정 항목에 연결될 수 있음 (예: 호텔 3박 → 3개 항목).
+
+---
+
+## 4. 참조
+
+- DB 스키마: `packages/db/src/schema/schedules.ts`
+- API: `apps/web/app/api/schedules/`
+- UI: `apps/web/app/(main)/my/schedules/`
+- make-todo 이슈: `rlAGYykNqGZXxxiP7wHAY` (일정 관리 Phase 2)
