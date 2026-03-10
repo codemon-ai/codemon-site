@@ -34,6 +34,10 @@ export default {
     title: 'Blog',
     type: 'page'
   },
+  news: {
+    title: 'News',
+    type: 'page'
+  },
   tools: {
     title: 'Tools',
     type: 'page',
@@ -48,6 +52,10 @@ export default {
     }
   },
   p: {
+    type: 'folder',
+    display: 'hidden'
+  },
+  partner: {
     type: 'folder',
     display: 'hidden'
   },
