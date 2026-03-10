@@ -7,7 +7,7 @@ import newsData from '../data/news.json'
 interface NewsItem {
   id: string
   title: string
-  summary: string
+  summary: string | string[]
   url: string
   source: string
   tags: string[]
@@ -108,9 +108,17 @@ export default function NewsIndex() {
                 {item.title}
               </h2>
             </a>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {item.summary}
-            </p>
+            {Array.isArray(item.summary) && item.summary.length > 1 ? (
+              <ul className="text-sm text-gray-600 dark:text-gray-400 mt-1 list-disc list-inside space-y-0.5">
+                {item.summary.map((point, i) => (
+                  <li key={i}>{point}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {Array.isArray(item.summary) ? item.summary[0] : item.summary}
+              </p>
+            )}
 
             {/* Bottom: source + blog link */}
             <div className="flex items-center gap-3 mt-3 text-sm">

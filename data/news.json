@@ -3,7 +3,10 @@
     {
       "id": "20260310-claude-code-migration-hajoeun",
       "title": "클로드 코드 쓰다가 결국 '이 도구'로 갈아탄 이유 (당근 하조은)",
-      "summary": "당근 하조은님이 Claude Code의 비용(월 $270), 속도, IDE 통합 부족 등의 한계로 Cursor로 갈아탄 이유를 공유. 복잡한 작업은 Claude Code, 일상 코딩은 Cursor로 하이브리드 전략 추천.",
+      "summary": [
+        "Claude Code의 비용(월 $270), 속도, IDE 통합 부족 등 한계 공유",
+        "복잡한 작업은 Claude Code, 일상 코딩은 Cursor로 하이브리드 전략 추천"
+      ],
       "url": "https://youtu.be/88k-kIl45Tk",
       "source": "YouTube",
       "tags": ["claude-code", "cursor", "migration"],
@@ -13,7 +16,10 @@
     {
       "id": "20260310-rag-vs-long-context-llm",
       "title": "RAG가 여전히 필요한가? LLM을 위한 최적 접근법 선택",
-      "summary": "RAG vs Long Context LLM 비교 분석. 대규모/동적 데이터는 RAG, 소규모/정적 데이터는 Long Context, 최선은 하이브리드(OP-RAG) 접근.",
+      "summary": [
+        "대규모/동적 데이터는 RAG, 소규모/정적 데이터는 Long Context",
+        "최선은 하이브리드(OP-RAG) 접근"
+      ],
       "url": "https://youtu.be/UabBYexBD4k",
       "source": "YouTube",
       "tags": ["llm", "rag", "architecture"],
@@ -23,7 +29,11 @@
     {
       "id": "20260309-ai-orchestrator-reddit",
       "title": "AI Orchestrator — Claude Code를 GUI로 감싸는 오픈소스 앱",
-      "summary": "Claude Code, Codex, Copilot, Gemini를 하나의 GUI로 통합한 오픈소스 Electron 앱. Erlang-style Supervisor Tree, 멀티 에이전트 검증, Debate System 등 670+ TypeScript 파일 규모.",
+      "summary": [
+        "Claude Code, Codex, Copilot, Gemini를 하나의 GUI로 통합한 Electron 앱",
+        "Erlang-style Supervisor Tree, 멀티 에이전트 검증, Debate System",
+        "670+ TypeScript 파일 규모의 오픈소스"
+      ],
       "url": "https://www.reddit.com/r/ClaudeCode/s/sjaPqjkYHK",
       "source": "Reddit",
       "tags": ["claude-code", "orchestrator", "multi-agent"],
@@ -33,7 +43,10 @@
     {
       "id": "20260309-make-opus-5-reddit",
       "title": "Make Opus 5 — Reddit 커뮤니티 토론 요약",
-      "summary": "r/Anthropic에서 Opus 5 출시 시기(2026 Q2 예상)와 기대사항 토론. Sonnet 5 선출시 후 Opus 5 예상, 가격은 Output $100+/1M tokens로 상승 전망.",
+      "summary": [
+        "Opus 5 출시 시기 2026 Q2 예상, Sonnet 5 선출시 후 Opus 5",
+        "가격은 Output $100+/1M tokens로 상승 전망"
+      ],
       "url": "https://www.reddit.com/r/Anthropic/s/12oo3WlYjm",
       "source": "Reddit",
       "tags": ["claude", "opus5", "anthropic"],
@@ -43,7 +56,10 @@
     {
       "id": "20260307-promptable-speech-to-text",
       "title": "최초의 프롬프트 가능한 음성 인식 모델 실시간 테스트",
-      "summary": "기존 Whisper의 고정 출력 한계를 넘어, 프롬프트로 출력 형식(JSON, 날짜 추출 등)을 제어할 수 있는 Promptable STT 모델의 첫 실시간 테스트 결과 소개.",
+      "summary": [
+        "기존 Whisper의 고정 출력 한계를 넘어선 Promptable STT 모델",
+        "프롬프트로 출력 형식(JSON, 날짜 추출 등) 제어 가능"
+      ],
       "url": "https://youtu.be/x2L8FXvJAS4",
       "source": "YouTube",
       "tags": ["speech", "stt", "promptable"],
@@ -53,7 +69,10 @@
     {
       "id": "20260306-claude-skills-2-workflow",
       "title": "Claude Skills 2.0으로 첫 AI 워크플로우 만들기 — 우리와 뭐가 다를까?",
-      "summary": "Skills 2.0의 핵심 업그레이드인 'skill-creator skill' 소개. 수동 SKILL.md 작성(3.5시간) 대신 대화만으로 5분 만에 스킬 생성 가능.",
+      "summary": [
+        "Skills 2.0 핵심 업그레이드: 'skill-creator skill'로 대화만으로 5분 만에 스킬 생성",
+        "수동 SKILL.md 작성(3.5시간) 대비 빠른 프로토타이핑 가능"
+      ],
       "url": "https://youtu.be/yLhnJMM464c",
       "source": "YouTube",
       "tags": ["claude-skills", "workflow", "automation"],
@@ -63,7 +82,11 @@
     {
       "id": "20260305-claude-code-skills-10x",
       "title": "Claude Code 스킬 10배 활용하는 새로운 방법",
-      "summary": "Claude Code 생산성 10배 향상 팁: 작업별 세션 분리, CLAUDE.md 50-100줄 유지, Plan Mode 활용, Sub-agents 병렬 작업, Git Worktrees, 재사용 가능한 스킬 구축.",
+      "summary": [
+        "작업별 세션 분리, CLAUDE.md 50-100줄 유지",
+        "Plan Mode + Sub-agents 병렬 작업 활용",
+        "Git Worktrees, 재사용 가능한 스킬 구축"
+      ],
       "url": "https://youtu.be/UxfeF4bSBYI",
       "source": "YouTube",
       "tags": ["claude-code", "skills", "productivity"],
@@ -73,7 +96,11 @@
     {
       "id": "20260305-harness-engineering-guide",
       "title": "하니스 엔지니어링 완전 공개 — Claude Code AI를 내 전담 직원으로 만드는 법",
-      "summary": "하니스 엔지니어링 = AI 에이전트를 시스템화하는 방법. Context, Skills, Tools, Memory, Constraints, Feedback Loops 6가지 구성요소로 바이브 코딩을 넘어 일관된 에이전트 운영 가능.",
+      "summary": [
+        "하니스 엔지니어링 = AI 에이전트를 시스템화하는 방법",
+        "Context, Skills, Tools, Memory, Constraints, Feedback Loops 6가지 구성",
+        "바이브 코딩을 넘어 일관된 에이전트 운영 가능"
+      ],
       "url": "https://youtu.be/8ExzWKXRLiM",
       "source": "YouTube",
       "tags": ["claude-code", "harness-engineering", "ai-agent"],
@@ -83,7 +110,10 @@
     {
       "id": "20260304-ai-ready-codebase",
       "title": "코드베이스가 AI 준비 안 됐어? 해결법은 여기 있어!",
-      "summary": "AI 에이전트가 효과적으로 작동하려면 코드베이스 준비 필요. 핵심 3가지: 테스트 커버리지 80%+, 문서-코드 일치, 일관된 디자인 패턴.",
+      "summary": [
+        "AI 에이전트가 효과적으로 작동하려면 코드베이스 준비 필요",
+        "핵심: 테스트 커버리지 80%+, 문서-코드 일치, 일관된 디자인 패턴"
+      ],
       "url": "https://youtu.be/uC44zFz7JSM",
       "source": "YouTube",
       "tags": ["ai-coding", "codebase", "best-practices"],
@@ -93,7 +123,10 @@
     {
       "id": "20260304-intent-vs-context-engineering",
       "title": "Intent Engineering vs Context Engineering — 어떤 게 진짜 효과 있을까?",
-      "summary": "Prompt Engineering → Context Engineering → Intent Engineering으로 진화. Intent Engineering은 목적, 목표, 제약, 가치, 성공 기준, 자율성 범위, 피드백 루프 7가지로 구성.",
+      "summary": [
+        "Prompt → Context → Intent Engineering으로 진화",
+        "Intent Engineering: 목적, 목표, 제약, 가치, 성공 기준, 자율성 범위, 피드백 루프 7가지"
+      ],
       "url": "https://youtu.be/jia2IcIuhCM",
       "source": "YouTube",
       "tags": ["intent-engineering", "context-engineering", "agents"],
