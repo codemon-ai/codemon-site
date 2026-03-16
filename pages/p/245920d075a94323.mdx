@@ -1,0 +1,49 @@
+---
+title: "BlueMango v2 플로우차트 — 공통 GNB"
+description: "BlueMango v2 공통 GNB 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, gnb]
+created: 2026-03-17
+---
+
+# 공통 GNB 플로우차트
+
+> IA 항목: GNB-01 ~ GNB-04 | 총 4개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart LR
+    GNB["🔽 하단 플로팅 GNB"]
+
+    GNB --> HOME_TAB["🏠 홈 탭<br/>GNB-01"]
+    GNB --> SRCH_TAB["🔍 검색 탭<br/>GNB-02"]
+    GNB --> SCHED_TAB["📅 일정 탭<br/>GNB-03"]
+    GNB --> MY_TAB["👤 마이 탭<br/>GNB-04"]
+
+    HOME_TAB -->|이동| HOME_PAGE["/"]
+    SRCH_TAB -->|이동| SEARCH_PAGE["/search"]
+    SCHED_TAB -->|이동| SCHEDULE_PAGE["/schedule"]
+    MY_TAB -->|이동| MY_PAGE["/my"]
+
+    MY_TAB -.->|안읽은 알림| BADGE["🔴 빨간 배지"]
+
+    style GNB fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style HOME_TAB fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style SRCH_TAB fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style SCHED_TAB fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style MY_TAB fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style BADGE fill:#EF4444,stroke:#EF4444,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| GNB-01 | 홈 탭 | 홈(/) 페이지로 이동, 파란색 활성화 | 필수 |
+| GNB-02 | 검색 탭 | 검색(/search) 페이지로 이동 | 필수 |
+| GNB-03 | 일정 탭 | 일정(/schedule) 페이지로 이동 | 필수 |
+| GNB-04 | 마이 탭 | 마이(/my) 페이지로 이동, 읽지 않은 알림 시 빨간 배지 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

@@ -1,0 +1,113 @@
+---
+title: "BlueMango v2 플로우차트 — 마이페이지 (My)"
+description: "BlueMango v2 마이페이지 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, mypage]
+created: 2026-03-17
+---
+
+# 마이페이지 (My) 플로우차트
+
+> IA 항목: MYPAGE-01 ~ MYPAGE-15 | 총 15개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    GNB_MY["👤 GNB 마이 탭"] --> AUTH_CHECK{"로그인 상태?"}
+
+    AUTH_CHECK -->|비로그인| GUEST_STATE["비로그인 안내<br/>로그인/회원가입 버튼<br/>MYPAGE-01"]
+    GUEST_STATE -->|로그인| LOGIN["/auth/login"]
+    GUEST_STATE -->|회원가입| SIGNUP["/auth/signup"]
+
+    AUTH_CHECK -->|로그인| MY_MAIN["마이페이지 메인<br/>/my"]
+
+    MY_MAIN --> PROFILE_CARD["프로필 카드<br/>아바타(이니셜), 이름, 이메일<br/>MYPAGE-02"]
+    MY_MAIN --> POINTS_CARD["포인트 카드<br/>현재 잔액 표시<br/>MYPAGE-03"]
+    MY_MAIN --> MENU_HUB["메뉴 허브<br/>4개 섹션 구성<br/>MYPAGE-04"]
+
+    subgraph SECTION1 ["내 예약/여행"]
+        BOOKINGS["예약 내역<br/>/my/bookings<br/>MYPAGE-05"]
+        BOOKINGS --> EMPTY_BOOKINGS{"예약 유무?"}
+        EMPTY_BOOKINGS -->|없음| NO_BOOKING["빈 예약 안내<br/>상품 둘러보기 링크<br/>MYPAGE-06"]
+        EMPTY_BOOKINGS -->|있음| BOOKING_LIST["예약 카드 목록<br/>상품명, 이용일, 인원<br/>상태 배지, 가격"]
+        BOOKING_LIST -->|카드 클릭| BOOKING_DETAIL["예약 상세<br/>/my/bookings/{id}<br/>MYPAGE-07"]
+    end
+
+    subgraph SECTION2 ["내 활동"]
+        REVIEWS["내 리뷰<br/>/my/reviews<br/>MYPAGE-13"]
+        REVIEWS --> REVIEW_CARDS["별점, 내용, 날짜<br/>상품 정보"]
+        QNA["내 Q&A<br/>/my/questions<br/>MYPAGE-14"]
+        QNA --> QNA_LIST["문의 항목<br/>답변 상태 표시"]
+    end
+
+    subgraph SECTION3 ["정보/안내"]
+        NOTI["알림<br/>/my/notifications<br/>MYPAGE-11"]
+        NOTI --> NOTI_LIST["읽음/안읽음 구분<br/>클릭 시 관련 페이지"]
+        NOTICES["공지사항<br/>/my/notices"]
+        TIPS["여행팁<br/>/my/tips"]
+        TERMS["이용약관<br/>/terms"]
+        CHANNEL["채널톡<br/>(외부 링크)"]
+    end
+
+    subgraph SECTION4 ["계정"]
+        PROFILE_EDIT["프로필 수정<br/>/my/profile<br/>MYPAGE-08"]
+        PROFILE_EDIT --> PROFILE_FORM["이름, 연락처, 영문이름<br/>생년월일, 성별, 거주지"]
+        PROFILE_FORM -->|저장| SAVE_SUCCESS["저장 성공 메시지<br/>MYPAGE-09"]
+
+        PW_CHANGE["비밀번호 변경<br/>MYPAGE-10"]
+        PW_CHANGE --> PW_FORM["현재/새/확인<br/>비밀번호 입력"]
+        PW_FORM -->|변경| PW_SUCCESS["변경 성공 메시지"]
+
+        POINTS_DETAIL["포인트 내역<br/>/my/points<br/>MYPAGE-12"]
+        POINTS_DETAIL --> POINTS_LIST["잔액 + 적립/사용<br/>트랜잭션 내역"]
+
+        LOGOUT_BTN["로그아웃<br/>MYPAGE-15"]
+        LOGOUT_BTN --> LOGOUT_CONFIRM["확인 다이얼로그"]
+        LOGOUT_CONFIRM -->|확인| LOGGED_OUT["홈(/) 이동"]
+    end
+
+    MENU_HUB --> BOOKINGS
+    MENU_HUB --> REVIEWS
+    MENU_HUB --> QNA
+    MENU_HUB --> NOTI
+    MENU_HUB --> NOTICES
+    MENU_HUB --> TIPS
+    MENU_HUB --> TERMS
+    MENU_HUB --> CHANNEL
+    MENU_HUB --> PROFILE_EDIT
+    MENU_HUB --> PW_CHANGE
+    MENU_HUB --> POINTS_DETAIL
+    MENU_HUB --> LOGOUT_BTN
+
+    POINTS_CARD -->|클릭| POINTS_DETAIL
+
+    style MY_MAIN fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style MENU_HUB fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style GUEST_STATE fill:#94A3B8,stroke:#94A3B8,color:#fff
+    style BOOKING_DETAIL fill:#8B5CF6,stroke:#8B5CF6,color:#fff
+    style SAVE_SUCCESS fill:#10B981,stroke:#10B981,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| MYPAGE-01 | 비로그인 상태 | 로그인/회원가입 버튼 + 안내 메시지 | 필수 |
+| MYPAGE-02 | 프로필 카드 | 아바타(이니셜), 이름, 이메일 | 필수 |
+| MYPAGE-03 | 포인트 카드 | 현재 잔액, 클릭 시 /my/points 이동 | 필수 |
+| MYPAGE-04 | 메뉴 구성 | 4개 섹션 (예약여행/활동/정보안내/계정) | 필수 |
+| MYPAGE-05 | 예약 내역 | 상품명, 이용일, 인원, 상태, 가격 카드 | 필수 |
+| MYPAGE-06 | 빈 예약 | 클립보드 아이콘 + 안내 + 상품 둘러보기 | 필수 |
+| MYPAGE-07 | 예약 상세 | 상품명, 날짜, 인원, 결제정보 상세 | 필수 |
+| MYPAGE-08 | 프로필 수정 | 이름, 연락처, 영문이름 등 편집 폼 | 필수 |
+| MYPAGE-09 | 프로필 저장 | 저장 성공 메시지 표시 | 필수 |
+| MYPAGE-10 | 비밀번호 변경 | 현재/새/확인 비밀번호 → 변경 완료 | 필수 |
+| MYPAGE-11 | 알림 목록 | 읽음/안읽음 구분, 관련 페이지 이동 | 필수 |
+| MYPAGE-12 | 포인트 내역 | 잔액 + 적립/사용 트랜잭션 목록 | 필수 |
+| MYPAGE-13 | 내 리뷰 | 별점, 내용, 날짜, 상품 정보 카드 | 필수 |
+| MYPAGE-14 | 내 Q&A | 문의 항목 + 답변 상태 | 필수 |
+| MYPAGE-15 | 로그아웃 | 확인 다이얼로그 → 홈 이동 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

@@ -1,0 +1,116 @@
+---
+title: "BlueMango v2 플로우차트 — 홈 (Home)"
+description: "BlueMango v2 홈 화면 및 상품 조회 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, home, product]
+created: 2026-03-17
+---
+
+# 홈 (Home) 플로우차트
+
+> IA 항목: HOME-01 ~ HOME-06, PROD-01 ~ PROD-10 | 총 16개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    GNB_HOME["🏠 GNB 홈 탭"] --> HOME_MAIN
+
+    HOME_MAIN["홈 메인<br/>/"]
+
+    HOME_MAIN --> HERO["히어로 배너 캐러셀<br/>HOME-01"]
+    HOME_MAIN --> PRODUCT_LIST["상품 카드 목록 (1열)<br/>HOME-02"]
+    HOME_MAIN --> NOTI_BELL["🔔 알림 벨 아이콘<br/>HOME-06"]
+
+    PRODUCT_LIST --> DUAL_PRICE["이중 가격 표시<br/>THB + KRW<br/>HOME-03"]
+    PRODUCT_LIST --> INF_SCROLL["무한 스크롤<br/>HOME-05"]
+    INF_SCROLL --> PRODUCT_LIST
+
+    NOTI_BELL -->|클릭| NOTIFICATIONS["/my/notifications"]
+
+    PRODUCT_LIST -->|상품 카드 클릭<br/>HOME-04| CATEGORY_LIST
+
+    HOME_MAIN -->|카테고리 진입| CATEGORY_LIST["카테고리 상품 목록<br/>/category/{slug}<br/>PROD-01"]
+
+    CATEGORY_LIST -->|상품 클릭| PRODUCT_DETAIL
+
+    subgraph DETAIL ["상품 상세 /package/{id}"]
+        PRODUCT_DETAIL["상품 상세 페이지<br/>PROD-02"]
+        PRODUCT_DETAIL --> IMAGES["대표 이미지<br/>+N 배지<br/>PROD-02"]
+        PRODUCT_DETAIL --> NAME["상품명 (KO+EN)<br/>PROD-03"]
+        PRODUCT_DETAIL --> PRICE["가격 (THB+KRW)<br/>PROD-04"]
+        PRODUCT_DETAIL --> DESC["상세설명/유의사항/안내<br/>마크다운 렌더링<br/>PROD-05"]
+        PRODUCT_DETAIL --> YOUTUBE["YouTube 임베드<br/>PROD-10"]
+    end
+
+    subgraph PACKAGE ["패키지 상품 (해당 시)"]
+        PKG_ITEMS["패키지 구성 상품<br/>카드 형태 N개<br/>PROD-06"]
+        PKG_DISCOUNT["패키지 할인 표시<br/>취소선 + 할인율 배지<br/>PROD-07"]
+    end
+
+    PRODUCT_DETAIL --> PKG_ITEMS
+    PKG_ITEMS --> PKG_DISCOUNT
+
+    PRODUCT_DETAIL --> BOOKING_BTN["하단 플로팅<br/>예약하기 버튼<br/>PROD-08"]
+    PRODUCT_DETAIL --> CART_BTN["장바구니 담기<br/>PROD-09"]
+
+    BOOKING_BTN -->|클릭| BOOKING_FORM["/booking/{id}"]
+    CART_BTN -->|클릭| CART_ADD["장바구니에 추가<br/>확인 메시지"]
+
+    style HOME_MAIN fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style PRODUCT_DETAIL fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style CATEGORY_LIST fill:#6366F1,stroke:#6366F1,color:#fff
+    style BOOKING_BTN fill:#10B981,stroke:#10B981,color:#fff
+    style CART_BTN fill:#F59E0B,stroke:#F59E0B,color:#fff
+    style HERO fill:#8B5CF6,stroke:#8B5CF6,color:#fff
+```
+
+## 상품 유형별 분기
+
+```mermaid
+flowchart LR
+    DETAIL["상품 상세"] --> TYPE{"상품 유형?"}
+
+    TYPE -->|HOTEL| HOTEL["🏨 호텔/풀빌라/골프텔<br/>체크인·체크아웃<br/>객실/어메니티"]
+    TYPE -->|GOLF| GOLF["⛳ 골프장<br/>라운드/그린피<br/>캐디/카트"]
+    TYPE -->|VEHICLE| VEHICLE["🚗 차량<br/>서비스유형<br/>픽업/드롭"]
+    TYPE -->|TOUR| TOUR["🗺️ 투어<br/>단독/지상/해양/가이드<br/>일정/포함사항"]
+    TYPE -->|ETC| ETC["🎫 기타<br/>스파/레스토랑/쇼<br/>패스트트랙/비자"]
+
+    HOTEL --> BOOKING["/booking/{id}"]
+    GOLF --> BOOKING
+    VEHICLE --> BOOKING
+    TOUR --> BOOKING
+    ETC --> BOOKING
+
+    style DETAIL fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style HOTEL fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style GOLF fill:#10B981,stroke:#10B981,color:#fff
+    style VEHICLE fill:#F59E0B,stroke:#F59E0B,color:#fff
+    style TOUR fill:#8B5CF6,stroke:#8B5CF6,color:#fff
+    style ETC fill:#EC4899,stroke:#EC4899,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| HOME-01 | 히어로 배너 | 상단 캐러셀 배너 | 필수 |
+| HOME-02 | 상품 목록 | 1열 레이아웃, 이미지/상품명/가격 | 필수 |
+| HOME-03 | 이중 가격 표시 | THB + KRW 환산 가격 | 필수 |
+| HOME-04 | 상품 카드 클릭 | 상품 상세 /package/{id} 이동 | 필수 |
+| HOME-05 | 무한 스크롤 | 하단 스크롤 시 추가 로딩 | 필수 |
+| HOME-06 | 알림 벨 아이콘 | /my/notifications 이동 | 필수 |
+| PROD-01 | 카테고리 목록 | 카테고리별 상품 카드 노출 | 필수 |
+| PROD-02 | 상품 상세 이미지 | 대표 이미지, +N 배지 | 필수 |
+| PROD-03 | 상품명 | 한글 우선 + 영문 보조 | 필수 |
+| PROD-04 | 가격 정보 | THB 판매가 + KRW 환산 이중 | 필수 |
+| PROD-05 | 상세설명 | 마크다운 렌더링 (설명/유의/안내) | 필수 |
+| PROD-06 | 패키지 구성 | 구성 상품 카드 N개 표시 | 필수 |
+| PROD-07 | 패키지 할인 | 취소선 합산가 + 할인율 배지 | 필수 |
+| PROD-08 | 예약하기 버튼 | 하단 플로팅 → /booking/{id} | 필수 |
+| PROD-09 | 장바구니 담기 | 장바구니 추가 + 확인 메시지 | 필수 |
+| PROD-10 | YouTube 영상 | YouTube 임베드 재생 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

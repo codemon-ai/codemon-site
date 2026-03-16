@@ -1,0 +1,50 @@
+---
+title: "BlueMango v2 플로우차트 — 알림 (Alarm)"
+description: "BlueMango v2 알림 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, alarm]
+created: 2026-03-17
+---
+
+# 알림 (Alarm) 플로우차트
+
+> IA 항목: MYPAGE-11, HOME-06 | 알림 관련 화면
+
+## 플로우차트
+
+```mermaid
+flowchart LR
+    ENTRY1["🏠 홈 — 벨 아이콘<br/>HOME-06"] --> NOTI_LIST
+    ENTRY2["👤 마이페이지<br/>알림 메뉴"] --> NOTI_LIST
+
+    NOTI_LIST["📋 알림 목록<br/>/my/notifications<br/>MYPAGE-11"]
+
+    NOTI_LIST --> UNREAD["🔵 안읽은 알림"]
+    NOTI_LIST --> READ["⚪ 읽은 알림"]
+
+    UNREAD -->|클릭| MARK_READ["읽음 처리"]
+    MARK_READ --> NAVIGATE
+
+    READ -->|클릭| NAVIGATE
+
+    NAVIGATE{"알림 유형별 이동"}
+
+    NAVIGATE -->|예약 상태 변경| BOOKING_DETAIL["/my/bookings/{id}"]
+    NAVIGATE -->|결제 완료| PAYMENT_RESULT["/payment/success"]
+    NAVIGATE -->|프로모션| PRODUCT_DETAIL["/package/{id}"]
+    NAVIGATE -->|공지사항| NOTICE_DETAIL["/my/notices/{id}"]
+
+    style NOTI_LIST fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style UNREAD fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style READ fill:#94A3B8,stroke:#94A3B8,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| HOME-06 | 홈 알림 벨 아이콘 | 상단 벨 아이콘 클릭 → /my/notifications 이동 | 필수 |
+| MYPAGE-11 | 알림 목록 | 읽음/안읽음 구분, 클릭 시 관련 페이지 이동 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

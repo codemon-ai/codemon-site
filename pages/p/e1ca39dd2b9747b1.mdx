@@ -1,0 +1,81 @@
+---
+title: "BlueMango v2 플로우차트 — 일정 (Schedule)"
+description: "BlueMango v2 일정관리 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, schedule]
+created: 2026-03-17
+---
+
+# 일정 (Schedule) 플로우차트
+
+> IA 항목: SCHED-01 ~ SCHED-15 | 총 15개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    GNB["📅 GNB 일정 탭<br/>SCHED-15"] --> AUTH_CHECK{"로그인 상태?"}
+    AUTH_CHECK -->|비로그인| LOGIN["로그인 페이지"]
+    AUTH_CHECK -->|로그인| SCHED_CHECK{"일정 유무?"}
+
+    SCHED_CHECK -->|없음| EMPTY["빈 상태 화면<br/>새 일정 만들기 안내<br/>SCHED-01"]
+    SCHED_CHECK -->|있음| ACTIVE["활성 일정 표시"]
+
+    EMPTY --> CREATE_BTN["새 일정 만들기<br/>SCHED-02"]
+    CREATE_BTN --> CALENDAR_BS["캘린더 BottomSheet<br/>출발일/도착일 선택<br/>SCHED-03"]
+    CALENDAR_BS -->|확인| ACTIVE
+
+    ACTIVE --> DDAY["D-Day 카운터<br/>D-N 표시<br/>SCHED-04"]
+    ACTIVE --> EXCHANGE["환율 정보<br/>THB→KRW<br/>SCHED-05"]
+    ACTIVE --> DAYS["일차별 탭<br/>Day 1, Day 2, ...<br/>SCHED-06"]
+
+    DAYS -->|탭 클릭| DAY_CONTENT["해당 일차 예약 항목<br/>SCHED-07"]
+    DAY_CONTENT --> AUTO_BOOKING["결제 완료 예약<br/>자동 연결 표시<br/>SCHED-08"]
+    DAY_CONTENT --> DRAG["드래그 순서 변경<br/>SCHED-09"]
+
+    ACTIVE --> EDIT["일정 수정<br/>날짜 변경<br/>SCHED-10"]
+    EDIT --> EDIT_CONFIRM["확인 모달"]
+    EDIT_CONFIRM -->|확인| ACTIVE
+
+    ACTIVE --> DELETE["일정 삭제<br/>SCHED-11"]
+    DELETE --> DEL_CONFIRM["확인 모달"]
+    DEL_CONFIRM -->|확인| DEL_TOAST["Toast 알림"]
+    DEL_TOAST --> SCHED_CHECK
+
+    ACTIVE --> NEW_BOOKING["새로운 예약하기<br/>SCHED-14"]
+    NEW_BOOKING --> CATEGORIES["/categories"]
+
+    ACTIVE --> HISTORY_LINK["일정 히스토리"]
+    HISTORY_LINK --> HISTORY_LIST["전체 일정 히스토리<br/>날짜순 목록<br/>SCHED-12"]
+    HISTORY_LIST -->|항목 클릭| HISTORY_DETAIL["히스토리 상세<br/>읽기 전용<br/>SCHED-13"]
+
+    style ACTIVE fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style EMPTY fill:#94A3B8,stroke:#94A3B8,color:#fff
+    style DAYS fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style DDAY fill:#F59E0B,stroke:#F59E0B,color:#fff
+    style EXCHANGE fill:#10B981,stroke:#10B981,color:#fff
+    style AUTO_BOOKING fill:#8B5CF6,stroke:#8B5CF6,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| SCHED-01 | 빈 상태 | 일정 없음 → 새 일정 만들기 안내 | 필수 |
+| SCHED-02 | 새 일정 만들기 | 캘린더 BottomSheet 열기 | 필수 |
+| SCHED-03 | 날짜 선택 | 출발일/도착일 선택 → 일정 생성 | 필수 |
+| SCHED-04 | D-Day 카운터 | 여행 시작일까지 D-N 표시 | 필수 |
+| SCHED-05 | 환율 정보 | THB→KRW 현재 환율 표시 | 필수 |
+| SCHED-06 | 일차별 탭 | Day 1, Day 2, ... 탭 표시 | 필수 |
+| SCHED-07 | 탭 네비게이션 | 일차 탭 클릭 → 해당 일차 예약 항목 | 필수 |
+| SCHED-08 | 자동 예약 표시 | 결제 완료 상품 자동 연결 | 필수 |
+| SCHED-09 | 순서 변경 | 드래그로 일차 내 항목 순서 변경 | 필수 |
+| SCHED-10 | 일정 수정 | 날짜 변경 → 확인 모달 | 필수 |
+| SCHED-11 | 일정 삭제 | 확인 모달 → Toast 알림 | 필수 |
+| SCHED-12 | 일정 히스토리 | 과거 일정 날짜순 목록 | 필수 |
+| SCHED-13 | 히스토리 상세 | 읽기 전용 상세 보기 | 필수 |
+| SCHED-14 | 새로운 예약하기 | /categories 이동 | 필수 |
+| SCHED-15 | GNB 일정 탭 | /schedule 이동 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

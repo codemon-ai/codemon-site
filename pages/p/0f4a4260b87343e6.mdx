@@ -1,0 +1,59 @@
+---
+title: "BlueMango v2 플로우차트 — 문서 (Doc)"
+description: "BlueMango v2 인보이스/바우처 문서 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, doc, invoice, voucher]
+created: 2026-03-17
+---
+
+# 문서 (Doc) 플로우차트
+
+> IA 항목: DOC-01 ~ DOC-04 + PLAN-03 | 총 4개 화면 + 2차개발 1개
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    ENTRY["🔗 공개 링크 접근<br/>(비로그인 가능)"]
+
+    ENTRY --> DOC_TYPE{"문서 유형?"}
+
+    DOC_TYPE -->|인보이스| INV_CHECK{"UUID 유효?"}
+    DOC_TYPE -->|바우처| VCH_CHECK{"UUID 유효?"}
+
+    INV_CHECK -->|유효| INVOICE["📄 인보이스 표시<br/>/invoice/{uuid}<br/>DOC-01"]
+    INV_CHECK -->|무효/만료| ERROR["❌ 에러 페이지<br/>DOC-04"]
+
+    VCH_CHECK -->|유효| VOUCHER["🎫 바우처 표시<br/>/voucher/{uuid}<br/>DOC-03"]
+    VCH_CHECK -->|무효/만료| ERROR
+
+    INVOICE --> INV_CONTENT["인보이스 번호<br/>발행일, 예약정보<br/>총 금액, QR코드"]
+    INVOICE --> PDF_BTN["📥 PDF 다운로드/인쇄<br/>DOC-02"]
+
+    VOUCHER --> VCH_CONTENT["바우처 번호<br/>예약정보, 인원<br/>이용안내, QR코드"]
+    VOUCHER --> PDF_BTN2["📥 PDF 다운로드/인쇄<br/>DOC-02"]
+
+    PDF_BTN --> PDF_AUTO["🤖 PDF 자동생성<br/>PLAN-03"]:::phase2
+    PDF_BTN2 --> PDF_AUTO
+
+    classDef phase2 stroke-dasharray: 5 5, stroke:#FF6B35, fill:#FFF3ED, color:#FF6B35
+
+    style INVOICE fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style VOUCHER fill:#10B981,stroke:#10B981,color:#fff
+    style ERROR fill:#EF4444,stroke:#EF4444,color:#fff
+```
+
+> 🟠 **점선 노드**: 2차개발 항목 (추가계약 범위)
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| DOC-01 | 인보이스 | 비로그인 공개 링크, 인보이스 정보 + QR코드 | 필수 |
+| DOC-02 | PDF 다운로드/인쇄 | 인쇄 대화상자 또는 PDF 다운로드 | 필수 |
+| DOC-03 | 바우처 | 비로그인 공개 링크, 바우처 정보 + QR코드 | 필수 |
+| DOC-04 | 에러 페이지 | 잘못된/만료된 링크 접근 시 에러 표시 | 필수 |
+| PLAN-03 | PDF 자동생성 | 서버 자동 PDF 생성 | **2차개발** |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

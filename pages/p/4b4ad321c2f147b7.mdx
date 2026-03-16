@@ -1,0 +1,55 @@
+---
+title: "BlueMango v2 플로우차트 — 콘텐츠 (Content)"
+description: "BlueMango v2 콘텐츠(여행팁, 공지사항, 약관) 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, content]
+created: 2026-03-17
+---
+
+# 콘텐츠 (Content) 플로우차트
+
+> IA 항목: CONT-01 ~ CONT-06 | 총 6개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    MYPAGE["👤 마이페이지"] --> TIPS_MENU["여행팁 메뉴"]
+    MYPAGE --> NOTICE_MENU["공지사항 메뉴"]
+    FOOTER["📄 푸터 링크"] --> TERMS_PAGE
+    FOOTER --> PRIVACY_PAGE
+
+    TIPS_MENU --> TIPS_LIST["📝 여행팁 목록<br/>/my/tips<br/>CONT-01"]
+    TIPS_LIST -->|카드 클릭| TIPS_DETAIL["📖 여행팁 상세<br/>/my/tips/{id}<br/>CONT-02"]
+    TIPS_DETAIL --> TIPS_CONTENT["마크다운 렌더링<br/>썸네일, 제목, 날짜"]
+
+    NOTICE_MENU --> NOTICE_LIST["📢 공지사항 목록<br/>/my/notices<br/>CONT-03"]
+    NOTICE_LIST -->|항목 클릭| NOTICE_DETAIL["📖 공지사항 상세<br/>/my/notices/{id}<br/>CONT-04"]
+    NOTICE_DETAIL --> NOTICE_CONTENT["마크다운 렌더링<br/>제목, 게시일"]
+
+    TERMS_PAGE["📋 이용약관<br/>/terms<br/>CONT-05"]
+    TERMS_PAGE --> TERMS_CONTENT["약관 제목<br/>최종 수정일<br/>마크다운 본문"]
+
+    PRIVACY_PAGE["🔒 개인정보처리방침<br/>/privacy<br/>CONT-06"]
+    PRIVACY_PAGE --> PRIVACY_CONTENT["개인정보처리방침<br/>마크다운 본문"]
+
+    style TIPS_LIST fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style NOTICE_LIST fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style TERMS_PAGE fill:#6366F1,stroke:#6366F1,color:#fff
+    style PRIVACY_PAGE fill:#6366F1,stroke:#6366F1,color:#fff
+    style MYPAGE fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| CONT-01 | 여행팁 목록 | 썸네일, 제목, 요약, 날짜 카드 표시 | 필수 |
+| CONT-02 | 여행팁 상세 | 마크다운 렌더링 전체 콘텐츠 | 필수 |
+| CONT-03 | 공지사항 목록 | 제목, 게시일 항목 표시 | 필수 |
+| CONT-04 | 공지사항 상세 | 마크다운 렌더링 전체 콘텐츠 | 필수 |
+| CONT-05 | 이용약관 | DB terms 테이블 → react-markdown 렌더링 | 필수 |
+| CONT-06 | 개인정보처리방침 | DB terms 테이블 → react-markdown 렌더링 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

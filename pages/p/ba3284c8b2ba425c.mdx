@@ -1,0 +1,173 @@
+---
+title: "BlueMango v2 플로우차트 — 예약 (Book)"
+description: "BlueMango v2 예약/장바구니/결제 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, booking, cart, checkout]
+created: 2026-03-17
+---
+
+# 예약 (Book) 플로우차트
+
+> IA 항목: BOOK-01 ~ BOOK-12, CART-01 ~ CART-12, PLAN-03 ~ PLAN-06 | 총 24개 화면 + 2차개발 4개
+
+## 1. 예약 위자드
+
+```mermaid
+flowchart TD
+    PRODUCT_DETAIL["상품 상세<br/>/package/{id}"] -->|예약하기 클릭| BOOKING_FORM
+
+    BOOKING_FORM["예약 폼<br/>/booking/{id}"]
+
+    BOOKING_FORM --> TRAVELER["여행자 정보<br/>이름, 연락처, 이메일<br/>BOOK-01"]
+    BOOKING_FORM --> DATE_PICKER["이용일 날짜 피커<br/>BOOK-02"]
+    BOOKING_FORM --> COUNTER["성인/아동 카운터<br/>+/- 버튼<br/>BOOK-03"]
+
+    TRAVELER --> CALC["결제 금액 자동 계산<br/>단가 × 인원<br/>BOOK-04"]
+    DATE_PICKER --> CALC
+    COUNTER --> CALC
+
+    CALC --> DUAL_PRICE["이중 가격 표시<br/>THB + KRW<br/>BOOK-05"]
+
+    BOOKING_FORM --> REQUIRED_CHECK{"필수 항목<br/>입력 여부?"}
+    REQUIRED_CHECK -->|미입력| DISABLED["예약 버튼 비활성화<br/>BOOK-06"]
+    REQUIRED_CHECK -->|완료| SUBMIT["예약하기 버튼<br/>BOOK-11"]
+
+    BOOKING_FORM --> TYPE_FIELDS{"상품 유형별<br/>추가 필드"}
+    TYPE_FIELDS -->|숙박| HOTEL_FIELDS["체크인/체크아웃<br/>박수 자동계산<br/>BOOK-07"]
+    TYPE_FIELDS -->|숙박| BLOCKED["차단 날짜 경고<br/>빨간색 경고 박스<br/>BOOK-08"]
+    TYPE_FIELDS -->|골프| GOLF_FIELDS["라운드 날짜/인원<br/>BOOK-09"]
+    TYPE_FIELDS -->|차량| VEHICLE_FIELDS["서비스 유형<br/>픽업/드롭 정보<br/>BOOK-10"]
+
+    BOOKING_FORM --> GUEST_CHECK{"회원 상태?"}
+    GUEST_CHECK -->|비회원| GUEST_FORM["비회원 예약 폼<br/>연락처/이메일 필수<br/>BOOK-12"]
+
+    SUBMIT -->|예약 생성| CHECKOUT["/checkout"]
+
+    style BOOKING_FORM fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style SUBMIT fill:#10B981,stroke:#10B981,color:#fff
+    style DISABLED fill:#94A3B8,stroke:#94A3B8,color:#fff
+    style BLOCKED fill:#EF4444,stroke:#EF4444,color:#fff
+    style HOTEL_FIELDS fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style GOLF_FIELDS fill:#10B981,stroke:#10B981,color:#fff
+    style VEHICLE_FIELDS fill:#F59E0B,stroke:#F59E0B,color:#fff
+```
+
+## 2. 장바구니
+
+```mermaid
+flowchart TD
+    CART_ENTRY["🛒 장바구니<br/>/cart"]
+
+    CART_ENTRY --> TABS{"4개 탭"}
+
+    TABS --> TAB1["장바구니 탭"]
+    TABS --> TAB2["예약대기 탭<br/>PENDING 상태<br/>CART-08"]
+    TABS --> TAB3["미결제 탭<br/>INVOICE_SENT<br/>CART-09"]
+    TABS --> TAB4["결제완료 탭<br/>PAYMENT_COMPLETED<br/>CART-10"]
+
+    TAB1 --> EMPTY_CHECK{"장바구니<br/>비어있음?"}
+    EMPTY_CHECK -->|비어있음| EMPTY["빈 장바구니 안내<br/>쇼핑백 아이콘<br/>CART-07"]
+    EMPTY_CHECK -->|상품 있음| CART_LIST["장바구니 목록<br/>체크박스 + 상품정보<br/>CART-01"]
+
+    CART_LIST --> SELECT_ALL["전체선택 체크박스<br/>CART-02"]
+    CART_LIST --> DELETE_ONE["개별 삭제<br/>휴지통 아이콘<br/>CART-03"]
+    CART_LIST --> DELETE_BATCH["선택삭제 버튼<br/>CART-04"]
+    CART_LIST --> QTY_COUNTER["수량 +/- 버튼<br/>1~99 범위<br/>CART-05"]
+    CART_LIST --> TOTAL["총 결제금액<br/>THB + KRW<br/>CART-06"]
+
+    CART_LIST --> RESERVE_BTN["예약하기 버튼<br/>CART-11"]
+    RESERVE_BTN --> BOOKING_FORM["/booking/{productId}"]
+
+    style CART_ENTRY fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style TAB1 fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style TAB2 fill:#F59E0B,stroke:#F59E0B,color:#fff
+    style TAB3 fill:#EF4444,stroke:#EF4444,color:#fff
+    style TAB4 fill:#10B981,stroke:#10B981,color:#fff
+    style EMPTY fill:#94A3B8,stroke:#94A3B8,color:#fff
+```
+
+## 3. 결제 + 2차개발
+
+```mermaid
+flowchart TD
+    CHECKOUT["결제 페이지<br/>/checkout"]
+
+    CHECKOUT --> PAYMENT_METHOD{"결제 수단?"}
+
+    PAYMENT_METHOD -->|카드결제| INICIS["INICIS PG 결제<br/>CART-12"]
+    PAYMENT_METHOD -->|무통장입금| BANK["무통장입금<br/>수동 확인"]
+
+    INICIS -->|성공| SUCCESS["결제 성공<br/>/payment/success"]
+    INICIS -->|실패| FAIL["결제 실패<br/>/payment/fail"]
+
+    BANK --> BANK_AUTO["무통장입금 자동화<br/>PayAction 가상계좌<br/>PLAN-06"]:::phase2
+
+    SUCCESS --> VOUCHER["바우처 수령"]
+    SUCCESS --> SCHEDULE["일정 자동 등록"]
+
+    CHECKOUT --> COUPON_POINT["쿠폰/포인트<br/>할인 적용"]
+    COUPON_POINT --> CHECKOUT
+
+    CHECKOUT --> INSTALLMENT["계약금/잔금<br/>2단계 결제<br/>PLAN-05"]:::phase2
+
+    CHECKOUT --> PKG_PRODUCT["패키지 상품<br/>묶음 결제<br/>PLAN-04"]:::phase2
+
+    SUCCESS --> PDF_AUTO["PDF 자동생성<br/>인보이스/바우처<br/>PLAN-03"]:::phase2
+
+    classDef phase2 stroke-dasharray: 5 5, stroke:#FF6B35, fill:#FFF3ED, color:#FF6B35
+
+    style CHECKOUT fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style SUCCESS fill:#10B981,stroke:#10B981,color:#fff
+    style FAIL fill:#EF4444,stroke:#EF4444,color:#fff
+    style INICIS fill:#3B82F6,stroke:#3B82F6,color:#fff
+```
+
+> 🟠 **점선 노드**: 2차개발 항목 (추가계약 범위)
+
+## 항목 매핑
+
+### 예약 위자드 (BOOK)
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| BOOK-01 | 여행자 정보 | 이름, 연락처[필수], 이메일[필수] | 필수 |
+| BOOK-02 | 날짜 피커 | 이용일 선택 | 필수 |
+| BOOK-03 | 인원 카운터 | 성인 1~20, 아동 0~20 | 필수 |
+| BOOK-04 | 자동 계산 | 단가 × 인원 = 총 결제액 | 필수 |
+| BOOK-05 | 이중 가격 | THB + KRW 동시 표시 | 필수 |
+| BOOK-06 | 버튼 비활성화 | 필수 미입력 시 비활성화/에러 | 필수 |
+| BOOK-07 | 숙박 날짜 | 체크인/체크아웃 → 박수 자동계산 | 필수 |
+| BOOK-08 | 차단 날짜 | 빨간색 경고 박스 + 버튼 비활성화 | 필수 |
+| BOOK-09 | 골프 폼 | 라운드 날짜/인원 입력 | 필수 |
+| BOOK-10 | 차량 폼 | 서비스 유형, 픽업/드롭 정보 | 필수 |
+| BOOK-11 | 예약하기 | 예약 생성 → /checkout 이동 | 필수 |
+| BOOK-12 | 비회원 예약 | 연락처/이메일 필수 폼 | 필수 |
+
+### 장바구니/결제 (CART)
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| CART-01 | 장바구니 목록 | 체크박스, 상품명, 날짜, 수량, 가격 | 필수 |
+| CART-02 | 전체선택 | 모든 항목 선택 | 필수 |
+| CART-03 | 개별 삭제 | 휴지통 아이콘 클릭 | 필수 |
+| CART-04 | 선택삭제 | 체크된 항목 일괄 삭제 | 필수 |
+| CART-05 | 수량 변경 | +/- 버튼, 1~99 범위 | 필수 |
+| CART-06 | 총 결제금액 | THB + KRW 이중 합산 표시 | 필수 |
+| CART-07 | 빈 장바구니 | 쇼핑백 아이콘 + 안내 메시지 | 필수 |
+| CART-08 | 예약대기 탭 | PENDING 상태 목록 | 필수 |
+| CART-09 | 미결제 탭 | INVOICE_SENT 상태 목록 | 필수 |
+| CART-10 | 결제완료 탭 | PAYMENT_COMPLETED 상태 목록 | 필수 |
+| CART-11 | 예약하기 버튼 | /booking/{productId} 이동 | 필수 |
+| CART-12 | INICIS 결제 | 결제 성공 → 완료 페이지 | 필수 |
+
+### 2차개발
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| PLAN-03 | PDF 자동생성 | 인보이스/바우처 서버 자동 생성 | **2차개발** |
+| PLAN-04 | 패키지 상품 | 여러 상품 묶음 판매 | **2차개발** |
+| PLAN-05 | 2단계 결제 | 계약금 → 잔금 분할납부 | **2차개발** |
+| PLAN-06 | 무통장 자동화 | PayAction 가상계좌 자동 입금확인 | **2차개발** |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*

@@ -1,0 +1,67 @@
+---
+title: "BlueMango v2 플로우차트 — 검색 (Search)"
+description: "BlueMango v2 검색 비즈니스 로직 플로우차트"
+tags: [bluemango, v2, flowchart, search]
+created: 2026-03-17
+---
+
+# 검색 (Search) 플로우차트
+
+> IA 항목: SRCH-01 ~ SRCH-10 | 총 10개 화면
+
+## 플로우차트
+
+```mermaid
+flowchart TD
+    GNB_SEARCH["🔍 GNB 검색 탭<br/>GNB-02"] --> SEARCH_PAGE
+
+    SEARCH_PAGE["검색 페이지 진입<br/>/search<br/>SRCH-01"]
+
+    SEARCH_PAGE --> NO_KEYWORD{"검색어 유무?"}
+
+    NO_KEYWORD -->|없음| SUGGESTIONS["인기 검색어<br/>최근 검색어<br/>SRCH-02"]
+    NO_KEYWORD -->|있음| SEARCH_EXEC["검색 실행"]
+
+    SUGGESTIONS -->|키워드 클릭| SEARCH_EXEC
+
+    SEARCH_EXEC --> HAS_RESULT{"검색 결과?"}
+
+    HAS_RESULT -->|있음| RESULT_LIST["검색 결과 목록<br/>2열 레이아웃<br/>SRCH-03"]
+    HAS_RESULT -->|없음| EMPTY_STATE["검색 결과 없음<br/>빈 상태 안내<br/>SRCH-04"]
+
+    RESULT_LIST --> FILTER["카테고리 필터<br/>SRCH-05"]
+    FILTER -->|해제| FILTER_RESET["전체 결과 복원<br/>SRCH-06"]
+    FILTER_RESET --> RESULT_LIST
+
+    RESULT_LIST --> SCROLL["무한 스크롤<br/>추가 로딩<br/>SRCH-08"]
+    SCROLL --> RESULT_LIST
+
+    RESULT_LIST -->|상품 클릭| PRODUCT_DETAIL["상품 상세<br/>/package/{id}<br/>SRCH-07"]
+
+    SEARCH_PAGE --> CATEGORY_GRID["카테고리 그리드<br/>/categories<br/>SRCH-09"]
+    CATEGORY_GRID -->|아이콘 클릭| CATEGORY_LIST["카테고리 목록<br/>/category/{slug}<br/>SRCH-10"]
+
+    style SEARCH_PAGE fill:#1E3A5F,stroke:#1E3A5F,color:#fff
+    style RESULT_LIST fill:#3B82F6,stroke:#3B82F6,color:#fff
+    style EMPTY_STATE fill:#94A3B8,stroke:#94A3B8,color:#fff
+    style FILTER fill:#10B981,stroke:#10B981,color:#fff
+```
+
+## 항목 매핑
+
+| Page ID | 화면명 | 설명 | soft open |
+|---------|--------|------|-----------|
+| SRCH-01 | 검색 페이지 | 검색바 자동 포커스, 인기/최근 검색어 노출 | 필수 |
+| SRCH-02 | 인기 검색어 | 클릭 시 자동 검색 실행 | 필수 |
+| SRCH-03 | 검색 결과 목록 | 2열 레이아웃, 결과 개수 표시 | 필수 |
+| SRCH-04 | 결과 없음 | 빈 상태 안내 메시지 | 필수 |
+| SRCH-05 | 카테고리 필터 | 드롭다운 카테고리 선택 → 필터링 | 필수 |
+| SRCH-06 | 필터 해제 | 전체 선택 → 전체 결과 복원 | 필수 |
+| SRCH-07 | 상품 카드 클릭 | 상품 상세 페이지 이동 | 필수 |
+| SRCH-08 | 무한 스크롤 | 하단 스크롤 시 추가 로딩 | 필수 |
+| SRCH-09 | 카테고리 그리드 | 카테고리 아이콘 그리드 표시 | 필수 |
+| SRCH-10 | 카테고리 아이콘 클릭 | /category/{slug} 이동 | 필수 |
+
+---
+
+*[← 인덱스로 돌아가기](/p/13a43c2544094357)*
