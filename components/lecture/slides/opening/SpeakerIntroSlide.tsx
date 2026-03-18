@@ -39,7 +39,7 @@ export default function SpeakerIntroSlide({
   return (
     <SlideFrame section={0} slideIndex={slideIndex} totalSlides={totalSlides}>
       <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-        강사 소개 — <span className="text-[#a855f7]">길벗</span>
+        강사 소개 — <span className="text-[#a855f7]">코드몬</span>
       </h2>
 
       <FadeInGroup isActive={isActive} delay={250} className="flex flex-col gap-6">
