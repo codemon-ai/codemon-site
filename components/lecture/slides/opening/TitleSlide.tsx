@@ -40,7 +40,7 @@ export default function TitleSlide({ isActive, slideIndex, totalSlides }: SlideP
             transform: isActive ? "translateY(0)" : "translateY(12px)",
           }}
         >
-          <span className="text-[#a855f7] font-semibold">길벗(codemon.ai)</span>
+          <span className="text-[#a855f7] font-semibold">코드몬</span>
           <span className="text-gray-600">+</span>
           <span className="text-[#38BDF8] font-semibold">진연화</span>
         </div>
