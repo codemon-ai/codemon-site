@@ -9,15 +9,15 @@ const models = [
     name: "Opus 4.6",
     input: "$15/1M",
     output: "$75/1M",
-    usage: "복잡한 추론",
-    recommended: false,
+    usage: "복잡한 추론 (최고 성능)",
+    recommended: true,
   },
   {
     name: "Sonnet 4.6",
     input: "$3/1M",
     output: "$15/1M",
     usage: "일상 개발 (최적가성비)",
-    recommended: true,
+    recommended: false,
   },
   {
     name: "Haiku 4.5",

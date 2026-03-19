@@ -15,7 +15,7 @@ const steps = [
   },
   {
     icon: "🎨",
-    name: "Stizzi",
+    name: "Stitch",
     desc: "디자인 시스템 · 디자인",
     color: "border-[#7B61FF]/30",
     textColor: "text-[#A78BFA]",

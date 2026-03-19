@@ -74,6 +74,9 @@ export default function CoworkLaunchSlide({ isActive, slideIndex, totalSlides }:
           단순한 제품 발표가 아닌,{" "}
           <span className="text-white font-semibold">진짜 패러다임 전환의 시그널</span>
         </p>
+        <p className="text-sm text-[#38BDF8] mt-2">
+          → 클라이언트가 원하는 디자인에 대한 빠른 MVP 제작이 가능해진다
+        </p>
       </div>
     </SlideFrame>
   );
