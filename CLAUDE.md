@@ -60,6 +60,20 @@ tags: [태그1, 태그2]
 이미지 경로: `/images/blog/{slug}/01.png`
 메타 등록: `pages/blog/_meta.ts`에 최신 글 맨 위 추가
 
+## 슬라이드 제작
+
+강의 발표 슬라이드를 단일 HTML로 생성하는 스킬:
+
+```
+.claude/skills/frontend-slides/
+```
+
+- `/frontend-slides` 스킬 호출로 사용
+- 제로 의존성 단일 HTML (인라인 CSS/JS)
+- 12가지 스타일 프리셋, 키보드 네비게이션, 16:9
+- PPT 변환: `python3 scripts/extract-pptx.py`
+- 배포: `bash scripts/deploy.sh ./my-deck/`
+
 ## Related
 - Nextra 3.x: https://nextra.site
 - 프로젝트 구조/스택 상세: `docs/wiki/architecture.md`
