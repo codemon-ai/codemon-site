@@ -60,19 +60,19 @@ tags: [태그1, 태그2]
 이미지 경로: `/images/blog/{slug}/01.png`
 메타 등록: `pages/blog/_meta.ts`에 최신 글 맨 위 추가
 
-## 슬라이드 제작
+## 강의 자료 (partner/)
 
-강의 발표 슬라이드를 단일 HTML로 생성하는 스킬:
+강의 개요(MDX) + 슬라이드(HTML)를 관리하는 스킬 3종:
 
-```
-.claude/skills/frontend-slides/
-```
+| 스킬 | 경로 | 용도 |
+|------|------|------|
+| `partner-lecture` | `.claude/skills/partner-lecture/` | 강의 개요 MDX 생성/업데이트 + 배포 |
+| `partner-slide` | `.claude/skills/partner-slide/` | 강의 슬라이드 HTML 생성/업데이트 + 배포 |
+| `frontend-slides` | `.claude/skills/frontend-slides/` | 범용 HTML 프레젠테이션 생성 (partner-slide가 내부 호출) |
 
-- `/frontend-slides` 스킬 호출로 사용
-- 제로 의존성 단일 HTML (인라인 CSS/JS)
-- 12가지 스타일 프리셋, 키보드 네비게이션, 16:9
-- PPT 변환: `python3 scripts/extract-pptx.py`
-- 배포: `bash scripts/deploy.sh ./my-deck/`
+**현재 강의 목록:**
+- `lecture-agency-ai`: 개요 `/partner/lecture-agency-ai` + 슬라이드 `/partner/lecture#slide=0`
+- `lecture-startup-ai`: 개요 `/partner/lecture-startup-ai` + 슬라이드 `/partner/lecture-startup-ai/slides`
 
 ## Related
 - Nextra 3.x: https://nextra.site
