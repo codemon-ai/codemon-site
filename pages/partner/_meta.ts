@@ -6,4 +6,8 @@ export default {
     title: '📺 강의 슬라이드',
     theme: { layout: 'raw' }
   },
+  survey: {
+    title: '설문',
+    display: 'hidden',
+  },
 }
