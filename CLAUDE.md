@@ -62,17 +62,42 @@ tags: [태그1, 태그2]
 
 ## 강의 자료 (partner/)
 
-강의 개요(MDX) + 슬라이드(HTML)를 관리하는 스킬 3종:
+강의 개요(MDX) + 슬라이드(HTML) + 데모 + 배포를 관리하는 스킬:
 
 | 스킬 | 경로 | 용도 |
 |------|------|------|
 | `partner-lecture` | `.claude/skills/partner-lecture/` | 강의 개요 MDX 생성/업데이트 + 배포 |
 | `partner-slide` | `.claude/skills/partner-slide/` | 강의 슬라이드 HTML 생성/업데이트 + 배포 |
 | `frontend-slides` | `.claude/skills/frontend-slides/` | 범용 HTML 프레젠테이션 생성 (partner-slide가 내부 호출) |
+| `publish-private-content` | `.claude/skills/publish-private-content/` | /partner/ 배포 워크플로우 (빌드→커밋→배포→검증) |
+| `verify-deploy` | `.claude/skills/verify-deploy/` | 배포 후 playwright-cli 기반 페이지 검증 |
 
 **현재 강의 목록:**
 - `lecture-agency-ai`: 개요 `/partner/lecture-agency-ai` + 슬라이드 `/partner/lecture#slide=0`
 - `lecture-startup-ai`: 개요 `/partner/lecture-startup-ai` + 슬라이드 `/partner/lecture-startup-ai/slides`
+- `lecture-podl-ai`: 개요 `/partner/lecture-podl-ai` + 데모 `/partner/lecture-podl-ai/demo` + 대시보드 `/partner/lecture-podl-ai/demo/dashboard`
+
+**데모 시스템 (lecture-podl-ai):**
+- `data/demo/`: 목업 데이터 (config, 인플루언서, 매출, SNS, 제품, 마케팅카피) — 회사 교체로 재사용
+- `components/demo/`: DemoShell, StreamingOutput, DataPreview, Dashboard
+- `pages/api/demo/`: Claude API 프록시(스트리밍) + 데이터 서빙
+- 환경변수: `ANTHROPIC_API_KEY` (Vercel Dashboard에서 설정)
+
+## 배포
+
+GitHub auto-deploy **비활성화** 상태. Vercel CLI 프리빌트 전용:
+
+```bash
+# 1. 로컬 빌드 (nvm 재귀 우회)
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'npm run build'
+
+# 2. Vercel 프리빌트 + 배포
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
+
+# 3. 검증 (verify-deploy 스킬)
+playwright-cli open https://codemon.ai/<path>
+```
 
 ## Related
 - Nextra 3.x: https://nextra.site

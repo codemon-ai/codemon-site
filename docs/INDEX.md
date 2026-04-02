@@ -14,11 +14,12 @@
 | 새 기능 추가 | `wiki/architecture.md` → 관련 `spec/` |
 | 컴포넌트 수정 | `spec/design-guide.md` + `wiki/architecture.md` |
 | 블로그/뉴스 발행 | `CLAUDE.md` 역할 분담 섹션 (로디몬 담당) |
-| 배포 | `wiki/deployment.md` |
+| 배포 | `wiki/deployment.md` + `CLAUDE.md` 배포 섹션 |
 | 버그 수정 | `wiki/issues.md` + `changelog/` 최근 |
 | 기술 결정 | `wiki/decisions.md` |
 | 프로젝트 목록 | `wiki/projects.md` |
 | 비공개 페이지 | `prd/private-page.md` |
+| 강의 데모 시스템 | `CLAUDE.md` 데모 시스템 섹션 + `data/demo/config.ts` |
 
 ## 문서 구조 (CODA)
 
@@ -50,6 +51,6 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
-- **[2026-04-02]** 라스트스프링(포들) AI 강의 페이지 추가 (`lecture-podl-ai`) — Pain Point 집중형, 데모 5개 + AI 대시보드 비전
-- **[2026-03-26]** publish-private-content 스킬 생성 — /partner/ 배포 워크플로우 자동화 (7단계, 3시나리오)
-- **[2026-03-26]** 스타트업 AI 강의 목차 보강 — 6모듈/2시간 → 4장 7모듈/3시간
+- **[2026-04-02]** 포들 강의 + 보들 라이브 데모 시스템 구축 (데모 5개 + AI 대시보드 + Claude API) + 스킬 3종
+- **[2026-03-26]** publish-private-content 스킬 생성 — /partner/ 배포 워크플로우 자동화
+- **[2026-03-26]** 스타트업 AI 강의 목차 보강 — 4장 7모듈/3시간

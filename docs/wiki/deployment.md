@@ -46,10 +46,27 @@ npm run build
 npm run start
 ```
 
-## 자동 배포
+## 배포 방식 (Vercel CLI 프리빌트 전용)
 
-- `main` 브랜치에 푸시하면 자동 배포
-- PR 생성 시 Preview 환경 자동 생성
+> **GitHub auto-deploy 비활성화 상태.** git push만으로는 배포되지 않음.
+
+```bash
+# 1. 로컬 빌드 (nvm 재귀 우회를 위해 env -i 사용)
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'npm run build'
+
+# 2. Vercel 프리빌트
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
+
+# 3. Vercel 배포
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
+
+# 4. 검증 (verify-deploy 스킬)
+playwright-cli open https://codemon.ai/<path>
+playwright-cli screenshot --filename=verify.png
+playwright-cli close
+```
+
+관련 스킬: `publish-private-content`, `verify-deploy`
 
 ## 체크리스트
 

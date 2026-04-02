@@ -13,7 +13,9 @@
 | 언어 | TypeScript | - |
 | 스타일링 | Tailwind CSS + Nextra theme | - |
 | 애니메이션 | Framer Motion | ^12.x |
-| 배포 | Vercel (프리빌트 방식) | - |
+| 배포 | Vercel CLI 프리빌트 전용 (auto-deploy 비활성화) | - |
+| AI SDK | @anthropic-ai/sdk (데모 시스템 Claude API 프록시) | - |
+| 저장소 | Vercel Blob (설문, 챗, 뉴스레터) | - |
 | 분석 | Google Analytics + Vercel Analytics | - |
 | 에러 추적 | Sentry | - |
 
@@ -34,8 +36,19 @@ codemon-site/
 │   ├── news/               # News 섹션
 │   ├── docs/               # Documentation
 │   ├── en/                 # English (i18n)
+│   ├── partner/            # 강의 자료 (3개 강의 + 데모 시스템)
+│   │   ├── lecture-agency-ai/
+│   │   ├── lecture-startup-ai/
+│   │   ├── lecture-podl-ai/
+│   │   │   ├── demo/      # 라이브 데모 5개 + 대시보드
+│   │   │   └── index.mdx
+│   │   └── survey/
 │   ├── p/                  # Private pages (hidden)
-│   └── api/                # API routes (OG image, Telegram chat)
+│   └── api/                # API routes
+│       ├── demo/           # Claude API 프록시 + 데이터 서빙
+│       ├── chat/           # Telegram 챗
+│       ├── survey/         # 설문
+│       └── og.tsx          # OG 이미지
 ├── components/             # React 컴포넌트
 │   ├── Hero.tsx            # 랜딩 히어로
 │   ├── Features.tsx        # 4 Pillars 카드
@@ -48,9 +61,21 @@ codemon-site/
 │   ├── Stats.tsx           # 통계 카운터
 │   ├── TechStack.tsx       # 기술 스택
 │   ├── Footer.tsx          # 푸터
-│   └── ChatWidget.tsx      # 텔레그램 챗 위젯
+│   ├── ChatWidget.tsx      # 텔레그램 챗 위젯
+│   └── demo/               # 라이브 데모 컴포넌트
+│       ├── DemoShell.tsx   # 공통 데모 레이아웃 (입력|출력 split)
+│       ├── StreamingOutput.tsx # Claude 스트리밍 응답
+│       ├── DataPreview.tsx # 목업 데이터 테이블
+│       └── Dashboard.tsx   # 풀스크린 대시보드 + 드릴다운
 ├── data/                   # 데이터 파일
-│   └── news.json           # 뉴스 데이터
+│   ├── news.json           # 뉴스 데이터
+│   └── demo/               # 데모 목업 데이터 (회사 교체로 재사용)
+│       ├── config.ts       # 회사 설정 (이름, 업종, 채널, 팀)
+│       ├── influencers.json
+│       ├── sales.json
+│       ├── sns-posts.json
+│       ├── products.json
+│       └── marketing-copy.json
 ├── styles/globals.css      # 글로벌 CSS (glass, animations)
 ├── theme.config.tsx        # Nextra 테마 + SEO
 ├── next.config.mjs         # Next.js + Nextra + Sentry
@@ -100,14 +125,21 @@ codemon-site/
 
 ## 배포 방식
 
-```bash
-# 프리빌트 배포 (권장)
-vercel build --prod
-vercel deploy --prebuilt --prod
+GitHub auto-deploy **비활성화**. Vercel CLI 프리빌트 전용:
 
-# 자동 배포
-git push → Vercel auto deploy (main 브랜치)
+```bash
+# 1. 로컬 빌드 (env -i로 nvm 재귀 우회)
+env -i HOME=/Users/codemon PATH="..." /bin/bash -c 'npm run build'
+
+# 2. Vercel 프리빌트 + 배포
+env -i HOME=/Users/codemon PATH="..." /bin/bash -c 'vercel build --prod'
+env -i HOME=/Users/codemon PATH="..." /bin/bash -c 'vercel deploy --prebuilt --prod'
+
+# 3. 검증 (verify-deploy 스킬)
+playwright-cli open https://codemon.ai/<path>
 ```
+
+상세 경로는 `CLAUDE.md` 배포 섹션 참조.
 
 ---
 
