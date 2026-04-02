@@ -3,6 +3,7 @@
 
 # Dependencies
 node_modules/
+mcp-demo-server/node_modules/
 .pnp
 .pnp.js
 
