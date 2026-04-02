@@ -1,0 +1,50 @@
+---
+title: "Demo 5. 글로벌 마케팅 카피 현지화"
+description: "한국어 마케팅 카피를 영어/아랍어로 문화권 맞춤 현지화합니다"
+---
+
+import { DemoShell } from '../../../../components/demo/DemoShell'
+import { DataPreview } from '../../../../components/demo/DataPreview'
+import marketingCopy from '../../../../data/demo/marketing-copy.json'
+
+export const columns = [
+  { key: 'product', label: '제품', format: (v) => v || '(브랜드)' },
+  { key: 'type', label: '유형' },
+  { key: 'ko', label: '한국어 카피' },
+]
+
+export const featured = marketingCopy[2]
+
+export const prompt = `다음은 보들(BO:DL) K-뷰티 브랜드의 마케팅 카피입니다.
+
+유형: ${featured.type}
+컨텍스트: ${featured.context}
+
+한국어 원문:
+${featured.ko}
+
+이 카피를 다음 2개 시장에 맞춰 현지화해주세요:
+
+1. **영어 (미국 시장 - 아마존 US)**
+   - 미국 소비자의 K-뷰티 관심사 반영
+   - 성분 중심 마케팅 (Clean Beauty 트렌드)
+   - 자연스러운 미국식 영어 (번역체 X)
+
+2. **아랍어 (중동 시장)**
+   - 할랄 뷰티/자연 성분 강조
+   - 중동 소비자의 스킨케어 기대치 반영
+   - 고급스러운 톤
+
+각 버전에 대해:
+- 현지화된 카피
+- 원문과의 차이점 설명 (왜 이렇게 바꿨는지)
+- 문화적 고려사항`
+
+<DemoShell
+  title="글로벌 마케팅 카피 현지화"
+  demoNumber={5}
+  description="단순 번역이 아닌, 문화권별 맥락을 반영한 마케팅 카피 현지화"
+  defaultPrompt={prompt}
+  systemPrompt="당신은 글로벌 마케팅 현지화 전문가입니다. K-뷰티 브랜드의 마케팅 카피를 각 문화권에 맞게 현지화합니다. 단순 번역이 아니라 해당 시장의 뷰티 문화, 소비자 심리, 트렌드를 반영하세요."
+  dataPreview={<DataPreview data={marketingCopy} columns={columns} />}
+/>

@@ -1,0 +1,48 @@
+---
+title: "Demo 3. SNS 소재 성과 트래킹"
+description: "SNS 게시물 성과를 분석해서 히트 패턴을 찾고 전략을 제안합니다"
+---
+
+import { DemoShell } from '../../../../components/demo/DemoShell'
+import { DataPreview, formatNumber } from '../../../../components/demo/DataPreview'
+import snsPosts from '../../../../data/demo/sns-posts.json'
+
+export const columns = [
+  { key: 'title', label: '제목' },
+  { key: 'platform', label: '채널' },
+  { key: 'type', label: '형식' },
+  { key: 'views', label: '조회수', format: formatNumber },
+  { key: 'likes', label: '좋아요', format: formatNumber },
+]
+
+export const prompt = `다음은 보들(BO:DL) K-뷰티 브랜드의 최근 30개 SNS 게시물 성과 데이터입니다.
+
+분석해주세요:
+
+1. **히트 콘텐츠 분석** (조회수 10만 이상)
+   - 어떤 콘텐츠가 잘 됐는지, 왜 잘 됐는지 분석
+   - 공통 패턴 도출
+
+2. **채널별 성과 비교**
+   - 인스타그램 vs 틱톡 성과 차이
+   - 콘텐츠 형식별(릴스, 캐러셀, 피드, 숏폼) 효과 비교
+
+3. **제품별 콘텐츠 성과**
+   - 어떤 제품이 콘텐츠 반응이 좋은지
+
+4. **슬랙 알림 메시지** (조회수 10만 이상 히트 콘텐츠)
+   - "🔥 [콘텐츠명] X만뷰 돌파!" 형식
+
+5. **다음 콘텐츠 전략 제안** (3개)
+
+데이터:
+${JSON.stringify(snsPosts, null, 2)}`
+
+<DemoShell
+  title="SNS 소재 성과 트래킹"
+  demoNumber={3}
+  description="히트 콘텐츠 패턴을 분석하고 다음 전략을 제안합니다"
+  defaultPrompt={prompt}
+  systemPrompt="당신은 보들(BO:DL) K-뷰티 브랜드의 콘텐츠 마케팅 분석가입니다. SNS 데이터를 분석하여 히트 패턴을 찾고, 실행 가능한 전략을 제안합니다."
+  dataPreview={<DataPreview data={snsPosts} columns={columns} maxRows={15} />}
+/>

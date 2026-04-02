@@ -1,0 +1,22 @@
+[
+  { "name": "수빈뷰티", "followers": 482000, "channel": "인스타그램", "category": "스킨케어", "tone": "캐주얼", "email": "subin@example.com" },
+  { "name": "글로우지니", "followers": 321000, "channel": "유튜브", "category": "뷰티리뷰", "tone": "전문적", "email": "glowgenie@example.com" },
+  { "name": "데일리하나", "followers": 198000, "channel": "틱톡", "category": "일상+뷰티", "tone": "캐주얼", "email": "dailyhana@example.com" },
+  { "name": "코스메라이프", "followers": 567000, "channel": "인스타그램", "category": "K-뷰티", "tone": "전문적", "email": "cosmelife@example.com" },
+  { "name": "민지루틴", "followers": 89000, "channel": "틱톡", "category": "루틴공유", "tone": "캐주얼", "email": "minjirou@example.com" },
+  { "name": "뷰티랩서울", "followers": 234000, "channel": "유튜브", "category": "성분분석", "tone": "전문적", "email": "beautylab@example.com" },
+  { "name": "소피스킨", "followers": 156000, "channel": "인스타그램", "category": "민감피부", "tone": "따뜻한", "email": "sofiskin@example.com" },
+  { "name": "제니뷰", "followers": 412000, "channel": "유튜브", "category": "하울", "tone": "캐주얼", "email": "jennyview@example.com" },
+  { "name": "클린뷰티연", "followers": 78000, "channel": "인스타그램", "category": "클린뷰티", "tone": "전문적", "email": "cleanyen@example.com" },
+  { "name": "핑크무드", "followers": 267000, "channel": "틱톡", "category": "GRWM", "tone": "캐주얼", "email": "pinkmood@example.com" },
+  { "name": "스킨사이언스", "followers": 145000, "channel": "유튜브", "category": "성분분석", "tone": "전문적", "email": "skinsci@example.com" },
+  { "name": "새벽루틴", "followers": 93000, "channel": "인스타그램", "category": "모닝루틴", "tone": "따뜻한", "email": "dawn.routine@example.com" },
+  { "name": "뷰티에디터J", "followers": 378000, "channel": "인스타그램", "category": "에디터픽", "tone": "전문적", "email": "editor.j@example.com" },
+  { "name": "톡톡뷰티", "followers": 201000, "channel": "틱톡", "category": "숏폼리뷰", "tone": "캐주얼", "email": "toktok@example.com" },
+  { "name": "나연스킨로그", "followers": 112000, "channel": "유튜브", "category": "피부일기", "tone": "따뜻한", "email": "nayeon.log@example.com" },
+  { "name": "글로벌K뷰티", "followers": 534000, "channel": "인스타그램", "category": "해외반응", "tone": "전문적", "email": "globalkb@example.com" },
+  { "name": "언니뷰티팁", "followers": 67000, "channel": "틱톡", "category": "꿀팁", "tone": "캐주얼", "email": "unnitip@example.com" },
+  { "name": "더마리뷰어", "followers": 189000, "channel": "유튜브", "category": "더마", "tone": "전문적", "email": "dermareview@example.com" },
+  { "name": "비건뷰티수", "followers": 98000, "channel": "인스타그램", "category": "비건뷰티", "tone": "따뜻한", "email": "vegansu@example.com" },
+  { "name": "뷰티트래블러", "followers": 245000, "channel": "유튜브", "category": "여행+뷰티", "tone": "캐주얼", "email": "beautytraveler@example.com" }
+]
