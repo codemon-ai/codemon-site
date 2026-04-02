@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const client = new Anthropic({ apiKey })
     const stream = await client.messages.stream({
-      model: 'claude-sonnet-4-6-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 4096,
       system: systemPrompt || '당신은 K-뷰티 브랜드의 AI 비서입니다. 한국어로 답변하세요.',
       messages: [{ role: 'user', content: prompt }],
