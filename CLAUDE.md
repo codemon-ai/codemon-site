@@ -83,6 +83,12 @@ tags: [태그1, 태그2]
 - `pages/api/demo/`: Claude API 프록시(스트리밍) + 데이터 서빙
 - 환경변수: `ANTHROPIC_API_KEY` (Vercel Dashboard에서 설정)
 
+## 진행중 작업 (TODO)
+
+- [ ] MCP 서버 고수준 도구 추가 — generate_seeding_email, generate_daily_report 등 워크플로우 도구
+- [ ] Claude Desktop Project Instructions 템플릿 작성
+- [ ] 강의 슬라이드 HTML 생성 (partner-slide 스킬)
+
 ## 배포
 
 GitHub auto-deploy **비활성화** 상태. Vercel CLI 프리빌트 전용:
