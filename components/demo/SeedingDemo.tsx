@@ -10,13 +10,28 @@ const product = products[0] // 밤투폼
 type Status = 'idle' | 'generating' | 'done' | 'error'
 type InfluencerState = { status: Status; content: string; error?: string }
 
+const TONE_PRESETS = [
+  { id: 'friendly-casual', label: '친근 캐주얼', desc: '반말 섞인 친근한 톤, 이모지 활용, 인플루언서를 팬처럼 대하기' },
+  { id: 'professional', label: '비즈니스 포멀', desc: '존댓말, 체계적 구조, 브랜드 신뢰도 강조, 수치/데이터 포함' },
+  { id: 'warm-personal', label: '따뜻한 개인적', desc: '인플루언서의 콘텐츠를 구체적으로 언급, 진심 어린 감성' },
+  { id: 'trendy-gen-z', label: 'MZ 트렌디', desc: '짧고 임팩트 있는 문장, 트렌드 키워드, 숏폼/릴스 콜라보 강조' },
+  { id: 'expert-collab', label: '전문가 협업', desc: '성분/효능 중심, 공동 연구/리뷰 제안, 전문성 인정' },
+  { id: 'storytelling', label: '스토리텔링', desc: '브랜드 탄생 스토리로 시작, 감성적 서사, 함께 만들어가는 느낌' },
+  { id: 'data-driven', label: '데이터 중심', desc: '매출/조회수/성장률 등 숫자로 어필, ROI 기대치 제시' },
+  { id: 'exclusive-vip', label: 'VIP 독점', desc: '한정 시딩, 선공개 혜택 강조, 특별함/희소성 어필' },
+  { id: 'fun-creative', label: '재밌고 크리에이티브', desc: '유머 섞기, 독특한 콜라보 아이디어 제안, 차별화된 콘텐츠 기획' },
+  { id: 'global-kbeauty', label: '글로벌 K-뷰티', desc: '해외 트렌드 언급, K-뷰티 글로벌 인기, 크로스보더 협업 제안' },
+] as const satisfies readonly { id: string; label: string; desc: string }[]
+
+type TonePreset = typeof TONE_PRESETS[number]
+
 function formatFollowers(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`
   return n.toLocaleString()
 }
 
-function buildPrompt(inf: typeof influencers[0]) {
+function buildPrompt(inf: typeof influencers[0], tonePreset: TonePreset) {
   return `다음 인플루언서에게 보들(BO:DL)의 "${product.name}" 시딩 이메일을 작성해주세요.
 
 인플루언서 정보:
@@ -24,7 +39,6 @@ function buildPrompt(inf: typeof influencers[0]) {
 - 팔로워: ${inf.followers.toLocaleString()}명
 - 채널: ${inf.channel}
 - 카테고리: ${inf.category}
-- 선호 톤: ${inf.tone}
 
 제품 정보:
 - ${product.name} (${product.category}, ${product.price.toLocaleString()}원)
@@ -32,8 +46,12 @@ function buildPrompt(inf: typeof influencers[0]) {
 - 성분: ${product.ingredients.join(', ')}
 - 타겟: ${product.target}
 
+톤 & 스타일: **${tonePreset.label}**
+${tonePreset.desc}
+
 요구사항:
-- 인플루언서의 채널과 톤에 맞춰 개인화
+- 위 톤/스타일을 충실히 반영
+- 인플루언서의 채널과 카테고리에 맞춰 개인화
 - 구조: 인사 → 브랜드 소개 → 제품 소개 → 협업 제안 → 마무리
 - 마크다운 형식으로 작성 (## 제목, **강조**, 불릿 등)
 - 이메일 제목(Subject)도 포함`
@@ -47,6 +65,7 @@ export function SeedingDemo() {
     for (const inf of influencers) init[inf.name] = { status: 'idle', content: '' }
     return init
   })
+  const [selectedTone, setSelectedTone] = useState<TonePreset>(TONE_PRESETS[0])
   const abortControllers = useRef<Map<string, AbortController>>(new Map())
 
   const updateState = useCallback((name: string, update: Partial<InfluencerState>) => {
@@ -64,7 +83,7 @@ export function SeedingDemo() {
       const res = await fetch('/api/demo/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: buildPrompt(inf), systemPrompt: SYSTEM_PROMPT }),
+        body: JSON.stringify({ prompt: buildPrompt(inf, selectedTone), systemPrompt: SYSTEM_PROMPT }),
         signal: controller.signal,
       })
 
@@ -111,7 +130,7 @@ export function SeedingDemo() {
     } finally {
       abortControllers.current.delete(name)
     }
-  }, [updateState])
+  }, [updateState, selectedTone])
 
   const generateAll = () => {
     for (const inf of influencers) {
@@ -149,6 +168,28 @@ export function SeedingDemo() {
         >
           📊 대시보드
         </a>
+      </div>
+
+      {/* Tone Selector */}
+      <div className="mb-4">
+        <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">🎨 톤 프리셋</div>
+        <div className="flex flex-wrap gap-2">
+          {TONE_PRESETS.map(tone => (
+            <button
+              key={tone.id}
+              onClick={() => setSelectedTone(tone)}
+              title={tone.desc}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                selectedTone.id === tone.id
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'bg-black/[0.03] dark:bg-white/[0.06] text-gray-600 dark:text-gray-300 hover:bg-black/[0.06] dark:hover:bg-white/[0.1]'
+              }`}
+            >
+              {tone.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400 mt-1.5">{selectedTone.desc}</p>
       </div>
 
       {/* Controls */}

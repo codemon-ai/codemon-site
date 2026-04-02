@@ -1,7 +1,20 @@
 'use client'
 
 function markdownToHtml(md: string): string {
-  return md
+  // 테이블 변환 (먼저 처리)
+  let result = md.replace(
+    /^(\|.+\|)\n(\|[-: |]+\|)\n((?:\|.+\|\n?)+)/gm,
+    (_match, header: string, _sep: string, body: string) => {
+      const headers = header.split('|').filter((c: string) => c.trim()).map((c: string) => `<th>${c.trim()}</th>`).join('')
+      const rows = body.trim().split('\n').map((row: string) => {
+        const cells = row.split('|').filter((c: string) => c.trim()).map((c: string) => `<td>${c.trim()}</td>`).join('')
+        return `<tr>${cells}</tr>`
+      }).join('')
+      return `<table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`
+    }
+  )
+
+  return result
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^# (.+)$/gm, '<h1>$1</h1>')
@@ -12,7 +25,7 @@ function markdownToHtml(md: string): string {
     .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
     .replace(/^---$/gm, '<hr/>')
     .replace(/\n\n/g, '</p><p>')
-    .replace(/^(?!<[hulo]|<li|<hr)(.+)$/gm, '<p>$1</p>')
+    .replace(/^(?!<[hulo]|<li|<hr|<t)(.+)$/gm, '<p>$1</p>')
     .replace(/<p><\/p>/g, '')
 }
 
@@ -35,7 +48,7 @@ function buildViewerHTML(title: string, markdown: string): string {
   .copy-btn.copied { background: #10b981; }
   .content { padding: 24px; max-width: 700px; margin: 0 auto; line-height: 1.8; }
   h1 { font-size: 22px; margin: 24px 0 12px; color: #fff; }
-  h2 { font-size: 18px; margin: 20px 0 10px; color: #fff; }
+  h2 { font-size: 18px; margin: 20px 0 10px; color: #a855f7; }
   h3 { font-size: 15px; margin: 16px 0 8px; color: #e0e0e0; }
   p { margin: 8px 0; color: #ccc; }
   strong { color: #a855f7; }
@@ -44,6 +57,11 @@ function buildViewerHTML(title: string, markdown: string): string {
   ul { padding-left: 20px; margin: 8px 0; }
   li { margin: 4px 0; color: #ccc; }
   hr { border: none; border-top: 1px solid #2a2a4a; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  thead { background: #1a1a2e; }
+  th { text-align: left; padding: 8px 12px; font-size: 13px; color: #a855f7; border-bottom: 2px solid #2a2a4a; }
+  td { padding: 8px 12px; font-size: 13px; color: #ccc; border-bottom: 1px solid #1e1e3a; }
+  tr:hover td { background: #1e1e3a; }
   .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #10b981; color: white; border-radius: 8px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 0.3s; }
   .toast.show { opacity: 1; }
 </style>
