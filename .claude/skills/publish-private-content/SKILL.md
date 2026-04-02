@@ -123,16 +123,16 @@ Commit conventions:
 git push origin main
 ```
 
-## Step 5 — Vercel Deploy
+## Step 5 — Vercel Deploy (Prebuilt)
 
-**Method A (default):** Git push triggers auto-deploy. Wait ~60s for Vercel to pick up.
-
-**Method B (prebuilt, on user request only):**
+GitHub auto-deploy is **disabled**. Always use Vercel CLI prebuilt deploy:
 
 ```bash
-/Users/codemon/Library/pnpm/vercel build --prod
-/Users/codemon/Library/pnpm/vercel deploy --prebuilt --prod
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
+env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
 ```
+
+**Do NOT** wait for auto-deploy after git push — it will not happen.
 
 ## Step 6 — Deploy Verification (playwright-cli)
 
