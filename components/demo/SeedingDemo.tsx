@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { openMarkdownViewer } from './MarkdownViewer'
+import { openMarkdownViewer, updateViewerContent } from './MarkdownViewer'
 import influencers from '../../data/demo/influencers.json'
 import products from '../../data/demo/products.json'
 
-const product = products[0] // 밤투폼
+const product = products[0]
 
 type Status = 'idle' | 'generating' | 'done' | 'error'
-type InfluencerState = { status: Status; content: string; error?: string }
+type InfluencerState = { status: Status; content: string; error?: string; tone: string }
 
 const TONE_PRESETS = [
   { id: 'friendly-casual', label: '친근 캐주얼', desc: '반말 섞인 친근한 톤, 이모지 활용, 인플루언서를 팬처럼 대하기' },
@@ -21,9 +21,7 @@ const TONE_PRESETS = [
   { id: 'exclusive-vip', label: 'VIP 독점', desc: '한정 시딩, 선공개 혜택 강조, 특별함/희소성 어필' },
   { id: 'fun-creative', label: '재밌고 크리에이티브', desc: '유머 섞기, 독특한 콜라보 아이디어 제안, 차별화된 콘텐츠 기획' },
   { id: 'global-kbeauty', label: '글로벌 K-뷰티', desc: '해외 트렌드 언급, K-뷰티 글로벌 인기, 크로스보더 협업 제안' },
-] as const satisfies readonly { id: string; label: string; desc: string }[]
-
-type TonePreset = typeof TONE_PRESETS[number]
+]
 
 function formatFollowers(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
@@ -31,7 +29,12 @@ function formatFollowers(n: number) {
   return n.toLocaleString()
 }
 
-function buildPrompt(inf: typeof influencers[0], tonePreset: TonePreset) {
+function getTonePreset(id: string) {
+  return TONE_PRESETS.find(t => t.id === id) || TONE_PRESETS[0]
+}
+
+function buildPrompt(inf: typeof influencers[0], toneId: string) {
+  const tone = getTonePreset(toneId)
   return `다음 인플루언서에게 보들(BO:DL)의 "${product.name}" 시딩 이메일을 작성해주세요.
 
 인플루언서 정보:
@@ -46,8 +49,8 @@ function buildPrompt(inf: typeof influencers[0], tonePreset: TonePreset) {
 - 성분: ${product.ingredients.join(', ')}
 - 타겟: ${product.target}
 
-톤 & 스타일: **${tonePreset.label}**
-${tonePreset.desc}
+톤 & 스타일: **${tone.label}**
+${tone.desc}
 
 요구사항:
 - 위 톤/스타일을 충실히 반영
@@ -59,31 +62,39 @@ ${tonePreset.desc}
 
 const SYSTEM_PROMPT = '당신은 K-뷰티 브랜드 보들(BO:DL)의 인플루언서 마케팅 담당자입니다. 각 인플루언서의 특성에 맞춰 톤과 내용을 개인화한 시딩 이메일을 작성합니다.'
 
+// Default tone mapping based on original influencer data
+function defaultTone(inf: typeof influencers[0]) {
+  if (inf.tone === '캐주얼') return 'friendly-casual'
+  if (inf.tone === '전문적') return 'professional'
+  if (inf.tone === '따뜻한') return 'warm-personal'
+  return 'friendly-casual'
+}
+
 export function SeedingDemo() {
   const [states, setStates] = useState<Record<string, InfluencerState>>(() => {
     const init: Record<string, InfluencerState> = {}
-    for (const inf of influencers) init[inf.name] = { status: 'idle', content: '' }
+    for (const inf of influencers) init[inf.name] = { status: 'idle', content: '', tone: defaultTone(inf) }
     return init
   })
-  const [selectedTone, setSelectedTone] = useState<TonePreset>(TONE_PRESETS[0])
   const abortControllers = useRef<Map<string, AbortController>>(new Map())
 
   const updateState = useCallback((name: string, update: Partial<InfluencerState>) => {
     setStates(prev => ({ ...prev, [name]: { ...prev[name], ...update } }))
   }, [])
 
-  const generate = useCallback(async (inf: typeof influencers[0]) => {
+  const generate = useCallback(async (inf: typeof influencers[0], toneOverride?: string) => {
     const name = inf.name
     const controller = new AbortController()
     abortControllers.current.set(name, controller)
 
+    const toneId = toneOverride || states[name].tone
     updateState(name, { status: 'generating', content: '', error: undefined })
 
     try {
       const res = await fetch('/api/demo/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: buildPrompt(inf, selectedTone), systemPrompt: SYSTEM_PROMPT }),
+        body: JSON.stringify({ prompt: buildPrompt(inf, toneId), systemPrompt: SYSTEM_PROMPT }),
         signal: controller.signal,
       })
 
@@ -121,6 +132,8 @@ export function SeedingDemo() {
       }
 
       updateState(name, { status: 'done' })
+      // Update viewer window if open
+      updateViewerContent(name, accumulated)
     } catch (err) {
       if ((err as Error).name === 'AbortError') {
         updateState(name, { status: 'idle', content: '' })
@@ -130,7 +143,7 @@ export function SeedingDemo() {
     } finally {
       abortControllers.current.delete(name)
     }
-  }, [updateState, selectedTone])
+  }, [updateState, states])
 
   const generateAll = () => {
     for (const inf of influencers) {
@@ -141,10 +154,10 @@ export function SeedingDemo() {
   }
 
   const resetAll = () => {
-    for (const [name, ctrl] of abortControllers.current) ctrl.abort()
+    for (const [, ctrl] of abortControllers.current) ctrl.abort()
     abortControllers.current.clear()
     const init: Record<string, InfluencerState> = {}
-    for (const inf of influencers) init[inf.name] = { status: 'idle', content: '' }
+    for (const inf of influencers) init[inf.name] = { status: 'idle', content: '', tone: defaultTone(inf) }
     setStates(init)
   }
 
@@ -153,7 +166,6 @@ export function SeedingDemo() {
 
   return (
     <div className="mt-4">
-      {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
           <div className="text-xs text-purple-500 font-medium mb-1">DEMO 1</div>
@@ -170,29 +182,6 @@ export function SeedingDemo() {
         </a>
       </div>
 
-      {/* Tone Selector */}
-      <div className="mb-4">
-        <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">🎨 톤 프리셋</div>
-        <div className="flex flex-wrap gap-2">
-          {TONE_PRESETS.map(tone => (
-            <button
-              key={tone.id}
-              onClick={() => setSelectedTone(tone)}
-              title={tone.desc}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                selectedTone.id === tone.id
-                  ? 'bg-purple-600 text-white shadow-sm'
-                  : 'bg-black/[0.03] dark:bg-white/[0.06] text-gray-600 dark:text-gray-300 hover:bg-black/[0.06] dark:hover:bg-white/[0.1]'
-              }`}
-            >
-              {tone.label}
-            </button>
-          ))}
-        </div>
-        <p className="text-xs text-gray-400 mt-1.5">{selectedTone.desc}</p>
-      </div>
-
-      {/* Controls */}
       <div className="flex items-center gap-3 mb-4">
         <button
           onClick={generateAll}
@@ -214,7 +203,6 @@ export function SeedingDemo() {
         </span>
       </div>
 
-      {/* Table */}
       <div className="rounded-lg border border-black/[0.08] dark:border-white/[0.06] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -237,12 +225,36 @@ export function SeedingDemo() {
                   <td className="py-2 px-3 text-gray-600 dark:text-gray-300">{formatFollowers(inf.followers)}</td>
                   <td className="py-2 px-3 text-gray-600 dark:text-gray-300">{inf.channel}</td>
                   <td className="py-2 px-3 text-gray-600 dark:text-gray-300">{inf.category}</td>
-                  <td className="py-2 px-3 text-gray-600 dark:text-gray-300">{inf.tone}</td>
+                  <td className="py-1 px-2">
+                    <select
+                      value={s.tone}
+                      onChange={e => updateState(inf.name, { tone: e.target.value })}
+                      disabled={s.status === 'generating'}
+                      className="w-full px-2 py-1 rounded text-xs bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-gray-700 dark:text-gray-200 disabled:opacity-50"
+                    >
+                      {TONE_PRESETS.map(t => (
+                        <option key={t.id} value={t.id}>{t.label}</option>
+                      ))}
+                    </select>
+                  </td>
                   <td className="py-2 px-3 text-center">
                     <StatusBadge status={s.status} />
                   </td>
                   <td className="py-2 px-3 text-center">
-                    <ActionButton state={s} onGenerate={() => generate(inf)} onOpen={() => openMarkdownViewer(inf.name, s.content)} />
+                    <ActionButton
+                      state={s}
+                      onGenerate={() => generate(inf)}
+                      onOpen={() => openMarkdownViewer(
+                        inf.name,
+                        s.content,
+                        TONE_PRESETS,
+                        s.tone,
+                        (newToneId) => {
+                          updateState(inf.name, { tone: newToneId, status: 'idle', content: '' })
+                          setTimeout(() => generate(inf, newToneId), 100)
+                        }
+                      )}
+                    />
                   </td>
                 </tr>
               )
@@ -266,28 +278,12 @@ function StatusBadge({ status }: { status: Status }) {
 function ActionButton({ state, onGenerate, onOpen }: { state: InfluencerState; onGenerate: () => void; onOpen: () => void }) {
   switch (state.status) {
     case 'idle':
-      return (
-        <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">
-          생성
-        </button>
-      )
+      return <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">생성</button>
     case 'generating':
-      return (
-        <span className="px-3 py-1 rounded text-xs font-medium text-amber-600 bg-amber-100 dark:bg-amber-900/30">
-          생성중...
-        </span>
-      )
+      return <span className="px-3 py-1 rounded text-xs font-medium text-amber-600 bg-amber-100 dark:bg-amber-900/30">생성중...</span>
     case 'done':
-      return (
-        <button onClick={onOpen} className="px-3 py-1 rounded text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
-          새창 열기
-        </button>
-      )
+      return <button onClick={onOpen} className="px-3 py-1 rounded text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">새창 열기</button>
     case 'error':
-      return (
-        <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-white bg-red-600 hover:bg-red-700 transition-colors">
-          재시도
-        </button>
-      )
+      return <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-white bg-red-600 hover:bg-red-700 transition-colors">재시도</button>
   }
 }

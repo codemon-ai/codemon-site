@@ -1,7 +1,8 @@
 'use client'
 
+type ToneOption = { id: string; label: string; desc: string }
+
 function markdownToHtml(md: string): string {
-  // 테이블 변환 (먼저 처리)
   let result = md.replace(
     /^(\|.+\|)\n(\|[-: |]+\|)\n((?:\|.+\|\n?)+)/gm,
     (_match, header: string, _sep: string, body: string) => {
@@ -29,9 +30,25 @@ function markdownToHtml(md: string): string {
     .replace(/<p><\/p>/g, '')
 }
 
-function buildViewerHTML(title: string, markdown: string): string {
+function buildViewerHTML(
+  title: string,
+  markdown: string,
+  tones: ToneOption[],
+  currentToneId: string,
+  hasRegenerate: boolean,
+): string {
   const html = markdownToHtml(markdown)
   const escaped = markdown.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$')
+
+  const toneOptions = tones.map(t =>
+    `<option value="${t.id}" ${t.id === currentToneId ? 'selected' : ''}>${t.label}</option>`
+  ).join('')
+
+  const regenerateUI = hasRegenerate ? `
+    <div class="regen-bar">
+      <select id="tone-select" class="tone-select">${toneOptions}</select>
+      <button class="regen-btn" onclick="regenerate()">🔄 재생성</button>
+    </div>` : ''
 
   return `<!DOCTYPE html>
 <html>
@@ -41,11 +58,19 @@ function buildViewerHTML(title: string, markdown: string): string {
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; }
-  .header { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #1a1a2e; border-bottom: 1px solid #2a2a4a; z-index: 10; }
+  .header { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #1a1a2e; border-bottom: 1px solid #2a2a4a; z-index: 10; gap: 12px; flex-wrap: wrap; }
   .header h1 { font-size: 16px; font-weight: 700; }
-  .copy-btn { padding: 8px 16px; border-radius: 6px; border: none; background: #a855f7; color: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .copy-btn, .regen-btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .copy-btn { background: #a855f7; color: white; }
   .copy-btn:hover { background: #9333ea; }
   .copy-btn.copied { background: #10b981; }
+  .regen-bar { display: flex; align-items: center; gap: 8px; padding: 12px 24px; background: #151528; border-bottom: 1px solid #2a2a4a; }
+  .tone-select { padding: 6px 12px; border-radius: 6px; border: 1px solid #2a2a4a; background: #1e1e3a; color: #e0e0e0; font-size: 13px; cursor: pointer; }
+  .tone-select:focus { outline: none; border-color: #a855f7; }
+  .regen-btn { background: #374151; color: #e0e0e0; }
+  .regen-btn:hover { background: #4b5563; }
+  .regen-btn.loading { opacity: 0.5; cursor: not-allowed; }
   .content { padding: 24px; max-width: 700px; margin: 0 auto; line-height: 1.8; }
   h1 { font-size: 22px; margin: 24px 0 12px; color: #fff; }
   h2 { font-size: 18px; margin: 20px 0 10px; color: #a855f7; }
@@ -69,12 +94,16 @@ function buildViewerHTML(title: string, markdown: string): string {
 <body>
 <div class="header">
   <h1>${title} — 시딩 이메일</h1>
-  <button class="copy-btn" onclick="copyMarkdown()">📋 복사</button>
+  <div class="header-actions">
+    <button class="copy-btn" onclick="copyMarkdown()">📋 복사</button>
+  </div>
 </div>
-<div class="content">${html}</div>
+${regenerateUI}
+<div class="content" id="content">${html}</div>
 <div class="toast" id="toast">복사됨</div>
 <script>
-const raw = \`${escaped}\`;
+let raw = \`${escaped}\`;
+
 async function copyMarkdown() {
   await navigator.clipboard.writeText(raw);
   const btn = document.querySelector('.copy-btn');
@@ -84,14 +113,83 @@ async function copyMarkdown() {
   toast.classList.add('show');
   setTimeout(() => { btn.textContent = '📋 복사'; btn.classList.remove('copied'); toast.classList.remove('show'); }, 2000);
 }
+
+${hasRegenerate ? `
+function regenerate() {
+  const toneId = document.getElementById('tone-select').value;
+  const btn = document.querySelector('.regen-btn');
+  btn.textContent = '⏳ 생성중...';
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Notify parent window
+  if (window.opener && !window.opener.closed) {
+    window.opener.postMessage({ type: 'regenerate', name: '${title}', toneId }, '*');
+  }
+}
+
+window.addEventListener('message', (e) => {
+  if (e.data.type === 'update-content') {
+    raw = e.data.markdown;
+    document.getElementById('content').innerHTML = e.data.html;
+    const btn = document.querySelector('.regen-btn');
+    if (btn) { btn.textContent = '🔄 재생성'; btn.classList.remove('loading'); btn.disabled = false; }
+  }
+});
+` : ''}
 </script>
 </body>
 </html>`
 }
 
-export function openMarkdownViewer(title: string, markdown: string) {
-  const html = buildViewerHTML(title, markdown)
+export function openMarkdownViewer(
+  title: string,
+  markdown: string,
+  tones?: ToneOption[],
+  currentToneId?: string,
+  onRegenerate?: (toneId: string) => void,
+) {
+  const hasRegen = !!(tones && onRegenerate)
+  const html = buildViewerHTML(title, markdown, tones || [], currentToneId || '', hasRegen)
   const blob = new Blob([html], { type: 'text/html' })
   const url = URL.createObjectURL(blob)
-  window.open(url, '_blank', 'width=700,height=800')
+  const win = window.open(url, `viewer-${title}`, 'width=700,height=800')
+
+  if (hasRegen && win) {
+    // Listen for regenerate messages from the viewer window
+    const handler = async (e: MessageEvent) => {
+      if (e.data.type === 'regenerate' && e.data.name === title) {
+        onRegenerate!(e.data.toneId)
+
+        // Poll for content updates and send to viewer
+        const checkInterval = setInterval(() => {
+          // Content will be updated via the parent component's state
+          // We rely on the parent calling openMarkdownViewer again or
+          // the viewer being updated via postMessage
+        }, 500)
+
+        // Clean up after 60 seconds max
+        setTimeout(() => clearInterval(checkInterval), 60000)
+      }
+    }
+    window.addEventListener('message', handler)
+
+    // Clean up on viewer close
+    const closeCheck = setInterval(() => {
+      if (win.closed) {
+        window.removeEventListener('message', handler)
+        clearInterval(closeCheck)
+      }
+    }, 1000)
+  }
+}
+
+// Helper to send updated content to an already-open viewer window
+export function updateViewerContent(title: string, markdown: string) {
+  // Find the viewer window by name
+  const win = window.open('', `viewer-${title}`)
+  if (win && !win.closed && win.location.href !== 'about:blank') {
+    const html = markdownToHtml(markdown)
+    win.postMessage({ type: 'update-content', markdown, html }, '*')
+  }
 }
