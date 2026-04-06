@@ -36,6 +36,8 @@ const org = {
     {
       name: '물류팀', emoji: '📦', head: '강태호 팀장', members: 2,
       roles: ['입출고 관리', '배송 파트너 관리', '반품 처리'],
+      painPoint: '반품 사유 파악 수작업',
+      demo: '/partner/lecture-podl-ai/demo/returns',
     },
     {
       name: '회계팀', emoji: '💰', head: '윤서아 팀장', members: 2,
