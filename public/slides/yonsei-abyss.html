@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>신경 쓰지 말아야 할 것들의 심연 — 연세대학교 공학대학원</title>
+  <meta name="description" content="스토아 철학으로 건너는 존재의 다리. 연세대학교 공학대학원 삶과 예술의 심연의 미학 발표." />
+
+  <!-- ============================================
+       FONTS — Cormorant Garamond, Noto Sans KR, JetBrains Mono
+       ============================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ============================================
+       CSS RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ============================================
+       CSS CUSTOM PROPERTIES — Abyssal Contemplation Theme
+       ============================================ */
+    :root {
+      /* Color palette */
+      --abyss-deepest: #050508;
+      --abyss-deep: #080810;
+      --abyss-base: #0c0c1a;
+      --abyss-mid: #12122a;
+      --abyss-surface: #1a1a35;
+
+      --gold: #c9a84c;
+      --gold-dim: #a08838;
+      --gold-bright: #e4c96a;
+      --gold-glow: rgba(201, 168, 76, 0.15);
+
+      --crimson: #8b2252;
+      --crimson-dim: #6b1a40;
+      --crimson-bright: #b83070;
+      --crimson-glow: rgba(139, 34, 82, 0.2);
+
+      --text-primary: #e8e4df;
+      --text-secondary: #9a9590;
+      --text-dim: #6a6560;
+      --text-ghost: #4a4540;
+
+      /* Typography sizes — all clamp() */
+      --title-size: clamp(1.75rem, 5vw, 3.5rem);
+      --h2-size: clamp(1.25rem, 3.5vw, 2.25rem);
+      --h3-size: clamp(1rem, 2.5vw, 1.5rem);
+      --body-size: clamp(0.85rem, 1.5vw, 1.15rem);
+      --small-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      --tiny-size: clamp(0.6rem, 1vw, 0.75rem);
+      --quote-size: clamp(1rem, 2.2vw, 1.6rem);
+      --display-size: clamp(2rem, 6vw, 4.5rem);
+
+      /* Spacing */
+      --slide-padding: clamp(1.5rem, 5vw, 4rem);
+      --content-gap: clamp(0.6rem, 2vw, 1.5rem);
+
+      /* Font families */
+      --font-display: 'Cormorant Garamond', 'Georgia', serif;
+      --font-body: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Menlo', monospace;
+
+      /* Animation durations */
+      --anim-slow: 1.2s;
+      --anim-medium: 0.8s;
+      --anim-fast: 0.4s;
+    }
+
+    /* ============================================
+       VIEWPORT BASE — mandatory responsive rules
+       ============================================ */
+    html, body { height: 100%; overflow-x: hidden; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-height: 100%;
+      overflow: hidden;
+      padding: var(--slide-padding);
+    }
+
+    .card, .container, .content-box {
+      max-width: min(90vw, 1000px);
+      max-height: min(80vh, 700px);
+    }
+
+    .feature-list, .bullet-list {
+      gap: clamp(0.4rem, 1vh, 1rem);
+    }
+
+    .feature-list li, .bullet-list li {
+      font-size: var(--body-size);
+      line-height: 1.4;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+      gap: clamp(0.5rem, 1.5vw, 1rem);
+    }
+
+    img, .image-container {
+      max-width: 100%;
+      max-height: min(50vh, 400px);
+      object-fit: contain;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-height: 700px) {
+      :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+        --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size: clamp(1rem, 3vw, 1.75rem);
+      }
+    }
+
+    @media (max-height: 600px) {
+      :root {
+        --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+        --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+        --title-size: clamp(1.1rem, 4vw, 2rem);
+        --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+      }
+      .nav-dots, .keyboard-hint, .decorative { display: none; }
+    }
+
+    @media (max-height: 500px) {
+      :root {
+        --slide-padding: clamp(0.4rem, 2vw, 1rem);
+        --title-size: clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size: clamp(0.65rem, 1vw, 0.85rem);
+      }
+    }
+
+    @media (max-width: 600px) {
+      :root {
+        --title-size: clamp(1.25rem, 7vw, 2.5rem);
+      }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ============================================
+       BODY & GLOBAL STYLES
+       ============================================ */
+    body {
+      background: var(--abyss-deep);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================
+       ANIMATED ABYSS BACKGROUND — breathing gradient
+       ============================================ */
+    .abyss-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .abyss-bg::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200vmax;
+      height: 200vmax;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(ellipse 40% 50% at 30% 40%, rgba(139, 34, 82, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 70% 60%, rgba(201, 168, 76, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(12, 12, 26, 0.9) 0%, transparent 100%);
+      animation: abyssBreath 12s ease-in-out infinite;
+    }
+
+    .abyss-bg::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150vmax;
+      height: 150vmax;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(ellipse 35% 45% at 60% 35%, rgba(139, 34, 82, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 35% at 35% 65%, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
+      animation: abyssBreath2 16s ease-in-out infinite;
+    }
+
+    @keyframes abyssBreath {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.08);
+        opacity: 1;
+      }
+    }
+
+    @keyframes abyssBreath2 {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1.05) rotate(0deg);
+        opacity: 0.5;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(0.95) rotate(3deg);
+        opacity: 0.8;
+      }
+    }
+
+    /* ============================================
+       PROGRESS BAR
+       ============================================ */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: clamp(2px, 0.3vh, 4px);
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-bright));
+      z-index: 1000;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 clamp(4px, 0.5vw, 8px) var(--gold-glow);
+    }
+
+    /* ============================================
+       NAVIGATION DOTS
+       ============================================ */
+    .nav-dots {
+      position: fixed;
+      right: clamp(0.75rem, 2vw, 1.5rem);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 0.8vh, 12px);
+    }
+
+    .nav-dot {
+      width: clamp(6px, 0.6vw, 10px);
+      height: clamp(6px, 0.6vw, 10px);
+      border-radius: 50%;
+      background: var(--text-ghost);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .nav-dot:hover {
+      background: var(--gold-dim);
+      transform: scale(1.3);
+    }
+
+    .nav-dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 clamp(6px, 0.8vw, 12px) var(--gold-glow);
+      transform: scale(1.2);
+    }
+
+    .nav-dot::after {
+      content: attr(data-label);
+      position: absolute;
+      right: clamp(14px, 1.5vw, 22px);
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-family: var(--font-body);
+      font-size: var(--tiny-size);
+      color: var(--text-secondary);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-dot:hover::after {
+      opacity: 1;
+    }
+
+    /* ============================================
+       SLIDE COUNTER
+       ============================================ */
+    .slide-counter {
+      position: fixed;
+      bottom: clamp(0.75rem, 2vw, 1.5rem);
+      right: clamp(0.75rem, 2vw, 1.5rem);
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--text-dim);
+      z-index: 1000;
+      letter-spacing: 0.1em;
+    }
+
+    .slide-counter .current {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       KEYBOARD HINT
+       ============================================ */
+    .keyboard-hint {
+      position: fixed;
+      bottom: clamp(0.75rem, 2vw, 1.5rem);
+      left: clamp(0.75rem, 2vw, 1.5rem);
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--text-ghost);
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+
+    .keyboard-hint.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .keyboard-hint kbd {
+      display: inline-block;
+      padding: clamp(1px, 0.2vw, 3px) clamp(4px, 0.5vw, 8px);
+      border: 1px solid var(--text-ghost);
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: inherit;
+      color: var(--text-dim);
+      margin: 0 clamp(1px, 0.2vw, 3px);
+    }
+
+    /* ============================================
+       TYPOGRAPHY — Display, headings, body
+       ============================================ */
+    .display-title {
+      font-family: var(--font-display);
+      font-size: var(--display-size);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: var(--title-size);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: var(--content-gap);
+    }
+
+    .slide-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--h3-size);
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: var(--content-gap);
+    }
+
+    .accent { color: var(--gold); }
+    .crimson-text { color: var(--crimson-bright); }
+    .dim { color: var(--text-secondary); }
+    .ghost { color: var(--text-dim); }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       CHAPTER BADGES
+       ============================================ */
+    .chapter-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: clamp(3px, 0.4vw, 6px) clamp(8px, 1vw, 16px);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 2px;
+      margin-bottom: var(--content-gap);
+      background: rgba(201, 168, 76, 0.05);
+    }
+
+    /* ============================================
+       QUOTE BOXES
+       ============================================ */
+    .quote-box {
+      position: relative;
+      padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 2.5vw, 2rem);
+      border-left: clamp(2px, 0.3vw, 4px) solid var(--gold-dim);
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.04), transparent);
+      margin: var(--content-gap) 0;
+      max-width: min(90vw, 800px);
+    }
+
+    .quote-box .quote-text {
+      font-family: var(--font-display);
+      font-size: var(--quote-size);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    .quote-box .quote-author {
+      font-family: var(--font-mono);
+      font-size: var(--small-size);
+      color: var(--gold-dim);
+      margin-top: clamp(0.3rem, 0.8vw, 0.6rem);
+      letter-spacing: 0.05em;
+    }
+
+    .quote-crimson {
+      border-left-color: var(--crimson-dim);
+      background: linear-gradient(135deg, rgba(139, 34, 82, 0.06), transparent);
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .abyss-card {
+      background: linear-gradient(145deg, rgba(26, 26, 53, 0.6), rgba(12, 12, 26, 0.8));
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      border-radius: clamp(4px, 0.5vw, 8px);
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .abyss-card:hover {
+      border-color: rgba(201, 168, 76, 0.25);
+      box-shadow: 0 0 clamp(10px, 2vw, 30px) rgba(201, 168, 76, 0.05);
+    }
+
+    .abyss-card.gold-border {
+      border-color: rgba(201, 168, 76, 0.35);
+      box-shadow: 0 0 clamp(8px, 1.5vw, 20px) rgba(201, 168, 76, 0.06);
+    }
+
+    .abyss-card.dim-border {
+      border-color: rgba(100, 100, 120, 0.25);
+    }
+
+    .abyss-card.crimson-border {
+      border-color: rgba(139, 34, 82, 0.35);
+      box-shadow: 0 0 clamp(8px, 1.5vw, 20px) rgba(139, 34, 82, 0.06);
+    }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+    }
+
+    .card-body {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       BULLET LISTS
+       ============================================ */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: clamp(1.2rem, 2vw, 1.8rem);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .bullet-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: clamp(0.45rem, 0.8vw, 0.6rem);
+      width: clamp(4px, 0.4vw, 6px);
+      height: clamp(4px, 0.4vw, 6px);
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       FLOW DIAGRAMS — CSS-only arrows and boxes
+       ============================================ */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(0.3rem, 0.8vw, 0.6rem);
+      margin: var(--content-gap) 0;
+    }
+
+    .flow-node {
+      font-family: var(--font-body);
+      font-size: var(--small-size);
+      padding: clamp(0.3rem, 0.6vw, 0.5rem) clamp(0.6rem, 1.2vw, 1rem);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: clamp(3px, 0.3vw, 5px);
+      background: rgba(201, 168, 76, 0.05);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .flow-node.crimson-node {
+      border-color: rgba(139, 34, 82, 0.35);
+      background: rgba(139, 34, 82, 0.08);
+      color: var(--crimson-bright);
+    }
+
+    .flow-node.gold-node {
+      border-color: rgba(201, 168, 76, 0.4);
+      background: rgba(201, 168, 76, 0.08);
+      color: var(--gold-bright);
+    }
+
+    .flow-arrow {
+      color: var(--text-dim);
+      font-size: var(--small-size);
+      user-select: none;
+    }
+
+    .flow-plus {
+      color: var(--text-dim);
+      font-size: var(--small-size);
+      font-weight: 700;
+    }
+
+    .flow-equals {
+      color: var(--gold-dim);
+      font-size: var(--body-size);
+      font-weight: 700;
+    }
+
+    /* Horizontal flow with labels */
+    .flow-horizontal {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: var(--content-gap) 0;
+      max-width: min(90vw, 900px);
+    }
+
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding: clamp(0.5rem, 1vw, 1rem) clamp(0.3rem, 0.5vw, 0.6rem);
+    }
+
+    .flow-step-label {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .flow-step-name {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: clamp(0.15rem, 0.3vw, 0.3rem);
+    }
+
+    .flow-step-desc {
+      font-size: var(--tiny-size);
+      color: var(--text-secondary);
+    }
+
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-top: clamp(4px, 0.5vw, 7px) solid transparent;
+      border-bottom: clamp(4px, 0.5vw, 7px) solid transparent;
+      border-left: clamp(5px, 0.6vw, 8px) solid var(--gold-dim);
+      transform: translateX(50%) translateY(-50%);
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-step:last-child .flow-step-name {
+      color: var(--gold);
+    }
+
+    /* Entropy label above flow */
+    .flow-entropy-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: min(90vw, 900px);
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+      position: relative;
+    }
+
+    .flow-entropy-label::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--crimson-dim), var(--gold-dim));
+      z-index: 0;
+    }
+
+    .flow-entropy-label span {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--text-dim);
+      background: var(--abyss-deep);
+      padding: 0 clamp(0.3rem, 0.6vw, 0.6rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       TWO-COLUMN LAYOUT
+       ============================================ */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.75rem, 2vw, 1.5rem);
+      max-width: min(90vw, 1000px);
+    }
+
+    @media (max-width: 700px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       NUMBERED STEPS
+       ============================================ */
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.2vw, 1rem);
+      padding: 0;
+      max-width: min(90vw, 700px);
+    }
+
+    .step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: clamp(0.5rem, 1vw, 1rem);
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: clamp(1.8rem, 3vw, 2.5rem);
+      height: clamp(1.8rem, 3vw, 2.5rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-size: var(--body-size);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .step-text {
+      flex: 1;
+      font-size: var(--body-size);
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding-top: clamp(0.15rem, 0.3vw, 0.3rem);
+    }
+
+    /* ============================================
+       SMALL NOTES
+       ============================================ */
+    .note {
+      font-size: var(--small-size);
+      color: var(--text-dim);
+      margin-top: var(--content-gap);
+      font-style: italic;
+      max-width: min(90vw, 700px);
+    }
+
+    .note::before {
+      content: '* ';
+      color: var(--gold-dim);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .slide-footer {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--text-ghost);
+      letter-spacing: 0.05em;
+      padding: clamp(0.5rem, 1vw, 1rem) var(--slide-padding);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-footer .divider {
+      margin: 0 clamp(0.3rem, 0.5vw, 0.5rem);
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       KEY INSIGHT BOX
+       ============================================ */
+    .insight-box {
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), rgba(139, 34, 82, 0.04));
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: clamp(4px, 0.5vw, 8px);
+      padding: clamp(0.6rem, 1.5vw, 1.2rem) clamp(0.8rem, 2vw, 1.5rem);
+      margin: var(--content-gap) 0;
+      max-width: min(90vw, 800px);
+    }
+
+    .insight-box .insight-label {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .insight-box .insight-text {
+      font-size: var(--body-size);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       REVEAL ANIMATIONS
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(clamp(15px, 2vh, 30px));
+      transition:
+        opacity var(--anim-slow) cubic-bezier(0.22, 1, 0.36, 1),
+        transform var(--anim-slow) cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.from-left {
+      transform: translateX(clamp(-20px, -3vw, -40px));
+    }
+
+    .reveal.from-right {
+      transform: translateX(clamp(20px, 3vw, 40px));
+    }
+
+    .reveal.scale-in {
+      transform: scale(0.92);
+    }
+
+    .slide.visible .reveal {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+    }
+
+    /* Staggered delays */
+    .slide.visible .reveal.d1 { transition-delay: 0.15s; }
+    .slide.visible .reveal.d2 { transition-delay: 0.35s; }
+    .slide.visible .reveal.d3 { transition-delay: 0.55s; }
+    .slide.visible .reveal.d4 { transition-delay: 0.75s; }
+    .slide.visible .reveal.d5 { transition-delay: 0.95s; }
+    .slide.visible .reveal.d6 { transition-delay: 1.15s; }
+    .slide.visible .reveal.d7 { transition-delay: 1.35s; }
+    .slide.visible .reveal.d8 { transition-delay: 1.55s; }
+    .slide.visible .reveal.d9 { transition-delay: 1.75s; }
+
+    /* Slow dramatic reveal for special slides */
+    .reveal.dramatic {
+      transition-duration: 1.6s;
+    }
+
+    /* ============================================
+       SLIDE-SPECIFIC STYLES
+       ============================================ */
+
+    /* --- Slide 1: Title --- */
+    .slide-title-page .slide-content {
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .slide-title-page .main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: clamp(0.4rem, 1vw, 0.8rem);
+    }
+
+    .slide-title-page .main-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 2vw, 1.4rem);
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+
+    .slide-title-page .title-definition {
+      font-family: var(--font-body);
+      font-size: var(--small-size);
+      font-weight: 300;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      margin-top: clamp(0.3rem, 0.8vw, 0.6rem);
+    }
+
+    /* Info box — for Epictetus card on slide 2 */
+    .info-box {
+      background: linear-gradient(145deg, rgba(26, 26, 53, 0.6), rgba(12, 12, 26, 0.8));
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: clamp(4px, 0.5vw, 8px);
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      backdrop-filter: blur(8px);
+      max-width: min(90vw, 700px);
+    }
+
+    .info-box .info-name {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 500;
+      color: var(--gold);
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .info-box .info-desc {
+      font-size: var(--small-size);
+      color: var(--text-dim);
+      margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+    }
+
+    .info-box .info-body {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .info-box .info-body strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Personal tone text */
+    .personal-text {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: min(90vw, 700px);
+    }
+
+    .personal-text em {
+      color: var(--text-primary);
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    /* Emphasis block */
+    .emphasis-block {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 400;
+      color: var(--text-primary);
+      max-width: min(90vw, 800px);
+      line-height: 1.5;
+    }
+
+    .slide-title-page .title-line {
+      width: clamp(40px, 6vw, 80px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: clamp(0.8rem, 2vw, 1.5rem) auto;
+    }
+
+    /* Deep abyss effect for title slide */
+    .abyss-vortex {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(300px, 60vw, 800px);
+      height: clamp(300px, 60vw, 800px);
+      border-radius: 50%;
+      background:
+        radial-gradient(ellipse at center,
+          transparent 0%,
+          rgba(12, 12, 26, 0.2) 20%,
+          rgba(8, 8, 16, 0.5) 40%,
+          rgba(5, 5, 8, 0.8) 60%,
+          var(--abyss-deepest) 80%
+        );
+      animation: vortexPulse 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .abyss-vortex::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.06);
+      animation: vortexRing 10s ease-in-out infinite;
+    }
+
+    .abyss-vortex::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      border: 1px solid rgba(139, 34, 82, 0.08);
+      animation: vortexRing 12s ease-in-out infinite reverse;
+    }
+
+    @keyframes vortexPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+    }
+
+    @keyframes vortexRing {
+      0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.1) rotate(180deg); opacity: 0.8; }
+    }
+
+    /* --- Slide 7: Nietzsche — deepest abyss with image --- */
+    .slide-nietzsche {
+      background: var(--abyss-deepest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-nietzsche .abyss-image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/images/yonsei/abyss-stares-back.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .slide-nietzsche .slide-content {
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-nietzsche .nietzsche-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--text-primary);
+      max-width: min(85vw, 700px);
+    }
+
+    .slide-nietzsche .nietzsche-author {
+      font-family: var(--font-mono);
+      font-size: var(--small-size);
+      color: var(--gold-dim);
+      margin-top: clamp(0.5rem, 1vw, 1rem);
+      letter-spacing: 0.1em;
+    }
+
+    .slide-nietzsche .nietzsche-explain {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      max-width: min(80vw, 600px);
+      line-height: 1.7;
+      margin-top: clamp(0.8rem, 2vw, 1.5rem);
+      text-align: left;
+    }
+
+    .slide-nietzsche .nietzsche-explain .explain-item {
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .slide-nietzsche .nietzsche-explain .accent {
+      font-weight: 500;
+    }
+
+    .slide-nietzsche .nietzsche-transition {
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 2vw, 1.4rem);
+      font-weight: 400;
+      color: var(--gold);
+      margin-top: clamp(1rem, 3vw, 2rem);
+    }
+
+    /* Deep void effect for slide 7 */
+    .void-effect {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vmax;
+      height: 100vmax;
+      background:
+        radial-gradient(ellipse at center,
+          transparent 0%,
+          transparent 15%,
+          rgba(5, 5, 8, 0.3) 30%,
+          rgba(5, 5, 8, 0.7) 50%,
+          var(--abyss-deepest) 70%
+        );
+      animation: voidPulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes voidPulse {
+      0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.02); }
+    }
+
+    /* --- Slide 11: Closing --- */
+    .slide-closing .slide-content {
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .closing-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3.5vw, 2.5rem);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: min(85vw, 700px);
+    }
+
+    .closing-text .emphasis {
+      font-weight: 600;
+      color: var(--text-primary);
+      display: block;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      margin: clamp(0.2rem, 0.5vw, 0.4rem) 0;
+    }
+
+    .closing-text .gold-emphasis {
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+      font-size: clamp(1.2rem, 3vw, 2.2rem);
+    }
+
+    .closing-pause {
+      height: clamp(0.8rem, 2vw, 1.5rem);
+    }
+
+    /* ============================================
+       COMPARISON TABLE (for Slide 6)
+       ============================================ */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.5rem, 1.5vw, 1rem);
+      max-width: min(90vw, 900px);
+    }
+
+    @media (max-width: 600px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comparison-item {
+      padding: clamp(0.6rem, 1.5vw, 1.2rem);
+    }
+
+    .comparison-item .comp-header {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 500;
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .comparison-item .comp-direction {
+      font-family: var(--font-mono);
+      font-size: var(--tiny-size);
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .comparison-item .comp-body {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .comp-body strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       DECORATIVE ELEMENTS
+       ============================================ */
+    .decorative {
+      pointer-events: none;
+      position: absolute;
+      opacity: 0.15;
+    }
+
+    .decorative-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      width: clamp(60px, 10vw, 150px);
+    }
+
+    .decorative-circle {
+      width: clamp(150px, 25vw, 350px);
+      height: clamp(150px, 25vw, 350px);
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.06);
+    }
+
+    /* ============================================
+       CONTENT WRAPPER — centers main content
+       ============================================ */
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: min(90vw, 900px);
+      width: 100%;
+      gap: var(--content-gap);
+    }
+
+    .content-centered {
+      align-items: center;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       PER-SLIDE BACKGROUND VARIATIONS
+       Each slide gets a subtle unique atmosphere.
+       The gradients are layered on top of the
+       global abyss-bg to create depth variation
+       as the viewer scrolls deeper into the abyss.
+       ============================================ */
+
+    /* Slide 1 (Title) — Central vortex, darkest at edges */
+    #slide-0 {
+      background:
+        radial-gradient(ellipse 50% 60% at 50% 50%,
+          rgba(201, 168, 76, 0.02) 0%,
+          transparent 50%),
+        radial-gradient(ellipse at center,
+          transparent 20%,
+          rgba(5, 5, 8, 0.4) 70%);
+    }
+
+    /* Slide 2 (Introduction) — Warm gold tint bottom-left */
+    #slide-1 {
+      background:
+        radial-gradient(ellipse 40% 50% at 15% 80%,
+          rgba(201, 168, 76, 0.03) 0%,
+          transparent 60%);
+    }
+
+    /* Slide 3 (Toccata) — Light piercing from upper right, like Caravaggio */
+    #slide-2 {
+      background:
+        radial-gradient(ellipse 30% 40% at 85% 15%,
+          rgba(201, 168, 76, 0.05) 0%,
+          transparent 50%),
+        radial-gradient(ellipse at center,
+          transparent 0%,
+          rgba(5, 5, 8, 0.2) 80%);
+    }
+
+    /* Slide 4 (Spinoza) — Crimson undertone, emotional weight */
+    #slide-3 {
+      background:
+        radial-gradient(ellipse 50% 50% at 50% 70%,
+          rgba(139, 34, 82, 0.04) 0%,
+          transparent 60%);
+    }
+
+    /* Slide 5 (Mobius) — Split atmosphere, duality */
+    #slide-4 {
+      background:
+        radial-gradient(ellipse 30% 50% at 25% 50%,
+          rgba(201, 168, 76, 0.02) 0%,
+          transparent 50%),
+        radial-gradient(ellipse 30% 50% at 75% 50%,
+          rgba(139, 34, 82, 0.02) 0%,
+          transparent 50%);
+    }
+
+    /* Slide 6 (Cantata / Scream) — Intense crimson glow */
+    #slide-5 {
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 60%,
+          rgba(139, 34, 82, 0.06) 0%,
+          transparent 60%);
+    }
+
+    /* Slide 7 (Nietzsche) — handled by .slide-nietzsche class */
+
+    /* Slide 8 (Stoic) — Gold emergence, relief from abyss */
+    #slide-7 {
+      background:
+        radial-gradient(ellipse 40% 50% at 50% 40%,
+          rgba(201, 168, 76, 0.04) 0%,
+          transparent 50%);
+    }
+
+    /* Slide 9 (Amor Fati) — Warm transformation gradient */
+    #slide-8 {
+      background:
+        linear-gradient(135deg,
+          rgba(139, 34, 82, 0.03) 0%,
+          transparent 30%,
+          rgba(201, 168, 76, 0.03) 100%);
+    }
+
+    /* Slide 10 (Framework) — Balanced, structured warmth */
+    #slide-9 {
+      background:
+        radial-gradient(ellipse 50% 50% at 50% 50%,
+          rgba(201, 168, 76, 0.03) 0%,
+          transparent 50%);
+    }
+
+    /* Slide 11 (Closing) — Return to balanced depth */
+    #slide-10 {
+      background:
+        radial-gradient(ellipse at center,
+          rgba(201, 168, 76, 0.02) 0%,
+          transparent 40%,
+          rgba(5, 5, 8, 0.3) 80%);
+    }
+
+    /* ============================================
+       FLOATING PARTICLES — CSS-only ambient effect
+       Tiny gold and crimson dots that drift slowly,
+       adding a sense of depth and otherworldliness.
+       Only visible on larger screens where they
+       won't interfere with readability.
+       ============================================ */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+
+    /* Gold particles — scattered warm specks */
+    .particle--gold {
+      background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+    }
+
+    /* Crimson particles — rare, deep emotional punctuation */
+    .particle--crimson {
+      background: radial-gradient(circle, var(--crimson-bright) 0%, transparent 70%);
+    }
+
+    /* Individual particle instances with varied sizes, positions, and timings */
+    .particle:nth-child(1) {
+      width: clamp(2px, 0.3vw, 4px);
+      height: clamp(2px, 0.3vw, 4px);
+      left: 12%;
+      animation-duration: 18s;
+      animation-delay: 0s;
+    }
+    .particle:nth-child(2) {
+      width: clamp(3px, 0.4vw, 5px);
+      height: clamp(3px, 0.4vw, 5px);
+      left: 28%;
+      animation-duration: 22s;
+      animation-delay: -4s;
+    }
+    .particle:nth-child(3) {
+      width: clamp(1px, 0.2vw, 3px);
+      height: clamp(1px, 0.2vw, 3px);
+      left: 45%;
+      animation-duration: 16s;
+      animation-delay: -8s;
+    }
+    .particle:nth-child(4) {
+      width: clamp(2px, 0.3vw, 4px);
+      height: clamp(2px, 0.3vw, 4px);
+      left: 62%;
+      animation-duration: 20s;
+      animation-delay: -2s;
+    }
+    .particle:nth-child(5) {
+      width: clamp(3px, 0.4vw, 5px);
+      height: clamp(3px, 0.4vw, 5px);
+      left: 78%;
+      animation-duration: 24s;
+      animation-delay: -10s;
+    }
+    .particle:nth-child(6) {
+      width: clamp(2px, 0.3vw, 4px);
+      height: clamp(2px, 0.3vw, 4px);
+      left: 88%;
+      animation-duration: 19s;
+      animation-delay: -6s;
+    }
+    .particle:nth-child(7) {
+      width: clamp(1px, 0.2vw, 3px);
+      height: clamp(1px, 0.2vw, 3px);
+      left: 35%;
+      animation-duration: 21s;
+      animation-delay: -12s;
+    }
+    .particle:nth-child(8) {
+      width: clamp(2px, 0.3vw, 4px);
+      height: clamp(2px, 0.3vw, 4px);
+      left: 55%;
+      animation-duration: 17s;
+      animation-delay: -3s;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 0.15;
+        transform: translateY(50vh) translateX(clamp(-20px, -2vw, -40px));
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(clamp(15px, 1.5vw, 30px));
+        opacity: 0;
+      }
+    }
+
+    /* Hide particles on small screens and reduced motion */
+    @media (max-width: 600px) {
+      .particles { display: none; }
+    }
+
+    @media (max-height: 600px) {
+      .particles { display: none; }
+    }
+
+    /* ============================================
+       ADDITIONAL DECORATIVE ELEMENTS
+       Positioned per-slide for visual richness
+       ============================================ */
+
+    /* Corner ornament — thin L-shaped lines */
+    .corner-ornament {
+      position: absolute;
+      width: clamp(30px, 4vw, 60px);
+      height: clamp(30px, 4vw, 60px);
+      pointer-events: none;
+      opacity: 0.08;
+    }
+
+    .corner-ornament--tl {
+      top: var(--slide-padding);
+      left: var(--slide-padding);
+      border-top: 1px solid var(--gold);
+      border-left: 1px solid var(--gold);
+    }
+
+    .corner-ornament--br {
+      bottom: clamp(2.5rem, 5vw, 4rem);
+      right: clamp(2.5rem, 5vw, 4rem);
+      border-bottom: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+    }
+
+    /* Horizontal separator within slides */
+    .subtle-separator {
+      width: clamp(40px, 8vw, 100px);
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(201, 168, 76, 0.3),
+        transparent
+      );
+      margin: var(--content-gap) 0;
+    }
+
+    /* ============================================
+       GLOW EFFECTS — for emphasis elements
+       ============================================ */
+    .text-glow-gold {
+      text-shadow:
+        0 0 clamp(10px, 1.5vw, 20px) rgba(201, 168, 76, 0.15),
+        0 0 clamp(30px, 4vw, 60px) rgba(201, 168, 76, 0.05);
+    }
+
+    .text-glow-crimson {
+      text-shadow:
+        0 0 clamp(10px, 1.5vw, 20px) rgba(139, 34, 82, 0.2),
+        0 0 clamp(30px, 4vw, 60px) rgba(139, 34, 82, 0.06);
+    }
+
+    /* ============================================
+       SELECTION STYLING
+       Custom selection colors that match the theme
+       ============================================ */
+    ::selection {
+      background: rgba(201, 168, 76, 0.25);
+      color: var(--text-primary);
+    }
+
+    ::-moz-selection {
+      background: rgba(201, 168, 76, 0.25);
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       SCROLLBAR STYLING (WebKit)
+       Minimal, dark scrollbar matching the abyss
+       ============================================ */
+    ::-webkit-scrollbar {
+      width: clamp(3px, 0.4vw, 6px);
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--abyss-deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(201, 168, 76, 0.15);
+      border-radius: clamp(2px, 0.2vw, 3px);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(201, 168, 76, 0.3);
+    }
+
+    /* Firefox scrollbar */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201, 168, 76, 0.15) var(--abyss-deep);
+    }
+
+    /* ============================================
+       FOCUS STYLES — Accessibility
+       Visible focus ring for keyboard navigation
+       ============================================ */
+    .nav-dot:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    *:focus-visible {
+      outline: 2px solid rgba(201, 168, 76, 0.5);
+      outline-offset: 2px;
+    }
+
+    /* ============================================
+       PRINT STYLES
+       Clean output for printing / PDF export
+       ============================================ */
+    @media print {
+      .abyss-bg,
+      .particles,
+      .progress-bar,
+      .nav-dots,
+      .slide-counter,
+      .keyboard-hint,
+      .decorative,
+      .corner-ornament,
+      .void-effect,
+      .abyss-vortex {
+        display: none !important;
+      }
+
+      html {
+        scroll-snap-type: none;
+      }
+
+      .slide {
+        height: auto !important;
+        min-height: 100vh;
+        page-break-after: always;
+        scroll-snap-align: none;
+        background: white !important;
+        color: #111 !important;
+      }
+
+      .slide-content {
+        padding: 2rem;
+      }
+
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .accent { color: #8b6914 !important; }
+      .crimson-text { color: #8b2252 !important; }
+      .dim { color: #555 !important; }
+      .ghost { color: #888 !important; }
+
+      .abyss-card {
+        background: #f5f5f5 !important;
+        border-color: #ccc !important;
+      }
+
+      .quote-box {
+        border-left-color: #8b6914 !important;
+        background: #faf8f0 !important;
+      }
+
+      .insight-box {
+        background: #f8f6f0 !important;
+        border-color: #c9a84c !important;
+      }
+    }
+
+    /* ============================================
+       LOADING STATE
+       Brief flash-prevention while fonts load
+       ============================================ */
+    .loading {
+      opacity: 0;
+    }
+
+    .loaded {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+
+<body class="loading">
+  <!-- ============================================
+       ANIMATED ABYSS BACKGROUND
+       Deep layered radial gradients that breathe
+       slowly, creating an impression of infinite
+       depth — like staring into a philosophical void.
+       ============================================ -->
+  <div class="abyss-bg" aria-hidden="true"></div>
+
+  <!-- ============================================
+       FLOATING PARTICLES
+       Tiny gold and crimson specks drift upward
+       through the viewport, adding organic depth.
+       Eight particles with staggered timing create
+       an asymmetric, natural-feeling pattern.
+       Hidden on small screens for performance.
+       ============================================ -->
+  <div class="particles" aria-hidden="true">
+    <div class="particle particle--gold"></div>
+    <div class="particle particle--gold"></div>
+    <div class="particle particle--crimson"></div>
+    <div class="particle particle--gold"></div>
+    <div class="particle particle--gold"></div>
+    <div class="particle particle--crimson"></div>
+    <div class="particle particle--gold"></div>
+    <div class="particle particle--gold"></div>
+  </div>
+
+  <!-- ============================================
+       PROGRESS BAR
+       ============================================ -->
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+  <!-- ============================================
+       NAVIGATION DOTS
+       ============================================ -->
+  <nav class="nav-dots" id="navDots" aria-label="슬라이드 네비게이션">
+    <button class="nav-dot active" data-slide="0" data-label="표지" aria-label="슬라이드 1: 표지"></button>
+    <button class="nav-dot" data-slide="1" data-label="왜 이 주제를" aria-label="슬라이드 2: 왜 이 주제를"></button>
+    <button class="nav-dot" data-slide="2" data-label="토카타" aria-label="슬라이드 3: 토카타"></button>
+    <button class="nav-dot" data-slide="3" data-label="스피노자" aria-label="슬라이드 4: 스피노자"></button>
+    <button class="nav-dot" data-slide="4" data-label="뫼비우스" aria-label="슬라이드 5: 뫼비우스"></button>
+    <button class="nav-dot" data-slide="5" data-label="칸타타" aria-label="슬라이드 6: 칸타타"></button>
+    <button class="nav-dot" data-slide="6" data-label="니체" aria-label="슬라이드 7: 니체"></button>
+    <button class="nav-dot" data-slide="7" data-label="닮은 점" aria-label="슬라이드 8: 닮은 점"></button>
+    <button class="nav-dot" data-slide="8" data-label="신경 쓰지 마라" aria-label="슬라이드 9: 신경 쓰지 마라"></button>
+    <button class="nav-dot" data-slide="9" data-label="프레임워크" aria-label="슬라이드 10: 프레임워크"></button>
+    <button class="nav-dot" data-slide="10" data-label="마무리" aria-label="슬라이드 11: 마무리"></button>
+  </nav>
+
+  <!-- ============================================
+       SLIDE COUNTER
+       ============================================ -->
+  <div class="slide-counter" id="slideCounter" aria-live="polite">
+    <span class="current">01</span> / 11
+  </div>
+
+  <!-- ============================================
+       KEYBOARD HINT
+       ============================================ -->
+  <div class="keyboard-hint" id="keyboardHint">
+    <kbd>&darr;</kbd> <kbd>&uarr;</kbd> 또는 스와이프로 이동
+  </div>
+
+
+  <!-- ============================================
+       SLIDE 1 — TITLE
+       "신경 쓰지 말아야 할 것들의 심연"
+       ============================================ -->
+  <section class="slide slide-title-page" id="slide-0">
+    <div class="abyss-vortex decorative" aria-hidden="true"></div>
+    <div class="corner-ornament corner-ornament--tl" aria-hidden="true"></div>
+    <div class="corner-ornament corner-ornament--br" aria-hidden="true"></div>
+
+    <div class="slide-content">
+      <div class="main-title reveal dramatic d1 text-glow-gold">
+        신경 쓰지 말아야 할 것들의<br /><span class="accent">심연</span>
+      </div>
+
+      <div class="title-line reveal d3"></div>
+
+      <div class="main-subtitle reveal dramatic d4">
+        내 안의 어둠을 마주하는 법
+      </div>
+
+      <div class="title-definition reveal d5">
+        심연(深淵) &mdash; 끝이 보이지 않는 깊은 곳. 우리 안에 숨어있는 어둠.
+      </div>
+    </div>
+
+    <div class="slide-footer reveal d7">
+      <span>연세대학교 공학대학원</span>
+      <span><span class="divider">|</span>삶과 예술의 심연의 미학</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 2 — "왜 이 주제를 골랐는가"
+       Personal intro
+       ============================================ -->
+  <section class="slide" id="slide-1">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <div class="chapter-badge reveal d1">시작</div>
+
+        <h2 class="slide-title reveal d2">
+          왜 이 주제를 <span class="accent">골랐는가</span>
+        </h2>
+
+        <div class="personal-text reveal d3">
+          <em>수업에서 스피노자를 배우면서, 스토아 학파가 떠올랐습니다.</em><br />
+          예전에 블로그에 쓴 글이 생각났어요 &mdash; <em>&ldquo;통제할 수 없는 것에 에너지를 쓰지 마라&rdquo;</em>
+        </div>
+
+        <div class="info-box reveal d4">
+          <div class="info-name">에픽테토스 (Epictetus)</div>
+          <div class="info-desc">로마 시대 노예 출신 철학자</div>
+          <div class="info-body">
+            핵심: <strong>&ldquo;통제할 수 있는 것&rdquo;</strong>과 <strong>&ldquo;통제할 수 없는 것&rdquo;</strong>을 구분하라<br />
+            &ldquo;고통은 사건 자체가 아니라, 그에 대한 <strong>판단</strong>에서 비롯된다&rdquo;
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 3 — "심연이 노크한다" — 토카타
+       ============================================ -->
+  <section class="slide" id="slide-2">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <div class="chapter-badge reveal d1">ACT 1</div>
+
+        <h2 class="slide-title reveal d2">
+          심연이 <span class="accent">노크</span>한다
+        </h2>
+
+        <div class="slide-subtitle reveal d3">
+          토카타(Toccata) = &ldquo;두드리다&rdquo;(<span class="mono">toccare</span>)
+        </div>
+
+        <ul class="bullet-list reveal d4">
+          <li>우리가 통제할 수 없는 것들 &mdash; 그것들이 매일 우리를 두드린다</li>
+          <li>타인의 평가, 갑작스러운 변화, 불확실한 미래</li>
+          <li>바흐의 토카타: 폭풍처럼 몰아치는 감정, 심연의 첫 노크</li>
+        </ul>
+
+        <div class="emphasis-block reveal d5" style="margin-top: var(--content-gap); color: var(--text-dim);">
+          두드림이 계속되면 어떻게 될까?
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 4 — "두드림이 나를 갉아먹는다" — 스피노자
+       ============================================ -->
+  <section class="slide" id="slide-3">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          두드림이 나를 <span class="accent">갉아먹는다</span>
+        </h2>
+
+        <div class="slide-subtitle reveal d2">
+          스피노자의 감정 순환
+        </div>
+
+        <!-- Flow diagram: circular emotion chain -->
+        <div class="flow-diagram reveal d3">
+          <span class="flow-node">두드림(사건)</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">슬픔</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">외부 탓(미움)</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">자기 탓(자기비하)</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">다시 슬픔...</span>
+        </div>
+
+        <div class="quote-box quote-crimson reveal d4">
+          <div class="quote-text">
+            스피노자는 이 힘을 &ldquo;코나투스(Conatus)&rdquo;라고 불렀습니다<br>
+            <span style="opacity: 0.7; font-size: 0.9em;">모든 존재가 자기를 유지하려는 본능 &mdash; 그런데 이 본능이 오히려 나를 파괴합니다</span>
+          </div>
+        </div>
+
+        <div class="note reveal d5">
+          이렇게 갉아먹히다 보면...
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 5 — "안과 밖의 경계가 무너진다" — 뫼비우스
+       ============================================ -->
+  <section class="slide" id="slide-4">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          안과 밖의 <span class="accent">경계</span>가 무너진다
+        </h2>
+
+        <div class="slide-subtitle reveal d2">
+          뫼비우스의 띠 &mdash; 안과 밖이 하나로 이어지는 구조
+        </div>
+
+        <ul class="bullet-list reveal d3">
+          <li>밖의 문제인가, 내 문제인가 &mdash; 구분이 안 된다</li>
+          <li>&ldquo;저 사람 때문인가, 내가 부족한 건가?&rdquo; &mdash; 이 질문이 끝나지 않는다</li>
+          <li>외부 스트레스와 자기 비난이 하나의 면 위에서 순환</li>
+        </ul>
+
+        <div class="insight-box reveal d4">
+          <div class="insight-text">
+            빠져나갈 출구가 없다. <strong>안과 밖의 구분이 사라졌으니까.</strong>
+          </div>
+        </div>
+
+        <div class="note reveal d5">
+          그리고 결국, 비명이 터져나옵니다
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 6 — "바닥을 확인하는 소리" — 칸타타
+       ============================================ -->
+  <section class="slide" id="slide-5">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <div class="chapter-badge reveal d1">ACT 2</div>
+
+        <h2 class="slide-title reveal d2 text-glow-crimson">
+          <span class="crimson-text">바닥</span>을 확인하는 소리
+        </h2>
+
+        <div class="slide-subtitle reveal d3">
+          칸타타(Cantata) = &ldquo;노래하다&rdquo;(<span class="mono">cantare</span>)
+        </div>
+
+        <div class="comparison-grid reveal d4">
+          <div class="abyss-card crimson-border comparison-item">
+            <div class="comp-header">토카타</div>
+            <div class="comp-direction">밖에서 안으로</div>
+            <div class="comp-body">
+              밖에서 안으로 <strong>두드리는</strong> 소리<br />
+              <span class="dim">외부 &rarr; 나</span>
+            </div>
+          </div>
+
+          <div class="abyss-card crimson-border comparison-item">
+            <div class="comp-header">칸타타</div>
+            <div class="comp-direction">안에서 밖으로</div>
+            <div class="comp-body">
+              안에서 밖으로 <strong>터져나오는</strong> 소리<br />
+              <span class="dim">나 &rarr; 외부</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box reveal d5">
+          <div class="insight-label">심연의 칸타타</div>
+          <div class="insight-text">
+            의미가 되기 전의 소리, 원초적 비명.<br />
+            비명은 아프지만, <strong>바닥을 찍어야 올라갈 수 있다.</strong>
+          </div>
+        </div>
+
+        <div class="note reveal d6">
+          바닥을 찍었습니다. 그리고 이제, 무언가가 나를 들여다봅니다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 7 — "심연도 너를 들여다본다" — 니체, 전환점
+       Most dramatic slide. Image background + overlay text.
+       ============================================ -->
+  <section class="slide slide-nietzsche" id="slide-6">
+    <div class="abyss-image-bg" aria-hidden="true"></div>
+    <div class="void-effect decorative" aria-hidden="true"></div>
+
+    <div class="slide-content">
+      <div class="nietzsche-quote reveal dramatic d2 text-glow-gold">
+        &ldquo;심연을 오래 들여다보면,<br />
+        심연도 너를 들여다본다&rdquo;
+      </div>
+
+      <div class="nietzsche-author reveal dramatic d3">
+        &mdash; 니체
+      </div>
+
+      <div class="nietzsche-explain reveal dramatic d5">
+        <div class="explain-item"><span class="accent">심연</span> = 내 안의 어둠, 통제 불가능한 것들</div>
+        <div class="explain-item"><span class="accent">&ldquo;들여다본다&rdquo;</span> = 그 어둠이 나를 규정하기 시작한다</div>
+        <div class="explain-item">통제할 수 없는 것에 집착하면, <strong style="color: var(--text-primary);">그것이 나를 지배한다</strong></div>
+      </div>
+
+      <div class="nietzsche-transition reveal dramatic d7">
+        하지만 &mdash; 여기서 흥미로운 점이 있습니다
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 8 — "스토아와 스피노자가 닮은 점"
+       ============================================ -->
+  <section class="slide" id="slide-7">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <div class="chapter-badge reveal d1">ACT 3</div>
+
+        <h2 class="slide-title reveal d2">
+          스토아와 스피노자가 <span class="accent">닮은 점</span>
+        </h2>
+
+        <div class="slide-subtitle reveal d3">
+          2천 년 전과 400년 전 &mdash; 시대는 달라도 같은 답
+        </div>
+
+        <div class="two-col reveal d4">
+          <div class="abyss-card gold-border">
+            <div class="card-label">감정의 원인을 이해하라</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              <strong>스피노자:</strong> &ldquo;감정의 원인을 이해하면, 감정에서 자유로워진다&rdquo;<br />
+              <strong>스토아:</strong> &ldquo;판단을 바꾸면, 고통이 사라진다&rdquo;
+            </div>
+          </div>
+
+          <div class="abyss-card gold-border">
+            <div class="card-label">외부에 흔들리지 마라</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              <strong>스피노자:</strong> 외부 원인의 관념을 내려놓기<br />
+              <strong>스토아:</strong> 통제 불가능한 것에 에너지를 쓰지 마라
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box reveal d5">
+          <div class="insight-text">
+            심연을 만드는 것은 외부가 아니라, <strong>외부에 대한 나의 반응이다</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 9 — "왜 신경 쓰지 말아야 하는가"
+       ============================================ -->
+  <section class="slide" id="slide-8">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          왜 <span class="accent">신경 쓰지 말아야</span> 하는가
+        </h2>
+
+        <ul class="bullet-list reveal d2">
+          <li>심연을 만드는 것이 &ldquo;나의 반응&rdquo;이라면 &rarr; <strong>반응을 바꾸면 심연은 사라진다</strong></li>
+          <li>에너지를 쓸 곳을 정하면, 나머지는 자연스레 내려놓게 된다</li>
+        </ul>
+
+        <div class="two-col reveal d3">
+          <div class="abyss-card gold-border">
+            <div class="card-label">통제 가능</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              내 생각<br />
+              내 반응<br />
+              내 노력
+            </div>
+          </div>
+
+          <div class="abyss-card dim-border">
+            <div class="card-label" style="color: var(--text-dim);">통제 불가</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              타인의 행동<br />
+              결과<br />
+              시장, 미래
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box reveal d4">
+          <div class="insight-text">
+            외부 원인에 대한 판단을 내려놓으면, <strong>감정의 뫼비우스가 끊어진다</strong>
+          </div>
+        </div>
+
+        <div class="note reveal d5">
+          그런데 이걸 어떻게 실천하느냐?
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 10 — "2천 년 된 프레임워크" — 실천
+       ============================================ -->
+  <section class="slide" id="slide-9">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          2천 년 된 <span class="accent">프레임워크</span>
+        </h2>
+
+        <div class="slide-subtitle reveal d2">
+          방법은 놀랍도록 간단합니다
+        </div>
+
+        <ol class="step-list reveal d3">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">
+              오늘 해결한 문제<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 통제 가능했던 것</span>
+            </span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">
+              통제 불가능한 것에 낭비한 시간<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 에너지를 낭비한 곳</span>
+            </span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">
+              내일의 개선점<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 내일 에너지를 쓸 곳</span>
+            </span>
+          </li>
+        </ol>
+
+        <div class="insight-box reveal d4">
+          <div class="insight-text">
+            <strong>3개월만 하면,</strong> 뭘 통제할 수 있고 뭘 못하는지 패턴이 보입니다
+          </div>
+        </div>
+
+        <div class="note reveal d5">
+          2천 년 전 로마 황제도 매일 밤 이렇게 기록했습니다
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 11 — CLOSING (수미상관)
+       ============================================ -->
+  <section class="slide slide-closing" id="slide-10">
+    <div class="corner-ornament corner-ornament--tl" aria-hidden="true"></div>
+    <div class="corner-ornament corner-ornament--br" aria-hidden="true"></div>
+
+    <div class="slide-content">
+      <div class="closing-text">
+        <span class="reveal dramatic d1" style="display: block;">
+          수업에서 스피노자를 배우면서
+        </span>
+
+        <span class="reveal dramatic d2" style="display: block;">
+          스토아가 떠올랐다고 했습니다
+        </span>
+
+        <div class="closing-pause reveal d3"></div>
+
+        <span class="reveal dramatic d3" style="display: block;">
+          400년 전 스피노자도,
+        </span>
+
+        <span class="reveal dramatic d4" style="display: block;">
+          2천 년 전 스토아도,
+        </span>
+
+        <span class="reveal dramatic d5" style="display: block;">
+          그리고 오늘 우리도 &mdash;
+        </span>
+
+        <span class="reveal dramatic d6 emphasis">
+          답은 같습니다.
+        </span>
+
+        <div class="closing-pause reveal d7"></div>
+
+        <span class="reveal dramatic d8 gold-emphasis">
+          신경 쓰지 말아야 할 것을 내려놓으면,
+        </span>
+
+        <span class="reveal dramatic d9 gold-emphasis">
+          심연은 더 이상 심연이 아닙니다.
+        </span>
+      </div>
+    </div>
+
+    <div class="slide-footer reveal d9">
+      <span>감사합니다</span>
+      <span><span class="divider">|</span>연세대학교 공학대학원</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       JAVASCRIPT — SlidePresentation class
+       ============================================ -->
+  <script>
+    /**
+     * SlidePresentation
+     * Full-featured slide navigation with:
+     * - Intersection Observer for .visible class toggle
+     * - Keyboard navigation (arrows, space, page up/down, home/end)
+     * - Touch/swipe support
+     * - Mouse wheel navigation with debounce
+     * - Progress bar
+     * - Navigation dots
+     * - Slide counter
+     */
+    class SlidePresentation {
+      constructor() {
+        // --- DOM references ---
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.navDots = Array.from(document.querySelectorAll('.nav-dot'));
+        this.progressBar = document.getElementById('progressBar');
+        this.slideCounter = document.getElementById('slideCounter');
+        this.keyboardHint = document.getElementById('keyboardHint');
+
+        // --- State ---
+        this.currentSlide = 0;
+        this.totalSlides = this.slides.length;
+        this.isNavigating = false;
+        this.wheelTimeout = null;
+        this.touchStartY = 0;
+        this.touchStartX = 0;
+        this.touchStartTime = 0;
+        this.hintHidden = false;
+
+        // --- Configuration ---
+        this.WHEEL_DEBOUNCE = 800;
+        this.SWIPE_THRESHOLD = 50;
+        this.SWIPE_TIME_LIMIT = 500;
+        this.NAV_COOLDOWN = 600;
+
+        // --- Initialize ---
+        this.init();
+      }
+
+      /**
+       * Initialize all event listeners and observers
+       */
+      init() {
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupWheelNav();
+        this.setupTouchNav();
+        this.setupDotNav();
+        this.updateUI();
+
+        // Hide keyboard hint after first navigation
+        this.hideHintOnFirstNav = true;
+
+        // Handle hash navigation on load
+        this.handleHash();
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', () => this.handleHash());
+      }
+
+      /**
+       * Handle URL hash to navigate to a specific slide
+       */
+      handleHash() {
+        const hash = window.location.hash;
+        if (hash) {
+          const match = hash.match(/^#slide-(\d+)$/);
+          if (match) {
+            const index = parseInt(match[1], 10);
+            if (index >= 0 && index < this.totalSlides) {
+              this.goToSlide(index, false);
+            }
+          }
+        }
+      }
+
+      /**
+       * Intersection Observer — toggles .visible class for reveal animations
+       * Uses a threshold of 0.4 to trigger when slide is nearly centered
+       */
+      setupIntersectionObserver() {
+        const observerOptions = {
+          root: null,
+          threshold: [0.4, 0.6],
+          rootMargin: '0px'
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+              entry.target.classList.add('visible');
+
+              // Update current slide index based on observed element
+              const slideIndex = this.slides.indexOf(entry.target);
+              if (slideIndex !== -1 && slideIndex !== this.currentSlide) {
+                this.currentSlide = slideIndex;
+                this.updateUI();
+              }
+            } else {
+              // Remove visible class when slide leaves viewport
+              // This allows re-triggering animations when revisiting
+              entry.target.classList.remove('visible');
+            }
+          });
+        }, observerOptions);
+
+        this.slides.forEach((slide) => {
+          this.observer.observe(slide);
+        });
+      }
+
+      /**
+       * Keyboard navigation
+       * Supports: ArrowDown/Up, ArrowRight/Left, Space, PageDown/Up, Home/End
+       */
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          // Prevent default for navigation keys
+          const navKeys = [
+            'ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft',
+            'Space', ' ', 'PageDown', 'PageUp', 'Home', 'End'
+          ];
+
+          if (navKeys.includes(e.key) || navKeys.includes(e.code)) {
+            e.preventDefault();
+          }
+
+          switch (e.key) {
+            case 'ArrowDown':
+            case 'ArrowRight':
+            case ' ':
+            case 'PageDown':
+              this.nextSlide();
+              break;
+
+            case 'ArrowUp':
+            case 'ArrowLeft':
+            case 'PageUp':
+              this.prevSlide();
+              break;
+
+            case 'Home':
+              this.goToSlide(0);
+              break;
+
+            case 'End':
+              this.goToSlide(this.totalSlides - 1);
+              break;
+          }
+        });
+      }
+
+      /**
+       * Mouse wheel navigation with debounce
+       * Prevents rapid scroll from skipping multiple slides
+       */
+      setupWheelNav() {
+        document.addEventListener('wheel', (e) => {
+          e.preventDefault();
+
+          // Debounce wheel events
+          if (this.isNavigating) return;
+
+          const delta = e.deltaY;
+          const threshold = 30; // Minimum delta to trigger navigation
+
+          if (Math.abs(delta) < threshold) return;
+
+          this.isNavigating = true;
+
+          if (delta > 0) {
+            this.nextSlide();
+          } else {
+            this.prevSlide();
+          }
+
+          // Reset navigation lock after cooldown
+          clearTimeout(this.wheelTimeout);
+          this.wheelTimeout = setTimeout(() => {
+            this.isNavigating = false;
+          }, this.WHEEL_DEBOUNCE);
+        }, { passive: false });
+      }
+
+      /**
+       * Touch/swipe navigation
+       * Detects vertical swipes for mobile navigation
+       */
+      setupTouchNav() {
+        document.addEventListener('touchstart', (e) => {
+          this.touchStartY = e.touches[0].clientY;
+          this.touchStartX = e.touches[0].clientX;
+          this.touchStartTime = Date.now();
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+          if (this.isNavigating) return;
+
+          const touchEndY = e.changedTouches[0].clientY;
+          const touchEndX = e.changedTouches[0].clientX;
+          const touchEndTime = Date.now();
+
+          const deltaY = this.touchStartY - touchEndY;
+          const deltaX = this.touchStartX - touchEndX;
+          const deltaTime = touchEndTime - this.touchStartTime;
+
+          // Check if swipe is primarily vertical and meets thresholds
+          if (
+            Math.abs(deltaY) > this.SWIPE_THRESHOLD &&
+            Math.abs(deltaY) > Math.abs(deltaX) &&
+            deltaTime < this.SWIPE_TIME_LIMIT
+          ) {
+            this.isNavigating = true;
+
+            if (deltaY > 0) {
+              this.nextSlide();
+            } else {
+              this.prevSlide();
+            }
+
+            setTimeout(() => {
+              this.isNavigating = false;
+            }, this.NAV_COOLDOWN);
+          }
+        }, { passive: true });
+      }
+
+      /**
+       * Navigation dot click handlers
+       */
+      setupDotNav() {
+        this.navDots.forEach((dot) => {
+          dot.addEventListener('click', () => {
+            const targetSlide = parseInt(dot.dataset.slide, 10);
+            if (!isNaN(targetSlide)) {
+              this.goToSlide(targetSlide);
+            }
+          });
+        });
+      }
+
+      /**
+       * Navigate to next slide
+       */
+      nextSlide() {
+        if (this.currentSlide < this.totalSlides - 1) {
+          this.goToSlide(this.currentSlide + 1);
+        }
+      }
+
+      /**
+       * Navigate to previous slide
+       */
+      prevSlide() {
+        if (this.currentSlide > 0) {
+          this.goToSlide(this.currentSlide - 1);
+        }
+      }
+
+      /**
+       * Navigate to a specific slide
+       * @param {number} index - Target slide index (0-based)
+       * @param {boolean} smooth - Whether to use smooth scrolling (default: true)
+       */
+      goToSlide(index, smooth = true) {
+        if (index < 0 || index >= this.totalSlides) return;
+
+        this.currentSlide = index;
+
+        const targetSlide = this.slides[index];
+        targetSlide.scrollIntoView({
+          behavior: smooth ? 'smooth' : 'auto',
+          block: 'start'
+        });
+
+        this.updateUI();
+        this.hideHint();
+
+        // Update URL hash without triggering hashchange scroll
+        history.replaceState(null, '', `#slide-${index}`);
+      }
+
+      /**
+       * Update all UI elements: progress bar, dots, counter
+       */
+      updateUI() {
+        // --- Progress bar ---
+        const progress = this.totalSlides > 1
+          ? (this.currentSlide / (this.totalSlides - 1)) * 100
+          : 0;
+        this.progressBar.style.width = `${progress}%`;
+        this.progressBar.setAttribute('aria-valuenow', Math.round(progress));
+
+        // --- Navigation dots ---
+        this.navDots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === this.currentSlide);
+          dot.setAttribute('aria-current', i === this.currentSlide ? 'step' : 'false');
+        });
+
+        // --- Slide counter ---
+        const currentNum = String(this.currentSlide + 1).padStart(2, '0');
+        const totalNum = String(this.totalSlides).padStart(2, '0');
+        this.slideCounter.innerHTML = `<span class="current">${currentNum}</span> / ${totalNum}`;
+      }
+
+      /**
+       * Hide keyboard hint after first navigation
+       */
+      hideHint() {
+        if (!this.hintHidden && this.keyboardHint) {
+          this.hintHidden = true;
+          this.keyboardHint.classList.add('hidden');
+        }
+      }
+    }
+
+    /**
+     * FontLoader
+     * Handles web font loading state to prevent FOUT
+     * (Flash of Unstyled Text). The body starts with
+     * class="loading" (opacity: 0) and transitions to
+     * "loaded" (opacity: 1) once all required fonts
+     * are available, or after a 3-second timeout.
+     */
+    class FontLoader {
+      /**
+       * Wait for required fonts, then reveal content
+       * @returns {Promise<void>}
+       */
+      static async load() {
+        const requiredFonts = [
+          'Cormorant Garamond',
+          'Noto Sans KR'
+        ];
+
+        try {
+          // Use the Font Loading API if available
+          if (document.fonts && document.fonts.ready) {
+            // Set a timeout to prevent indefinite waiting
+            // if fonts fail to load (e.g., offline)
+            const timeout = new Promise((resolve) => {
+              setTimeout(resolve, 3000);
+            });
+
+            await Promise.race([
+              document.fonts.ready,
+              timeout
+            ]);
+          }
+        } catch (err) {
+          // Font loading failed; proceed anyway
+          // The browser will use fallback fonts
+          console.warn('Font loading encountered an issue:', err);
+        }
+
+        // Transition from loading to loaded state
+        document.body.classList.remove('loading');
+        document.body.classList.add('loaded');
+      }
+    }
+
+    /**
+     * VisibilityHandler
+     * Pauses CSS animations when the tab is hidden
+     * to conserve resources, and resumes them when
+     * the tab becomes visible again. This is
+     * especially important for the background
+     * breathing animation and floating particles.
+     */
+    class VisibilityHandler {
+      constructor() {
+        this.abyssBg = document.querySelector('.abyss-bg');
+        this.particles = document.querySelector('.particles');
+        this.setup();
+      }
+
+      setup() {
+        document.addEventListener('visibilitychange', () => {
+          const hidden = document.hidden;
+
+          // Pause/resume the abyss background animation
+          if (this.abyssBg) {
+            this.abyssBg.style.animationPlayState = hidden ? 'paused' : 'running';
+          }
+
+          // Pause/resume particle animations
+          if (this.particles) {
+            this.particles.style.animationPlayState = hidden ? 'paused' : 'running';
+            const particleEls = this.particles.querySelectorAll('.particle');
+            particleEls.forEach((p) => {
+              p.style.animationPlayState = hidden ? 'paused' : 'running';
+            });
+          }
+        });
+      }
+    }
+
+    // --- Initialize everything when DOM is ready ---
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Load fonts and reveal the page
+      await FontLoader.load();
+
+      // 2. Initialize the slide presentation engine
+      const presentation = new SlidePresentation();
+
+      // 3. Set up visibility-based animation pausing
+      const visibility = new VisibilityHandler();
+
+      // 4. Make first slide visible immediately
+      //    (or the hash-targeted slide if present)
+      const firstSlide = document.getElementById('slide-0');
+      if (firstSlide && !window.location.hash) {
+        // Small delay to ensure CSS transitions can apply
+        // after the font-loading opacity transition completes
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            firstSlide.classList.add('visible');
+          });
+        });
+      }
+
+      // 5. Log presentation info for debugging
+      console.log(
+        '%c심연의 미학 %c— Presentation loaded',
+        'color: #c9a84c; font-weight: bold; font-size: 14px;',
+        'color: #9a9590; font-size: 12px;'
+      );
+      console.log(
+        `%c${presentation.totalSlides} slides ready`,
+        'color: #6a6560; font-size: 11px;'
+      );
+    });
+  </script>
+</body>
+</html>

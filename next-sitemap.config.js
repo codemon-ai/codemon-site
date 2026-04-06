@@ -2,10 +2,10 @@
 module.exports = {
   siteUrl: 'https://codemon.ai',
   generateRobotsTxt: true,
-  exclude: ['/p/*', '/en/p/*', '/partner/*'],
+  exclude: ['/p/*', '/en/p/*', '/partner/*', '/yonsei/*'],
   robotsTxtOptions: {
     policies: [
-      { userAgent: '*', disallow: ['/p/', '/partner/'] },
+      { userAgent: '*', disallow: ['/p/', '/partner/', '/yonsei/'] },
       { userAgent: '*', allow: '/' },
     ],
     additionalSitemaps: [],
