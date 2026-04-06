@@ -20,6 +20,7 @@ const org = {
       name: '디자인팀', emoji: '🎨', head: '최민지 팀장', members: 2,
       roles: ['패키지 디자인', '브랜드 아이덴티티', '촬영 디렉팅'],
       painPoint: '디자인 기획/수정 반복',
+      demo: '/partner/lecture-podl-ai/demo/label',
     },
     {
       name: 'MD팀', emoji: '🏪', head: '정우진 팀장', members: 2,

@@ -5,6 +5,7 @@ export default {
   tracking: 'Demo 3. 소재 트래킹',
   content: 'Demo 4. 콘텐츠 생성',
   localize: 'Demo 5. 글로벌 현지화',
+  label: 'Demo 6. 패키지 라벨링',
   dashboard: {
     title: '📊 AI 대시보드',
     theme: { layout: 'raw' },

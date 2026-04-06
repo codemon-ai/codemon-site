@@ -1,0 +1,46 @@
+[
+  {
+    "id": "kr-kfda",
+    "country": "한국",
+    "flag": "🇰🇷",
+    "authority": "식약처 (KFDA)",
+    "required": ["전성분 표기 (INCI)", "사용기한/제조일자", "제조업자/판매업자", "용량", "사용방법", "사용시 주의사항", "기능성 화장품 표시"],
+    "prohibited": ["의약품 효능 표방", "최고/최초 등 절대적 표현", "의사 추천 암시"],
+    "language": "한국어 필수, 외국어 병기 가능",
+    "fontMin": "5pt 이상",
+    "hint": "기능성 화장품은 식약처 심사 번호 필수 기재"
+  },
+  {
+    "id": "us-fda",
+    "country": "미국",
+    "flag": "🇺🇸",
+    "authority": "FDA (21 CFR 701)",
+    "required": ["Product Identity", "Net Contents", "Ingredient Declaration (INCI)", "Warning Statements", "Distributor Info", "Drug Facts (if OTC)"],
+    "prohibited": ["Drug claims without OTC registration", "Organic claims without USDA cert", "SPF claims without FDA sunscreen monograph"],
+    "language": "English required",
+    "fontMin": "1/16 inch (약 4.5pt)",
+    "hint": "SPF 제품은 FDA OTC Drug monograph 준수 필수 — Drug Facts 패널 별도"
+  },
+  {
+    "id": "eu-cpnp",
+    "country": "EU",
+    "flag": "🇪🇺",
+    "authority": "EU Cosmetics Regulation (EC 1223/2009)",
+    "required": ["INCI list", "PAO (Period After Opening)", "Batch number", "Function of product", "Country of origin", "Responsible Person in EU", "Precautions"],
+    "prohibited": ["Animal testing claims (all cosmetics are CF in EU)", "Medical claims", "Nano ingredients without [nano] label"],
+    "language": "판매국 공용어 필수 (예: 프랑스 → 프랑스어)",
+    "fontMin": "1.2mm x-height",
+    "hint": "CPNP (Cosmetic Products Notification Portal) 등록 필수"
+  },
+  {
+    "id": "mena-halal",
+    "country": "중동/할랄",
+    "flag": "🇸🇦",
+    "authority": "SFDA (Saudi) + 할랄 인증기관",
+    "required": ["Arabic translation", "Halal certification mark", "Ingredient declaration (Arabic+English)", "Expiry date (Hijri+Gregorian)", "Importer info", "Country of origin"],
+    "prohibited": ["Alcohol-based ingredients (ethanol) without disclosure", "Porcine-derived ingredients", "Non-halal animal derivatives"],
+    "language": "아랍어 필수 + 영어 병기",
+    "fontMin": "규정 없으나 가독성 요구",
+    "hint": "할랄 인증은 GCC 국가별로 인정 기관이 다름 — UAE: ESMA, KSA: SFDA"
+  }
+]
