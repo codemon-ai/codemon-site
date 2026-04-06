@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI로 일하는 방법 — 17명이 170명을 이기는 법</title>
+
+    <!-- Google Fonts: Archivo Black (900) + Space Grotesk (400/500/700) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (BOLD SIGNAL THEME)
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #777777;
+            --accent: #FF5722;
+            --accent-dark: #E64A19;
+            --accent-glow: rgba(255, 87, 34, 0.25);
+            --accent-light: rgba(255, 87, 34, 0.1);
+
+            /* Typography — clamp() responsive */
+            --font-display: 'Archivo Black', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            --title-size: clamp(1.5rem, 5vw, 4rem);
+            --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+            --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+            --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+            --small-size: clamp(0.65rem, 1vw, 0.875rem);
+
+            /* Spacing — clamp() responsive */
+            --slide-padding: clamp(1rem, 4vw, 4rem);
+            --content-gap: clamp(0.5rem, 2vw, 2rem);
+            --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           RESET
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        :root {
+            --title-size: clamp(1.5rem, 5vw, 4rem);
+            --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+            --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+            --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+            --small-size: clamp(0.65rem, 1vw, 0.875rem);
+            --slide-padding: clamp(1rem, 4vw, 4rem);
+            --content-gap: clamp(0.5rem, 2vw, 2rem);
+            --element-gap: clamp(0.25rem, 1vw, 1rem);
+        }
+
+        .card, .container, .content-box {
+            max-width: min(90vw, 1000px);
+            max-height: min(80vh, 700px);
+        }
+
+        .feature-list, .bullet-list {
+            gap: clamp(0.4rem, 1vh, 1rem);
+        }
+
+        .feature-list li, .bullet-list li {
+            font-size: var(--body-size);
+            line-height: 1.4;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        img, .image-container {
+            max-width: 100%;
+            max-height: min(50vh, 400px);
+            object-fit: contain;
+        }
+
+        /* Short viewports (< 700px height) */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1rem, 3vw, 1.75rem);
+            }
+        }
+
+        /* Very short viewports (< 600px height) */
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots, .keyboard-hint, .decorative {
+                display: none;
+            }
+        }
+
+        /* Extremely short (landscape phones, < 500px height) */
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        /* Narrow viewports (< 600px width) */
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.25rem, 7vw, 2.5rem);
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        /* ===========================================
+           GLOBAL BODY & TYPOGRAPHY
+           =========================================== */
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, .display {
+            font-family: var(--font-display);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: var(--title-size); }
+        h2 { font-size: var(--h2-size); }
+        h3 { font-size: var(--h3-size); }
+        p, li { font-size: var(--body-size); line-height: 1.5; }
+
+        /* ===========================================
+           SLIDE BASE — DARK GRADIENT BACKGROUND
+           =========================================== */
+        .slide {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        /* ===========================================
+           SPLIT LAYOUT — LEFT DARK + RIGHT ORANGE CARD
+           =========================================== */
+        .split-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .split-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--slide-padding);
+            position: relative;
+        }
+
+        .split-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--slide-padding);
+            background: var(--accent);
+            color: #fff;
+            position: relative;
+        }
+
+        .split-right h2,
+        .split-right h3,
+        .split-right p,
+        .split-right li {
+            color: #fff;
+        }
+
+        .split-right .text-dark {
+            color: rgba(0,0,0,0.7);
+        }
+
+        /* ===========================================
+           SECTION NUMBER — BIG LOW-OPACITY BACKGROUND
+           =========================================== */
+        .section-number {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: clamp(6rem, 20vw, 18rem);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.04);
+            top: 50%;
+            left: var(--slide-padding);
+            transform: translateY(-50%);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .split-right .section-number {
+            color: rgba(255, 255, 255, 0.15);
+            right: var(--slide-padding);
+            left: auto;
+        }
+
+        /* ===========================================
+           NAVIGATION BREADCRUMBS (TOP RIGHT)
+           =========================================== */
+        .breadcrumbs {
+            position: fixed;
+            top: clamp(0.75rem, 2vh, 1.5rem);
+            right: clamp(0.75rem, 2vw, 2rem);
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+            z-index: 100;
+            font-family: var(--font-body);
+            font-size: var(--small-size);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .breadcrumbs a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .breadcrumbs a.active {
+            color: var(--accent);
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 1000;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1vw, 1rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 100;
+        }
+
+        .nav-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dots .dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        .nav-dots .dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===========================================
+           REVEAL ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===========================================
+           ORANGE CARD COMPONENT
+           =========================================== */
+        .orange-card {
+            background: var(--accent);
+            color: #fff;
+            border-radius: clamp(8px, 1.5vw, 16px);
+            padding: clamp(1rem, 2.5vw, 2rem);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orange-card h2,
+        .orange-card h3,
+        .orange-card p {
+            color: #fff;
+        }
+
+        .orange-card .subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ===========================================
+           DARK CARD COMPONENT
+           =========================================== */
+        .dark-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(6px, 1vw, 12px);
+            padding: clamp(0.6rem, 1.5vw, 1.25rem);
+        }
+
+        .dark-card h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: var(--body-size);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.5rem);
+        }
+
+        .dark-card p {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           STAT CARD
+           =========================================== */
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(6px, 1vw, 12px);
+            padding: clamp(0.6rem, 1.5vw, 1.25rem);
+            text-align: center;
+        }
+
+        .stat-card .stat-company {
+            font-size: var(--small-size);
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .stat-value {
+            font-family: var(--font-display);
+            font-size: clamp(0.9rem, 2vw, 1.5rem);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .stat-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           MINI TABLE
+           =========================================== */
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--small-size);
+        }
+
+        .mini-table th {
+            font-family: var(--font-body);
+            font-weight: 700;
+            text-align: left;
+            padding: clamp(0.3rem, 0.6vw, 0.6rem) clamp(0.4rem, 0.8vw, 0.8rem);
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            font-size: var(--small-size);
+            white-space: nowrap;
+        }
+
+        .mini-table td {
+            padding: clamp(0.25rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.8vw, 0.8rem);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            vertical-align: top;
+        }
+
+        .mini-table .highlight-col {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* ===========================================
+           COMPACT LIST WITH ICONS
+           =========================================== */
+        .icon-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.3rem, 0.8vh, 0.7rem);
+        }
+
+        .icon-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(0.4rem, 0.8vw, 0.8rem);
+            font-size: var(--body-size);
+        }
+
+        .icon-list .icon {
+            flex-shrink: 0;
+            width: clamp(1.2rem, 2vw, 1.6rem);
+            text-align: center;
+        }
+
+        /* ===========================================
+           DEMO NUMBER LAYOUT
+           =========================================== */
+        .demo-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .demo-number-side {
+            width: 35%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: var(--slide-padding);
+        }
+
+        .demo-big-number {
+            font-family: var(--font-display);
+            font-size: clamp(5rem, 15vw, 14rem);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.06);
+            line-height: 1;
+            position: absolute;
+        }
+
+        .demo-info-side {
+            width: 65%;
+            background: var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: clamp(1.5rem, 3vw, 3rem);
+            color: #fff;
+            position: relative;
+        }
+
+        .demo-info-side h3 {
+            color: #fff;
+            font-size: var(--h2-size);
+            margin-bottom: clamp(0.3rem, 0.8vh, 0.75rem);
+        }
+
+        .demo-info-side .demo-team {
+            font-size: var(--small-size);
+            opacity: 0.85;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: clamp(0.5rem, 1vh, 1rem);
+        }
+
+        .demo-info-side p,
+        .demo-info-side li {
+            color: rgba(255,255,255,0.92);
+            font-size: var(--body-size);
+        }
+
+        .demo-info-side ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.25rem, 0.6vh, 0.5rem);
+        }
+
+        .demo-info-side ul li::before {
+            content: "\2192 ";
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ===========================================
+           STEP CARDS
+           =========================================== */
+        .step-cards {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+            align-items: stretch;
+        }
+
+        .step-card {
+            flex: 1;
+            background: var(--bg-card);
+            border-radius: clamp(6px, 1vw, 12px);
+            padding: clamp(0.75rem, 1.5vw, 1.5rem);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.25rem, 0.5vh, 0.5rem);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .step-card.highlighted {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .step-number {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .step-card h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1.3vw, 1.05rem);
+        }
+
+        .step-card .step-analogy {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .step-card .step-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           BIG QUOTE STYLE
+           =========================================== */
+        .big-quote {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 3.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .big-quote .highlight {
+            color: var(--accent);
+        }
+
+        /* ===========================================
+           GRID CARDS (COMPACT)
+           =========================================== */
+        .compact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(140px, 20vw, 200px)), 1fr));
+            gap: clamp(0.4rem, 1vw, 0.75rem);
+        }
+
+        .compact-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(6px, 1vw, 10px);
+            padding: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .compact-card .card-icon {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            margin-bottom: clamp(0.15rem, 0.3vh, 0.3rem);
+        }
+
+        .compact-card h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: var(--small-size);
+            margin-bottom: clamp(0.1rem, 0.2vh, 0.2rem);
+        }
+
+        .compact-card p {
+            font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        /* ===========================================
+           ORANGE PROBLEM/SOLUTION CARD
+           =========================================== */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.5rem, 1.5vw, 1.25rem);
+        }
+
+        .problem-card {
+            background: var(--accent);
+            color: #fff;
+            border-radius: clamp(8px, 1.5vw, 14px);
+            padding: clamp(0.75rem, 1.5vw, 1.5rem);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.3rem, 0.7vh, 0.6rem);
+        }
+
+        .problem-card h4 {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+            color: #fff;
+        }
+
+        .problem-card .problem {
+            font-size: var(--small-size);
+            color: rgba(255,255,255,0.75);
+        }
+
+        .problem-card .solution {
+            font-size: var(--small-size);
+            color: #fff;
+            font-weight: 700;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: clamp(0.2rem, 0.4vh, 0.4rem);
+        }
+
+        /* ===========================================
+           TIMELINE
+           =========================================== */
+        .timeline {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: clamp(1rem, 2vw, 1.5rem);
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-phase {
+            flex: 1;
+            position: relative;
+        }
+
+        .timeline-phase .phase-dot {
+            width: clamp(10px, 1.5vw, 14px);
+            height: clamp(10px, 1.5vw, 14px);
+            background: var(--accent);
+            border-radius: 50%;
+            margin-bottom: clamp(0.4rem, 0.8vh, 0.75rem);
+        }
+
+        .timeline-phase h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: var(--body-size);
+            color: var(--accent);
+            margin-bottom: clamp(0.2rem, 0.4vh, 0.4rem);
+        }
+
+        .timeline-phase p {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* ===========================================
+           CTA STYLE
+           =========================================== */
+        .cta-box {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            border-radius: clamp(6px, 1vw, 10px);
+            padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 2rem);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: var(--body-size);
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        /* ===========================================
+           BADGE
+           =========================================== */
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: var(--small-size);
+            font-weight: 700;
+            padding: clamp(0.15rem, 0.3vw, 0.3rem) clamp(0.4rem, 0.8vw, 0.8rem);
+            border-radius: 100px;
+        }
+
+        .badge-dark {
+            background: var(--bg-card);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        /* ===========================================
+           THREE COLUMN LAYOUT
+           =========================================== */
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.5rem, 1.5vw, 1.25rem);
+        }
+
+        .col-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(8px, 1.5vw, 14px);
+            padding: clamp(0.75rem, 1.5vw, 1.5rem);
+        }
+
+        .col-card h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: var(--body-size);
+            color: var(--accent);
+            margin-bottom: clamp(0.3rem, 0.6vh, 0.6rem);
+        }
+
+        .col-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.15rem, 0.3vh, 0.3rem);
+        }
+
+        .col-card li {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           DIAGRAM BOX
+           =========================================== */
+        .diagram-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+            flex-wrap: wrap;
+        }
+
+        .diagram-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: clamp(6px, 1vw, 10px);
+            padding: clamp(0.5rem, 1vw, 1rem) clamp(0.75rem, 1.5vw, 1.5rem);
+            text-align: center;
+            font-size: var(--body-size);
+            font-weight: 500;
+        }
+
+        .diagram-box.accent {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .diagram-arrow {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+        }
+
+        /* ===========================================
+           Q&A STYLE
+           =========================================== */
+        .qa-item {
+            border-left: 3px solid var(--accent);
+            padding-left: clamp(0.75rem, 1.5vw, 1.5rem);
+            margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem);
+        }
+
+        .qa-item p {
+            font-size: clamp(0.9rem, 2vw, 1.5rem);
+            font-weight: 500;
+        }
+
+        /* ===========================================
+           SPEAKER CARD
+           =========================================== */
+        .speaker-card {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 1vh, 1rem);
+        }
+
+        .speaker-card .speaker-name {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            color: var(--accent);
+        }
+
+        .speaker-card .speaker-title {
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+        }
+
+        .speaker-card .speaker-stats {
+            display: flex;
+            gap: clamp(1rem, 3vw, 3rem);
+        }
+
+        .speaker-card .speaker-stat {
+            text-align: center;
+        }
+
+        .speaker-card .speaker-stat .num {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            color: var(--accent);
+        }
+
+        .speaker-card .speaker-stat .label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           ACCENT LINE DIVIDER
+           =========================================== */
+        .accent-line {
+            width: clamp(30px, 5vw, 60px);
+            height: 3px;
+            background: var(--accent);
+            margin: clamp(0.3rem, 0.8vh, 0.75rem) 0;
+        }
+
+        /* ===========================================
+           RESPONSIVE: STACK ON NARROW
+           =========================================== */
+        @media (max-width: 768px) {
+            .split-layout, .demo-layout {
+                flex-direction: column;
+            }
+            .split-left, .split-right {
+                flex: none;
+                height: 50%;
+            }
+            .demo-number-side {
+                width: 100%;
+                height: 30%;
+            }
+            .demo-info-side {
+                width: 100%;
+                height: 70%;
+            }
+            .problem-grid, .three-col {
+                grid-template-columns: 1fr;
+            }
+            .step-cards {
+                flex-direction: column;
+            }
+            .timeline {
+                flex-direction: column;
+            }
+            .timeline::before {
+                top: 0;
+                bottom: 0;
+                left: clamp(5px, 0.7vw, 7px);
+                right: auto;
+                width: 2px;
+                height: auto;
+            }
+            .breadcrumbs {
+                display: none;
+            }
+        }
+
+        /* ===========================================
+           THANK-YOU SLIDE CENTERED
+           =========================================== */
+        .centered-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .centered-slide .big-url {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 5rem);
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+
+        /* ===========================================
+           EDIT MODE (INLINE EDITING)
+           =========================================== */
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: clamp(0.5rem, 1.5vh, 1rem);
+            left: clamp(0.5rem, 1.5vw, 1rem);
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-primary);
+            font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+            padding: 0.4rem 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        [contenteditable="true"] {
+            outline: 2px dashed var(--accent);
+            outline-offset: 2px;
+            cursor: text;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation Dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs" id="breadcrumbs">
+    <a data-section="intro" class="active">INTRO</a>
+    <a data-section="demo">DEMO</a>
+    <a data-section="stitch">STITCH</a>
+    <a data-section="dashboard">DASHBOARD</a>
+    <a data-section="roadmap">ROADMAP</a>
+</nav>
+
+<!-- Edit Mode -->
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">&#9998;</button>
+
+
+<!-- =============================================
+     SLIDE 1 — TITLE
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">AI</div>
+            <h1 class="reveal" style="position:relative; z-index:1;">AI로<br>일하는 방법</h1>
+            <div class="accent-line reveal"></div>
+            <p class="reveal" style="color: var(--text-secondary); margin-top: clamp(0.5rem, 1vh, 1rem);">포들(PO:DL) 실무자를 위한 AX 가이드</p>
+        </div>
+        <div class="split-right">
+            <h2 class="reveal" style="font-size: var(--h2-size);">17명이<br>170명을<br>이기는 법</h2>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.5);"></div>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 500;">데모 7개 + Stitch 핸즈온 + 팀별 로드맵</p>
+            <p class="reveal subtitle" style="margin-top: clamp(0.3rem, 0.5vh, 0.5rem); font-size: var(--small-size); opacity: 0.75;">강사: 코드몬 &middot; codemon.ai</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 2 — OVERVIEW
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">00</div>
+            <h2 class="reveal" style="position:relative; z-index:1;">2.5시간<br>아젠다</h2>
+            <p class="reveal" style="color: var(--text-secondary); margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1;">총 150분 = 강의 120분 + Q&amp;A 20분 + 여유 10분</p>
+        </div>
+        <div class="split-right">
+            <ul class="reveal" style="list-style: none; display: flex; flex-direction: column; gap: clamp(0.6rem, 1.2vh, 1.2rem);">
+                <li style="font-weight: 700; font-size: var(--body-size);">Part 1. <span style="opacity:0.8">왜 지금이고, 왜 우리인가</span> <span style="float:right; opacity:0.6;">20분</span></li>
+                <li style="font-weight: 700; font-size: var(--body-size);">Part 2. <span style="opacity:0.8">라이브 데모 7선</span> <span style="float:right; opacity:0.6;">65분</span></li>
+                <li style="font-weight: 700; font-size: var(--body-size);">Part 3. <span style="opacity:0.8">Stitch 핸즈온</span> <span style="float:right; opacity:0.6;">15분</span></li>
+                <li style="font-weight: 700; font-size: var(--body-size);">Part 4. <span style="opacity:0.8">AI 대시보드</span> <span style="float:right; opacity:0.6;">10분</span></li>
+                <li style="font-weight: 700; font-size: var(--body-size);">Part 5. <span style="opacity:0.8">팀별 로드맵 + Q&amp;A</span> <span style="float:right; opacity:0.6;">20분</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 3 — 1-A: 413조원
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">01</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase;">Part 1 &middot; 1-A</p>
+                <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem);">Claude Cowork 출시<br>48시간</h2>
+                <p class="reveal" style="color: var(--text-secondary); margin-top: clamp(0.5rem, 1vh, 1rem);">2026년 2월, 시장이 "이건 진짜 패러다임 전환"이라고 반응한 날</p>
+            </div>
+        </div>
+        <div class="split-right">
+            <div class="section-number">$</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="font-size: var(--small-size); opacity: 0.8;">소프트웨어 주식 시총 증발</p>
+                <h2 class="reveal" style="font-size: clamp(3rem, 10vw, 8rem); line-height: 1;">413조원</h2>
+                <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); opacity: 0.85;">"할 것인가 말 것인가"가 아니라<br><strong>"어떻게 잘 할 것인가"</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 4 — 1-A: 4 STATS
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">지금 세상에서 일어나고 있는 일</p>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.5rem, 1.5vw, 1rem); margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <div class="stat-card reveal">
+                <div class="stat-company">Rakuten</div>
+                <div class="stat-value">인간 코드 0%</div>
+                <div class="stat-desc">1,250만줄 AI 자율 관리</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-company">Zapier</div>
+                <div class="stat-value">89% AI 채택</div>
+                <div class="stat-desc">800+ 에이전트 내부 운영</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-company">Lovable</div>
+                <div class="stat-value">매출 5천억</div>
+                <div class="stat-desc">비개발자 63%가 앱 제작</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-company">SK AX</div>
+                <div class="stat-value">성과 기준 변화</div>
+                <div class="stat-desc">"AI를 얼마나 잘 지휘했느냐"</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: clamp(1rem, 3vw, 3rem); margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <div class="reveal" style="text-align: center;">
+                <span style="font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.5rem); color: var(--accent);">85%</span>
+                <p style="font-size: var(--small-size); color: var(--text-secondary);">한국 기업 AI 도입</p>
+            </div>
+            <div class="reveal" style="text-align: center;">
+                <span style="font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.5rem); color: var(--text-muted);">60%</span>
+                <p style="font-size: var(--small-size); color: var(--text-secondary);">아직 실험 단계</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 5 — 1-B: 3가지 원인
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">1-B &middot; 왜 효과가 없죠?</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">원인은 3가지</h2>
+        <div class="problem-grid reveal" style="margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <div class="problem-card">
+                <h4>재료가 없다</h4>
+                <p class="problem">"시딩 이메일 써줘" &rarr; 브랜드 톤도, 제품 정보도 없음</p>
+                <p class="solution">&rarr; 컨텍스트 = 브랜드 가이드 + 제품 정보를 항상 함께</p>
+            </div>
+            <div class="problem-card">
+                <h4>일회성으로 끝남</h4>
+                <p class="problem">한번 "오~" &rarr; 다음 날 같은 프롬프트를 못 찾음</p>
+                <p class="solution">&rarr; 스킬 = 반복 프롬프트를 저장해서 누구나 재사용</p>
+            </div>
+            <div class="problem-card">
+                <h4>흐름에 안 붙음</h4>
+                <p class="problem">AI 리포트 만들어도 슬랙 공유하려면 복붙</p>
+                <p class="solution">&rarr; 자동화 = 결과를 바로 슬랙/이메일에 연결</p>
+            </div>
+        </div>
+        <p class="reveal" style="margin-top: clamp(0.75rem, 1.5vh, 1.5rem); text-align: center; color: var(--text-secondary); font-weight: 500; position:relative; z-index:1;">오늘 이 3가지를 전부 해결하는 걸 보여드리겠습니다.</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 6 — 1-C: 3단계
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">1-C &middot; 그래서 우리는 뭘 해야 하는가</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">AI 활용 3단계</h2>
+        <div class="step-cards reveal" style="margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <div class="step-card">
+                <div class="step-number">&oplus;</div>
+                <h4>프롬프트</h4>
+                <p class="step-analogy">인턴에게 구두 지시</p>
+                <p class="step-desc">잘 시키면 잘 함, 매번 처음부터 설명</p>
+            </div>
+            <div class="step-card highlighted">
+                <div class="step-number">&starf;</div>
+                <h4>컨텍스트</h4>
+                <p class="step-analogy">인턴에게 매뉴얼 전달</p>
+                <p class="step-desc">우리 회사를 AI가 '기억'. 품질 급상승</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">&rlarr;</div>
+                <h4>하네스</h4>
+                <p class="step-analogy">부서 시스템 구축</p>
+                <p class="step-desc">자동화 파이프라인. 사람이 안 해도 돌아감</p>
+            </div>
+        </div>
+        <p class="reveal" style="text-align: center; margin-top: clamp(0.5rem, 1vh, 1rem); font-size: var(--small-size); color: var(--text-secondary); position:relative; z-index:1;">오늘의 목표: <strong style="color: var(--accent);">&starf; 컨텍스트</strong> 단계를 확실히 익히는 것</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 7 — "컨텍스트가 핵심"
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">01</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--text-secondary); font-size: var(--body-size);">프롬프트만 잘 쓰는 건</p>
+                <p class="reveal" style="color: var(--text-secondary); font-size: var(--body-size);">인턴한테 매번 처음부터<br>설명하는 것과 같습니다.</p>
+                <p class="reveal" style="color: var(--text-primary); font-size: var(--body-size); font-weight: 700; margin-top: clamp(0.5rem, 1vh, 1rem);">매뉴얼을 한번 만들어주면<br>그 다음부터는 알아서 합니다.</p>
+            </div>
+        </div>
+        <div class="split-right" style="display:flex; align-items:center; justify-content:center;">
+            <h2 class="reveal big-quote" style="text-align:center;">컨텍스트가<br>핵심이다</h2>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 8 — 1-1: 7 팀 병목
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">1-1 &middot; 포들의 하루</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">7개 팀의 병목</h2>
+        <div class="compact-grid reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1; grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(160px, 22vw, 220px)), 1fr));">
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#9993;</div>
+                <h4>마케팅 (박서연)</h4>
+                <p>인플루언서 20명 이메일 &rarr; 하루 종일</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#128202;</div>
+                <h4>MD (정우진)</h4>
+                <p>"오늘 매출 얼마야?" &rarr; 담당자 자리로 걸어감</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#128196;</div>
+                <h4>콘텐츠 (이하은)</h4>
+                <p>상세페이지 하나에 반나절, SNS까지 하면 하루</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#128293;</div>
+                <h4>마케팅 (박서연)</h4>
+                <p>릴스 300만뷰 터졌는데 전사 아무도 모름</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#127991;</div>
+                <h4>디자인 (최민지)</h4>
+                <p>미국용 라벨 만들려면 FDA 규격 찾는 것부터</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#127758;</div>
+                <h4>미국팀 (Sarah)</h4>
+                <p>번역 외주 맡기면 "보들보들함"이 사라짐</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon" style="color: var(--accent);">&#128230;</div>
+                <h4>물류 (강태호)</h4>
+                <p>반품 사유 하나하나 읽고 엑셀에 집계</p>
+            </div>
+        </div>
+        <p class="reveal" style="text-align: center; margin-top: clamp(0.5rem, 1vh, 1rem); font-size: var(--body-size); color: var(--text-secondary); position:relative; z-index:1;">17명이 할 일이 <strong style="color: var(--accent);">170명 분량</strong>인 거예요.</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 9 — 1-2: 이걸 AI가 해준다면?
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">1-2 &middot; 이걸 AI가 해준다면?</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">오늘 직접 보여드립니다</h2>
+        <div class="accent-line reveal" style="position:relative; z-index:1;"></div>
+        <ul class="icon-list reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1;">
+            <li><span class="icon" style="color: var(--accent);">&#9993;</span> 시딩 이메일 20통 &rarr; <strong>한번에 동시 생성</strong></li>
+            <li><span class="icon" style="color: var(--accent);">&#128202;</span> 3채널 매출 &rarr; <strong>자동 리포트 + 차트</strong></li>
+            <li><span class="icon" style="color: var(--accent);">&#128293;</span> SNS 30개 게시물 &rarr; <strong>히트 패턴 자동 분석</strong></li>
+            <li><span class="icon" style="color: var(--accent);">&#128196;</span> 제품 1개 &rarr; <strong>4종 콘텐츠 동시 생성</strong></li>
+            <li><span class="icon" style="color: var(--accent);">&#127758;</span> 마케팅 카피 &rarr; <strong>5개국 문화 맞춤 현지화</strong></li>
+            <li><span class="icon" style="color: var(--accent);">&#127991;</span> 패키지 라벨 &rarr; <strong>4개국 규제 자동 반영</strong></li>
+        </ul>
+        <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); color: var(--text-secondary); font-size: var(--small-size); position:relative; z-index:1;">이건 마법이 아니라 <strong style="color: var(--text-primary);">도구</strong>입니다.</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 10 — 1-D: 데모를 만든 이유
+     ============================================= -->
+<section class="slide" data-section="intro">
+    <div class="slide-content">
+        <div class="section-number">01</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">1-D &middot; 이 데모를 만든 이유</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">7개 팀의 실제 병목에서 출발</h2>
+        <table class="mini-table reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1;">
+            <thead>
+                <tr><th>데모</th><th>팀</th><th>해결하려는 문제</th><th class="highlight-col">핵심</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>시딩 이메일</td><td>마케팅</td><td>이메일 수작업</td><td class="highlight-col">인플루언서 DB + 톤 가이드</td></tr>
+                <tr><td>매출 리포트</td><td>MD+회계</td><td>3채널 데이터 흩어짐</td><td class="highlight-col">채널 데이터 통합</td></tr>
+                <tr><td>소재 트래킹</td><td>마케팅</td><td>히트를 몰라서 기회 놓침</td><td class="highlight-col">SNS 성과 데이터</td></tr>
+                <tr><td>콘텐츠 생성</td><td>콘텐츠</td><td>상세페이지에 반나절</td><td class="highlight-col">브랜드 톤 + 제품 정보</td></tr>
+                <tr><td>글로벌 현지화</td><td>미국팀</td><td>번역 뉘앙스 손실</td><td class="highlight-col">문화권 지식</td></tr>
+            </tbody>
+        </table>
+        <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); text-align: center; font-weight: 500; font-size: var(--body-size); position:relative; z-index:1;">전부 <strong style="color: var(--accent);">컨텍스트</strong>가 핵심입니다.</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 11 — Demo 1 시딩
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">01</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">마케팅팀 &middot; 박서연</p>
+            <h3 class="reveal">인플루언서 시딩<br>이메일 자동화</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>인플루언서 리스트 + 제품 정보 입력</li>
+                <li>개인화 시딩 이메일 벌크 생성</li>
+                <li>10가지 톤/매너 프리셋</li>
+                <li>Make/Zapier 연동 자동 발송 가능</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">10분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 12 — Demo 2 리포트
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">02</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">MD팀 + 회계팀 &middot; 정우진 &middot; 윤서아</p>
+            <h3 class="reveal">매출 데이터<br>일일 리포트</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>쿠팡/자사몰/올리브영 3채널 1,000건</li>
+                <li>통합 분석 + 채널별 비교 + 이상치 감지</li>
+                <li>SVG 차트 5종 자동 생성</li>
+                <li>경영진용 리포트 &rarr; 새창에서 확인</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">10분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 13 — Demo 3 트래킹
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">03</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">마케팅팀 &middot; 박서연</p>
+            <h3 class="reveal">SNS 소재 성과<br>트래킹 + 슬랙 알림</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>인스타/틱톡 30개 게시물 성과 분석</li>
+                <li>히트 패턴 분석 + 플랫폼별 필터</li>
+                <li>슬랙 알림 메시지 자동 생성</li>
+                <li>"밤투폼 릴스 300만뷰 돌파!"</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">10분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 14 — Demo 4 콘텐츠
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">04</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">콘텐츠팀 &middot; 이하은</p>
+            <h3 class="reveal">상품 콘텐츠<br>자동 생성</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>제품 선택 &rarr; 4종 콘텐츠 동시 생성</li>
+                <li>상세페이지 카피 + 인스타 캐러셀</li>
+                <li>해시태그 + 틱톡 스크립트</li>
+                <li>AI 초안 &rarr; 편집/검수에만 집중</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">8분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 15 — Demo 5 현지화
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">05</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">미국팀 &middot; Sarah</p>
+            <h3 class="reveal">글로벌 마케팅 카피<br>현지화</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>한국어 카피 &rarr; 5개국 동시 현지화</li>
+                <li>단순 번역 vs 문화권 맞춤 비교</li>
+                <li>뷰티 트렌드 &middot; 규제 &middot; 소비자 심리 반영</li>
+                <li>&#127482;&#127480; &#127480;&#127462; &#127471;&#127477; &#127464;&#127475; &#127467;&#127479;</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">8분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 16 — Demo 6 라벨
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">06</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">디자인팀 &middot; 최민지</p>
+            <h3 class="reveal">패키지 라벨 &<br>규제 카피</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>라벨 유형 + 수출국 선택</li>
+                <li>국가별 화장품 규제 자동 반영</li>
+                <li>식약처 / FDA / EU CPNP / 할랄</li>
+                <li>4개국 라벨 나란히 비교</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">8분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 17 — Demo 7 반품
+     ============================================= -->
+<section class="slide" data-section="demo">
+    <div class="demo-layout">
+        <div class="demo-number-side">
+            <div class="demo-big-number">07</div>
+        </div>
+        <div class="demo-info-side">
+            <p class="reveal demo-team">물류팀 &middot; 강태호</p>
+            <h3 class="reveal">반품 분석 &<br>자동 대응</h3>
+            <div class="accent-line reveal" style="background: rgba(255,255,255,0.4);"></div>
+            <ul class="reveal">
+                <li>200건 반품 데이터 &rarr; 사유 패턴 분석</li>
+                <li>채널별/제품별 비교</li>
+                <li>CS 응대 메시지 템플릿 3종 자동 생성</li>
+                <li>반품률 개선 액션 아이템 5개 제안</li>
+            </ul>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-weight: 700; font-size: var(--small-size); opacity: 0.8;">8분</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 18 — Part 3 Stitch Intro
+     ============================================= -->
+<section class="slide" data-section="stitch">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">03</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase;">Part 3 &middot; Stitch 핸즈온</p>
+                <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem);">Claude Code</h2>
+                <p class="reveal" style="color: var(--text-secondary); margin-top: clamp(0.3rem, 0.6vh, 0.6rem);">AI 코드 에이전트로<br>라벨 규제 카피를 생성하고...</p>
+            </div>
+        </div>
+        <div class="split-right">
+            <h2 class="reveal">Google<br>Stitch 2.0</h2>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); opacity: 0.85;">...패키지 라벨 디자인을<br>직접 생성합니다</p>
+            <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); font-size: var(--small-size); opacity: 0.7;">Demo 6 확장 &middot; 코딩 없이 &middot; 프롬프트만으로</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 19 — Stitch 5 Steps
+     ============================================= -->
+<section class="slide" data-section="stitch">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">03</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase;">핸즈온 시연</p>
+                <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem);">5단계</h2>
+            </div>
+        </div>
+        <div class="split-right">
+            <ul class="reveal" style="list-style: none; display: flex; flex-direction: column; gap: clamp(0.5rem, 1.2vh, 1.2rem);">
+                <li style="font-size: var(--body-size);"><strong style="font-family: var(--font-display); margin-right: 0.5em;">1</strong> 프로젝트 생성 &mdash; "보들 라벨 만들어줘" 한 줄</li>
+                <li style="font-size: var(--body-size);"><strong style="font-family: var(--font-display); margin-right: 0.5em;">2</strong> 브랜드 시스템 등록 &mdash; DESIGN.md 자동 업로드</li>
+                <li style="font-size: var(--body-size);"><strong style="font-family: var(--font-display); margin-right: 0.5em;">3</strong> 한국어 라벨 생성 &mdash; 정면+후면 디자인 자동</li>
+                <li style="font-size: var(--body-size);"><strong style="font-family: var(--font-display); margin-right: 0.5em;">4</strong> 다국어 변환 &mdash; FDA / 할랄 / EU 프랑스어</li>
+                <li style="font-size: var(--body-size);"><strong style="font-family: var(--font-display); margin-right: 0.5em;">5</strong> 브랜드 톤 일괄 적용 &mdash; 3개국 디자인 통일</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 20 — Stitch All Teams
+     ============================================= -->
+<section class="slide" data-section="stitch">
+    <div class="slide-content">
+        <div class="section-number">03</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">디자인팀만이 아닙니다</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">모든 팀이 Stitch로</h2>
+        <div class="three-col reveal" style="margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <div class="col-card">
+                <h4>디자인팀</h4>
+                <ul>
+                    <li>패키지 라벨 시안</li>
+                    <li>다국어 라벨 변환</li>
+                    <li>브랜드 디자인 시스템</li>
+                </ul>
+            </div>
+            <div class="col-card">
+                <h4>콘텐츠팀</h4>
+                <ul>
+                    <li>SNS 배너/크리에이티브</li>
+                    <li>이벤트 비주얼</li>
+                    <li>상세페이지 시안</li>
+                </ul>
+            </div>
+            <div class="col-card">
+                <h4>마케팅팀</h4>
+                <ul>
+                    <li>캠페인 비주얼</li>
+                    <li>광고 소재 초안</li>
+                    <li>해외 상세페이지 시안</li>
+                </ul>
+            </div>
+        </div>
+        <p class="reveal" style="text-align: center; margin-top: clamp(0.75rem, 1.5vh, 1.5rem); position:relative; z-index:1;">
+            <span class="badge">Google Stitch</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary); margin-left: 0.5rem;">무료 350회/월 &middot; Gmail만 있으면 사용 가능</span>
+        </p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 21 — Part 4 Dashboard 7-Panel Grid
+     ============================================= -->
+<section class="slide" data-section="dashboard">
+    <div class="slide-content">
+        <div class="section-number">04</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">Part 4 &middot; 포들 AI 대시보드</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">7개를 하나로</h2>
+        <div class="compact-grid reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1; grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(130px, 18vw, 180px)), 1fr));">
+            <div class="compact-card">
+                <div class="card-icon">&#128202;</div>
+                <h4>매출 리포트</h4>
+                <p>3채널 통합 일일 리포트</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#128293;</div>
+                <h4>소재 트래킹</h4>
+                <p>히트 콘텐츠 실시간 감지</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#9993;</div>
+                <h4>시딩 파이프라인</h4>
+                <p>진행률 &middot; 응답률</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#128196;</div>
+                <h4>콘텐츠 파이프라인</h4>
+                <p>기획&rarr;초안&rarr;발행&rarr;성과</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#127758;</div>
+                <h4>글로벌 현황</h4>
+                <p>현지화 진행률 + 해외 매출</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#127991;</div>
+                <h4>라벨링 현황</h4>
+                <p>국가별 규제 대응</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#128230;</div>
+                <h4>반품 분석</h4>
+                <p>반품률 추이 + CS 현황</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 22 — MCP Explainer
+     ============================================= -->
+<section class="slide" data-section="dashboard">
+    <div class="slide-content">
+        <div class="section-number">04</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">MCP(Model Context Protocol)</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">외부 도구와 AI를 연결하는 표준</h2>
+        <div class="diagram-flow reveal" style="margin-top: clamp(1rem, 2vh, 2rem); position:relative; z-index:1;">
+            <div class="diagram-box">
+                <div style="font-size: clamp(1rem, 2vw, 1.5rem); margin-bottom: 0.25rem;">&#128268;</div>
+                외부 도구<br><span style="font-size: var(--small-size); color: var(--text-secondary);">쿠팡 / 인스타 / Gmail</span>
+            </div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-box accent">
+                <div style="font-size: clamp(1rem, 2vw, 1.5rem); margin-bottom: 0.25rem;">&#9881;</div>
+                MCP<br><span style="font-size: var(--small-size); color: rgba(255,255,255,0.7);">표준 연결 프로토콜</span>
+            </div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-box">
+                <div style="font-size: clamp(1rem, 2vw, 1.5rem); margin-bottom: 0.25rem;">&#129302;</div>
+                Claude<br><span style="font-size: var(--small-size); color: var(--text-secondary);">AI 분석 + 생성</span>
+            </div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-box accent">
+                <div style="font-size: clamp(1rem, 2vw, 1.5rem); margin-bottom: 0.25rem;">&#128202;</div>
+                대시보드<br><span style="font-size: var(--small-size); color: rgba(255,255,255,0.7);">포들 AI 컨트롤 센터</span>
+            </div>
+        </div>
+        <p class="reveal" style="text-align: center; margin-top: clamp(1rem, 2vh, 2rem); font-size: var(--body-size); color: var(--text-secondary); position:relative; z-index:1;">Part 1에서 말한 &#9313; <strong style="color: var(--accent);">하네스</strong> 단계가 바로 이것입니다.</p>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 23 — codemon.ai Support CTA
+     ============================================= -->
+<section class="slide" data-section="dashboard">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number">04</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase;">구축 지원</p>
+                <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem);">포들 AI 대시보드를<br>함께 만듭니다</h2>
+                <p class="reveal" style="color: var(--text-secondary); margin-top: clamp(0.5rem, 1vh, 1rem);">커스텀 MCP 개발부터<br>대시보드 구축까지 지원합니다</p>
+            </div>
+        </div>
+        <div class="split-right" style="display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center;">
+                <p class="reveal" style="font-size: var(--small-size); opacity: 0.75; margin-bottom: clamp(0.5rem, 1vh, 1rem);">AI 실전 블로그 40편+</p>
+                <h2 class="reveal" style="font-size: clamp(1.5rem, 4vw, 3rem);">codemon.ai</h2>
+                <p class="reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); opacity: 0.8; font-size: var(--body-size);">만들고, 자동화하고, 공유합니다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 24 — Part 5 Team Roadmap
+     ============================================= -->
+<section class="slide" data-section="roadmap">
+    <div class="slide-content">
+        <div class="section-number">05</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">Part 5 &middot; 팀별 맞춤 로드맵</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">AI 적용 로드맵</h2>
+        <table class="mini-table reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1;">
+            <thead>
+                <tr><th>팀</th><th class="highlight-col">1주차 Quick Win</th><th>1개월</th><th>3개월</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>마케팅</td><td class="highlight-col">시딩 이메일 Claude 작성</td><td>프롬프트 라이브러리</td><td>Gmail 자동 발송</td></tr>
+                <tr><td>콘텐츠</td><td class="highlight-col">상세페이지 AI 초안</td><td>4종 동시 생성 루틴</td><td>AI&rarr;발행 파이프라인</td></tr>
+                <tr><td>디자인</td><td class="highlight-col">Stitch 라벨 시안</td><td>DESIGN.md 정비</td><td>국가별 자동 생성</td></tr>
+                <tr><td>MD</td><td class="highlight-col">매출 리포트 Claude 생성</td><td>일일 리포트 슬랙 자동화</td><td>쿠팡 API 연동</td></tr>
+                <tr><td>미국팀</td><td class="highlight-col">카피 Claude 현지화</td><td>5개국 현지화 루틴</td><td>해외몰 데이터 연동</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 25 — Common Actions Timeline
+     ============================================= -->
+<section class="slide" data-section="roadmap">
+    <div class="slide-content">
+        <div class="section-number">05</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">공통 액션 아이템</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">3단계 로드맵</h2>
+        <div class="timeline reveal" style="margin-top: clamp(1rem, 2vh, 2rem); position:relative; z-index:1;">
+            <div class="timeline-phase">
+                <div class="phase-dot"></div>
+                <h4>1주차: Quick Win</h4>
+                <p>가장 반복적인 업무 1개를 Claude로 대체<br>프롬프트 템플릿 3개 팀 공유<br>브랜드 가이드 파일 = 컨텍스트 시작</p>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-dot"></div>
+                <h4>2~4주: 팀 확산</h4>
+                <p>직무별 AI 베스트 프랙티스 공유<br>프롬프트 라이브러리 구축<br>AI 결과물 품질 체크리스트</p>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-dot"></div>
+                <h4>1~3개월: 자동화</h4>
+                <p>커스텀 MCP 개발<br>포들 AI 대시보드 v1 구축<br>AI 활용 KPI 측정</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 26 — Tool Recommendations
+     ============================================= -->
+<section class="slide" data-section="roadmap">
+    <div class="slide-content">
+        <div class="section-number">05</div>
+        <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase; position:relative; z-index:1;">추천 도구</p>
+        <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); position:relative; z-index:1;">용도별 도구 가이드</h2>
+        <div class="compact-grid reveal" style="margin-top: clamp(0.5rem, 1vh, 1rem); position:relative; z-index:1; grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(140px, 20vw, 200px)), 1fr));">
+            <div class="compact-card">
+                <div class="card-icon">&#128172;</div>
+                <h4>콘텐츠 생성</h4>
+                <p>Claude / ChatGPT</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#127912;</div>
+                <h4>디자인</h4>
+                <p>Stitch / Canva AI</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#128248;</div>
+                <h4>이미지 생성</h4>
+                <p>Midjourney / DALL-E</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#127758;</div>
+                <h4>번역/현지화</h4>
+                <p>Claude / DeepL</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#128200;</div>
+                <h4>데이터 분석</h4>
+                <p>Claude + Sheets</p>
+            </div>
+            <div class="compact-card">
+                <div class="card-icon">&#9881;</div>
+                <h4>업무 자동화</h4>
+                <p>Make / Zapier</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 27 — Q&A
+     ============================================= -->
+<section class="slide" data-section="roadmap">
+    <div class="slide-content" style="justify-content: center; align-items: center;">
+        <div class="section-number">05</div>
+        <div style="max-width: 700px; position:relative; z-index:1;">
+            <p class="reveal" style="color: var(--accent); font-weight: 700; font-size: var(--small-size); letter-spacing: 0.08em; text-transform: uppercase;">Q&A</p>
+            <h2 class="reveal" style="margin-top: clamp(0.3rem, 0.6vh, 0.6rem); margin-bottom: clamp(1rem, 2vh, 2rem);">3가지 질문</h2>
+            <div class="qa-item reveal">
+                <p>오늘 본 데모 중 <strong style="color: var(--accent);">가장 먼저 적용</strong>하고 싶은 것은?</p>
+            </div>
+            <div class="qa-item reveal">
+                <p>내 직무에서 AI로 해결하고 싶은 <strong style="color: var(--accent);">구체적인 문제</strong>는?</p>
+            </div>
+            <div class="qa-item reveal">
+                <p>AI 도입에서 <strong style="color: var(--accent);">가장 걱정</strong>되는 부분은?</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 28 — Key Summary
+     ============================================= -->
+<section class="slide">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number" style="font-size: clamp(4rem, 12vw, 12rem); color: rgba(255,255,255,0.03);">&#10022;</div>
+            <div style="position:relative; z-index:1;">
+                <p class="reveal" style="color: var(--text-secondary); font-size: var(--body-size);">프롬프트는 시작일 뿐</p>
+                <p class="reveal" style="color: var(--text-secondary); font-size: var(--body-size); margin-top: clamp(0.3rem, 0.5vh, 0.5rem);">우리 회사 데이터를 AI에게 주는 순간</p>
+                <p class="reveal" style="color: var(--text-primary); font-size: var(--body-size); font-weight: 700; margin-top: clamp(0.3rem, 0.5vh, 0.5rem);">결과가 달라집니다</p>
+            </div>
+        </div>
+        <div class="split-right" style="display:flex; align-items:center; justify-content:center;">
+            <h2 class="reveal big-quote" style="text-align:center;">컨텍스트가<br>전부다</h2>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 29 — Speaker
+     ============================================= -->
+<section class="slide">
+    <div class="split-layout">
+        <div class="split-left">
+            <div class="section-number" style="color: rgba(255,255,255,0.03);">CM</div>
+            <div class="speaker-card reveal" style="position:relative; z-index:1;">
+                <div class="speaker-name">코드몬</div>
+                <p class="speaker-title">AI/AX Engineer</p>
+                <div class="accent-line"></div>
+                <p style="font-size: var(--small-size); color: var(--text-secondary); line-height: 1.6;">대기업 10년 + 스타트업 10년<br>삼성전자 종합기술원 &middot; SK텔레콤<br>AI 에이전트 7명 팀 운영</p>
+                <div class="speaker-stats" style="margin-top: clamp(0.5rem, 1vh, 1rem);">
+                    <div class="speaker-stat">
+                        <div class="num">20+</div>
+                        <div class="label">경력(년)</div>
+                    </div>
+                    <div class="speaker-stat">
+                        <div class="num">10+</div>
+                        <div class="label">런칭 서비스</div>
+                    </div>
+                    <div class="speaker-stat">
+                        <div class="num">100+</div>
+                        <div class="label">자동화 업무</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split-right" style="display: flex; align-items: center; justify-content: center;">
+            <div class="reveal" style="text-align: center;">
+                <p style="font-size: var(--small-size); opacity: 0.7; margin-bottom: clamp(0.5rem, 1vh, 1rem);">AI 실전 블로그 40편+</p>
+                <h2 style="font-size: clamp(1.5rem, 4vw, 3rem);">codemon.ai</h2>
+                <div class="accent-line" style="background: rgba(255,255,255,0.4); margin: clamp(0.5rem, 1vh, 1rem) auto;"></div>
+                <p style="opacity: 0.85; font-size: var(--body-size);">"만들고, 자동화하고, 공유합니다."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SLIDE 30 — Thank You
+     ============================================= -->
+<section class="slide centered-slide">
+    <div class="section-number" style="font-size: clamp(8rem, 25vw, 22rem); color: rgba(255,255,255,0.025); top: 50%; left: 50%; transform: translate(-50%, -50%);">AI</div>
+    <div style="position:relative; z-index:1; text-align: center;">
+        <p class="reveal" style="font-size: var(--body-size); color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase;">Thank You</p>
+        <div class="reveal big-url" style="margin-top: clamp(0.5rem, 1vh, 1rem);">codemon.ai</div>
+        <div class="accent-line reveal" style="margin: clamp(0.75rem, 1.5vh, 1.5rem) auto;"></div>
+        <p class="reveal" style="font-size: var(--body-size); color: var(--text-secondary);">AI로 일하는 방법 &mdash; 17명이 170명을 이기는 법</p>
+        <p class="reveal" style="font-size: var(--small-size); color: var(--text-muted); margin-top: clamp(0.5rem, 1vh, 1rem);">코드몬 &middot; AI/AX Engineer</p>
+    </div>
+</section>
+
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Full implementation with keyboard, touch,
+   scroll, progress bar, nav dots, breadcrumbs
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.currentSlide = 0;
+        this.isScrolling = false;
+        this.scrollTimeout = null;
+
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+        this.setupBreadcrumbs();
+
+        // Set first slide as visible
+        if (this.slides.length > 0) {
+            this.slides[0].classList.add('visible');
+        }
+
+        // Handle hash navigation
+        this.handleHash();
+        window.addEventListener('hashchange', () => this.handleHash());
+    }
+
+    /* --- Intersection Observer for .visible class --- */
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Update current slide index
+                    const idx = Array.from(this.slides).indexOf(entry.target);
+                    if (idx !== -1) {
+                        this.currentSlide = idx;
+                        this.updateProgressBar();
+                        this.updateNavDots();
+                        this.updateBreadcrumbs();
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        this.slides.forEach(slide => observer.observe(slide));
+    }
+
+    /* --- Keyboard navigation --- */
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            // Skip if editing content
+            if (e.target.getAttribute('contenteditable') === 'true') return;
+
+            switch(e.key) {
+                case 'ArrowDown':
+                case 'ArrowRight':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    this.goToSlide(this.currentSlide + 1);
+                    break;
+                case 'ArrowUp':
+                case 'ArrowLeft':
+                case 'PageUp':
+                    e.preventDefault();
+                    this.goToSlide(this.currentSlide - 1);
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    this.goToSlide(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    this.goToSlide(this.slides.length - 1);
+                    break;
+            }
+        });
+    }
+
+    /* --- Touch / Swipe support --- */
+    setupTouchNav() {
+        let touchStartY = 0;
+        let touchStartX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffY = touchStartY - touchEndY;
+            const diffX = touchStartX - touchEndX;
+
+            // Only handle vertical swipes (ignore horizontal)
+            if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50) {
+                if (diffY > 0) {
+                    this.goToSlide(this.currentSlide + 1);
+                } else {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+        }, { passive: true });
+    }
+
+    /* --- Mouse wheel navigation --- */
+    setupWheelNav() {
+        document.addEventListener('wheel', (e) => {
+            if (this.isScrolling) return;
+            this.isScrolling = true;
+
+            if (e.deltaY > 0) {
+                this.goToSlide(this.currentSlide + 1);
+            } else if (e.deltaY < 0) {
+                this.goToSlide(this.currentSlide - 1);
+            }
+
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = setTimeout(() => {
+                this.isScrolling = false;
+            }, 800);
+        }, { passive: true });
+    }
+
+    /* --- Navigate to a specific slide --- */
+    goToSlide(index) {
+        if (index < 0 || index >= this.slides.length) return;
+        this.currentSlide = index;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+        this.updateProgressBar();
+        this.updateNavDots();
+        this.updateBreadcrumbs();
+    }
+
+    /* --- Progress bar --- */
+    setupProgressBar() {
+        this.progressBar = document.getElementById('progressBar');
+        this.updateProgressBar();
+    }
+
+    updateProgressBar() {
+        if (!this.progressBar) return;
+        const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+        this.progressBar.style.width = progress + '%';
+    }
+
+    /* --- Navigation dots --- */
+    setupNavDots() {
+        const container = document.getElementById('navDots');
+        if (!container) return;
+
+        this.slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => this.goToSlide(i));
+            container.appendChild(dot);
+        });
+    }
+
+    updateNavDots() {
+        const dots = document.querySelectorAll('.nav-dots .dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentSlide);
+        });
+    }
+
+    /* --- Breadcrumbs --- */
+    setupBreadcrumbs() {
+        this.breadcrumbLinks = document.querySelectorAll('.breadcrumbs a');
+        this.breadcrumbLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const section = e.target.dataset.section;
+                const targetSlide = document.querySelector(`.slide[data-section="${section}"]`);
+                if (targetSlide) {
+                    const idx = Array.from(this.slides).indexOf(targetSlide);
+                    this.goToSlide(idx);
+                }
+            });
+        });
+    }
+
+    updateBreadcrumbs() {
+        const currentSection = this.slides[this.currentSlide]?.dataset.section;
+        this.breadcrumbLinks?.forEach(link => {
+            link.classList.toggle('active', link.dataset.section === currentSection);
+        });
+    }
+
+    /* --- Hash navigation --- */
+    handleHash() {
+        const hash = window.location.hash;
+        if (hash) {
+            const slideNum = parseInt(hash.replace('#slide', ''));
+            if (!isNaN(slideNum) && slideNum >= 0 && slideNum < this.slides.length) {
+                setTimeout(() => this.goToSlide(slideNum), 100);
+            }
+        }
+    }
+}
+
+/* ===========================================
+   INLINE EDITOR
+   Toggle with E key or hover hotzone
+   Auto-saves to localStorage
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.storageKey = 'podl-ai-bold-edits';
+        this.editableSelectors = 'h1, h2, h3, h4, p, li, td, th, span';
+        this.setupControls();
+        this.loadEdits();
+    }
+
+    setupControls() {
+        const editToggle = document.getElementById('editToggle');
+        const hotzone = document.getElementById('editHotzone');
+        let hideTimeout = null;
+
+        // 1. Click handler on toggle button
+        editToggle.addEventListener('click', () => this.toggleEditMode());
+
+        // 2. Hotzone hover with 400ms grace period
+        hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            editToggle.classList.add('show');
+        });
+        hotzone.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!this.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+        editToggle.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+        });
+        editToggle.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!this.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+
+        // 3. Hotzone direct click
+        hotzone.addEventListener('click', () => this.toggleEditMode());
+
+        // 4. Keyboard shortcut (E key)
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                this.toggleEditMode();
+            }
+        });
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        const toggle = document.getElementById('editToggle');
+
+        if (this.isActive) {
+            toggle.classList.add('active');
+            toggle.textContent = '\u2714 Save';
+            this.enableEditing();
+        } else {
+            toggle.classList.remove('active');
+            toggle.textContent = '\u270E';
+            this.disableEditing();
+            this.saveEdits();
+        }
+    }
+
+    enableEditing() {
+        document.querySelectorAll(this.editableSelectors).forEach(el => {
+            // Skip elements inside nav, progress bar, etc.
+            if (el.closest('.nav-dots') || el.closest('.breadcrumbs') || el.closest('.edit-toggle')) return;
+            el.setAttribute('contenteditable', 'true');
+        });
+    }
+
+    disableEditing() {
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.removeAttribute('contenteditable');
+        });
+    }
+
+    saveEdits() {
+        const edits = {};
+        document.querySelectorAll('.slide').forEach((slide, slideIdx) => {
+            slide.querySelectorAll(this.editableSelectors).forEach((el, elIdx) => {
+                if (el.closest('.nav-dots') || el.closest('.breadcrumbs') || el.closest('.edit-toggle')) return;
+                const key = `s${slideIdx}-e${elIdx}`;
+                edits[key] = el.innerHTML;
+            });
+        });
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(edits));
+        } catch(e) {
+            // localStorage may be unavailable
+        }
+    }
+
+    loadEdits() {
+        try {
+            const saved = localStorage.getItem(this.storageKey);
+            if (!saved) return;
+            const edits = JSON.parse(saved);
+
+            document.querySelectorAll('.slide').forEach((slide, slideIdx) => {
+                slide.querySelectorAll(this.editableSelectors).forEach((el, elIdx) => {
+                    if (el.closest('.nav-dots') || el.closest('.breadcrumbs') || el.closest('.edit-toggle')) return;
+                    const key = `s${slideIdx}-e${elIdx}`;
+                    if (edits[key] !== undefined) {
+                        el.innerHTML = edits[key];
+                    }
+                });
+            });
+        } catch(e) {
+            // Ignore parse errors
+        }
+    }
+}
+
+/* ===========================================
+   INITIALIZE
+   =========================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const presentation = new SlidePresentation();
+    const editor = new InlineEditor();
+
+    // Make editor accessible to controls
+    window._editor = editor;
+});
+</script>
+
+</body>
+</html>
