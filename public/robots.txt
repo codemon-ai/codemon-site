@@ -2,6 +2,7 @@
 User-agent: *
 Disallow: /p/
 Disallow: /partner/
+Disallow: /yonsei/
 
 # *
 User-agent: *
