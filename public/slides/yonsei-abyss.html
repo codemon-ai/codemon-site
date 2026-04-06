@@ -879,6 +879,74 @@
       letter-spacing: 0.05em;
     }
 
+    .slide-title-page .title-definition {
+      font-family: var(--font-body);
+      font-size: var(--small-size);
+      font-weight: 300;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      margin-top: clamp(0.3rem, 0.8vw, 0.6rem);
+    }
+
+    /* Info box — for Epictetus card on slide 2 */
+    .info-box {
+      background: linear-gradient(145deg, rgba(26, 26, 53, 0.6), rgba(12, 12, 26, 0.8));
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: clamp(4px, 0.5vw, 8px);
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      backdrop-filter: blur(8px);
+      max-width: min(90vw, 700px);
+    }
+
+    .info-box .info-name {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 500;
+      color: var(--gold);
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .info-box .info-desc {
+      font-size: var(--small-size);
+      color: var(--text-dim);
+      margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+    }
+
+    .info-box .info-body {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .info-box .info-body strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Personal tone text */
+    .personal-text {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: min(90vw, 700px);
+    }
+
+    .personal-text em {
+      color: var(--text-primary);
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    /* Emphasis block */
+    .emphasis-block {
+      font-family: var(--font-display);
+      font-size: var(--h3-size);
+      font-weight: 400;
+      color: var(--text-primary);
+      max-width: min(90vw, 800px);
+      line-height: 1.5;
+    }
+
     .slide-title-page .title-line {
       width: clamp(40px, 6vw, 80px);
       height: 1px;
@@ -943,19 +1011,33 @@
       50% { transform: translate(-50%, -50%) scale(1.1) rotate(180deg); opacity: 0.8; }
     }
 
-    /* --- Slide 7: Nietzsche — deepest abyss --- */
+    /* --- Slide 7: Nietzsche — deepest abyss with image --- */
     .slide-nietzsche {
-      background:
-        radial-gradient(ellipse at center,
-          rgba(8, 8, 16, 0.3) 0%,
-          var(--abyss-deepest) 70%
-        );
+      background: var(--abyss-deepest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-nietzsche .abyss-image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/images/yonsei/abyss-stares-back.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .slide-nietzsche .slide-content {
       align-items: center;
       text-align: center;
       justify-content: center;
+      position: relative;
+      z-index: 2;
     }
 
     .slide-nietzsche .nietzsche-quote {
@@ -976,20 +1058,27 @@
       letter-spacing: 0.1em;
     }
 
-    .slide-nietzsche .nietzsche-sub {
-      font-family: var(--font-display);
-      font-size: clamp(0.9rem, 2vw, 1.4rem);
-      font-weight: 300;
+    .slide-nietzsche .nietzsche-explain {
+      font-size: var(--body-size);
       color: var(--text-secondary);
-      max-width: min(80vw, 650px);
-      line-height: 1.5;
+      max-width: min(80vw, 600px);
+      line-height: 1.7;
       margin-top: clamp(0.8rem, 2vw, 1.5rem);
+      text-align: left;
     }
 
-    .slide-nietzsche .nietzsche-question {
-      font-family: var(--font-display);
-      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    .slide-nietzsche .nietzsche-explain .explain-item {
+      margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+    }
+
+    .slide-nietzsche .nietzsche-explain .accent {
       font-weight: 500;
+    }
+
+    .slide-nietzsche .nietzsche-transition {
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 2vw, 1.4rem);
+      font-weight: 400;
       color: var(--gold);
       margin-top: clamp(1rem, 3vw, 2rem);
     }
@@ -1587,14 +1676,14 @@
        ============================================ -->
   <nav class="nav-dots" id="navDots" aria-label="슬라이드 네비게이션">
     <button class="nav-dot active" data-slide="0" data-label="표지" aria-label="슬라이드 1: 표지"></button>
-    <button class="nav-dot" data-slide="1" data-label="신경 쓰는 것들" aria-label="슬라이드 2: 신경 쓰는 것들"></button>
+    <button class="nav-dot" data-slide="1" data-label="왜 이 주제를" aria-label="슬라이드 2: 왜 이 주제를"></button>
     <button class="nav-dot" data-slide="2" data-label="토카타" aria-label="슬라이드 3: 토카타"></button>
     <button class="nav-dot" data-slide="3" data-label="스피노자" aria-label="슬라이드 4: 스피노자"></button>
     <button class="nav-dot" data-slide="4" data-label="뫼비우스" aria-label="슬라이드 5: 뫼비우스"></button>
     <button class="nav-dot" data-slide="5" data-label="칸타타" aria-label="슬라이드 6: 칸타타"></button>
     <button class="nav-dot" data-slide="6" data-label="니체" aria-label="슬라이드 7: 니체"></button>
-    <button class="nav-dot" data-slide="7" data-label="스토아" aria-label="슬라이드 8: 스토아"></button>
-    <button class="nav-dot" data-slide="8" data-label="아모르 파티" aria-label="슬라이드 9: 아모르 파티"></button>
+    <button class="nav-dot" data-slide="7" data-label="닮은 점" aria-label="슬라이드 8: 닮은 점"></button>
+    <button class="nav-dot" data-slide="8" data-label="신경 쓰지 마라" aria-label="슬라이드 9: 신경 쓰지 마라"></button>
     <button class="nav-dot" data-slide="9" data-label="프레임워크" aria-label="슬라이드 10: 프레임워크"></button>
     <button class="nav-dot" data-slide="10" data-label="마무리" aria-label="슬라이드 11: 마무리"></button>
   </nav>
@@ -1619,12 +1708,7 @@
        "신경 쓰지 말아야 할 것들의 심연"
        ============================================ -->
   <section class="slide slide-title-page" id="slide-0">
-    <!-- Abyss vortex decoration — concentric gradient rings
-         that pulse slowly, evoking the sensation of peering
-         into an infinite well of darkness -->
     <div class="abyss-vortex decorative" aria-hidden="true"></div>
-
-    <!-- Corner ornaments frame the title -->
     <div class="corner-ornament corner-ornament--tl" aria-hidden="true"></div>
     <div class="corner-ornament corner-ornament--br" aria-hidden="true"></div>
 
@@ -1636,11 +1720,15 @@
       <div class="title-line reveal d3"></div>
 
       <div class="main-subtitle reveal dramatic d4">
-        스토아 철학으로 건너는 존재의 다리
+        내 안의 어둠을 마주하는 법
+      </div>
+
+      <div class="title-definition reveal d5">
+        심연(深淵) &mdash; 끝이 보이지 않는 깊은 곳. 우리 안에 숨어있는 어둠.
       </div>
     </div>
 
-    <div class="slide-footer reveal d6">
+    <div class="slide-footer reveal d7">
       <span>연세대학교 공학대학원</span>
       <span><span class="divider">|</span>삶과 예술의 심연의 미학</span>
     </div>
@@ -1648,29 +1736,30 @@
 
 
   <!-- ============================================
-       SLIDE 2 — "우리가 매일 신경 쓰는 것들"
-       Introduction
+       SLIDE 2 — "왜 이 주제를 골랐는가"
+       Personal intro
        ============================================ -->
   <section class="slide" id="slide-1">
     <div class="slide-content">
       <div class="content-wrapper">
-        <div class="chapter-badge reveal d1">ACT 1 &mdash; 두드림</div>
+        <div class="chapter-badge reveal d1">시작</div>
 
         <h2 class="slide-title reveal d2">
-          우리가 매일 <span class="accent">신경 쓰는</span> 것들
+          왜 이 주제를 <span class="accent">골랐는가</span>
         </h2>
 
-        <ul class="bullet-list reveal d3">
-          <li>타인의 평가</li>
-          <li>결과에 대한 불안</li>
-          <li>미래의 불확실성</li>
-          <li>갑자기 바뀌는 요구사항</li>
-          <li>AI가 내 일자리를 대체할까?</li>
-        </ul>
+        <div class="personal-text reveal d3">
+          <em>수업에서 스피노자를 배우면서, 스토아 학파가 떠올랐습니다.</em><br />
+          예전에 블로그에 쓴 글이 생각났어요 &mdash; <em>&ldquo;통제할 수 없는 것에 에너지를 쓰지 마라&rdquo;</em>
+        </div>
 
-        <div class="quote-box reveal d4">
-          <div class="quote-text">&ldquo;이 중 진정 내가 바꿀 수 있는 것은?&rdquo;</div>
-          <div class="quote-author">&mdash; 에픽테토스 (Epictetus)</div>
+        <div class="info-box reveal d4">
+          <div class="info-name">에픽테토스 (Epictetus)</div>
+          <div class="info-desc">로마 시대 노예 출신 철학자</div>
+          <div class="info-body">
+            핵심: <strong>&ldquo;통제할 수 있는 것&rdquo;</strong>과 <strong>&ldquo;통제할 수 없는 것&rdquo;</strong>을 구분하라<br />
+            &ldquo;고통은 사건 자체가 아니라, 그에 대한 <strong>판단</strong>에서 비롯된다&rdquo;
+          </div>
         </div>
       </div>
     </div>
@@ -1678,34 +1767,29 @@
 
 
   <!-- ============================================
-       SLIDE 3 — "심연이 노크한다" — 토카타 (2주차)
+       SLIDE 3 — "심연이 노크한다" — 토카타
        ============================================ -->
   <section class="slide" id="slide-2">
     <div class="slide-content">
       <div class="content-wrapper">
-        <h2 class="slide-title reveal d1">
+        <div class="chapter-badge reveal d1">ACT 1</div>
+
+        <h2 class="slide-title reveal d2">
           심연이 <span class="accent">노크</span>한다
         </h2>
 
-        <div class="slide-subtitle reveal d2">
-          <span class="mono">Toccata</span> = 두드림 (<span class="mono">toccare</span>)
+        <div class="slide-subtitle reveal d3">
+          토카타(Toccata) = &ldquo;두드리다&rdquo;(<span class="mono">toccare</span>)
         </div>
 
-        <ul class="bullet-list reveal d3">
-          <li>
-            카라바조 &lt;성 마태오의 소명&gt; &mdash;
-            빛이 갑자기 들어오며 <strong>존재를 두드리는</strong> 순간
-          </li>
-          <li>
-            통제 불가능한 사건들 = 심연의 첫 노크
-          </li>
-          <li>
-            &ldquo;심연은 생각이 아니라 <strong>사건</strong>으로 시작된다&rdquo;
-          </li>
+        <ul class="bullet-list reveal d4">
+          <li>우리가 통제할 수 없는 것들 &mdash; 그것들이 매일 우리를 두드린다</li>
+          <li>타인의 평가, 갑작스러운 변화, 불확실한 미래</li>
+          <li>바흐의 토카타: 폭풍처럼 몰아치는 감정, 심연의 첫 노크</li>
         </ul>
 
-        <div class="note reveal d4">
-          바흐의 토카타 &mdash; 폭풍 같은 감성이 존재를 뒤흔드는 <span class="mono">Signal Input</span>
+        <div class="emphasis-block reveal d5" style="margin-top: var(--content-gap); color: var(--text-dim);">
+          두드림이 계속되면 어떻게 될까?
         </div>
       </div>
     </div>
@@ -1713,147 +1797,126 @@
 
 
   <!-- ============================================
-       SLIDE 4 — "갉아먹히는 메커니즘" — 스피노자 (3주차)
+       SLIDE 4 — "두드림이 나를 갉아먹는다" — 스피노자
        ============================================ -->
   <section class="slide" id="slide-3">
     <div class="slide-content">
       <div class="content-wrapper">
         <h2 class="slide-title reveal d1">
-          <span class="accent">갉아먹히는</span> 메커니즘
+          두드림이 나를 <span class="accent">갉아먹는다</span>
         </h2>
 
         <div class="slide-subtitle reveal d2">
-          스피노자의 감정론
+          스피노자의 감정 순환
         </div>
 
-        <!-- Flow diagram: event -> tristitia -> odium -->
+        <!-- Flow diagram: circular emotion chain -->
         <div class="flow-diagram reveal d3">
-          <span class="flow-node">통제 불가능한 사건</span>
+          <span class="flow-node">두드림(사건)</span>
           <span class="flow-arrow">&rarr;</span>
-          <span class="flow-node crimson-node">슬픔 (Tristitia)</span>
-          <span class="flow-plus">+</span>
-          <span class="flow-node">외부 원인</span>
-          <span class="flow-equals">=</span>
-          <span class="flow-node crimson-node">미움 (Odium)</span>
-        </div>
-
-        <!-- Flow diagram: tristitia -> abjectio -->
-        <div class="flow-diagram reveal d4">
-          <span class="flow-node crimson-node">슬픔 (Tristitia)</span>
-          <span class="flow-plus">+</span>
-          <span class="flow-node">자기 무능력 고찰</span>
-          <span class="flow-equals">=</span>
-          <span class="flow-node crimson-node">자기비하 (Abjectio)</span>
-        </div>
-
-        <div class="insight-box reveal d5">
-          <div class="insight-label">Key Insight</div>
-          <div class="insight-text">
-            <span class="mono">코나투스(Conatus)</span>의 역설 &mdash;
-            존재를 보존하려는 노력이 오히려 존재를 파괴한다
-          </div>
-        </div>
-
-        <div class="note reveal d6">
-          감정이 감정을 낳고, 뫼비우스처럼 끝없이 순환한다
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================
-       SLIDE 5 — "안과 밖의 경계가 무너지다" — 뫼비우스 (3주차)
-       ============================================ -->
-  <section class="slide" id="slide-4">
-    <div class="slide-content">
-      <div class="content-wrapper">
-        <div class="chapter-badge reveal d1">ACT 2 &mdash; 심연</div>
-
-        <h2 class="slide-title reveal d2">
-          안과 밖의 <span class="accent">경계</span>가 무너지다
-        </h2>
-
-        <div class="slide-subtitle reveal d3">
-          심연의 뫼비우스
-        </div>
-
-        <div class="two-col reveal d4">
-          <!-- Card 1: Satie -->
-          <div class="abyss-card">
-            <div class="card-label">에릭 사티</div>
-            <div class="card-title">짐노페디</div>
-            <div class="card-body">
-              고요한 반복 &rarr; 무(無)의 심연<br />
-              <span class="dim">멜로디가 사라지는 곳에서 비로소 심연이 열린다</span>
-            </div>
-          </div>
-
-          <!-- Card 2: Philip Glass -->
-          <div class="abyss-card">
-            <div class="card-label">필립 글래스</div>
-            <div class="card-title">에뛰드 2번</div>
-            <div class="card-body">
-              출구 없는 미로 &rarr; 집착의 심연<br />
-              <span class="dim">반복이 곧 감옥이 되는 순간</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="note reveal d5">
-          에셔의 뫼비우스 띠 &mdash; 앞만 보고 걸었는데 시작점의 반대편에 도달
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================
-       SLIDE 6 — "원초적 비명" — 칸타타 (4주차)
-       ============================================ -->
-  <section class="slide" id="slide-5">
-    <div class="slide-content">
-      <div class="content-wrapper">
-        <h2 class="slide-title reveal d1 text-glow-crimson">
-          <span class="crimson-text">원초적 비명</span>
-        </h2>
-
-        <div class="slide-subtitle reveal d2">
-          심연의 칸타타 &mdash; 의미 이전의 절규
-        </div>
-
-        <div class="comparison-grid reveal d3">
-          <!-- Munch -->
-          <div class="abyss-card crimson-border comparison-item">
-            <div class="comp-header">뭉크 &lt;절규&gt;</div>
-            <div class="comp-direction">밖에서 안으로</div>
-            <div class="comp-body">
-              세상의 비명을 <strong>듣는</strong> 것.<br />
-              공포는 외부에서 침투한다.
-            </div>
-          </div>
-
-          <!-- Bacon -->
-          <div class="abyss-card crimson-border comparison-item">
-            <div class="comp-header">베이컨 자화상</div>
-            <div class="comp-direction">안에서 밖으로</div>
-            <div class="comp-body">
-              존재 자체가 <strong>비명을 지르는</strong> 것.<br />
-              공포는 내면에서 폭발한다.
-            </div>
-          </div>
+          <span class="flow-node crimson-node">슬픔</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">외부 탓(미움)</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">자기 탓(자기비하)</span>
+          <span class="flow-arrow">&rarr;</span>
+          <span class="flow-node crimson-node">다시 슬픔...</span>
         </div>
 
         <div class="quote-box quote-crimson reveal d4">
           <div class="quote-text">
-            &ldquo;정화될 수 없는 고통은 음악의 질서를 파괴하고,
-            그 자리에 새로운 심연의 언어를 세웠다&rdquo;
+            &ldquo;코나투스 &mdash; 살아남으려는 본능이 오히려 나를 파괴한다&rdquo;
           </div>
-          <div class="quote-author">&mdash; 쇤베르크 (Schoenberg)</div>
         </div>
 
         <div class="note reveal d5">
-          이것이 심연의 바닥이다
+          이렇게 갉아먹히다 보면...
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 5 — "안과 밖의 경계가 무너진다" — 뫼비우스
+       ============================================ -->
+  <section class="slide" id="slide-4">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          안과 밖의 <span class="accent">경계</span>가 무너진다
+        </h2>
+
+        <div class="slide-subtitle reveal d2">
+          뫼비우스의 띠 &mdash; 안과 밖이 하나로 이어지는 구조
+        </div>
+
+        <ul class="bullet-list reveal d3">
+          <li>밖의 문제인가, 내 문제인가 &mdash; 구분이 안 된다</li>
+          <li>&ldquo;저 사람 때문인가, 내가 부족한 건가?&rdquo; &mdash; 이 질문이 끝나지 않는다</li>
+          <li>외부 스트레스와 자기 비난이 하나의 면 위에서 순환</li>
+        </ul>
+
+        <div class="insight-box reveal d4">
+          <div class="insight-text">
+            빠져나갈 출구가 없다. <strong>안과 밖의 구분이 사라졌으니까.</strong>
+          </div>
+        </div>
+
+        <div class="note reveal d5">
+          그리고 결국, 비명이 터져나옵니다
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 6 — "바닥을 확인하는 소리" — 칸타타
+       ============================================ -->
+  <section class="slide" id="slide-5">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <div class="chapter-badge reveal d1">ACT 2</div>
+
+        <h2 class="slide-title reveal d2 text-glow-crimson">
+          <span class="crimson-text">바닥</span>을 확인하는 소리
+        </h2>
+
+        <div class="slide-subtitle reveal d3">
+          칸타타(Cantata) = &ldquo;노래하다&rdquo;(<span class="mono">cantare</span>)
+        </div>
+
+        <div class="comparison-grid reveal d4">
+          <div class="abyss-card crimson-border comparison-item">
+            <div class="comp-header">토카타</div>
+            <div class="comp-direction">밖에서 안으로</div>
+            <div class="comp-body">
+              밖에서 안으로 <strong>두드리는</strong> 소리<br />
+              <span class="dim">외부 &rarr; 나</span>
+            </div>
+          </div>
+
+          <div class="abyss-card crimson-border comparison-item">
+            <div class="comp-header">칸타타</div>
+            <div class="comp-direction">안에서 밖으로</div>
+            <div class="comp-body">
+              안에서 밖으로 <strong>터져나오는</strong> 소리<br />
+              <span class="dim">나 &rarr; 외부</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box reveal d5">
+          <div class="insight-label">심연의 칸타타</div>
+          <div class="insight-text">
+            의미가 되기 전의 소리, 원초적 비명.<br />
+            비명은 아프지만, <strong>바닥을 찍어야 올라갈 수 있다.</strong>
+          </div>
+        </div>
+
+        <div class="note reveal d6">
+          바닥을 찍었습니다. 그리고 이제, 무언가가 나를 들여다봅니다.
         </div>
       </div>
     </div>
@@ -1862,13 +1925,10 @@
 
   <!-- ============================================
        SLIDE 7 — "심연도 너를 들여다본다" — 니체, 전환점
-       Most dramatic slide. Minimal text, maximum atmosphere.
+       Most dramatic slide. Image background + overlay text.
        ============================================ -->
   <section class="slide slide-nietzsche" id="slide-6">
-    <!-- Deep void effect — the darkest gradient in the
-         entire presentation. Pulsing subtly to create
-         the sensation that the abyss itself is alive,
-         breathing, watching. -->
+    <div class="abyss-image-bg" aria-hidden="true"></div>
     <div class="void-effect decorative" aria-hidden="true"></div>
 
     <div class="slide-content">
@@ -1878,36 +1938,82 @@
       </div>
 
       <div class="nietzsche-author reveal dramatic d3">
-        &mdash; 프리드리히 니체
+        &mdash; 니체
       </div>
 
-      <div class="nietzsche-sub reveal dramatic d5">
-        &ldquo;사람은 짐승과 위버멘쉬 사이를 잇는 밧줄,<br />
-        심연 위에 걸쳐 있는 하나의 밧줄이다&rdquo;
+      <div class="nietzsche-explain reveal dramatic d5">
+        <div class="explain-item"><span class="accent">심연</span> = 내 안의 어둠, 통제 불가능한 것들</div>
+        <div class="explain-item"><span class="accent">&ldquo;들여다본다&rdquo;</span> = 그 어둠이 나를 규정하기 시작한다</div>
+        <div class="explain-item">통제할 수 없는 것에 집착하면, <strong style="color: var(--text-primary);">그것이 나를 지배한다</strong></div>
       </div>
 
-      <div class="nietzsche-question reveal dramatic d7">
-        그렇다면 어떻게 건너는가?
+      <div class="nietzsche-transition reveal dramatic d7">
+        하지만 &mdash; 여기서 흥미로운 점이 있습니다
       </div>
     </div>
   </section>
 
 
   <!-- ============================================
-       SLIDE 8 — "통제할 수 없는 것에 에너지를 쓰지 마라" — 스토아
+       SLIDE 8 — "스토아와 스피노자가 닮은 점"
        ============================================ -->
   <section class="slide" id="slide-7">
     <div class="slide-content">
       <div class="content-wrapper">
-        <div class="chapter-badge reveal d1">ACT 3 &mdash; 건너기</div>
+        <div class="chapter-badge reveal d1">ACT 3</div>
 
         <h2 class="slide-title reveal d2">
-          통제할 수 없는 것에<br />
-          <span class="accent">에너지를 쓰지 마라</span>
+          스토아와 스피노자가 <span class="accent">닮은 점</span>
         </h2>
 
+        <div class="slide-subtitle reveal d3">
+          2천 년 전과 400년 전 &mdash; 시대는 달라도 같은 답
+        </div>
+
+        <div class="two-col reveal d4">
+          <div class="abyss-card gold-border">
+            <div class="card-label">감정의 원인을 이해하라</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              <strong>스피노자:</strong> &ldquo;감정의 원인을 이해하면, 감정에서 자유로워진다&rdquo;<br />
+              <strong>스토아:</strong> &ldquo;판단을 바꾸면, 고통이 사라진다&rdquo;
+            </div>
+          </div>
+
+          <div class="abyss-card gold-border">
+            <div class="card-label">외부에 흔들리지 마라</div>
+            <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+              <strong>스피노자:</strong> 외부 원인의 관념을 내려놓기<br />
+              <strong>스토아:</strong> 통제 불가능한 것에 에너지를 쓰지 마라
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box reveal d5">
+          <div class="insight-text">
+            심연을 만드는 것은 외부가 아니라, <strong>외부에 대한 나의 반응이다</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================
+       SLIDE 9 — "왜 신경 쓰지 말아야 하는가"
+       ============================================ -->
+  <section class="slide" id="slide-8">
+    <div class="slide-content">
+      <div class="content-wrapper">
+        <h2 class="slide-title reveal d1">
+          왜 <span class="accent">신경 쓰지 말아야</span> 하는가
+        </h2>
+
+        <ul class="bullet-list reveal d2">
+          <li>심연을 만드는 것이 &ldquo;나의 반응&rdquo;이라면 &rarr; <strong>반응을 바꾸면 심연은 사라진다</strong></li>
+          <li>에너지를 쓸 곳을 정하면, 나머지는 자연스레 내려놓게 된다</li>
+        </ul>
+
         <div class="two-col reveal d3">
-          <!-- Controllable -->
           <div class="abyss-card gold-border">
             <div class="card-label">통제 가능</div>
             <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
@@ -1917,7 +2023,6 @@
             </div>
           </div>
 
-          <!-- Uncontrollable -->
           <div class="abyss-card dim-border">
             <div class="card-label" style="color: var(--text-dim);">통제 불가</div>
             <div class="card-body" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
@@ -1929,72 +2034,13 @@
         </div>
 
         <div class="insight-box reveal d4">
-          <div class="insight-label">Key Insight</div>
           <div class="insight-text">
-            외부 원인에 대한 판단을 내려놓으면, 감정의 뫼비우스가 끊어진다
+            외부 원인에 대한 판단을 내려놓으면, <strong>감정의 뫼비우스가 끊어진다</strong>
           </div>
         </div>
 
         <div class="note reveal d5">
-          스토아의 통찰 = 뫼비우스를 끊는 가위
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================
-       SLIDE 9 — "장작에 불이 붙으면" — 아모르 파티
-       ============================================ -->
-  <section class="slide" id="slide-8">
-    <div class="slide-content">
-      <div class="content-wrapper">
-        <h2 class="slide-title reveal d1">
-          장작에 불이 붙으면
-        </h2>
-
-        <div class="quote-box reveal d2">
-          <div class="quote-text">
-            &ldquo;불은 던져지는 모든 것을 연료로 바꾼다&rdquo;
-          </div>
-          <div class="quote-author">&mdash; 마르쿠스 아우렐리우스 (Marcus Aurelius)</div>
-        </div>
-
-        <!-- Entropy label -->
-        <div class="flow-entropy-label reveal d3">
-          <span class="crimson-text">고엔트로피 (혼돈)</span>
-          <span class="accent">저엔트로피 (질서)</span>
-        </div>
-
-        <!-- Horizontal flow: 직면 -> 통과 -> 형상화 -> 승화 -->
-        <div class="flow-horizontal reveal d4">
-          <div class="flow-step">
-            <div class="flow-step-label">Signal Input</div>
-            <div class="flow-step-name">직면</div>
-            <div class="flow-step-desc">심연을 마주하다</div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-label">Energy Processing</div>
-            <div class="flow-step-name">통과</div>
-            <div class="flow-step-desc">고통을 통과하다</div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-label">Phase Transition</div>
-            <div class="flow-step-name">형상화</div>
-            <div class="flow-step-desc">의미를 부여하다</div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-label">System Sublimation</div>
-            <div class="flow-step-name">승화</div>
-            <div class="flow-step-desc">존재가 변환되다</div>
-          </div>
-        </div>
-
-        <div class="insight-box reveal d5">
-          <div class="insight-text">
-            <strong>신경 쓰지 말아야 할 것을 내려놓는 것</strong> =
-            고엔트로피를 저엔트로피로 전환하는 행위
-          </div>
+          그런데 이걸 어떻게 실천하느냐?
         </div>
       </div>
     </div>
@@ -2012,34 +2058,41 @@
         </h2>
 
         <div class="slide-subtitle reveal d2">
-          마르쿠스 아우렐리우스처럼 매일 밤 기록하기
+          방법은 놀랍도록 간단합니다
         </div>
 
         <ol class="step-list reveal d3">
           <li>
             <span class="step-number">1</span>
-            <span class="step-text">오늘 해결한 문제</span>
+            <span class="step-text">
+              오늘 해결한 문제<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 통제 가능했던 것</span>
+            </span>
           </li>
           <li>
             <span class="step-number">2</span>
-            <span class="step-text">통제 불가능한 것에 낭비한 시간</span>
+            <span class="step-text">
+              통제 불가능한 것에 낭비한 시간<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 에너지를 낭비한 곳</span>
+            </span>
           </li>
           <li>
             <span class="step-number">3</span>
-            <span class="step-text">내일의 개선점</span>
+            <span class="step-text">
+              내일의 개선점<br />
+              <span class="dim" style="font-size: var(--small-size);">&rarr; 내일 에너지를 쓸 곳</span>
+            </span>
           </li>
         </ol>
 
-        <div class="quote-box reveal d4">
-          <div class="quote-text">
-            &ldquo;삶의 모든 소란과 변주 끝에<br />
-            결국 평온한 제자리가 있다&rdquo;
+        <div class="insight-box reveal d4">
+          <div class="insight-text">
+            <strong>3개월만 하면,</strong> 뭘 통제할 수 있고 뭘 못하는지 패턴이 보입니다
           </div>
-          <div class="quote-author">&mdash; 바흐, 골드베르크 변주곡</div>
         </div>
 
         <div class="note reveal d5">
-          스토아 철학은 <span class="mono">deprecated</span>되지 않은 2천 년 전의 라이브러리다
+          2천 년 전 로마 황제도 매일 밤 이렇게 기록했습니다
         </div>
       </div>
     </div>
@@ -2047,32 +2100,48 @@
 
 
   <!-- ============================================
-       SLIDE 11 — CLOSING
-       "심연은 건너는 것이다"
+       SLIDE 11 — CLOSING (수미상관)
        ============================================ -->
   <section class="slide slide-closing" id="slide-10">
-    <!-- Corner ornaments — bookend symmetry with slide 1 -->
     <div class="corner-ornament corner-ornament--tl" aria-hidden="true"></div>
     <div class="corner-ornament corner-ornament--br" aria-hidden="true"></div>
 
     <div class="slide-content">
       <div class="closing-text">
         <span class="reveal dramatic d1" style="display: block;">
-          심연은 피하는 것이 아니라
+          수업에서 스피노자를 배우면서
         </span>
 
-        <span class="reveal dramatic d3 emphasis">
-          건너는 것이다.
+        <span class="reveal dramatic d2" style="display: block;">
+          스토아가 떠올랐다고 했습니다
         </span>
 
-        <div class="closing-pause reveal d5"></div>
+        <div class="closing-pause reveal d3"></div>
+
+        <span class="reveal dramatic d3" style="display: block;">
+          400년 전 스피노자도,
+        </span>
+
+        <span class="reveal dramatic d4" style="display: block;">
+          2천 년 전 스토아도,
+        </span>
 
         <span class="reveal dramatic d5" style="display: block;">
-          그리고 건너는 방법은 &mdash;
+          그리고 오늘 우리도 &mdash;
         </span>
 
-        <span class="reveal dramatic d7 gold-emphasis">
-          신경 쓰지 말아야 할 것을 내려놓는 것에서 시작된다.
+        <span class="reveal dramatic d6 emphasis">
+          답은 같습니다.
+        </span>
+
+        <div class="closing-pause reveal d7"></div>
+
+        <span class="reveal dramatic d8 gold-emphasis">
+          신경 쓰지 말아야 할 것을 내려놓으면,
+        </span>
+
+        <span class="reveal dramatic d9 gold-emphasis">
+          심연은 더 이상 심연이 아닙니다.
         </span>
       </div>
     </div>
