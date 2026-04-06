@@ -2,7 +2,6 @@
 
 const org = {
   ceo: { name: '김보들', title: '대표이사', emoji: '👔' },
-  coo: { name: '홍유리', title: '공동대표 / COO', emoji: '🎯' },
   teams: [
     {
       name: '마케팅팀', emoji: '📣', head: '박서연 팀장', members: 3,
@@ -49,17 +48,12 @@ const org = {
 export function OrgChart() {
   return (
     <div className="mt-6">
-      {/* CEO / COO */}
-      <div className="flex justify-center gap-4 mb-6">
+      {/* CEO */}
+      <div className="flex justify-center mb-6">
         <div className="text-center px-6 py-4 rounded-xl border-2 border-purple-500/30 bg-purple-500/5">
           <div className="text-2xl mb-1">{org.ceo.emoji}</div>
           <div className="font-bold dark:text-white">{org.ceo.name}</div>
           <div className="text-xs text-purple-500">{org.ceo.title}</div>
-        </div>
-        <div className="text-center px-6 py-4 rounded-xl border-2 border-purple-500/30 bg-purple-500/5">
-          <div className="text-2xl mb-1">{org.coo.emoji}</div>
-          <div className="font-bold dark:text-white">{org.coo.name}</div>
-          <div className="text-xs text-purple-500">{org.coo.title}</div>
         </div>
       </div>
 
@@ -109,7 +103,7 @@ export function OrgChart() {
 
       {/* Summary */}
       <div className="mt-4 text-center text-xs text-gray-400">
-        총 {org.teams.reduce((s, t) => s + t.members, 0) + 2}명 · {org.teams.length}개 팀 · 설립 {2024}년
+        총 {org.teams.reduce((s, t) => s + t.members, 0) + 1}명 · {org.teams.length}개 팀 · 설립 {2024}년
       </div>
     </div>
   )
