@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { openMarkdownViewer, updateViewerContent } from './MarkdownViewer'
+import { openDemoExplain } from './DemoExplain'
 import influencers from '../../data/demo/influencers.json'
 import products from '../../data/demo/products.json'
 
@@ -61,6 +62,21 @@ ${tone.desc}
 }
 
 const SYSTEM_PROMPT = '당신은 K-뷰티 브랜드 보들(BO:DL)의 인플루언서 마케팅 담당자입니다. 각 인플루언서의 특성에 맞춰 톤과 내용을 개인화한 시딩 이메일을 작성합니다.'
+
+const EXPLAIN_CONFIG = {
+  demoNumber: 1,
+  title: '인플루언서 시딩 이메일 자동화',
+  subtitle: '마케팅팀 · 박서연 팀장',
+  steps: [
+    { icon: '👥', label: '인플루언서 선택', desc: '20명의 인플루언서 DB에서 대상 확인' },
+    { icon: '🎨', label: '톤 설정', desc: '인플루언서별 이메일 톤 드롭다운으로 선택' },
+    { icon: '⚡', label: 'AI 이메일 생성', desc: '20명에게 개인화된 이메일을 동시 생성' },
+    { icon: '📧', label: '확인 및 발송', desc: '새창에서 결과 확인 후 복사/발송' },
+  ],
+  beforeAfter: { before: '이메일 1통 40분 × 20명 = 13시간', after: '20통 동시 생성 3분', savings: '13시간 → 3분' },
+  dataFlow: { input: '인플루언서 20명 DB', ai: '개인화 이메일 생성', output: '맞춤 이메일 20통' },
+  keyPoint: '톤/스타일별 개인화된 시딩 이메일을 병렬로 한번에 생성',
+}
 
 // Default tone mapping based on original influencer data
 function defaultTone(inf: typeof influencers[0]) {
@@ -174,12 +190,20 @@ export function SeedingDemo() {
             인플루언서별 개인화 이메일을 병렬로 생성합니다 — 제품: <strong>{product.name}</strong>
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          📊 대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📊 대시보드
+          </a>
+        </div>
       </div>
 
       <div className="flex items-center gap-3 mb-4">

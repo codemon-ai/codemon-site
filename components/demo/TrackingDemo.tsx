@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { openTrackingViewer } from './TrackingViewer'
+import { openDemoExplain } from './DemoExplain'
 import snsPosts from '../../data/demo/sns-posts.json'
 
 export type Post = {
@@ -116,6 +117,21 @@ ${JSON.stringify(filtered, null, 2)}
 마크다운 형식으로 작성해주세요.`
 }
 
+const EXPLAIN_CONFIG = {
+  demoNumber: 3,
+  title: 'SNS 소재 성과 트래킹',
+  subtitle: '마케팅팀 · 박서연 팀장',
+  steps: [
+    { icon: '🔍', label: '필터 설정', desc: '플랫폼(인스타/틱톡) · 유형(릴스/숏폼) 필터' },
+    { icon: '📈', label: '데이터 정렬', desc: '조회수/좋아요 기준 정렬, 히트 콘텐츠 강조' },
+    { icon: '🤖', label: 'AI 분석', desc: '히트 패턴 분석 + 채널 비교 + 전략 제안' },
+    { icon: '📊', label: '차트 리포트', desc: 'SVG 차트 포함 분석 리포트 새창' },
+  ],
+  beforeAfter: { before: '엑셀 수작업 분석 반나절', after: '필터 + AI 분석 5분', savings: '4시간 → 5분' },
+  dataFlow: { input: 'SNS 30개 게시물 성과', ai: '히트 패턴 분석', output: '전략 제안 리포트' },
+  keyPoint: '300만뷰 릴스도 모르고 넘어가던 것을 AI가 자동 감지하고 패턴 분석',
+}
+
 export function TrackingDemo() {
   const [status, setStatus] = useState<Status>('idle')
   const [content, setContent] = useState('')
@@ -227,12 +243,20 @@ export function TrackingDemo() {
             히트 콘텐츠 패턴을 분석하고 다음 전략을 제안합니다 | <strong>{filtered.length}건</strong> 게시물
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          📊 대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📊 대시보드
+          </a>
+        </div>
       </div>
 
       {/* KPI Row */}

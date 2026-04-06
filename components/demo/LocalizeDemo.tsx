@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { openLocalizeViewer } from './LocalizeViewer'
+import { openDemoExplain } from './DemoExplain'
 import marketingCopy from '../../data/demo/marketing-copy.json'
 
 type CopyItem = typeof marketingCopy[0]
@@ -80,6 +81,21 @@ ${instructions}
 function getPreviewLines(ko: string): string {
   const lines = ko.split('\n').filter(l => l.trim())
   return lines.slice(0, 2).join(' ')
+}
+
+const EXPLAIN_CONFIG = {
+  demoNumber: 5,
+  title: '글로벌 마케팅 카피 현지화',
+  subtitle: '미국팀 · Sarah Kim 팀장',
+  steps: [
+    { icon: '📝', label: '소스 카피 선택', desc: '3개 마케팅 카피 중 현지화 대상 선택' },
+    { icon: '🌍', label: '마켓 선택', desc: 'US/MENA/JP/CN/FR 중 타겟 마켓 선택' },
+    { icon: '⚡', label: '병렬 현지화', desc: '선택한 마켓별로 동시에 문화 맞춤 현지화' },
+    { icon: '🔄', label: '비교 확인', desc: '원문 vs 현지화 버전 나란히 비교' },
+  ],
+  beforeAfter: { before: '번역 외주 1건 2일 × 5개국 = 10일', after: '5개국 동시 5분', savings: '10일 → 5분' },
+  dataFlow: { input: '한국어 마케팅 카피', ai: '문화권별 현지화', output: '5개국 맞춤 카피' },
+  keyPoint: '단순 번역이 아닌 문화·트렌드·규제를 반영한 현지화',
 }
 
 export function LocalizeDemo() {
@@ -198,12 +214,20 @@ export function LocalizeDemo() {
             단순 번역이 아닌, 문화권별 맥락을 반영한 마케팅 카피 현지화
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            대시보드
+          </a>
+        </div>
       </div>
 
       {/* Source copy selector */}

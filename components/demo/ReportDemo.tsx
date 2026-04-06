@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { openReportViewer } from './ReportViewer'
+import { openDemoExplain } from './DemoExplain'
 import salesDetail from '../../data/demo/sales-detail.json'
 
 type Status = 'idle' | 'generating' | 'done' | 'error'
@@ -92,6 +93,20 @@ ${Object.entries(summary.byCustomer).map(([t, v]) => `- ${t}: ${fmtWon(v)} (${(v
 
 const SYSTEM_PROMPT = '당신은 보들(BO:DL) K-뷰티 브랜드의 CFO 겸 데이터 분석가입니다. 매출/원가/이익 데이터를 기반으로 경영진이 의사결정에 활용할 수 있는 인사이트 중심 리포트를 작성합니다.'
 
+const EXPLAIN_CONFIG = {
+  demoNumber: 2,
+  title: '매출 데이터 일일 리포트',
+  subtitle: 'MD팀 · 정우진 팀장 / 회계팀 · 윤서아 팀장',
+  steps: [
+    { icon: '📊', label: 'KPI 확인', desc: '1,000건 주문의 매출/원가/이익 요약' },
+    { icon: '🤖', label: '리포트 생성', desc: 'Claude가 데이터를 분석하여 인사이트 도출' },
+    { icon: '📄', label: '차트 리포트', desc: '5종 SVG 차트 포함 리포트를 새창에서 확인' },
+  ],
+  beforeAfter: { before: '3채널 데이터 취합 2시간 + 분석 1시간', after: '버튼 1번 → 리포트 2분', savings: '3시간 → 2분' },
+  dataFlow: { input: '1,000건 주문 데이터', ai: '매출 분석 + 인사이트', output: '경영진 리포트 + 차트' },
+  keyPoint: '쿠팡/자사몰/올리브영 3채널 데이터를 하나의 리포트로 자동 통합',
+}
+
 export function ReportDemo() {
   const [status, setStatus] = useState<Status>('idle')
   const [content, setContent] = useState('')
@@ -156,9 +171,17 @@ export function ReportDemo() {
             기간: {salesDetail.period} | <strong>{salesDetail.totalOrders.toLocaleString()}건</strong> 주문 데이터
           </p>
         </div>
-        <a href="/partner/lecture-podl-ai/demo/dashboard" className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors">
-          📊 대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a href="/partner/lecture-podl-ai/demo/dashboard" className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors">
+            📊 대시보드
+          </a>
+        </div>
       </div>
 
       {/* Summary KPIs */}

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { openReturnsViewer } from './ReturnsViewer'
+import { openDemoExplain } from './DemoExplain'
 import returns from '../../data/demo/returns.json'
 
 export type Return = {
@@ -137,6 +138,21 @@ ${JSON.stringify(filtered, null, 2)}
 마크다운 형식으로 작성해주세요.`
 }
 
+const EXPLAIN_CONFIG = {
+  demoNumber: 7,
+  title: '반품 분석 & 자동 대응',
+  subtitle: '물류팀 · 강태호 팀장',
+  steps: [
+    { icon: '🔍', label: '필터 설정', desc: '채널/반품사유 카테고리별 필터' },
+    { icon: '📊', label: '데이터 정렬', desc: '환불액/날짜 기준 정렬, 패턴 파악' },
+    { icon: '🤖', label: 'AI 분석', desc: '반품 패턴 분석 + CS 응대 메시지 자동 생성' },
+    { icon: '📄', label: '리포트 확인', desc: '사유별/채널별 차트 + CS 템플릿 리포트' },
+  ],
+  beforeAfter: { before: '반품 사유 집계 + CS 대응 = 반나절', after: '분석 + CS 메시지 5분', savings: '4시간 → 5분' },
+  dataFlow: { input: '200건 반품 데이터', ai: '패턴 분석 + CS 생성', output: '분석 리포트 + 응대 메시지' },
+  keyPoint: '반품 사유 패턴을 찾아 선제적 품질 개선 + 고객 CS 자동화',
+}
+
 export function ReturnsDemo() {
   const [status, setStatus] = useState<Status>('idle')
   const [content, setContent] = useState('')
@@ -241,12 +257,20 @@ export function ReturnsDemo() {
             반품 사유 패턴을 분석하고 고객 응대 메시지를 자동 생성합니다 | <strong>{filtered.length}건</strong> 반품
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            대시보드
+          </a>
+        </div>
       </div>
 
       {/* KPI Row */}

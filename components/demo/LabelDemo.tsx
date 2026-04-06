@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { openLabelViewer } from './LabelViewer'
+import { openDemoExplain } from './DemoExplain'
 import products from '../../data/demo/products.json'
 import labelSpecs from '../../data/demo/label-specs.json'
 
@@ -77,6 +78,21 @@ ${enabledLabelTypes.map(id => {
 
 function fmtPrice(n: number) {
   return `${n.toLocaleString()}원`
+}
+
+const EXPLAIN_CONFIG = {
+  demoNumber: 6,
+  title: '패키지 라벨 & 규제 카피',
+  subtitle: '디자인팀 · 최민지 팀장',
+  steps: [
+    { icon: '🛍️', label: '제품 선택', desc: '5개 제품 중 라벨 대상 선택' },
+    { icon: '📋', label: '라벨 유형 + 수출국', desc: '성분표/사용법/주의사항 + 국가 선택' },
+    { icon: '⚡', label: '규격 맞춤 생성', desc: '국가별 규제에 맞는 라벨 텍스트 동시 생성' },
+    { icon: '🔄', label: '국가별 비교', desc: '한국/미국/EU/할랄 라벨 나란히 비교' },
+  ],
+  beforeAfter: { before: '4개국 규격 확인 + 라벨 작성 = 1주', after: '4개국 동시 생성 5분', savings: '1주 → 5분' },
+  dataFlow: { input: '제품 정보 + 국가 규격', ai: '규제 맞춤 라벨 생성', output: '4개국 라벨 카피' },
+  keyPoint: 'FDA/CPNP/할랄 등 국가별 화장품 규제를 AI가 자동 반영',
 }
 
 export function LabelDemo() {
@@ -223,12 +239,20 @@ export function LabelDemo() {
             제품별 x 국가별 화장품 규제에 맞는 패키지 라벨 텍스트를 자동 생성합니다
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            대시보드
+          </a>
+        </div>
       </div>
 
       {/* Product selector — horizontal scroll */}

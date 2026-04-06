@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { openContentViewer } from './ContentViewer'
+import { openDemoExplain } from './DemoExplain'
 import products from '../../data/demo/products.json'
 
 type Status = 'idle' | 'generating' | 'done' | 'error'
@@ -53,6 +54,21 @@ ${info}`
 
 function fmtPrice(n: number) {
   return `${n.toLocaleString()}원`
+}
+
+const EXPLAIN_CONFIG = {
+  demoNumber: 4,
+  title: '상품 콘텐츠 자동 생성',
+  subtitle: '콘텐츠팀 · 이하은 팀장',
+  steps: [
+    { icon: '🛍️', label: '제품 선택', desc: '5개 제품 중 콘텐츠 생성 대상 선택' },
+    { icon: '🎯', label: '유형 선택', desc: '상세페이지/캐러셀/해시태그/틱톡 중 선택' },
+    { icon: '⚡', label: '병렬 생성', desc: '선택한 유형별로 동시에 콘텐츠 생성' },
+    { icon: '👀', label: '탭별 확인', desc: '탭 뷰어에서 유형별 결과 확인 및 복사' },
+  ],
+  beforeAfter: { before: '상세페이지+SNS+해시태그+틱톡 = 4시간', after: '4종 동시 생성 3분', savings: '4시간 → 3분' },
+  dataFlow: { input: '제품 정보 1개', ai: '4종 콘텐츠 동시 생성', output: '상세페이지 + SNS + 해시태그 + 틱톡' },
+  keyPoint: '하나의 제품 정보로 4가지 채널용 콘텐츠를 한번에 생성',
 }
 
 export function ContentDemo() {
@@ -181,12 +197,20 @@ export function ContentDemo() {
             제품 정보를 기반으로 4종 콘텐츠를 병렬 생성합니다
           </p>
         </div>
-        <a
-          href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
-        >
-          📊 대시보드
-        </a>
+        <div className="flex gap-2">
+          <button
+            onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📖 설명
+          </button>
+          <a
+            href="/partner/lecture-podl-ai/demo/dashboard"
+            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          >
+            📊 대시보드
+          </a>
+        </div>
       </div>
 
       {/* Product selector — horizontal scroll */}
