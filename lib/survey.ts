@@ -16,10 +16,8 @@ export interface SurveyResponse {
   submittedAt: number
 }
 
-const VALID_LECTURE_IDS = ['lecture-agency-ai', 'lecture-startup-ai']
-
 export function isValidLectureId(id: string): boolean {
-  return VALID_LECTURE_IDS.includes(id)
+  return /^lecture-[a-z0-9-]+$/.test(id)
 }
 
 export async function saveSurveyResponse(
