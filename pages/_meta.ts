@@ -57,7 +57,11 @@ export default {
   },
   partner: {
     type: 'folder',
-    display: 'hidden'
+    display: 'hidden',
+    theme: {
+      sidebar: false,
+      toc: false,
+    }
   },
   en: {
     title: 'English',
