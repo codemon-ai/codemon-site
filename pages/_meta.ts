@@ -60,7 +60,6 @@ export default {
     display: 'hidden',
     theme: {
       sidebar: false,
-      toc: false,
     }
   },
   en: {
