@@ -48,7 +48,8 @@ codemon.ai에서 진행하는 강의 및 워크숍 자료를 공유합니다.
 import { NewsletterSignup } from '../../components/NewsletterSignup'
 import { QRCodeDisplay } from '../../components/QRCodeDisplay'
 
-<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
+<div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-8 items-start">
   <NewsletterSignup />
-  <QRCodeDisplay url="https://codemon.ai/partner" />
+  <QRCodeDisplay url="https://codemon.ai/partner" title="강의 자료" />
+  <QRCodeDisplay url="https://codemon.ai/partner/survey/lecture-podl-ai" title="강의 설문" />
 </div>
