@@ -1,4 +1,5 @@
 import { put, list } from '@vercel/blob'
+import { createClient } from './supabase'
 
 export interface NewsletterSubscriber {
   email: string
@@ -28,13 +29,33 @@ export async function getSubscribers(): Promise<NewsletterData> {
   }
 }
 
+async function addSubscriberToSupabase(email: string, source: string): Promise<boolean> {
+  try {
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('subscribers')
+      .upsert(
+        { email, source, subscribed_at: new Date().toISOString() },
+        { onConflict: 'email', ignoreDuplicates: true }
+      )
+    return !error
+  } catch {
+    return false
+  }
+}
+
 export async function addSubscriber(
   email: string,
-  source: string = 'partner-page'
+  source: string = 'subscribe-page'
 ): Promise<{ ok: true; alreadySubscribed?: boolean }> {
   const data = await getSubscribers()
 
-  if (data.subscribers.some((s) => s.email === email)) {
+  const alreadyInBlob = data.subscribers.some((s) => s.email === email)
+
+  // Dual write: Supabase (fire and forget on failure)
+  await addSubscriberToSupabase(email, source)
+
+  if (alreadyInBlob) {
     return { ok: true, alreadySubscribed: true }
   }
 

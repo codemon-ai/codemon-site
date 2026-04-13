@@ -8,7 +8,7 @@ export default {
     theme: { layout: 'raw' }
   },
   survey: {
-    title: '설문',
+    title: '설문 (deprecated — /survey/ 로 이동)',
     display: 'hidden',
   },
 }

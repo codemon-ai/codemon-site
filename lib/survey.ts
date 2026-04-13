@@ -1,5 +1,6 @@
 import { put } from '@vercel/blob'
 import crypto from 'crypto'
+import { createClient } from './supabase'
 
 export interface SurveyResponse {
   id: string
@@ -16,10 +17,29 @@ export interface SurveyResponse {
   submittedAt: number
 }
 
-const VALID_LECTURE_IDS = ['lecture-agency-ai', 'lecture-startup-ai']
-
 export function isValidLectureId(id: string): boolean {
-  return VALID_LECTURE_IDS.includes(id)
+  return /^lecture-[a-z0-9-]+$/.test(id)
+}
+
+async function saveSurveyToSupabase(data: SurveyResponse): Promise<boolean> {
+  try {
+    const supabase = createClient()
+    const { error } = await supabase.from('survey_responses').insert({
+      lecture_id: data.lectureId,
+      company_name: data.companyName,
+      contact_name: data.contactName,
+      title: data.title,
+      email: data.email,
+      phone: data.phone,
+      rating: data.rating,
+      gains: data.gains,
+      questions: data.questions,
+      privacy_consent: data.privacyConsent,
+    })
+    return !error
+  } catch {
+    return false
+  }
 }
 
 export async function saveSurveyResponse(
@@ -31,6 +51,9 @@ export async function saveSurveyResponse(
     id,
     submittedAt: Date.now(),
   }
+
+  // Dual write: Supabase (fire and forget on failure)
+  await saveSurveyToSupabase(response)
 
   await put(
     `survey/responses/${data.lectureId}/${id}.json`,

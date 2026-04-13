@@ -59,6 +59,19 @@ export default {
     type: 'folder',
     display: 'hidden'
   },
+  admin: {
+    type: 'folder',
+    display: 'hidden'
+  },
+  subscribe: {
+    title: '뉴스레터 구독',
+    type: 'page',
+    display: 'hidden'
+  },
+  survey: {
+    type: 'folder',
+    display: 'hidden'
+  },
   en: {
     title: 'English',
     type: 'page',
