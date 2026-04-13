@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI로 일하는 방법 — 포들 실무 중심 AX 가이드</title>
+
+    <!-- Google Fonts: Archivo (800) + Nunito (400, 600) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES — SWISS MODERN THEME
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #ff3300;
+            --accent-light: rgba(255, 51, 0, 0.08);
+            --accent-medium: rgba(255, 51, 0, 0.15);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --grid-color: rgba(0, 0, 0, 0.04);
+
+            /* Typography */
+            --font-display: 'Archivo', sans-serif;
+            --font-body: 'Nunito', sans-serif;
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           BASE RESET
+           =========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        :root {
+            --title-size: clamp(1.5rem, 5vw, 4rem);
+            --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+            --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+            --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+            --small-size: clamp(0.65rem, 1vw, 0.875rem);
+            --slide-padding: clamp(1rem, 4vw, 4rem);
+            --content-gap: clamp(0.5rem, 2vw, 2rem);
+            --element-gap: clamp(0.25rem, 1vw, 1rem);
+        }
+
+        .card, .container, .content-box {
+            max-width: min(90vw, 1000px);
+            max-height: min(80vh, 700px);
+        }
+
+        .feature-list, .bullet-list {
+            gap: clamp(0.4rem, 1vh, 1rem);
+        }
+
+        .feature-list li, .bullet-list li {
+            font-size: var(--body-size);
+            line-height: 1.4;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        img, .image-container {
+            max-width: 100%;
+            max-height: min(50vh, 400px);
+            object-fit: contain;
+        }
+
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1rem, 3vw, 1.75rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots, .keyboard-hint, .decorative {
+                display: none;
+            }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.25rem, 7vw, 2.5rem);
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        /* ===========================================
+           BODY & TYPOGRAPHY
+           =========================================== */
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: var(--title-size); }
+        h2 { font-size: var(--h2-size); }
+        h3 { font-size: var(--h3-size); }
+        p, li { font-size: var(--body-size); line-height: 1.6; }
+        .small { font-size: var(--small-size); }
+
+        /* ===========================================
+           SWISS DESIGN ELEMENTS
+           =========================================== */
+
+        /* Grid overlay */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: clamp(30px, 5vw, 60px) clamp(30px, 5vw, 60px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* Red bar left */
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: clamp(4px, 0.5vw, 6px);
+            height: 100%;
+            background: var(--accent);
+            z-index: 2;
+        }
+
+        /* Red dot top-right */
+        .red-dot {
+            position: absolute;
+            top: clamp(1rem, 3vw, 2rem);
+            right: clamp(1rem, 3vw, 2rem);
+            width: clamp(8px, 1.2vw, 14px);
+            height: clamp(8px, 1.2vw, 14px);
+            background: var(--accent);
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        /* Section number */
+        .section-number {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.65rem, 1vw, 0.875rem);
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: clamp(0.25rem, 0.5vw, 0.5rem);
+            z-index: 1;
+            position: relative;
+        }
+
+        .slide-content {
+            z-index: 1;
+            position: relative;
+        }
+
+        /* ===========================================
+           SLIDE LAYOUTS
+           =========================================== */
+
+        /* Title slide */
+        .slide-title .slide-content {
+            padding-left: clamp(2rem, 8vw, 8rem);
+        }
+
+        .title-main {
+            font-size: clamp(2rem, 7vw, 5.5rem);
+            line-height: 1.05;
+            margin-bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+        }
+
+        .title-sub {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: clamp(0.8rem, 1.5vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: clamp(1rem, 2vw, 2rem);
+        }
+
+        .title-meta {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .title-meta span {
+            display: inline-block;
+            margin-right: clamp(0.5rem, 1.5vw, 1.5rem);
+        }
+
+        .accent-line {
+            width: clamp(40px, 8vw, 80px);
+            height: clamp(3px, 0.4vw, 5px);
+            background: var(--accent);
+            margin-bottom: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        /* Content slide with left section label */
+        .slide-content-layout {
+            display: grid;
+            grid-template-columns: clamp(60px, 10vw, 120px) 1fr;
+            gap: clamp(1rem, 2vw, 2rem);
+            align-items: start;
+            padding: var(--slide-padding);
+            padding-left: clamp(1.5rem, 4vw, 4rem);
+        }
+
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.55rem, 0.8vw, 0.75rem);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding-top: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(90vw, 900px);
+        }
+
+        /* ===========================================
+           COMPONENT STYLES
+           =========================================== */
+
+        /* Tables */
+        .swiss-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--small-size);
+        }
+
+        .swiss-table th {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            text-align: left;
+            padding: clamp(0.3rem, 0.6vw, 0.6rem) clamp(0.4rem, 0.8vw, 0.8rem);
+            border-bottom: 2px solid var(--text-primary);
+        }
+
+        .swiss-table td {
+            padding: clamp(0.25rem, 0.5vw, 0.5rem) clamp(0.4rem, 0.8vw, 0.8rem);
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+            line-height: 1.4;
+        }
+
+        .swiss-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .swiss-table .accent-cell {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Cards */
+        .swiss-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: clamp(0.6rem, 1.5vw, 1.5rem);
+            position: relative;
+        }
+
+        .swiss-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        .swiss-card h3 {
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.5rem);
+        }
+
+        .swiss-card p {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* Tags / Badges */
+        .tag {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.5rem, 0.7vw, 0.65rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: clamp(0.15rem, 0.3vw, 0.25rem) clamp(0.3rem, 0.6vw, 0.5rem);
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filled {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* Stat blocks */
+        .stat-block {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 4vw, 3.5rem);
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            margin-top: clamp(0.2rem, 0.4vw, 0.4rem);
+        }
+
+        /* Blockquote */
+        .swiss-quote {
+            border-left: 3px solid var(--accent);
+            padding-left: clamp(0.5rem, 1.5vw, 1.5rem);
+            font-size: clamp(0.8rem, 1.4vw, 1.1rem);
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* Bullet list styled */
+        .swiss-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.3rem, 0.8vh, 0.6rem);
+        }
+
+        .swiss-list li {
+            padding-left: clamp(0.8rem, 1.5vw, 1.2rem);
+            position: relative;
+            font-size: var(--body-size);
+            line-height: 1.5;
+        }
+
+        .swiss-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: clamp(0.35rem, 0.7vw, 0.55rem);
+            width: clamp(4px, 0.5vw, 6px);
+            height: clamp(4px, 0.5vw, 6px);
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* Demo card special */
+        .demo-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            padding: clamp(1rem, 2vw, 2rem);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.4rem, 1vw, 1rem);
+            transition: border-color 0.3s ease;
+        }
+
+        .demo-card:hover {
+            border-color: var(--accent);
+        }
+
+        .demo-card .demo-number {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 4rem);
+            color: var(--accent);
+            line-height: 1;
+            opacity: 0.3;
+        }
+
+        .demo-card .demo-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .demo-card .demo-team {
+            font-size: var(--small-size);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .demo-card .demo-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* Flow / Steps */
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.3rem, 1vw, 1rem);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-step {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: clamp(0.4rem, 1vw, 1rem) clamp(0.6rem, 1.5vw, 1.5rem);
+            font-size: var(--small-size);
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+        }
+
+        .flow-step.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .flow-arrow {
+            font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        /* Two-column comparison */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+        }
+
+        @media (max-width: 600px) {
+            .compare-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .compare-col h4 {
+            font-size: clamp(0.7rem, 1.1vw, 0.9rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);
+            padding-bottom: clamp(0.2rem, 0.3vw, 0.3rem);
+            border-bottom: 2px solid var(--text-primary);
+        }
+
+        .compare-col.before h4 {
+            color: var(--text-secondary);
+        }
+
+        .compare-col.after h4 {
+            color: var(--accent);
+        }
+
+        .compare-col p {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        /* Three column grid */
+        .three-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.5rem, 1.5vw, 1.5rem);
+        }
+
+        @media (max-width: 700px) {
+            .three-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Section divider slide */
+        .slide-section .slide-content {
+            padding-left: clamp(3rem, 10vw, 10rem);
+        }
+
+        .section-big-number {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(4rem, 15vw, 14rem);
+            color: var(--accent);
+            opacity: 0.12;
+            line-height: 0.85;
+            position: absolute;
+            top: clamp(1rem, 5vw, 4rem);
+            right: clamp(1rem, 5vw, 4rem);
+            z-index: 0;
+        }
+
+        /* Agenda grid */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.4rem, 1vw, 1rem);
+        }
+
+        @media (max-width: 700px) {
+            .agenda-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .agenda-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: clamp(0.5rem, 1.2vw, 1.2rem);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.15rem, 0.3vw, 0.3rem);
+        }
+
+        .agenda-item .agenda-num {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .agenda-item .agenda-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.65rem, 1vw, 0.85rem);
+        }
+
+        .agenda-item .agenda-desc {
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            color: var(--text-secondary);
+        }
+
+        .agenda-item .agenda-time {
+            font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Big highlight text */
+        .big-highlight {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            line-height: 1.15;
+        }
+
+        .big-highlight .accent {
+            color: var(--accent);
+        }
+
+        /* Inline editing indicator */
+        .edit-mode .slide-content [contenteditable="true"] {
+            outline: 2px dashed var(--accent);
+            outline-offset: 4px;
+        }
+
+        .edit-indicator {
+            position: fixed;
+            top: clamp(0.5rem, 1vw, 1rem);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            padding: clamp(0.2rem, 0.3vw, 0.3rem) clamp(0.5rem, 1vw, 1rem);
+            z-index: 100;
+            display: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .edit-mode .edit-indicator {
+            display: block;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 50;
+            transition: width 0.3s var(--ease-out-expo);
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1.5vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(4px, 0.5vw, 8px);
+            z-index: 50;
+        }
+
+        .nav-dot {
+            width: clamp(6px, 0.6vw, 8px);
+            height: clamp(6px, 0.6vw, 8px);
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.4);
+        }
+
+        .nav-dot:hover {
+            background: var(--accent);
+            opacity: 0.6;
+        }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            right: clamp(0.5rem, 1.5vw, 1.5rem);
+            font-size: clamp(0.5rem, 0.7vw, 0.65rem);
+            color: var(--text-secondary);
+            opacity: 0.5;
+            z-index: 50;
+            font-family: var(--font-body);
+        }
+
+        /* Slide counter */
+        .slide-counter {
+            position: fixed;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            left: clamp(1rem, 3vw, 2rem);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            color: var(--text-secondary);
+            z-index: 50;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===========================================
+           REVEAL ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(clamp(15px, 2vw, 30px));
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+        .reveal-delay-6 { transition-delay: 0.6s; }
+        .reveal-delay-7 { transition-delay: 0.7s; }
+
+        /* ===========================================
+           COMPACT TABLE FOR MANY ROWS
+           =========================================== */
+        .compact-table th,
+        .compact-table td {
+            padding: clamp(0.15rem, 0.35vw, 0.35rem) clamp(0.3rem, 0.6vw, 0.6rem);
+            font-size: clamp(0.55rem, 0.85vw, 0.75rem);
+        }
+
+        /* 7-col roadmap table */
+        .roadmap-table {
+            font-size: clamp(0.5rem, 0.75vw, 0.7rem);
+        }
+
+        .roadmap-table th,
+        .roadmap-table td {
+            padding: clamp(0.15rem, 0.3vw, 0.3rem) clamp(0.2rem, 0.4vw, 0.4rem);
+            font-size: clamp(0.45rem, 0.7vw, 0.65rem);
+        }
+
+        /* highlight row */
+        .highlight-row td {
+            background: var(--accent-light);
+        }
+
+        /* ===========================================
+           FINAL SLIDE / CTA
+           =========================================== */
+        .cta-link {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.7rem, 1.2vw, 1rem);
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 2px;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Big centered layout */
+        .centered-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: var(--content-gap);
+        }
+
+        /* ===========================================
+           INLINE COMPACT CARD LIST
+           =========================================== */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+
+        .card-list-item {
+            display: flex;
+            align-items: baseline;
+            gap: clamp(0.3rem, 0.8vw, 0.8rem);
+            padding: clamp(0.2rem, 0.4vw, 0.4rem) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .card-list-num {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(0.7rem, 1.2vw, 1rem);
+            color: var(--accent);
+            min-width: clamp(1.2rem, 2vw, 2rem);
+        }
+
+        .card-list-text {
+            font-size: var(--body-size);
+            line-height: 1.4;
+        }
+
+        .card-list-text strong {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Nav Dots -->
+<div class="nav-dots" id="navDots"></div>
+
+<!-- Slide Counter -->
+<div class="slide-counter" id="slideCounter">01 / 33</div>
+
+<!-- Keyboard Hint -->
+<div class="keyboard-hint">Arrow keys / Scroll to navigate · E to edit</div>
+
+<!-- Edit Mode Indicator -->
+<div class="edit-indicator">EDIT MODE — Press E to exit</div>
+
+
+<!-- ========================================
+     SLIDE 1 — TITLE
+     ======================================== -->
+<div class="slide slide-title" id="slide-1">
+    <div class="red-dot"></div>
+    <div class="slide-content" style="justify-content: center;">
+        <div class="accent-line reveal"></div>
+        <h1 class="title-main reveal reveal-delay-1">AI로<br>일하는 방법</h1>
+        <p class="title-sub reveal reveal-delay-2">포들(PO:DL) 실무 중심 AX 가이드</p>
+        <div class="title-meta reveal reveal-delay-3">
+            <span>3시간 — 강의 + 라이브 데모 + 핸즈온</span>
+            <span>대상: 라스트스프링 전 직무 실무자 17명</span>
+        </div>
+        <div style="margin-top: clamp(1rem, 2vw, 2rem);" class="reveal reveal-delay-4">
+            <a class="cta-link" href="https://codemon.ai" target="_blank">codemon.ai</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 2 — AGENDA (6 Parts)
+     ======================================== -->
+<div class="slide" id="slide-2">
+    <div class="red-dot"></div>
+    <div class="slide-content">
+        <div class="section-number reveal">AGENDA</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">6파트 커리큘럼</h2>
+        <div class="agenda-grid reveal reveal-delay-2">
+            <div class="agenda-item">
+                <div class="agenda-num">01</div>
+                <div class="agenda-title">AI 기본 교양</div>
+                <div class="agenda-desc">"AI, 대체 뭔데?" — 용어, 원리, 도구 지도</div>
+                <div class="agenda-time">25분</div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-num">02</div>
+                <div class="agenda-title">포들에 적용하면?</div>
+                <div class="agenda-desc">7개 팀 병목 → AI가 해준다면?</div>
+                <div class="agenda-time">10분</div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-num">03</div>
+                <div class="agenda-title">라이브 데모 7선</div>
+                <div class="agenda-desc">시딩, 리포트, 트래킹, 콘텐츠, 현지화, 라벨, 반품</div>
+                <div class="agenda-time">65분</div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-num">04</div>
+                <div class="agenda-title">Stitch 핸즈온</div>
+                <div class="agenda-desc">AI로 패키지 라벨 디자인 직접 생성</div>
+                <div class="agenda-time">15분</div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-num">05</div>
+                <div class="agenda-title">AI 대시보드</div>
+                <div class="agenda-desc">7개 데모를 하나의 컨트롤 센터로</div>
+                <div class="agenda-time">10분</div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-num">06</div>
+                <div class="agenda-title">로드맵 + Q&A</div>
+                <div class="agenda-desc">팀별 맞춤 로드맵 & 질의응답</div>
+                <div class="agenda-time">20분</div>
+            </div>
+        </div>
+        <p class="small reveal reveal-delay-3" style="margin-top: var(--element-gap); color: var(--text-secondary);">총 180분 = 강의 145분 + Q&A 20분 + 여유 15분 | 데모 7개 + 대시보드 + Stitch 핸즈온</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 3 — 1-1 뉴스: 413조원 증발
+     ======================================== -->
+<div class="slide" id="slide-3">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 기본 교양</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--element-gap);">지금 세상에서 일어나고 있는 일</h2>
+        <div class="big-highlight reveal reveal-delay-2" style="margin-bottom: var(--content-gap);">
+            Claude Cowork 출시 48시간,<br>
+            소프트웨어 주식 <span class="accent">413조원 증발</span>
+        </div>
+        <div class="swiss-quote reveal reveal-delay-3">
+            "이건 진짜 패러다임 전환이다" — 시장의 반응
+        </div>
+        <p class="small reveal reveal-delay-4" style="margin-top: var(--element-gap); color: var(--text-secondary);">
+            문제는 "할 것인가 말 것인가"가 아니라 <strong>"어떻게 잘 할 것인가"</strong>
+        </p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 4 — 1-1 기업 사례
+     ======================================== -->
+<div class="slide" id="slide-4">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 기본 교양</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">기업들은 이미 움직이고 있다</h2>
+        <table class="swiss-table reveal reveal-delay-2">
+            <thead>
+                <tr>
+                    <th>기업</th>
+                    <th>변화</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="accent-cell">Rakuten</td>
+                    <td>1,250만 줄 코드를 AI가 자율 관리 — 인간 기여 <strong>0%</strong></td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">Zapier</td>
+                    <td>전 조직 89% AI 채택, 800+ 에이전트 내부 운영</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">Lovable</td>
+                    <td>비개발자 63%가 앱 직접 생성 — 12개월 만에 매출 5천억</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">SK AX</td>
+                    <td>"AI를 얼마나 잘 지휘했느냐"가 성과 기준으로 이동</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">한국 기업 85%</td>
+                    <td>생성형 AI 도입 — 그런데 60%는 아직 실험 단계</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 5 — 1-2 AI 용어 사전
+     ======================================== -->
+<div class="slide" id="slide-5">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 용어 사전</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">이것만 알면 됩니다 — 핵심 7단어</h2>
+        <table class="swiss-table reveal reveal-delay-2">
+            <thead>
+                <tr>
+                    <th>용어</th>
+                    <th>비유</th>
+                    <th>한 줄 설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="accent-cell">프롬프트</td>
+                    <td>주문서</td>
+                    <td>AI에게 하는 지시. "이거 해줘"가 프롬프트</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">모델</td>
+                    <td>요리사</td>
+                    <td>Claude, GPT, Gemini — 각각 실력(성능)이 다름</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">토큰</td>
+                    <td>글자 수</td>
+                    <td>AI가 읽고 쓰는 단위. 많이 쓰면 비용 ↑</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">컨텍스트</td>
+                    <td>배경 서류</td>
+                    <td>AI에게 주는 참고 자료. 많이 줄수록 결과 ↑</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">에이전트</td>
+                    <td>자율 팀원</td>
+                    <td>알아서 찾고, 실행하고, 보고하는 AI</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">스킬</td>
+                    <td>매크로</td>
+                    <td>반복 작업을 저장해서 한 번에 실행하는 패턴</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">MCP</td>
+                    <td>USB 포트</td>
+                    <td>AI를 슬랙, 구글시트 등 외부 도구에 꽂는 규격</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="small reveal reveal-delay-3" style="margin-top: var(--element-gap); color: var(--text-secondary);">이 7개 단어가 오늘 계속 나옵니다. 모르면 물어보세요!</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 6 — 1-3 AI 동작 원리
+     ======================================== -->
+<div class="slide" id="slide-6">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 동작 원리</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">핵심 원리: "다음 단어 예측"</h2>
+        <div class="compare-grid reveal reveal-delay-2">
+            <div class="swiss-card">
+                <h3>동작 방식</h3>
+                <p>AI는 마법이 아닙니다.<br>"앞에 이 단어가 왔으니, 다음에 올 확률이 가장 높은 단어"를 선택합니다.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem); font-style: italic;">"보들보들한 피부를 위한 ___" → "부드러움"</p>
+            </div>
+            <div class="swiss-card">
+                <h3>왜 환각이 생기는가?</h3>
+                <p>모르는 것도 확률적으로 <strong>"그럴듯하게"</strong> 만들어냅니다.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">"보들의 매출은 ___" → 모르지만 그럴듯한 숫자를 생성</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem); color: var(--accent); font-weight: 600;">이게 컨텍스트가 중요한 이유</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 7 — 1-3 컨텍스트 예시
+     ======================================== -->
+<div class="slide" id="slide-7">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — 컨텍스트가 게임 체인저</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--element-gap);">신입사원 vs 3년차</h2>
+        <p class="reveal reveal-delay-2" style="margin-bottom: var(--content-gap); color: var(--text-secondary);">차이 = 머릿속에 있는 맥락(컨텍스트)의 양. AI도 똑같습니다.</p>
+        <div class="compare-grid reveal reveal-delay-3">
+            <div class="compare-col before">
+                <h4>Before — 프롬프트만</h4>
+                <p style="font-weight: 600; color: var(--text-primary);">"밤투폼 시딩 이메일 써줘"</p>
+                <div class="swiss-card" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+                    <p>"안녕하세요, 저희 제품을 소개합니다..."</p>
+                </div>
+            </div>
+            <div class="compare-col after">
+                <h4>After — 컨텍스트 추가</h4>
+                <p style="font-weight: 600; color: var(--text-primary);">같은 프롬프트 + 브랜드 가이드 + 인플루언서 DB + 성분표</p>
+                <div class="swiss-card" style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">
+                    <p>"서연님, 최근 민감피부 루틴 영상 잘 봤어요! 시어버터+판테놀 조합이..."</p>
+                </div>
+            </div>
+        </div>
+        <div class="swiss-quote reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            똑같은 AI, 똑같은 프롬프트인데 결과가 완전히 다릅니다. 차이는 오직 컨텍스트.
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 8 — 1-4 AI 도구 지도
+     ======================================== -->
+<div class="slide" id="slide-8">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 도구 지도</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">뭐가 있는지 알아야 고른다</h2>
+        <div class="three-grid reveal reveal-delay-2">
+            <div>
+                <h3 style="font-size: clamp(0.7rem, 1.1vw, 0.95rem); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">AI 모델 비교</h3>
+                <table class="swiss-table compact-table">
+                    <thead><tr><th>AI</th><th>강점</th></tr></thead>
+                    <tbody>
+                        <tr><td class="accent-cell">Claude</td><td>코딩, 에이전트, 긴 문서</td></tr>
+                        <tr><td class="accent-cell">ChatGPT</td><td>대중적, 플러그인</td></tr>
+                        <tr><td class="accent-cell">Gemini</td><td>검색 연동, 2M 토큰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 style="font-size: clamp(0.7rem, 1.1vw, 0.95rem); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">바이브코딩</h3>
+                <table class="swiss-table compact-table">
+                    <thead><tr><th>도구</th><th>특징</th></tr></thead>
+                    <tbody>
+                        <tr><td class="accent-cell">Lovable</td><td>자연어 → 앱 완성</td></tr>
+                        <tr><td class="accent-cell">Stitch</td><td>AI 디자인 (무료)</td></tr>
+                        <tr><td class="accent-cell">v0</td><td>React 컴포넌트 생성</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 style="font-size: clamp(0.7rem, 1.1vw, 0.95rem); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">자동화</h3>
+                <table class="swiss-table compact-table">
+                    <thead><tr><th>도구</th><th>역할</th></tr></thead>
+                    <tbody>
+                        <tr><td class="accent-cell">Make / Zapier</td><td>AI → 슬랙/이메일/시트</td></tr>
+                        <tr><td class="accent-cell">MCP</td><td>AI를 외부 도구에 직접 연결</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p class="small reveal reveal-delay-3" style="margin-top: var(--element-gap); color: var(--text-secondary);">오늘 주로 쓸 것: Claude(데모 1~5,7) + Stitch(핸즈온) + MCP(대시보드)</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 9 — 1-5 왜 안 되나
+     ======================================== -->
+<div class="slide" id="slide-9">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — 왜 효과가 없을까?</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">"다들 AI 쓴다는데, 왜 효과가 없죠?"</h2>
+        <table class="swiss-table reveal reveal-delay-2">
+            <thead>
+                <tr>
+                    <th>원인</th>
+                    <th>겪고 있는 현상</th>
+                    <th>해결법</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="accent-cell">재료가 없다</td>
+                    <td>"시딩 이메일 써줘" → 결국 다시 씀</td>
+                    <td><strong>컨텍스트</strong> = 배경 서류를 항상 함께</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">일회성으로 끝남</td>
+                    <td>다음 날 같은 프롬프트를 못 찾음</td>
+                    <td><strong>스킬</strong> = 프롬프트 저장 & 재사용</td>
+                </tr>
+                <tr>
+                    <td class="accent-cell">흐름에 안 붙음</td>
+                    <td>슬랙 공유하려면 복붙 → 안 함</td>
+                    <td><strong>자동화</strong> = 결과를 바로 연결</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 10 — 1-5 3단계
+     ======================================== -->
+<div class="slide" id="slide-10">
+    <div class="red-dot"></div>
+    <span class="section-big-number">01</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 01 — AI 활용 3단계</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">프롬프트 → 컨텍스트 → 하네스</h2>
+        <div class="flow-steps reveal reveal-delay-2" style="margin-bottom: var(--content-gap);">
+            <div class="flow-step"> 1. 프롬프트<br><span class="small">인턴에게 구두 지시</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step active"> 2. 컨텍스트 <br><span class="small" style="color: #fff;">인턴에게 매뉴얼 전달</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step"> 3. 하네스<br><span class="small">부서 시스템 구축</span></div>
+        </div>
+        <table class="swiss-table compact-table reveal reveal-delay-3">
+            <thead><tr><th>단계</th><th>포들 적용</th></tr></thead>
+            <tbody>
+                <tr><td>1 프롬프트</td><td>"시딩 이메일 써줘" — 매번 처음부터 설명</td></tr>
+                <tr class="highlight-row"><td class="accent-cell">2 컨텍스트 ★</td><td>브랜드 가이드 + 제품 정보를 파일로 항상 전달</td></tr>
+                <tr><td>3 하네스</td><td>매출 리포트 자동 생성 → 슬랙 발송 (다음 단계)</td></tr>
+            </tbody>
+        </table>
+        <div class="swiss-quote reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            오늘의 목표: 2번 컨텍스트 단계를 확실히 익히는 것. 내일부터 바로 효과가 나옵니다.
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 11 — 2-1 포들의 하루
+     ======================================== -->
+<div class="slide" id="slide-11">
+    <div class="red-dot"></div>
+    <span class="section-big-number">02</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 02 — 포들에 적용하면?</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--element-gap);">포들의 하루 — 7개 팀의 병목</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin-bottom: var(--content-gap);">"이 중에 해당되는 거 있으면 손 들어보세요"</p>
+        <table class="swiss-table compact-table reveal reveal-delay-3">
+            <thead><tr><th>팀</th><th>지금 겪고 있는 일</th></tr></thead>
+            <tbody>
+                <tr><td class="accent-cell">마케팅 (박서연)</td><td>인플루언서 20명 이메일 → <strong>하루 종일</strong></td></tr>
+                <tr><td class="accent-cell">MD (정우진)</td><td>"오늘 매출 얼마야?" → 담당자 자리로 <strong>걸어감</strong></td></tr>
+                <tr><td class="accent-cell">콘텐츠 (이하은)</td><td>상세페이지 하나에 <strong>반나절</strong>, SNS까지 하면 하루</td></tr>
+                <tr><td class="accent-cell">마케팅 (박서연)</td><td>릴스 300만뷰 터져도 <strong>전사 아무도 모름</strong></td></tr>
+                <tr><td class="accent-cell">디자인 (최민지)</td><td>미국용 라벨 → <strong>FDA 규격 찾는 것부터</strong></td></tr>
+                <tr><td class="accent-cell">미국팀 (Sarah)</td><td>번역 외주 → <strong>"보들보들함"이 사라짐</strong></td></tr>
+                <tr><td class="accent-cell">물류 (강태호)</td><td>반품 사유 하나하나 읽고 <strong>엑셀에 집계</strong></td></tr>
+            </tbody>
+        </table>
+        <p class="small reveal reveal-delay-4" style="margin-top: var(--element-gap); color: var(--text-secondary);">그래서 <strong>AI를 활용해 효율적으로 일하는 방법</strong>이 필요합니다.</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 12 — 2-2 AI가 해준다면
+     ======================================== -->
+<div class="slide" id="slide-12">
+    <div class="red-dot"></div>
+    <span class="section-big-number">02</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 02 — AI가 해준다면?</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">오늘 이 자리에서, 직접 보여드리겠습니다</h2>
+        <ul class="swiss-list reveal reveal-delay-2">
+            <li>시딩 이메일 20통 → <strong>한번에 동시 생성</strong></li>
+            <li>3채널 매출 → <strong>자동 리포트 + 차트</strong></li>
+            <li>SNS 30개 게시물 → <strong>히트 패턴 자동 분석</strong></li>
+            <li>제품 1개 → <strong>상세페이지 + 캐러셀 + 해시태그 + 틱톡 동시</strong></li>
+            <li>마케팅 카피 → <strong>5개국 문화 맞춤 현지화</strong></li>
+            <li>패키지 라벨 → <strong>4개국 규제 자동 반영</strong></li>
+            <li>반품 200건 → <strong>사유 패턴 + CS 응대 메시지</strong></li>
+        </ul>
+        <p class="reveal reveal-delay-3" style="margin-top: var(--content-gap); font-weight: 600;">이건 마법이 아니라 <span style="color: var(--accent);">도구</span>입니다. 오늘 7개를 전부 라이브로 보여드립니다.</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 13 — 2-3 데모 만든 이유
+     ======================================== -->
+<div class="slide" id="slide-13">
+    <div class="red-dot"></div>
+    <span class="section-big-number">02</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 02 — 데모를 만든 이유</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">전부 컨텍스트가 핵심입니다</h2>
+        <table class="swiss-table compact-table reveal reveal-delay-2">
+            <thead><tr><th>데모</th><th>팀</th><th>핵심 컨텍스트</th></tr></thead>
+            <tbody>
+                <tr><td>시딩 이메일</td><td class="accent-cell">마케팅</td><td>인플루언서 DB + 톤 가이드</td></tr>
+                <tr><td>매출 리포트</td><td class="accent-cell">MD+회계</td><td>채널 데이터 통합</td></tr>
+                <tr><td>소재 트래킹</td><td class="accent-cell">마케팅</td><td>SNS 성과 데이터</td></tr>
+                <tr><td>콘텐츠 생성</td><td class="accent-cell">콘텐츠</td><td>브랜드 톤 + 제품 정보</td></tr>
+                <tr><td>글로벌 현지화</td><td class="accent-cell">미국팀</td><td>문화권 지식</td></tr>
+                <tr><td>패키지 라벨</td><td class="accent-cell">디자인</td><td>규제 데이터</td></tr>
+                <tr><td>반품 분석</td><td class="accent-cell">물류</td><td>반품 데이터</td></tr>
+            </tbody>
+        </table>
+        <div class="swiss-quote reveal reveal-delay-3" style="margin-top: var(--content-gap);">
+            AI에게 "우리 회사 데이터"를 주는 순간, 결과가 달라집니다.<br>7개 팀 전체를 커버합니다 — 여러분 팀의 데모가 반드시 있습니다.
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 14 — Demo 1 시딩
+     ======================================== -->
+<div class="slide" id="slide-14">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 1 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span class="demo-card" style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff; border: none;">마케팅팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">10분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">인플루언서 시딩 이메일 자동화</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 인플루언서에게 하나하나 이메일 작성 → 업무의 80%</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>인플루언서 리스트 + 포들 제품 정보 입력</li>
+            <li>Claude가 각 인플루언서별 <strong>개인화 시딩 이메일 벌크 생성</strong></li>
+            <li>톤/매너 자동 조정 (10가지 프리셋), 제품-인플루언서 매칭</li>
+            <li>후속: Make/Zapier 연동으로 <strong>자동 발송 파이프라인</strong> 구축 가능</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/seeding" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 15 — Demo 2 리포트
+     ======================================== -->
+<div class="slide" id="slide-15">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 2 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">MD팀 + 회계팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">10분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">매출 데이터 일일 리포트 자동 생성</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 대표가 각 담당자에게 찾아가서 오늘 매출 물어봐야 함</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>3채널(쿠팡/자사몰/올리브영) <strong>1,000건</strong> 주문 데이터 입력</li>
+            <li>Claude가 <strong>통합 분석 + 채널별 비교 + 이상치 감지 + SVG 차트 5종</strong></li>
+            <li>경영진용 리포트 자동 생성 → 새창에서 차트 포함 리포트 확인</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/report" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 16 — Demo 3 트래킹
+     ======================================== -->
+<div class="slide" id="slide-16">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 3 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">마케팅팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">10분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">SNS 소재 성과 트래킹 + 슬랙 알림</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 릴스 300만뷰가 터져도 전사 아무도 모름</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>인스타/틱톡 30개 게시물 성과 데이터 입력</li>
+            <li>AI가 <strong>히트 패턴 분석</strong> + 플랫폼별/유형별 필터 + 정렬 테이블</li>
+            <li>슬랙 알림 메시지 자동 생성: "밤투폼 릴스 300만뷰 돌파!"</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/tracking" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 17 — Demo 4 콘텐츠
+     ======================================== -->
+<div class="slide" id="slide-17">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 4 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">콘텐츠팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">8분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">상품 콘텐츠 자동 생성</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 기획/제작에 시간을 과도하게 소모</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>제품 5개 중 선택 → 4종 콘텐츠 <strong>동시 생성</strong></li>
+            <li>상세페이지 카피 + 인스타 캐러셀 + 해시태그 + 틱톡 스크립트</li>
+            <li>AI가 초안 → 콘텐츠팀은 <strong>편집/검수에만 집중</strong></li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/content" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 18 — Demo 5 현지화
+     ======================================== -->
+<div class="slide" id="slide-18">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 5 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">미국팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">8분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">글로벌 마케팅 카피 현지화</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 번역 외주의 뉘앙스 손실이 크다</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>한국어 마케팅 카피 → 5개국 동시 현지화 (US / SA / JP / CN / FR)</li>
+            <li><strong>단순 번역 vs 문화권 맞춤 로컬라이제이션</strong> 차이를 실시간 비교</li>
+            <li>각 마켓의 뷰티 트렌드 / 규제 / 소비자 심리 반영</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/localize" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 19 — Demo 6 라벨
+     ======================================== -->
+<div class="slide" id="slide-19">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 6 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">디자인팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">8분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">패키지 라벨 & 규제 카피</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 수출국마다 규제가 달라 라벨 작성에 1주일</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>제품 선택 → 라벨 유형(성분표/사용법/주의사항) + 수출국 선택</li>
+            <li>AI가 <strong>국가별 화장품 규제를 자동 반영</strong>한 라벨 텍스트 생성</li>
+            <li>한국 식약처 / 미국 FDA / EU CPNP / 중동 할랄 나란히 비교</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/label" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 20 — Demo 7 반품
+     ======================================== -->
+<div class="slide" id="slide-20">
+    <div class="red-dot"></div>
+    <span class="section-big-number">03</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 03 — DEMO 7 / 7</div>
+        <div style="display: flex; align-items: baseline; gap: clamp(0.5rem, 1vw, 1rem); margin-bottom: var(--element-gap);" class="reveal reveal-delay-1">
+            <span style="display: inline; padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.5rem, 1vw, 0.8rem); font-family: var(--font-display); font-weight: 800; font-size: var(--small-size); background: var(--accent); color: #fff;">물류팀</span>
+            <span style="font-size: var(--small-size); color: var(--text-secondary);">8분</span>
+        </div>
+        <h2 class="reveal reveal-delay-1">반품 분석 & 자동 대응</h2>
+        <p class="reveal reveal-delay-2" style="color: var(--text-secondary); margin: var(--element-gap) 0;"><strong>문제:</strong> 반품 사유를 하나하나 읽고 집계 → CS 응대를 개별 작성</p>
+        <ul class="swiss-list reveal reveal-delay-3">
+            <li>200건 반품 데이터 → <strong>사유 패턴 분석</strong> + 채널별/제품별 비교</li>
+            <li>고객 응대 메시지 템플릿 3종 자동 생성 (사과+교환 / 환불 / 개선안내)</li>
+            <li>반품률 개선 <strong>액션 아이템 5개</strong> 제안</li>
+        </ul>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/returns" target="_blank">데모 바로가기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 21 — Stitch 소개
+     ======================================== -->
+<div class="slide" id="slide-21">
+    <div class="red-dot"></div>
+    <span class="section-big-number">04</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 04 — AI로 디자인까지</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">Google Stitch 2.0</h2>
+        <div class="compare-grid reveal reveal-delay-2">
+            <div class="swiss-card">
+                <h3>Stitch란?</h3>
+                <p>Google이 만든 AI 디자인 도구. 프롬프트만으로 UI/라벨/크리에이티브를 생성합니다.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem); color: var(--accent); font-weight: 600;">무료 350회/월, Gmail만 있으면 사용 가능</p>
+            </div>
+            <div class="swiss-card">
+                <h3>왜 Stitch인가?</h3>
+                <p>Demo 6의 확장 — 라벨 <strong>텍스트</strong>를 넘어 <strong>디자인까지</strong> AI로.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">디자인팀만이 아니라 콘텐츠/마케팅/미국팀 모두 활용 가능</p>
+            </div>
+        </div>
+        <p class="reveal reveal-delay-3" style="margin-top: var(--content-gap); font-weight: 600;">코딩 없이, 프롬프트만으로 디자인 → 다국어 변환 → 브랜드 통일까지.</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 22 — 핸즈온 5단계
+     ======================================== -->
+<div class="slide" id="slide-22">
+    <div class="red-dot"></div>
+    <span class="section-big-number">04</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 04 — 핸즈온 시연</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">Claude Code + Stitch MCP — 5단계</h2>
+        <div class="card-list reveal reveal-delay-2">
+            <div class="card-list-item">
+                <div class="card-list-num">01</div>
+                <div class="card-list-text"><strong>프로젝트 생성</strong> — "보들 패키지 라벨 만들어줘" 한 줄로 시작</div>
+            </div>
+            <div class="card-list-item">
+                <div class="card-list-num">02</div>
+                <div class="card-list-text"><strong>브랜드 시스템 등록</strong> — DESIGN.md(색상/폰트/톤) 자동 업로드</div>
+            </div>
+            <div class="card-list-item">
+                <div class="card-list-num">03</div>
+                <div class="card-list-text"><strong>한국어 라벨 생성</strong> — 밤투폼 정면+후면 라벨 디자인</div>
+            </div>
+            <div class="card-list-item">
+                <div class="card-list-num">04</div>
+                <div class="card-list-text"><strong>다국어 변환</strong> — 미국 FDA / 아랍어 할랄 / EU 프랑스어</div>
+            </div>
+            <div class="card-list-item">
+                <div class="card-list-num">05</div>
+                <div class="card-list-text"><strong>브랜드 톤 일괄 적용</strong> — 3개국 라벨에 보들 디자인 시스템 통일</div>
+            </div>
+        </div>
+        <p class="small reveal reveal-delay-3" style="margin-top: var(--content-gap); color: var(--text-secondary);">최민지 팀장이 내일부터 바로 쓸 수 있습니다.</p>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 23 — 모든 팀 활용
+     ======================================== -->
+<div class="slide" id="slide-23">
+    <div class="red-dot"></div>
+    <span class="section-big-number">04</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 04 — 디자인팀만이 아닙니다</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">모든 팀이 Stitch로 디자인 초안을 만들 수 있습니다</h2>
+        <div class="three-grid reveal reveal-delay-2">
+            <div class="swiss-card">
+                <h3>콘텐츠팀</h3>
+                <p>SNS 배너, 크리에이티브 초안</p>
+            </div>
+            <div class="swiss-card">
+                <h3>마케팅팀</h3>
+                <p>캠페인 비주얼, 시즌 배너</p>
+            </div>
+            <div class="swiss-card">
+                <h3>미국팀</h3>
+                <p>해외 상세페이지 시안</p>
+            </div>
+        </div>
+        <div class="reveal reveal-delay-3" style="margin-top: var(--content-gap); display: flex; gap: clamp(0.5rem, 1vw, 1rem); align-items: center; flex-wrap: wrap;">
+            <span class="tag">무료</span>
+            <span class="tag">350회/월</span>
+            <span class="tag">Gmail 계정</span>
+            <span class="tag">코딩 불필요</span>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 24 — 대시보드 7패널
+     ======================================== -->
+<div class="slide" id="slide-24">
+    <div class="red-dot"></div>
+    <span class="section-big-number">05</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 05 — AI 대시보드</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">포들 AI 컨트롤 센터 — 7개를 하나로</h2>
+        <table class="swiss-table compact-table reveal reveal-delay-2">
+            <thead><tr><th>패널</th><th>데이터 소스</th><th>역할</th><th>데모</th></tr></thead>
+            <tbody>
+                <tr><td class="accent-cell">매출 리포트</td><td>쿠팡/자사몰/올리브영</td><td>3채널 통합 일일 리포트</td><td>Demo 2</td></tr>
+                <tr><td class="accent-cell">소재 트래킹</td><td>인스타/틱톡</td><td>히트 콘텐츠 감지 + 알림</td><td>Demo 3</td></tr>
+                <tr><td class="accent-cell">시딩 파이프라인</td><td>Gmail/인플루언서 DB</td><td>시딩 진행률/응답률</td><td>Demo 1</td></tr>
+                <tr><td class="accent-cell">콘텐츠 파이프라인</td><td>내부 워크플로우</td><td>기획→AI초안→발행→성과</td><td>Demo 4</td></tr>
+                <tr><td class="accent-cell">글로벌 현황</td><td>아마존/해외몰</td><td>현지화 진행률 + 해외 매출</td><td>Demo 5</td></tr>
+                <tr><td class="accent-cell">라벨링 현황</td><td>수출 현황</td><td>국가별 규제 대응 진행률</td><td>Demo 6</td></tr>
+                <tr><td class="accent-cell">반품 분석</td><td>CS/물류</td><td>반품률 추이 + 사유 패턴</td><td>Demo 7</td></tr>
+            </tbody>
+        </table>
+        <div class="reveal reveal-delay-3" style="margin-top: var(--element-gap);">
+            <a class="cta-link" href="/partner/lecture-podl-ai/demo/dashboard" target="_blank">대시보드 미리보기 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 25 — MCP란?
+     ======================================== -->
+<div class="slide" id="slide-25">
+    <div class="red-dot"></div>
+    <span class="section-big-number">05</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 05 — MCP(Model Context Protocol)</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">MCP = AI를 외부 도구에 꽂는 USB 포트</h2>
+        <div class="compare-grid reveal reveal-delay-2">
+            <div class="swiss-card">
+                <h3>MCP란?</h3>
+                <p>외부 도구/데이터와 AI를 연결하는 표준 프로토콜.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">쿠팡 / 인스타 / Gmail 등의 API를 MCP로 연결하면, Claude가 데이터를 자동 수집/분석합니다.</p>
+            </div>
+            <div class="swiss-card">
+                <h3>왜 중요한가?</h3>
+                <p>Part 1에서 말한 <strong>3번 하네스</strong> 단계가 바로 이것.</p>
+                <p style="margin-top: clamp(0.3rem, 0.5vw, 0.5rem);">7개 데모가 각각의 솔루션이 아니라, <strong>하나의 대시보드</strong>로 통합되는 비전.</p>
+            </div>
+        </div>
+        <div class="flow-steps reveal reveal-delay-3" style="margin-top: var(--content-gap);">
+            <div class="flow-step">쿠팡 API</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step active">MCP</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">Claude</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">대시보드</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 26 — codemon.ai 지원
+     ======================================== -->
+<div class="slide" id="slide-26">
+    <div class="red-dot"></div>
+    <span class="section-big-number">06</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 06 — 팀별 로드맵 + Q&A</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">codemon.ai가 지원합니다</h2>
+        <div class="three-grid reveal reveal-delay-2">
+            <div class="swiss-card">
+                <h3>1주차: Quick Win</h3>
+                <p>Claude로 가장 반복적인 업무 1개 대체<br>프롬프트 템플릿 3개 팀 공유<br>브랜드 가이드 파일 → 컨텍스트 활용 시작</p>
+            </div>
+            <div class="swiss-card">
+                <h3>2~4주차: 팀 확산</h3>
+                <p>직무별 베스트 프랙티스 공유 세션<br>프롬프트 라이브러리 구축<br>AI 결과물 품질 체크리스트</p>
+            </div>
+            <div class="swiss-card">
+                <h3>1~3개월: 자동화</h3>
+                <p>커스텀 MCP 개발<br>포들 AI 대시보드 v1 구축<br>AI 활용 KPI 측정</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 27 — 팀별 로드맵
+     ======================================== -->
+<div class="slide" id="slide-27">
+    <div class="red-dot"></div>
+    <span class="section-big-number">06</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 06 — 팀별 AI 적용 로드맵</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">7개 팀, 3단계 로드맵</h2>
+        <table class="swiss-table roadmap-table reveal reveal-delay-2">
+            <thead>
+                <tr>
+                    <th>팀</th>
+                    <th>1주차 (Quick Win)</th>
+                    <th>1개월 (정착)</th>
+                    <th>3개월 (자동화)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="accent-cell">마케팅</td><td>시딩 이메일 Claude 작성</td><td>인플루언서 DB + 프롬프트 라이브러리</td><td>Gmail 자동 발송 + 트래킹</td></tr>
+                <tr><td class="accent-cell">콘텐츠</td><td>상세페이지 AI 초안</td><td>4종 동시 생성 루틴화</td><td>AI→편집→발행 파이프라인</td></tr>
+                <tr><td class="accent-cell">디자인</td><td>Stitch 라벨 시안</td><td>DESIGN.md 정비</td><td>국가별 라벨 자동 생성</td></tr>
+                <tr><td class="accent-cell">MD</td><td>매출 리포트 Claude 생성</td><td>일일 리포트 슬랙 자동화</td><td>쿠팡 API 연동 자동 수집</td></tr>
+                <tr><td class="accent-cell">미국팀</td><td>카피 Claude 현지화</td><td>5개국 현지화 루틴화</td><td>해외몰 데이터 연동</td></tr>
+                <tr><td class="accent-cell">물류</td><td>반품 사유 분석 활용</td><td>CS 응대 템플릿 라이브러리</td><td>반품률 자동 모니터링</td></tr>
+                <tr><td class="accent-cell">회계</td><td>매출 리포트 검증/활용</td><td>채널별 수수료 자동 분석</td><td>월결산 자동화 보조</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 28 — 공통 액션
+     ======================================== -->
+<div class="slide" id="slide-28">
+    <div class="red-dot"></div>
+    <span class="section-big-number">06</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 06 — 공통 액션 아이템</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">내일부터 시작하세요</h2>
+        <div class="three-grid reveal reveal-delay-2">
+            <div>
+                <h3 style="font-size: clamp(0.75rem, 1.2vw, 1rem); color: var(--accent); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">1주차: Quick Win</h3>
+                <ul class="swiss-list">
+                    <li>Claude로 <strong>가장 반복적인 업무 1개</strong> 대체</li>
+                    <li>프롬프트 템플릿 3개 만들어 팀 공유</li>
+                    <li>브랜드 가이드 파일 → <strong>컨텍스트</strong>로 활용</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="font-size: clamp(0.75rem, 1.2vw, 1rem); color: var(--accent); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">2~4주차: 팀 확산</h3>
+                <ul class="swiss-list">
+                    <li>직무별 AI 베스트 프랙티스 공유 세션</li>
+                    <li>프롬프트 라이브러리 구축 (노션/구글드라이브)</li>
+                    <li>AI 결과물 <strong>품질 체크리스트</strong> 만들기</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="font-size: clamp(0.75rem, 1.2vw, 1rem); color: var(--accent); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">1~3개월: 자동화</h3>
+                <ul class="swiss-list">
+                    <li>커스텀 MCP 개발</li>
+                    <li>포들 AI 대시보드 v1 구축</li>
+                    <li>AI 활용 <strong>KPI 측정</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 29 — 추천 도구
+     ======================================== -->
+<div class="slide" id="slide-29">
+    <div class="red-dot"></div>
+    <span class="section-big-number">06</span>
+    <div class="slide-content">
+        <div class="section-number reveal">PART 06 — 추천 도구</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">이 도구들부터 시작하세요</h2>
+        <table class="swiss-table compact-table reveal reveal-delay-2">
+            <thead><tr><th>용도</th><th>도구</th><th>활용 시나리오</th></tr></thead>
+            <tbody>
+                <tr><td class="accent-cell">콘텐츠 생성</td><td>Claude / ChatGPT</td><td>카피, 상세페이지, SNS, 시딩 이메일</td></tr>
+                <tr><td class="accent-cell">디자인</td><td>Stitch / Canva AI</td><td>라벨, SNS 크리에이티브, 배너</td></tr>
+                <tr><td class="accent-cell">이미지 생성</td><td>Midjourney / DALL-E</td><td>제품 배경, SNS 비주얼</td></tr>
+                <tr><td class="accent-cell">번역/현지화</td><td>Claude / DeepL</td><td>글로벌 마케팅 카피, 제품 설명</td></tr>
+                <tr><td class="accent-cell">데이터 분석</td><td>Claude + Sheets</td><td>매출, 소재 성과, 반품 분석</td></tr>
+                <tr><td class="accent-cell">업무 자동화</td><td>Make / Zapier</td><td>채널 연동, 슬랙 알림, 이메일 발송</td></tr>
+                <tr><td class="accent-cell">AI 연동 개발</td><td>커스텀 MCP</td><td>쿠팡/인스타/Gmail API 연동</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 30 — Q&A
+     ======================================== -->
+<div class="slide" id="slide-30">
+    <div class="red-dot"></div>
+    <span class="section-big-number">06</span>
+    <div class="slide-content centered-content">
+        <div class="section-number reveal">PART 06 — Q&A</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">Q & A</h2>
+        <div class="reveal reveal-delay-2" style="max-width: min(80vw, 600px);">
+            <div class="card-list">
+                <div class="card-list-item">
+                    <div class="card-list-num">Q1</div>
+                    <div class="card-list-text">오늘 본 데모 중 <strong>가장 먼저 적용하고 싶은 것</strong>은?</div>
+                </div>
+                <div class="card-list-item">
+                    <div class="card-list-num">Q2</div>
+                    <div class="card-list-text">내 직무에서 AI로 해결하고 싶은 <strong>구체적인 문제</strong>는?</div>
+                </div>
+                <div class="card-list-item">
+                    <div class="card-list-num">Q3</div>
+                    <div class="card-list-text">AI 도입에서 <strong>가장 걱정되는 부분</strong>은?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 31 — 핵심 요약
+     ======================================== -->
+<div class="slide" id="slide-31">
+    <div class="red-dot"></div>
+    <div class="slide-content centered-content">
+        <div class="accent-line reveal"></div>
+        <div class="big-highlight reveal reveal-delay-1">
+            AI를 잘 쓰는 <span class="accent">17명</span>이<br>
+            AI를 모르는 <span class="accent">170명</span>을 이긴다
+        </div>
+        <div style="margin-top: var(--content-gap); max-width: min(80vw, 600px);" class="reveal reveal-delay-2">
+            <div class="swiss-quote">
+                "똑같은 AI, 똑같은 프롬프트인데 결과가 완전히 다릅니다.<br>차이는 오직 <strong>컨텍스트</strong>."
+            </div>
+        </div>
+        <div class="flow-steps reveal reveal-delay-3" style="margin-top: var(--content-gap);">
+            <div class="flow-step">프롬프트</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step active">컨텍스트가 전부</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">하네스</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 32 — 강사 소개
+     ======================================== -->
+<div class="slide" id="slide-32">
+    <div class="red-dot"></div>
+    <div class="slide-content">
+        <div class="section-number reveal">SPEAKER</div>
+        <h2 class="reveal reveal-delay-1" style="margin-bottom: var(--content-gap);">코드몬 — AI/AX Engineer</h2>
+        <div class="compare-grid reveal reveal-delay-2">
+            <div>
+                <p style="margin-bottom: var(--element-gap);">대기업에서 10년, 스타트업에서 10년.</p>
+                <p style="margin-bottom: var(--element-gap);">삼성전자 종합기술원/생산기술연구소, SK텔레콤을 거쳐<br>지금은 AI 에이전트 팀과 함께 매일 서비스를 만들고 자동화합니다.</p>
+                <div class="swiss-quote" style="margin-top: var(--element-gap);">
+                    "만들고, 자동화하고, 공유합니다."
+                </div>
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: column; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <div class="stat-block">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">경력 (년)</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">런칭한 서비스</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">자동화한 업무</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="reveal reveal-delay-3" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="https://codemon.ai" target="_blank">codemon.ai →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ========================================
+     SLIDE 33 — 감사합니다
+     ======================================== -->
+<div class="slide" id="slide-33">
+    <div class="red-dot"></div>
+    <div class="slide-content centered-content">
+        <div class="accent-line reveal"></div>
+        <h1 class="title-main reveal reveal-delay-1">감사합니다</h1>
+        <p class="title-sub reveal reveal-delay-2">AI로 일하는 방법 — 포들 실무 중심 AX 가이드</p>
+        <div class="reveal reveal-delay-3" style="display: flex; gap: clamp(1rem, 3vw, 3rem); flex-wrap: wrap; justify-content: center;">
+            <div class="stat-block">
+                <div class="stat-number">7</div>
+                <div class="stat-label">라이브 데모</div>
+            </div>
+            <div class="stat-block">
+                <div class="stat-number">1</div>
+                <div class="stat-label">핸즈온</div>
+            </div>
+            <div class="stat-block">
+                <div class="stat-number">7</div>
+                <div class="stat-label">팀별 로드맵</div>
+            </div>
+        </div>
+        <div class="reveal reveal-delay-4" style="margin-top: var(--content-gap);">
+            <a class="cta-link" href="https://codemon.ai" target="_blank">codemon.ai</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===========================================
+     JAVASCRIPT: SlidePresentation Engine
+     =========================================== -->
+<script>
+(function() {
+    'use strict';
+
+    // ==========================================
+    // SlidePresentation Class
+    // ==========================================
+    class SlidePresentation {
+        constructor() {
+            this.slides = document.querySelectorAll('.slide');
+            this.totalSlides = this.slides.length;
+            this.currentSlide = 0;
+            this.isScrolling = false;
+            this.scrollTimeout = null;
+            this.editMode = false;
+
+            this.init();
+        }
+
+        init() {
+            this.buildNavDots();
+            this.setupIntersectionObserver();
+            this.setupKeyboardNav();
+            this.setupTouchNav();
+            this.setupScrollNav();
+            this.setupEditMode();
+            this.updateProgress(0);
+            this.updateCounter(0);
+
+            // Check URL hash for initial slide
+            const hash = window.location.hash;
+            if (hash) {
+                const slideNum = parseInt(hash.replace('#slide-', ''));
+                if (slideNum >= 1 && slideNum <= this.totalSlides) {
+                    setTimeout(() => this.goToSlide(slideNum - 1), 100);
+                }
+            }
+        }
+
+        // Nav dots
+        buildNavDots() {
+            const container = document.getElementById('navDots');
+            for (let i = 0; i < this.totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', `Slide ${i + 1}`);
+                dot.addEventListener('click', () => this.goToSlide(i));
+                container.appendChild(dot);
+            }
+        }
+
+        // IntersectionObserver for reveal animations and active slide tracking
+        setupIntersectionObserver() {
+            // Reveal observer
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const reveals = entry.target.querySelectorAll('.reveal');
+                        reveals.forEach(el => el.classList.add('visible'));
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            // Slide tracking observer
+            const slideObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const slideIndex = Array.from(this.slides).indexOf(entry.target);
+                        if (slideIndex !== -1) {
+                            this.currentSlide = slideIndex;
+                            this.updateNavDots(slideIndex);
+                            this.updateProgress(slideIndex);
+                            this.updateCounter(slideIndex);
+                            window.history.replaceState(null, '', `#slide-${slideIndex + 1}`);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            this.slides.forEach(slide => {
+                revealObserver.observe(slide);
+                slideObserver.observe(slide);
+            });
+        }
+
+        // Keyboard navigation
+        setupKeyboardNav() {
+            document.addEventListener('keydown', (e) => {
+                if (this.editMode && e.key !== 'e' && e.key !== 'E') return;
+
+                switch(e.key) {
+                    case 'ArrowDown':
+                    case 'ArrowRight':
+                    case ' ':
+                    case 'PageDown':
+                        e.preventDefault();
+                        this.nextSlide();
+                        break;
+                    case 'ArrowUp':
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        e.preventDefault();
+                        this.prevSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToSlide(this.totalSlides - 1);
+                        break;
+                    case 'e':
+                    case 'E':
+                        e.preventDefault();
+                        this.toggleEditMode();
+                        break;
+                }
+            });
+        }
+
+        // Touch navigation
+        setupTouchNav() {
+            let touchStartY = 0;
+            let touchStartX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+                touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                if (this.editMode) return;
+
+                const touchEndY = e.changedTouches[0].clientY;
+                const touchEndX = e.changedTouches[0].clientX;
+                const diffY = touchStartY - touchEndY;
+                const diffX = touchStartX - touchEndX;
+
+                // Only respond to vertical swipes
+                if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50) {
+                    if (diffY > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.prevSlide();
+                    }
+                }
+            }, { passive: true });
+        }
+
+        // Scroll navigation (debounced)
+        setupScrollNav() {
+            document.addEventListener('wheel', (e) => {
+                if (this.editMode) return;
+                if (this.isScrolling) return;
+
+                this.isScrolling = true;
+
+                if (e.deltaY > 30) {
+                    this.nextSlide();
+                } else if (e.deltaY < -30) {
+                    this.prevSlide();
+                }
+
+                clearTimeout(this.scrollTimeout);
+                this.scrollTimeout = setTimeout(() => {
+                    this.isScrolling = false;
+                }, 800);
+            }, { passive: true });
+        }
+
+        // Edit mode
+        setupEditMode() {
+            // No additional setup needed; toggled by E key
+        }
+
+        toggleEditMode() {
+            this.editMode = !this.editMode;
+            document.body.classList.toggle('edit-mode', this.editMode);
+
+            const editableElements = document.querySelectorAll('.slide h1, .slide h2, .slide h3, .slide p, .slide li, .slide td, .slide .big-highlight, .slide .swiss-quote');
+            editableElements.forEach(el => {
+                el.contentEditable = this.editMode ? 'true' : 'false';
+            });
+        }
+
+        // Navigation
+        nextSlide() {
+            if (this.currentSlide < this.totalSlides - 1) {
+                this.goToSlide(this.currentSlide + 1);
+            }
+        }
+
+        prevSlide() {
+            if (this.currentSlide > 0) {
+                this.goToSlide(this.currentSlide - 1);
+            }
+        }
+
+        goToSlide(index) {
+            if (index < 0 || index >= this.totalSlides) return;
+            this.currentSlide = index;
+            this.slides[index].scrollIntoView({ behavior: 'smooth' });
+            this.updateNavDots(index);
+            this.updateProgress(index);
+            this.updateCounter(index);
+        }
+
+        // UI updates
+        updateNavDots(index) {
+            const dots = document.querySelectorAll('.nav-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        updateProgress(index) {
+            const progress = ((index + 1) / this.totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        updateCounter(index) {
+            const current = String(index + 1).padStart(2, '0');
+            const total = String(this.totalSlides).padStart(2, '0');
+            document.getElementById('slideCounter').textContent = `${current} / ${total}`;
+        }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+    } else {
+        new SlidePresentation();
+    }
+})();
+</script>
+
+</body>
+</html>

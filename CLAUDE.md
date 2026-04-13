@@ -85,18 +85,21 @@ tags: [태그1, 태그2]
 
 ## 진행중 작업 (TODO)
 
-**데모 페이지 개선 (lecture-podl-ai):**
+**데모 페이지 (lecture-podl-ai) — 7개 완료:**
 - [x] Demo 1 시딩 — 인플루언서별 병렬 생성 + 톤 드롭다운 + 마크다운 뷰어 새창
 - [x] Demo 2 리포트 — 1000건 데이터 + SVG 차트 5개 + 리포트 새창
-- [ ] Demo 3 소재 트래킹 — 시딩/리포트처럼 개선 필요
-- [ ] Demo 4 콘텐츠 생성 — 시딩/리포트처럼 개선 필요
-- [ ] Demo 5 글로벌 현지화 — 시딩/리포트처럼 개선 필요
+- [x] Demo 3 소재 트래킹 — KPI + 필터 + 정렬 테이블 + 차트 뷰어
+- [x] Demo 4 콘텐츠 생성 — 제품 카드 + 4유형 병렬 스트리밍 + 탭 뷰어
+- [x] Demo 5 글로벌 현지화 — 5마켓 토글 + 병렬 현지화 + 비교 뷰어
+- [x] Demo 6 패키지 라벨링 — 4개국 규제 + 병렬 스트리밍 + 국가별 비교 뷰어
+- [x] Demo 7 반품 분석 — 200건 반품 + 필터 + 사유 패턴 분석 + CS 메시지
+- [x] 전 데모 📖 설명 팝업 버튼 (비개발자 대상 다이어그램)
 
-**MCP + Claude Desktop 연동:**
+**MCP 연동:**
 - [x] 로컬 MCP 서버 기본 구축 (mcp-demo-server/, 도구 6개)
+- [x] Google Stitch 2.0 MCP 연동 (.mcp.json, API key, 라벨 디자인 7스크린 생성)
 - [ ] MCP 고수준 워크플로우 도구 추가 (generate_seeding_email, generate_daily_report 등)
 - [ ] Claude Desktop Project Instructions 템플릿 작성
-- [ ] 모든 데모를 웹 + Claude Desktop 커스텀 MCP 양쪽에서 시연 가능하도록 통합 계획 수립
 
 **기타:**
 - [ ] 강의 슬라이드 HTML 생성 (partner-slide 스킬)

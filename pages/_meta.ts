@@ -57,7 +57,10 @@ export default {
   },
   partner: {
     type: 'folder',
-    display: 'hidden'
+    display: 'hidden',
+    theme: {
+      sidebar: false,
+    }
   },
   admin: {
     type: 'folder',
