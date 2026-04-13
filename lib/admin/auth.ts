@@ -43,14 +43,14 @@ export function verifySessionToken(token: string): boolean {
 export function setSessionCookie(res: NextApiResponse, token: string) {
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=${token}; HttpOnly; SameSite=Lax; Path=/admin; Max-Age=${7 * 24 * 60 * 60}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`
+    `${COOKIE_NAME}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${7 * 24 * 60 * 60}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`
   )
 }
 
 export function clearSessionCookie(res: NextApiResponse) {
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=; HttpOnly; SameSite=Lax; Path=/admin; Max-Age=0${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`
+    `${COOKIE_NAME}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`
   )
 }
 

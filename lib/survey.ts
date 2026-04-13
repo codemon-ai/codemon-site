@@ -1,6 +1,6 @@
 import { put } from '@vercel/blob'
 import crypto from 'crypto'
-import { createClient } from './supabase'
+import { createAdminClient } from './supabase'
 
 export interface SurveyResponse {
   id: string
@@ -23,7 +23,7 @@ export function isValidLectureId(id: string): boolean {
 
 async function saveSurveyToSupabase(data: SurveyResponse): Promise<boolean> {
   try {
-    const supabase = createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase.from('survey_responses').insert({
       lecture_id: data.lectureId,
       company_name: data.companyName,
@@ -52,19 +52,24 @@ export async function saveSurveyResponse(
     submittedAt: Date.now(),
   }
 
-  // Dual write: Supabase (fire and forget on failure)
-  await saveSurveyToSupabase(response)
+  // Dual write: Supabase first (primary)
+  const supabaseOk = await saveSurveyToSupabase(response)
 
-  await put(
-    `survey/responses/${data.lectureId}/${id}.json`,
-    JSON.stringify(response),
-    {
-      access: 'public',
-      contentType: 'application/json',
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    }
-  )
+  // Blob write (legacy, may fail locally without BLOB_READ_WRITE_TOKEN)
+  try {
+    await put(
+      `survey/responses/${data.lectureId}/${id}.json`,
+      JSON.stringify(response),
+      {
+        access: 'public',
+        contentType: 'application/json',
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      }
+    )
+  } catch {
+    if (!supabaseOk) throw new Error('Both Supabase and Blob writes failed')
+  }
 
   return response
 }
