@@ -11,6 +11,25 @@ const nextConfig = withNextra({
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/partner/survey/lecture-agency-ai',
+        destination: '/survey/lecture-agency-ai',
+        permanent: true,
+      },
+      {
+        source: '/partner/survey/lecture-startup-ai',
+        destination: '/survey/lecture-startup-ai',
+        permanent: true,
+      },
+      {
+        source: '/partner/survey/lecture-podl-ai',
+        destination: '/survey/lecture-podl-ai',
+        permanent: true,
+      },
+    ]
+  },
 })
 
 export default withSentryConfig(nextConfig, {
