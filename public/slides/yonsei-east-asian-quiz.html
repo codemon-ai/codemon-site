@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동아시아의 선사와 역사 - 모의시험</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #080810;
+    color: #e0e0e0;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Start Screen */
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  #startScreen {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+    animation: fadeIn 0.6s ease;
+  }
+  .title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+    color: #888;
+    margin-top: -8px;
+  }
+  .start-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  .checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #a855f7;
+    cursor: pointer;
+  }
+  .btn-start {
+    padding: 16px 48px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+  }
+  .btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+  }
+  .btn-resume {
+    padding: 12px 36px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: transparent;
+    color: #a855f7;
+    border: 2px solid #a855f7;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-resume:hover {
+    background: rgba(168, 85, 247, 0.1);
+  }
+
+  /* Quiz Screen */
+  #quizScreen { gap: 24px; }
+  .progress-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #1a1a2e;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #7c3aed);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .question-card {
+    background: #0f0f1a;
+    border: 1px solid #1a1a2e;
+    border-radius: 16px;
+    padding: 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: slideIn 0.4s ease;
+  }
+  .question-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .badge-type {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+  .badge-category {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+  .question-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.8;
+    color: #f0f0f0;
+  }
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .choice-btn {
+    padding: 16px 20px;
+    font-size: 1.05rem;
+    text-align: left;
+    background: #141428;
+    color: #d0d0d0;
+    border: 2px solid #1e1e3a;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    line-height: 1.5;
+  }
+  .choice-btn:hover:not(:disabled) {
+    border-color: #a855f7;
+    background: rgba(168, 85, 247, 0.08);
+  }
+  .choice-btn.selected {
+    border-color: #a855f7;
+    background: rgba(168, 85, 247, 0.15);
+  }
+  .choice-btn.correct {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+  }
+  .choice-btn.wrong {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+  .choice-btn:disabled { cursor: default; opacity: 0.85; }
+
+  .tf-choices {
+    display: flex;
+    gap: 16px;
+  }
+  .tf-btn {
+    flex: 1;
+    padding: 20px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    background: #141428;
+    color: #d0d0d0;
+    border: 2px solid #1e1e3a;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .tf-btn:hover:not(:disabled) {
+    border-color: #a855f7;
+    background: rgba(168, 85, 247, 0.08);
+  }
+  .tf-btn.correct {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+  }
+  .tf-btn.wrong {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+  .tf-btn:disabled { cursor: default; opacity: 0.85; }
+
+  .explanation {
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    line-height: 1.7;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .explanation.show { display: block; }
+  .explanation.correct-bg {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #86efac;
+  }
+  .explanation.wrong-bg {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+  .explanation strong { color: #f0f0f0; }
+
+  .btn-next {
+    align-self: flex-end;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+  }
+  .btn-next.show { display: block; }
+  .btn-next:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+  }
+
+  /* Result Screen */
+  #resultScreen {
+    gap: 32px;
+    animation: fadeIn 0.6s ease;
+  }
+  .result-header { text-align: center; }
+  .result-score {
+    font-size: 4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a855f7, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .result-percent {
+    font-size: 1.3rem;
+    color: #888;
+    margin-top: 8px;
+  }
+  .category-scores {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .cat-card {
+    background: #0f0f1a;
+    border: 1px solid #1a1a2e;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .cat-name {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .cat-score {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #a855f7;
+  }
+  .review-section { margin-top: 16px; }
+  .review-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin-bottom: 16px;
+  }
+  .review-item {
+    background: #0f0f1a;
+    border: 1px solid #1a1a2e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .review-q {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #f0f0f0;
+  }
+  .review-detail {
+    font-size: 0.95rem;
+    color: #aaa;
+    line-height: 1.7;
+  }
+  .review-detail .label { color: #888; }
+  .review-detail .my-answer { color: #ef4444; }
+  .review-detail .correct-answer { color: #22c55e; }
+  .btn-retry {
+    align-self: center;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 24px auto;
+    display: block;
+  }
+  .btn-retry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .container { padding: 12px; }
+    .title { font-size: 1.6rem; }
+    .question-card { padding: 20px; }
+    .question-text { font-size: 1.1rem; }
+    .tf-choices { gap: 10px; }
+    .tf-btn { padding: 16px; font-size: 1.1rem; }
+    .result-score { font-size: 3rem; }
+    .category-scores { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Start Screen -->
+  <div id="startScreen" class="screen active">
+    <h1 class="title">동아시아의 선사와 역사</h1>
+    <p class="subtitle">모의시험 | 100문제 | T/F 70문제 + 객관식 30문제</p>
+    <div class="start-options">
+      <label class="checkbox-label">
+        <input type="checkbox" id="shuffleCheck" checked>
+        문제 랜덤 셔플
+      </label>
+      <button class="btn-start" onclick="startQuiz()">시험 시작</button>
+      <button class="btn-resume" id="resumeBtn" style="display:none" onclick="resumeQuiz()">이어서 풀기</button>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quizScreen" class="screen">
+    <div class="progress-area">
+      <div class="progress-text">
+        <span id="progressLabel">문제 1/100</span>
+        <span id="scoreLabel">정답: 0</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:1%"></div>
+      </div>
+    </div>
+    <div class="question-card" id="questionCard">
+      <div class="question-meta" id="questionMeta"></div>
+      <div class="question-text" id="questionText"></div>
+      <div id="choicesArea"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">다음 문제</button>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="resultScreen" class="screen">
+    <div class="result-header">
+      <div class="result-score" id="finalScore"></div>
+      <div class="result-percent" id="finalPercent"></div>
+    </div>
+    <div class="category-scores" id="categoryScores"></div>
+    <div class="review-section" id="reviewSection"></div>
+    <button class="btn-retry" onclick="retryQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  // ===== T/F 문제 (70개) =====
+  // --- 교재 (1~14) ---
+  {id:1,type:'tf',category:'교재',question:"'중국'이라는 말은 기원전 10세기 무렵 「시경」에 처음 등장한다.",answer:true,explanation:"기원전 10세기부터 가요를 모은 시경(詩經)에 '중국'이라는 표현이 등장한다."},
+  {id:2,type:'tf',category:'교재',question:"중화인민공화국에는 한족만 거주한다.",answer:false,explanation:"56개 민족이 거주한다 (한족 92% + 55개 소수민족)."},
+  {id:3,type:'tf',category:'교재',question:"화이사상에서 이적이 중화의 예를 사용하면 중국으로 편입될 수 있다.",answer:true,explanation:"화이사상은 포용성을 가지고 있어, 이적이라도 중화의 예를 사용하면 중국으로 편입될 수 있다고 보았다."},
+  {id:4,type:'tf',category:'교재',question:"'중국사'라는 명칭은 고대부터 사용되었다.",answer:false,explanation:"량치차오가 1901년 「중국사서론」에서 본격적으로 사용하기 시작했다."},
+  {id:5,type:'tf',category:'교재',question:"상(商)나라는 갑골문을 통해 최초의 문자 기록을 남겼다.",answer:true,explanation:"상나라에서 거북 등껍질과 소 어깨뼈에 새긴 갑골문이 최초의 문자 기록이다."},
+  {id:6,type:'tf',category:'교재',question:"진시황은 봉건제를 전국에 시행했다.",answer:false,explanation:"진시황은 군현제를 전국에 시행했다 (36개 군, 후에 48군)."},
+  {id:7,type:'tf',category:'교재',question:"진시황은 '황제'라는 칭호를 최초로 사용했다.",answer:true,explanation:"진시황은 '왕'과 '제'를 합쳐 '황제(皇帝)'라는 칭호를 최초로 사용했다."},
+  {id:8,type:'tf',category:'교재',question:"한 고조 유방은 백등산 전투에서 흉노를 대파했다.",answer:false,explanation:"BC200년 백등산 전투에서 한 고조는 패배하여 포위당했고, 간신히 탈출하여 화친 약조를 맺었다."},
+  {id:9,type:'tf',category:'교재',question:"한 무제는 장건을 서역의 대월지국에 파견했다.",answer:true,explanation:"한 무제는 흉노 협공을 위해 장건을 대월지국에 파견했다 (장건착공)."},
+  {id:10,type:'tf',category:'교재',question:"왕망은 법가사상에 근거하여 개혁했다.",answer:false,explanation:"왕망은 유교 고전 「주례(周禮)」에 근거하여 개혁했다."},
+  {id:11,type:'tf',category:'교재',question:"5호(五胡)에는 돌궐(투르크)이 포함된다.",answer:false,explanation:"5호는 흉노, 선비, 갈, 저, 강이다. 돌궐(투르크)은 포함되지 않는다."},
+  {id:12,type:'tf',category:'교재',question:"북위 효문제는 선비어 사용을 금지하고 한어 사용을 강제했다.",answer:true,explanation:"효문제의 급진적 한화정책 중 하나로 선비어 사용을 금지하고 한어 사용을 강제했다."},
+  {id:13,type:'tf',category:'교재',question:"토단법(土斷法)은 북방민족을 추방하는 정책이다.",answer:false,explanation:"토단법은 이주민을 현지에 편입하는 호적 정리 정책이다."},
+  {id:14,type:'tf',category:'교재',question:"고구려는 313년 낙랑군과 대방군을 축출했다.",answer:true,explanation:"고구려는 313년 중국의 낙랑군과 대방군을 한반도에서 축출했다."},
+
+  // --- 1강: 선사시대와 유목문명 (15~28) ---
+  {id:15,type:'tf',category:'1강',question:"초원로드는 실크로드 이후에 만들어진 교역로이다.",answer:false,explanation:"초원로드가 실크로드보다 훨씬 먼저 존재했다. 실크로드는 흉노가 초원길을 장악한 이후 우회하기 위해 개척된 인공적 교역로이다."},
+  {id:16,type:'tf',category:'1강',question:"유목민의 오축은 양, 산양(염소), 소, 말, 낙타이다.",answer:true,explanation:"유목경제의 다섯 가지 가축인 오축(五畜)은 양, 산양(염소), 소, 말, 낙타이다."},
+  {id:17,type:'tf',category:'1강',question:"금속제 등자는 BC 7세기 스키타이 시대에 처음 사용되었다.",answer:false,explanation:"금속제 등자는 3~4세기 고구려와 선비족에 의해 사용되었다. BC 7세기 스키타이 시대에 등장한 것은 안장이다."},
+  {id:18,type:'tf',category:'1강',question:"스키타이는 역사상 최초로 이름이 알려진 유목민이다.",answer:true,explanation:"스키타이는 인도-이란계 유목민으로 역사상 최초로 이름이 알려진 유목민이다."},
+  {id:19,type:'tf',category:'1강',question:"스키타이는 투르크계 유목민이다.",answer:false,explanation:"스키타이는 인도-이란계 유목민이다. 투르크계가 아니다."},
+  {id:20,type:'tf',category:'1강',question:"BC 514년 페르시아 다리우스 대왕은 스키타이를 정복했다.",answer:false,explanation:"다리우스 대왕의 70만 대군이 오히려 스키타이에게 제압당했다."},
+  {id:21,type:'tf',category:'1강',question:"안드로노보 문화는 서부 시베리아에서 발생했으며 야금술이 발달했다.",answer:true,explanation:"안드로노보 문화(BC 20~23세기)는 서부 시베리아의 문화로, 야금술 발달과 밀/보리 재배가 특징이다."},
+  {id:22,type:'tf',category:'1강',question:"유목민에게 이동과 교류는 선택 사항이었다.",answer:false,explanation:"유목경제만으로는 탄수화물(곡물)을 자급할 수 없어 농경민과의 교역이 필수였으므로, 이동과 교류는 필수였다."},
+  {id:23,type:'tf',category:'1강',question:"신라 적석목곽분은 알타이 파지리크의 쿠르간과 구조적 유사성이 있다.",answer:true,explanation:"신라의 적석목곽분은 알타이 파지리크 쿠르간과 구조적 유사성이 있어 초원 문화와의 연결이 주목된다."},
+  {id:24,type:'tf',category:'1강',question:"전차의 전쟁무기화는 BC 1000년경에 시작되었다.",answer:false,explanation:"전차의 전쟁무기화는 BC 2000년경에 시작되었다."},
+  {id:25,type:'tf',category:'1강',question:"인도유럽어족의 원주지는 메소포타미아 지역이다.",answer:false,explanation:"인도유럽어족의 원주지는 유라시아 북방 삼림/초원지대이다."},
+  {id:26,type:'tf',category:'1강',question:"바퀴살(spoke)의 발명은 전차 경량화의 핵심 기술이었다.",answer:true,explanation:"바퀴살의 발명은 전차를 가볍게 만들어 전쟁무기로서의 기동성을 확보하는 핵심 기술이었다."},
+  {id:27,type:'tf',category:'1강',question:"4대 문명과 동시대에 유라시아 초원에서 목축이 시작되어 이를 '제5의 문명'이라 부른다.",answer:true,explanation:"온대기후 지역에서 4대 문명이 시작될 무렵 유라시아 초원에서도 목축이 시작되어 '제5의 문명'으로 불린다."},
+  {id:28,type:'tf',category:'1강',question:"초원문명의 시간순 흐름은 스키타이 → 전차 문화 → 흉노 → 몽골이다.",answer:false,explanation:"올바른 순서는 전차 문화(BC 2000) → 스키타이(BC 8세기) → 흉노(BC 4세기) → 투르크(돌궐) → 키르기스 → 몽골이다."},
+
+  // --- 흉노와 중국 (29~42) ---
+  {id:29,type:'tf',category:'흉노와 중국',question:"중화사상에서 동쪽 이민족을 '서융'이라 불렀다.",answer:false,explanation:"동쪽 이민족은 '동이(東夷)'이다. '서융(西戎)'은 서쪽 이민족을 가리킨다."},
+  {id:30,type:'tf',category:'흉노와 중국',question:"상나라의 전차는 안드로노보 문화 계통에서 유래했다.",answer:true,explanation:"상나라에서 사용된 전차는 서부 시베리아의 안드로노보 문화 계통에서 유래했다."},
+  {id:31,type:'tf',category:'흉노와 중국',question:"만리장성은 진시황이 처음부터 새로 건설한 것이다.",answer:false,explanation:"전국시대에 각국이 개별적으로 축조한 장성을 통일 후 연결한 것이다."},
+  {id:32,type:'tf',category:'흉노와 중국',question:"BC 198년 화친 조약에서 한과 흉노는 군신(君臣) 관계로 규정되었다.",answer:false,explanation:"화친 조약에서 한과 흉노는 형제관계(대등한 관계)로 규정되었다."},
+  {id:33,type:'tf',category:'흉노와 중국',question:"중국은 진시황 시대부터 스스로를 '제국'이라 불렀다.",answer:false,explanation:"진시황부터 청나라까지 스스로를 제국이라 부르지 않았다. '제국'은 근대 서양 개념의 소급 적용이다."},
+  {id:34,type:'tf',category:'흉노와 중국',question:"한무제는 BC 141년에 즉위하여 유교를 국교로 삼았다.",answer:true,explanation:"한무제(BC 141~BC 87)는 유교를 국교화하고 중화사상을 강화했다."},
+  {id:35,type:'tf',category:'흉노와 중국',question:"월지는 원래 감숙성 서부에 거주했으나, 흉노의 공격으로 서쪽으로 이동했다.",answer:true,explanation:"월지는 감숙성 서부에 거주했다가 흉노의 공격으로 일리강 유역 → 아무다리야 유역으로 이동했다."},
+  {id:36,type:'tf',category:'흉노와 중국',question:"윤대(輪臺)의 조칙은 한무제가 흉노와의 전쟁을 확대하겠다는 선언이다.",answer:false,explanation:"BC 89년 윤대의 조칙은 전쟁 종결을 선언한 것이다."},
+  {id:37,type:'tf',category:'흉노와 중국',question:"사기(史記)는 정사(正史)의 시초이며 기전체(紀傳體)로 서술되었다.",answer:true,explanation:"사마천의 사기는 정사의 시초이자 기전체 역사서술을 창안한 기념비적 저작이다."},
+  {id:38,type:'tf',category:'흉노와 중국',question:"사마천에 따르면 흉노는 '늙고 약한 자를 귀히 여기고 젊고 건강한 자를 천시'한다.",answer:false,explanation:"정반대이다. '貴壯健 賤老弱' — 젊고 건강한 자를 귀히 여기고 늙고 약한 자를 천시한다."},
+  {id:39,type:'tf',category:'흉노와 중국',question:"명(明) 제국 시기의 조공/책봉은 한-흉노 시기와 동일한 수준의 형식적 관계였다.",answer:false,explanation:"한-흉노 관계에서는 최소한의 형식만 유지했으나, 명 제국은 강력한 영향력을 행사하는 형태였다."},
+  {id:40,type:'tf',category:'흉노와 중국',question:"사마천은 이릉(李陵)을 변호하다가 궁형을 받았다.",answer:true,explanation:"BC 99년 이릉이 흉노에게 패배하여 포로가 되자, 사마천이 이릉을 변호했다가 한무제의 노여움을 사 궁형을 받았다."},
+  {id:41,type:'tf',category:'흉노와 중국',question:"하서사군(河西四郡)은 주천, 무위, 돈황, 장액이다.",answer:true,explanation:"한무제가 하서회랑(감숙성 서부)에 설치한 4군은 주천(酒泉), 무위(武威), 돈황(敦煌), 장액(張掖)이다."},
+  {id:42,type:'tf',category:'흉노와 중국',question:"흉노는 BC 318년 전국시대 기록에 처음 등장한다.",answer:true,explanation:"흉노는 BC 318년 전국시대의 문헌 기록에 처음 등장한다. 이전에는 훈죽/훈육/험윤 등으로 불렸다."},
+
+  // --- 보충자료 (43~48) ---
+  {id:43,type:'tf',category:'보충자료',question:"기마유목민의 분류에서 인종과 집단(민족)은 항상 일치한다.",answer:false,explanation:"인종과 집단은 반드시 일치하지 않는다. 이는 언어/문화적 분류이지 생물학적 인종 분류와 동일하지 않다."},
+  {id:44,type:'tf',category:'보충자료',question:"은주(殷周)혁명에서 동쪽 변경의 부족 주(周)가 은(殷)을 정복했다.",answer:false,explanation:"서쪽 변경의 부족 주(周)가 은(殷)을 정복했다."},
+  {id:45,type:'tf',category:'보충자료',question:"진(秦)도 주(周)와 마찬가지로 서쪽 변경에서 출발하여 천하를 통일했다.",answer:true,explanation:"주와 진 모두 서쪽 변경 세력이 중원을 정복한 패턴으로, '중국의 패권은 서쪽에서 탄생한다'는 역사적 패턴이 확인된다."},
+  {id:46,type:'tf',category:'보충자료',question:"상나라와 은나라는 서로 다른 왕조이다.",answer:false,explanation:"상나라와 은나라는 같은 왕조의 다른 명칭이다. 상나라 = 은나라."},
+  {id:47,type:'tf',category:'보충자료',question:"무왕이 은을 정벌할 때 동원한 전차는 300승이었다.",answer:true,explanation:"사기 주본기에 따르면 무왕은 전차 300승, 용사 3,000명, 갑사 45,000명으로 주왕을 정벌했다."},
+  {id:48,type:'tf',category:'보충자료',question:"흉노는 이란계 기마유목민이다.",answer:false,explanation:"흉노는 몽골계로 분류된다. 이란계에 해당하는 것은 스키타이/사카이다."},
+
+  // --- 유물과 기록 (49~58) ---
+  {id:49,type:'tf',category:'유물과 기록',question:"헤로도토스의 Historia는 그리스어로 '탐구하다/조사하다'라는 의미이다.",answer:true,explanation:"Historia는 그리스어로 '탐구하다/조사하다'라는 뜻이며, Story와 같은 어원에서 유래했다."},
+  {id:50,type:'tf',category:'유물과 기록',question:"중항열(中行說)은 전한 전기의 장군 출신이다.",answer:false,explanation:"중항열은 전한 전기의 환관 출신이다. 연(燕)나라 출신으로, 한나라 문제에 의해 흉노에 강제 파견되었다."},
+  {id:51,type:'tf',category:'유물과 기록',question:"얼리터우(二里頭) 유적은 하(夏)나라의 수도로 추정된다.",answer:true,explanation:"얼리터우는 BC 1900~1700년경의 유적으로, 유라시아 동쪽에서 가장 오래된 도시/국가 유적이며 하나라의 수도로 추정된다."},
+  {id:52,type:'tf',category:'유물과 기록',question:"삼성퇴(三星堆)는 황하 상류에 위치한 도시국가이다.",answer:false,explanation:"삼성퇴는 장강(長江) 상류에 위치한다. BC 1200년경의 부유한 도시국가로, 황하 문명과 별개의 독자적 문명이다."},
+  {id:53,type:'tf',category:'유물과 기록',question:"옥종(琮)은 원형으로 하늘을 상징한다.",answer:false,explanation:"옥종(琮)은 사각형으로 땅을 상징한다. 원형으로 하늘을 상징하는 것은 옥벽(璧)이다."},
+  {id:54,type:'tf',category:'유물과 기록',question:"천원지방(天圓地方)은 '하늘은 둥글고 땅은 네모나다'라는 뜻이다.",answer:true,explanation:"옥벽(璧)=원형=하늘, 옥종(琮)=사각형=땅으로 천원지방 사상을 반영한다."},
+  {id:55,type:'tf',category:'유물과 기록',question:"주지육림(酒池肉林)은 하(夏)나라 마지막 왕 걸(桀)의 사치를 묘사한 것이다.",answer:false,explanation:"주지육림은 은(殷)나라 마지막 왕 주왕(紂王)의 사치를 묘사한 것이다. 사기 은본기에 기록되어 있다."},
+  {id:56,type:'tf',category:'유물과 기록',question:"장광즈(張光直)에 따르면 고대 중국의 왕은 선사시대 샤먼에 기원한다.",answer:true,explanation:"장광즈는 고대 중국의 왕이 선사시대 샤먼에서 기원했다는 이론을 제시했다."},
+  {id:57,type:'tf',category:'유물과 기록',question:"한나라의 금실 옥의(玉衣)는 옥이 시신 부패를 방지하고 영혼을 보호한다는 믿음에서 비롯되었다.",answer:true,explanation:"한나라에서는 옥이 시신의 부패를 방지하고 영혼을 보호한다고 믿어 금실 옥의를 장례에 사용했다."},
+  {id:58,type:'tf',category:'유물과 기록',question:"중항열은 자발적으로 흉노에 가서 활동했다.",answer:false,explanation:"중항열은 한나라 문제(文帝)에 의해 흉노에 강제 파견되었으며, '반드시 한나라에 재앙을 일으키겠다'고 원한을 맹세했다."},
+
+  // --- 테크노史記 (59~66) ---
+  {id:59,type:'tf',category:'테크노史記',question:"삼국사기는 720년에 편찬되었다.",answer:false,explanation:"삼국사기(三國史記)는 1145년에 편찬되었다. 720년에 편찬된 것은 일본서기(日本書紀)이다."},
+  {id:60,type:'tf',category:'테크노史記',question:"'歷史'라는 단어는 근대 일본에서 만들어진 번역어이다.",answer:true,explanation:"'歷史(역사)'라는 단어는 근대 일본에서 만들어진 번역어이다."},
+  {id:61,type:'tf',category:'테크노史記',question:"사기의 세가(世家)는 70권이다.",answer:false,explanation:"세가는 30권이다. 70권인 것은 열전(列傳)이다."},
+  {id:62,type:'tf',category:'테크노史記',question:"항우는 제왕이 아니었으나 사마천이 본기에 배치했다.",answer:true,explanation:"항우는 제왕이 아니었으나, 사마천은 실질적 권력자로서의 역사적 위상을 인정하여 본기에 배치했다."},
+  {id:63,type:'tf',category:'테크노史記',question:"한신은 세가에 배치되었다.",answer:false,explanation:"한신은 열전(회음후열전)에 배치되었다. 소하와 장량은 세가에 배치되었다."},
+  {id:64,type:'tf',category:'테크노史記',question:"도척(盜跖)은 선행을 베풀다 젊어서 죽었다.",answer:false,explanation:"도척은 악인인데 천수(天壽)를 누렸다. 사마천이 천도의 공정함에 의문을 제기하는 사례이다."},
+  {id:65,type:'tf',category:'테크노史記',question:"왓슨은 '헤로도토스가 그리스에 미친 영향력을 사마천은 동아시아에 미쳤다'고 평가했다.",answer:true,explanation:"왓슨(Watson)은 사마천의 동아시아에 대한 영향력을 헤로도토스의 그리스에 대한 영향력에 비견했다."},
+  {id:66,type:'tf',category:'테크노史記',question:"태사령은 황제의 군사 고문관이었다.",answer:false,explanation:"태사령(太史令)은 사관(史官)이었다. 사마천의 부친 사마담이 태사령을 역임했다."},
+
+  // --- 삼국지이야기 (67~70) ---
+  {id:67,type:'tf',category:'삼국지이야기',question:"칠종칠금(七縱七擒)은 정사(正史)에 상세히 기록되어 있다.",answer:false,explanation:"칠종칠금은 정사에는 기록되지 않으며, 삼국지연의(소설)에서 유명해진 이야기이다."},
+  {id:68,type:'tf',category:'삼국지이야기',question:"이족 민간전승에서 맹획은 제갈량에게 일곱 번 사로잡힌 것으로 전해진다.",answer:false,explanation:"이족 전승에서는 오히려 맹획이 제갈량을 사로잡은 후 화해한 것으로 전해진다 (정사와 정반대)."},
+  {id:69,type:'tf',category:'삼국지이야기',question:"하모도 유적(河姆渡文化)은 BC5000년경의 것으로, 초기 벼농사의 증거가 발견되었다.",answer:true,explanation:"하모도 유적은 절강성 동부에 위치하며, BC5000년경으로 초기 벼농사의 증거이자 일본 쌀과 유전자가 동일하다."},
+  {id:70,type:'tf',category:'삼국지이야기',question:"마오쩌둥의 쌍백방침은 지식인의 자유 발언을 지속적으로 보장했다.",answer:false,explanation:"1956년 마오쩌둥이 쌍백방침(백화제방, 백가쟁명)을 내세웠으나, 이후 반우파 투쟁으로 역풍이 불어 발언한 지식인들이 탄압받았다."},
+
+  // ===== 객관식 문제 (30개) =====
+  // --- 교재 (71~78) ---
+  {id:71,type:'mc',category:'교재',question:"화이사상(華夷思想)과 주권국가 세계상의 차이에 대한 설명으로 옳은 것은?",answer:2,choices:["주권국가는 동심원적 지배 구조를 가진다","화이사상에서는 각 국가의 확실한 경계를 중시한다","화이사상에서는 국경보다 군주 중심의 '천하' 지배를 중시한다","주권국가 체제에서도 이적이 중화로 편입될 수 있다"],explanation:"화이사상은 국경보다 군주 중심의 동심원적 세계관으로 '천하'를 지배하는 것을 중시하며, 주권국가는 각 국가가 고유 문화와 주권, 확실한 경계를 갖는다."},
+  {id:72,type:'mc',category:'교재',question:"봉건제와 군현제에 대한 설명으로 틀린 것은?",answer:3,choices:["봉건제는 영토를 나누어 제후에게 세습적으로 통치하게 한다","군현제에서는 황제가 직접 관리를 임명한다","한나라 초기에는 군국제로 군현과 봉건을 병용했다","진시황은 봉건제를 전국에 시행하여 36개 제후국을 세웠다"],explanation:"진시황은 봉건제가 아닌 군현제를 전국에 시행하여 36개 군(후에 48군)으로 나누었다."},
+  {id:73,type:'mc',category:'교재',question:"한 무제의 대흉노 정책에 해당하지 않는 것은?",answer:1,choices:["위청, 곽거병 장군으로 흉노 공격","흉노와 형제관계를 맺는 화친 약조 체결","하서회랑에 4군(돈황, 무위, 장액, 주천) 설치","장건을 서역 대월지국에 파견"],explanation:"흉노와 형제관계를 맺는 화친 약조는 한 고조 유방 시기의 정책이다. 한 무제는 적극적으로 흉노를 공격했다."},
+  {id:74,type:'mc',category:'교재',question:"북위 효문제의 한화정책에 포함되지 않는 것은?",answer:0,choices:["선비어 사용 장려와 호복 착용 권장","낙양 천도","한인 귀족과 선비 귀족의 혼인 장려","탁발 씨를 원(元) 씨로 개성(改姓)"],explanation:"효문제는 선비어 사용을 금지하고 호복을 폐지했다. 장려한 것이 아니다."},
+  {id:75,type:'mc',category:'교재',question:"위진남북조 시대 조공/책봉 관계에 대한 설명으로 옳은 것은?",answer:3,choices:["왜(일본)는 한번도 중국 왕조에 조공한 적이 없다","조공/책봉 관계가 없으면 국가 간 교류도 없었다","신라는 4세기부터 남북조와 교섭을 시작했다","왜 5왕은 남조에 조공하여 사지절도독제군사 관작을 요구했다"],explanation:"5세기 왜 5왕은 남조에 조공하고 사지절도독제군사(군사적 지배권)를 요구했다."},
+  {id:76,type:'mc',category:'교재',question:"'중국' 개념의 형성 과정에 대한 설명으로 옳은 것은?",answer:1,choices:["량치차오는 고대부터 '중국사'라는 명칭이 사용되었다고 주장했다","근대 이전에는 '대청' 같은 왕조 이름이 곧 나라 이름이었다","'중국'이라는 말은 전국시대에 처음 등장했다","초기 '중국'은 광활한 영토 전체를 가리켰다"],explanation:"근대 이전에는 '대청(大淸)' 같은 왕조 이름이 곧 나라 이름이었으며, '중국'이라는 국가명칭은 없었다."},
+  {id:77,type:'mc',category:'교재',question:"천명관(天命觀)에 대한 설명으로 옳은 것은?",answer:2,choices:["천명은 한 번 정해지면 변하지 않는다","천명관은 법가 사상에 근거한다","천자가 악정을 하면 천명이 이동한다 (역성혁명의 논리)","왕망은 천명관을 부정하고 새 왕조를 세웠다"],explanation:"천명관에 따르면 천(天)의 덕이 있는 사람에게 천명을 주며, 악정 시 천명이 이동하여 역성혁명이 일어난다."},
+  {id:78,type:'mc',category:'교재',question:"중행열(中行說)의 논쟁에서 드러나는 흉노 사회의 특징은?",answer:1,choices:["흉노는 노인을 경시하여 사회적 갈등이 심했다","전쟁에서 젊은이가 싸우고 음식을 먼저 먹게 하는 것이 노인을 위하는 것이라는 내적 논리가 있었다","흉노는 한나라의 풍속을 적극적으로 받아들였다","중행열은 흉노의 풍속을 비판했다"],explanation:"중행열은 흉노의 풍속을 변호하며, '전쟁에서 젊은이가 싸우고 음식을 먼저 먹게 하는 것이 오히려 노인을 위하는 것'이라는 흉노 사회의 내적 논리를 보여주었다."},
+
+  // --- 1강 (79~82) ---
+  {id:79,type:'mc',category:'1강',question:"초원로드와 실크로드의 관계에 대한 설명으로 옳은 것은?",answer:0,choices:["실크로드는 흉노가 초원길을 장악한 이후 우회하기 위해 개척된 인공적 교역로이다","초원로드는 실크로드가 쇠퇴한 이후에 만들어졌다","실크로드와 초원로드는 동시에 개척되었다","초원로드는 해상 교역로의 일부이다"],explanation:"초원로드는 실크로드보다 훨씬 오래된 교역로이며, 실크로드는 흉노가 초원길을 장악한 이후 이를 우회하기 위해 개척된 인공적 교역로이다."},
+  {id:80,type:'mc',category:'1강',question:"말의 가축화와 마구 발전의 시간순으로 올바른 것은?",answer:2,choices:["안장 → 재갈 → 등자 → 딱딱한 안장","등자 → 재갈 → 안장 → 딱딱한 안장","재갈 → 안장 → 딱딱한 안장 → 금속제 등자","재갈 → 딱딱한 안장 → 안장 → 금속제 등자"],explanation:"BC 3000년경 재갈 → BC 7세기 스키타이의 안장 → 흉노 시대 딱딱한 안장 → 3~4세기 고구려와 선비족의 금속제 등자 순서이다."},
+  {id:81,type:'mc',category:'1강',question:"스키타이 문화의 특징에 해당하지 않는 것은?",answer:3,choices:["동물양식(animal style) 예술","쿠르간(kurgan)이라는 거대한 봉분","황금문화와 순장","벼농사와 관개농업"],explanation:"벼농사와 관개농업은 스키타이 문화의 특징이 아니다. 스키타이는 기마유목민으로 동물양식, 쿠르간, 황금문화, 청동솥 등이 특징이다."},
+  {id:82,type:'mc',category:'1강',question:"안드로노보 문화에 대한 설명으로 틀린 것은?",answer:1,choices:["야금술(금속 제련)이 발달했다","동부 시베리아에서 발생했다","밀과 보리 재배의 농경 흔적이 발견된다","전차 기술의 발전과 확산에 핵심적 역할을 했다"],explanation:"안드로노보 문화는 서부 시베리아에서 발생했다 (동부가 아님)."},
+
+  // --- 흉노와 중국 (83~87) ---
+  {id:83,type:'mc',category:'흉노와 중국',question:"'동조화' 현상에 대한 설명으로 옳은 것은?",answer:3,choices:["중국이 유목민의 문화를 받아들이는 현상","유목민이 중국의 농경 기술을 도입하는 현상","흉노가 한나라에 복속하는 과정","중국 통일제국 출현에 대응하여 유목민도 통합 제국을 형성한 현상"],explanation:"동조화는 중국에서 진/한 통일제국이 등장하자, 이에 대응하여 북방 유목민도 통합 제국을 형성하게 된 현상이다."},
+  {id:84,type:'mc',category:'흉노와 중국',question:"백등산 전투(평성의 수치)의 결과로 옳은 것은?",answer:0,choices:["한과 흉노가 형제관계로 화친 조약을 맺었다","흉노가 한에 완전히 복속했다","한 고조가 흉노를 대파하여 영토를 확장했다","흉노가 한반도까지 세력을 확장했다"],explanation:"BC 200년 백등산 전투에서 한고조가 패배한 후, BC 198년 형제관계를 인정하고 공주와 선물을 보내는 굴욕적인 화친 조약을 맺었다."},
+  {id:85,type:'mc',category:'흉노와 중국',question:"장건착공(張騫鑿空)에 대한 설명으로 옳은 것은?",answer:2,choices:["한무제가 장건을 오손국에 파견한 사건이다","장건은 대월지국과의 동맹에 성공했다","동맹은 실패했으나 서역 교통로가 개척되었다","장건은 흉노에 포로가 되지 않고 바로 귀환했다"],explanation:"BC 139년 한무제가 장건을 대월지국에 파견했으나, 동맹은 실패했다. 그러나 서역과의 교통로를 개척하여 실크로드 교역에 영향을 미쳤다."},
+  {id:86,type:'mc',category:'흉노와 중국',question:"사마천이 궁형을 받게 된 경위로 옳은 것은?",answer:1,choices:["반란을 일으켜 처벌받았다","이릉이 흉노에게 패배했을 때 이릉을 변호하다가 궁형을 받았다","사기에 한무제를 비판하는 내용을 써서 처벌받았다","장건의 서역 파견을 반대하다가 처벌받았다"],explanation:"BC 99년 이릉이 흉노와의 전투에서 패배하여 포로가 되자, 사마천이 이릉을 변호했다가 한무제의 노여움을 사 궁형을 받았다."},
+  {id:87,type:'mc',category:'흉노와 중국',question:"조공/책봉 관계에 대한 설명으로 틀린 것은?",answer:2,choices:["시대와 공간에 따라 다양한 형식과 성격을 지닌다","조공국이 중국 황제에게 공물을 바치는 행위이다","모든 시대에서 동일한 형태의 상하 관계로 유지되었다","한과 흉노는 최소한의 형식만 유지하여 사실상 대등에 가까웠다"],explanation:"조공/책봉은 단순한 상하 관계가 아닌 외교적/의례적 제도로, 시대와 공간에 따라 다양한 형식과 성격을 지녔다."},
+
+  // --- 유물과 기록 (88~91) ---
+  {id:88,type:'mc',category:'유물과 기록',question:"얼리터우(二里頭) 유적에 대한 설명으로 옳은 것은?",answer:1,choices:["장강 상류에 위치한 도시국가이다","BC 1900~1700년경의 것으로 하나라 수도로 추정된다","철기와 옥기가 주로 발굴되었다","상(商)나라의 수도였다"],explanation:"얼리터우는 BC 1900~1700년경의 유적으로 하나라 수도로 추정되며, 신전/청동 솥(鼎)/옥기가 발굴되었다."},
+  {id:89,type:'mc',category:'유물과 기록',question:"옥종(琮)과 옥벽(璧)에 대한 설명으로 옳은 것은?",answer:2,choices:["옥종은 원형으로 하늘을, 옥벽은 사각형으로 땅을 상징한다","옥종과 옥벽은 모두 전쟁 무기이다","옥종은 사각형으로 땅을, 옥벽은 원형으로 하늘을 상징한다","옥종과 옥벽은 한나라 때 처음 만들어졌다"],explanation:"옥종(琮)=사각형=땅, 옥벽(璧)=원형=하늘을 상징하며, 이는 천원지방(天圓地方) 사상을 반영한다."},
+  {id:90,type:'mc',category:'유물과 기록',question:"중항열(中行說)이 흉노에서 수행한 활동으로 틀린 것은?",answer:3,choices:["흉노에게 글쓰기를 가르쳐 사람과 가축의 수를 파악하게 했다","흉노→한 문서 격식에서 흉노가 상위가 되도록 고쳤다","예물 받는 것보다 약탈하라며 침공을 부추겼다","한나라와의 화평을 적극 중재했다"],explanation:"중항열은 한나라에 원한을 품고 흉노의 침공을 부추기며, 글쓰기를 가르치고, 문서 격식을 변경하는 등 한나라에 대한 적대적 활동을 했다."},
+  {id:91,type:'mc',category:'유물과 기록',question:"주지육림(酒池肉林)에 대한 설명으로 옳은 것은?",answer:0,choices:["은나라 주왕(紂王)의 사치와 폭정을 상징하며, 포틀래치와 비교된다","하나라 걸왕(桀王)의 선정을 상징하는 기록이다","한비자가 처음 기록한 것으로 검소한 생활을 권유하는 내용이다","사기 한본기에 기록되어 있다"],explanation:"주지육림은 사기 은본기에 기록된 은나라 주왕의 사치와 폭정의 상징으로, 과시적 소비인 포틀래치와 비교된다."},
+
+  // --- 테크노史記 (92~95) ---
+  {id:92,type:'mc',category:'테크노史記',question:"기전체(紀傳體)의 구성으로 올바른 것은?",answer:3,choices:["본기 30권, 표 10권, 서 8권, 세가 12권, 열전 70권","본기 12권, 표 8권, 서 10권, 세가 30권, 열전 70권","본기 12권, 표 10권, 서 8권, 세가 70권, 열전 30권","본기 12권, 표 10권, 서 8권, 세가 30권, 열전 70권"],explanation:"사기는 본기 12권 + 표 10권 + 서 8권 + 세가 30권 + 열전 70권 = 총 130권으로 구성되어 있다."},
+  {id:93,type:'mc',category:'테크노史記',question:"사마천이 항우를 본기에, 공자를 세가에 배치한 이유는?",answer:1,choices:["항우는 황제였으므로 본기에, 공자는 제후였으므로 세가에 배치","항우는 제왕 아니지만 실질적 권력자로, 공자는 제후 아니지만 사상적 영향력으로 배치","항우와 공자 모두 한나라 황실의 인물이므로","관례에 따라 모든 인물을 시대순으로 배치한 결과"],explanation:"항우는 제왕이 아니었으나 실질적 권력자로서의 역사적 위상을 인정하여 본기에, 공자는 제후가 아니었으나 사상적 영향력이 제후에 버금간다고 평가하여 세가에 배치했다."},
+  {id:94,type:'mc',category:'테크노史記',question:"백이열전에 나타난 사마천의 천도관(天道觀)에 대한 설명으로 옳은 것은?",answer:2,choices:["천도는 절대적으로 공정하며 선인에게는 반드시 보상이 있다","천도는 존재하지 않으며 역사는 우연의 산물이다","천도의 존재는 인정하되 초월적 섭리를 그대로 믿지 않는다","백이가 천수를 누리고 도척이 요절한 사례를 든다"],explanation:"사마천은 '천도, 시야비야?(이른바 천도란 것이 옳은가 그른가?)'라며, 천도의 존재 자체는 인정하되 초월적 섭리를 그대로 믿지 않는 입장을 보였다."},
+  {id:95,type:'mc',category:'테크노史記',question:"'史'의 기원과 변천에 대한 설명으로 옳은 것은?",answer:0,choices:["종교적 필요로 天과 조상에게 보고하기 위해 기록한 것에서 시작되었다","사마천이 史라는 개념을 최초로 만들었다","史는 처음부터 정치 기록만을 위한 것이었다","'歷史'라는 단어는 한나라 때부터 사용되었다"],explanation:"'史'는 종교적 필요에서 인간의 일을 天(하늘)과 조상에게 보고하기 위해 기록한 것에서 시작되었다. '歷史'는 근대 일본에서 만들어진 번역어이다."},
+
+  // --- 삼국지이야기 (96~98) ---
+  {id:96,type:'mc',category:'삼국지이야기',question:"왕도(王道)와 패도(覇道)에 대한 설명으로 옳은 것은?",answer:1,choices:["왕도는 군사력과 법에 기반한 정치를 가리킨다","왕도는 도덕성에 기반한 정치이며, 패도는 군사력/법/시스템에 기반한 정치이다","맹자는 패도를 이상적 정치로 보았다","왕도와 패도는 동일한 개념이다"],explanation:"왕도(王道)는 도덕성에 기반한 정치(맹자/유가의 이상)이고, 패도(覇道)는 군사력, 법, 시스템에 기반한 정치이다."},
+  {id:97,type:'mc',category:'삼국지이야기',question:"장강(長江) 문명에 대한 설명으로 옳은 것은?",answer:3,choices:["장강 문명은 약 5,000년 전까지 거슬러 올라간다","하모도 유적은 황하 유역에 위치한다","장강 문명은 황하 문명 이후에 발생했다","하모도 유적의 쌀과 일본 쌀의 유전자가 동일하다"],explanation:"장강 문명은 14,000년 전까지 거슬러 올라가며, 하모도 유적(절강성 동부, BC5000년경)의 쌀과 일본 쌀의 유전자가 동일하다."},
+  {id:98,type:'mc',category:'삼국지이야기',question:"소수민족 관점에서 본 맹획(孟獲) 이야기에 대한 설명으로 옳은 것은?",answer:2,choices:["맹획 이야기는 정사에 상세히 기록되어 있다","이족 전승에서도 맹획은 제갈량에게 일곱 번 사로잡힌다","이족 전승에서 맹획은 제갈량을 사로잡은 후 화해한 민족영웅이다","이족은 독자 언어나 문자가 없는 민족이다"],explanation:"이족 민간전승에서 맹획은 부친 살해 → 무장봉기 → 곤명 차지 → 독립선언 후 제갈량을 사로잡고 화해한 민족영웅으로 전해진다."},
+
+  // --- 동아일보 기사 (99~100) ---
+  {id:99,type:'mc',category:'동아일보 기사',question:"동예의 말 문화에 대한 설명으로 옳은 것은?",answer:1,choices:["동예에서는 말을 타고 전투한 풍부한 고고학 증거가 있다","동예는 말을 사육하되 직접 타지 않았으며, 강문동 유적에서 말뼈 복골이 발견되었다","동예의 과하마는 대형 전쟁용 군마였다","동예는 소/양 뼈로 점을 쳤다"],explanation:"동예는 말을 직접 타지 않고 사육 전문이었으며, 강문동 유적에서 말뼈로 만든 복골이 발견되었다. 중국/초원은 소/양 뼈를 사용하는데 말뼈 복골은 동예만의 독특한 사례이다."},
+  {id:100,type:'mc',category:'동아일보 기사',question:"고려-조선시대 말의 역사에 대한 설명으로 옳은 것은?",answer:2,choices:["팔준도(八駿圖)는 이성계가 전장에서 싸우는 모습을 그린 것이다","고려시대 제주 목장은 1356년에 설치되었다","1276년 탐라(제주)에 다루가치가 목장을 설치하고 목호를 배치했다","조선시대에는 말이 충분하여 부족 문제가 없었다"],explanation:"1276년 탐라(제주)에 다루가치(達魯花赤)가 목장을 설치하고 목호(牧胡, 유목민 출신 말 사육 전문가)를 배치했다."}
+];
+
+// --- State ---
+let state = {
+  questions: [],
+  current: 0,
+  score: 0,
+  answers: [],
+  answered: false,
+  shuffled: true,
+  finished: false
+};
+const STORAGE_KEY = 'yonsei_ea_quiz_state';
+
+// --- Init ---
+function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.questions && parsed.questions.length === 100 && !parsed.finished) {
+        document.getElementById('resumeBtn').style.display = 'block';
+      }
+    } catch(e) {}
+  }
+}
+init();
+
+// --- Fisher-Yates Shuffle ---
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// --- Quiz Logic ---
+function startQuiz() {
+  const doShuffle = document.getElementById('shuffleCheck').checked;
+  state = {
+    questions: doShuffle ? shuffle(QUESTIONS) : [...QUESTIONS],
+    current: 0,
+    score: 0,
+    answers: [],
+    answered: false,
+    shuffled: doShuffle,
+    finished: false
+  };
+  saveState();
+  showScreen('quizScreen');
+  renderQuestion();
+}
+
+function resumeQuiz() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    state = JSON.parse(saved);
+    showScreen('quizScreen');
+    renderQuestion();
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion() {
+  const q = state.questions[state.current];
+  const n = state.current + 1;
+  const total = state.questions.length;
+
+  document.getElementById('progressLabel').textContent = `문제 ${n}/${total}`;
+  document.getElementById('scoreLabel').textContent = `정답: ${state.score}`;
+  document.getElementById('progressFill').style.width = `${(n / total) * 100}%`;
+
+  // Meta badges
+  const meta = document.getElementById('questionMeta');
+  meta.innerHTML = `
+    <span class="badge badge-type">${q.type === 'tf' ? 'True / False' : '객관식'}</span>
+    <span class="badge badge-category">${q.category}</span>
+  `;
+
+  // Question text
+  document.getElementById('questionText').textContent = q.question;
+
+  // Choices
+  const area = document.getElementById('choicesArea');
+  area.innerHTML = '';
+
+  if (q.type === 'tf') {
+    const div = document.createElement('div');
+    div.className = 'tf-choices';
+    div.innerHTML = `
+      <button class="tf-btn" data-val="true" onclick="selectTF(this, true)">True</button>
+      <button class="tf-btn" data-val="false" onclick="selectTF(this, false)">False</button>
+    `;
+    area.appendChild(div);
+  } else {
+    const div = document.createElement('div');
+    div.className = 'choices';
+    q.choices.forEach((c, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = `${['A','B','C','D'][i]}. ${c}`;
+      btn.onclick = () => selectMC(btn, i);
+      div.appendChild(btn);
+    });
+    area.appendChild(div);
+  }
+
+  // Check if already answered (resumed)
+  const prevAnswer = state.answers[state.current];
+  if (prevAnswer !== undefined) {
+    state.answered = true;
+    // Replay the answer visually
+    if (q.type === 'tf') {
+      const btns = area.querySelectorAll('.tf-btn');
+      btns.forEach(b => {
+        b.disabled = true;
+        const val = b.dataset.val === 'true';
+        if (val === q.answer) b.classList.add('correct');
+        if (val === prevAnswer && val !== q.answer) b.classList.add('wrong');
+      });
+    } else {
+      const btns = area.querySelectorAll('.choice-btn');
+      btns.forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.answer) b.classList.add('correct');
+        if (i === prevAnswer && i !== q.answer) b.classList.add('wrong');
+      });
+    }
+    showExplanation(prevAnswer === q.answer || prevAnswer === q.answer);
+    document.getElementById('nextBtn').classList.add('show');
+  } else {
+    state.answered = false;
+    document.getElementById('explanation').className = 'explanation';
+    document.getElementById('nextBtn').classList.remove('show');
+  }
+
+  // Animate
+  document.getElementById('questionCard').style.animation = 'none';
+  requestAnimationFrame(() => {
+    document.getElementById('questionCard').style.animation = 'slideIn 0.4s ease';
+  });
+}
+
+function selectTF(btn, val) {
+  if (state.answered) return;
+  state.answered = true;
+  const q = state.questions[state.current];
+  const correct = val === q.answer;
+
+  if (correct) state.score++;
+  state.answers[state.current] = val;
+  saveState();
+
+  const btns = btn.parentElement.querySelectorAll('.tf-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const bVal = b.dataset.val === 'true';
+    if (bVal === q.answer) b.classList.add('correct');
+    if (bVal === val && !correct) b.classList.add('wrong');
+  });
+
+  showExplanation(correct);
+  document.getElementById('nextBtn').classList.add('show');
+  document.getElementById('scoreLabel').textContent = `정답: ${state.score}`;
+}
+
+function selectMC(btn, idx) {
+  if (state.answered) return;
+  state.answered = true;
+  const q = state.questions[state.current];
+  const correct = idx === q.answer;
+
+  if (correct) state.score++;
+  state.answers[state.current] = idx;
+  saveState();
+
+  const btns = btn.parentElement.querySelectorAll('.choice-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.answer) b.classList.add('correct');
+    if (i === idx && !correct) b.classList.add('wrong');
+  });
+
+  showExplanation(correct);
+  document.getElementById('nextBtn').classList.add('show');
+  document.getElementById('scoreLabel').textContent = `정답: ${state.score}`;
+}
+
+function showExplanation(correct) {
+  const q = state.questions[state.current];
+  const el = document.getElementById('explanation');
+  el.className = `explanation show ${correct ? 'correct-bg' : 'wrong-bg'}`;
+  el.innerHTML = `<strong>${correct ? '정답!' : '오답!'}</strong> ${q.explanation}`;
+}
+
+function nextQuestion() {
+  if (state.current < state.questions.length - 1) {
+    state.current++;
+    saveState();
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  state.finished = true;
+  saveState();
+  showScreen('resultScreen');
+
+  const total = state.questions.length;
+  const pct = Math.round((state.score / total) * 100);
+  document.getElementById('finalScore').textContent = `${state.score} / ${total}`;
+  document.getElementById('finalPercent').textContent = `정답률: ${pct}%`;
+
+  // Category scores
+  const cats = {};
+  state.questions.forEach((q, i) => {
+    if (!cats[q.category]) cats[q.category] = { total: 0, correct: 0 };
+    cats[q.category].total++;
+    const ans = state.answers[i];
+    if (q.type === 'tf' && ans === q.answer) cats[q.category].correct++;
+    if (q.type === 'mc' && ans === q.answer) cats[q.category].correct++;
+  });
+
+  const catDiv = document.getElementById('categoryScores');
+  catDiv.innerHTML = '<h3 style="grid-column:1/-1;font-size:1.1rem;color:#a855f7;margin-bottom:4px;">카테고리별 점수</h3>';
+  Object.entries(cats).forEach(([name, data]) => {
+    catDiv.innerHTML += `
+      <div class="cat-card">
+        <div class="cat-name">${name}</div>
+        <div class="cat-score">${data.correct}/${data.total}</div>
+      </div>
+    `;
+  });
+
+  // Wrong answers review
+  const reviewDiv = document.getElementById('reviewSection');
+  const wrongs = [];
+  state.questions.forEach((q, i) => {
+    const ans = state.answers[i];
+    const isCorrect = (q.type === 'tf' && ans === q.answer) || (q.type === 'mc' && ans === q.answer);
+    if (!isCorrect) wrongs.push({ q, ans, idx: i });
+  });
+
+  if (wrongs.length === 0) {
+    reviewDiv.innerHTML = '<div class="review-title" style="color:#22c55e;">축하합니다! 모두 정답입니다!</div>';
+  } else {
+    let html = `<div class="review-title">오답 리뷰 (${wrongs.length}문제)</div>`;
+    wrongs.forEach(({ q, ans }) => {
+      let myAns, correctAns;
+      if (q.type === 'tf') {
+        myAns = ans === true ? 'True' : ans === false ? 'False' : '미응답';
+        correctAns = q.answer ? 'True' : 'False';
+      } else {
+        myAns = ans !== undefined ? `${['A','B','C','D'][ans]}. ${q.choices[ans]}` : '미응답';
+        correctAns = `${['A','B','C','D'][q.answer]}. ${q.choices[q.answer]}`;
+      }
+      html += `
+        <div class="review-item">
+          <div class="review-q">[${q.category}] ${q.question}</div>
+          <div class="review-detail">
+            <span class="label">내 답:</span> <span class="my-answer">${myAns}</span><br>
+            <span class="label">정답:</span> <span class="correct-answer">${correctAns}</span><br>
+            <span class="label">해설:</span> ${q.explanation}
+          </div>
+        </div>
+      `;
+    });
+    reviewDiv.innerHTML = html;
+  }
+}
+
+function retryQuiz() {
+  localStorage.removeItem(STORAGE_KEY);
+  showScreen('startScreen');
+  document.getElementById('resumeBtn').style.display = 'none';
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+</script>
+</body>
+</html>
