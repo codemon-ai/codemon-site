@@ -1,0 +1,73 @@
+---
+title: "dansaek.co AX 컨설팅 제안서"
+description: "단색 이커머스 사이트 접근성/사용성 분석 및 AX 컨설팅 제안"
+tags: [dansaek, ax, consulting, pitch]
+created: 2026-04-16
+---
+
+import { PitchHero, SiteOverview, PainPointGrid, ConsultingCTA, MethodologySection } from '../../components/DansaekAXComponents'
+import { SiteNavigationMap, PurchaseFlowDiagram, CheckoutFlowDiagram, ProductDetailInteractionMap, ExternalIntegrationMap } from '../../components/DansaekAXDiagrams'
+
+<PitchHero />
+
+## 사이트 개요
+
+dansaek.co는 2017년 설립된 여성 기능성 속옷 브랜드 '단색'의 공식 온라인 스토어입니다.
+Firecrawl 크롤링과 Playwright 인터랙션 분석을 통해 사이트 전반의 유저 플로우를 데이터 기반으로 진단했습니다.
+
+<SiteOverview />
+
+---
+
+## 유저 플로우 분석
+
+### 1. 전체 사이트 네비게이션
+
+홈페이지에서 접근 가능한 모든 경로를 시각화했습니다.
+메인 메뉴 8개, 메가메뉴 9개 카테고리, 33개 소분류가 동시에 노출되어 사용자의 선택 부담이 큽니다.
+
+<SiteNavigationMap />
+
+### 2. 상품 탐색에서 구매까지
+
+사용자가 상품을 발견하고 구매를 완료하기까지의 전체 여정입니다.
+진입 경로가 5가지로 분산되어 있으며, 구매 경로가 3갈래로 나뉩니다.
+
+<PurchaseFlowDiagram />
+
+### 3. 결제 플로우 비교
+
+장바구니 경로와 바로구매 경로의 단계별 비교입니다.
+장바구니 경로는 3단계 + 관리 기능이 결합되어 복잡도가 높습니다.
+
+<CheckoutFlowDiagram />
+
+### 4. 상품 상세 페이지 인터랙션
+
+상품 상세 페이지 내 모든 인터랙션 요소를 매핑했습니다.
+14개 이미지, 5개 탭, 옵션 캐스케이딩, 6,952건 리뷰 필터 등이 한 페이지에 집중되어 있습니다.
+
+<ProductDetailInteractionMap />
+
+### 5. 외부 서비스 연동 현황
+
+카카오, 네이버, SNS, 고객지원 등 10개 이상의 외부 터치포인트가 각각 다른 UX 패턴으로 연결되어 있습니다.
+
+<ExternalIntegrationMap />
+
+---
+
+## AX 개선 포인트
+
+데이터 분석을 통해 도출한 7가지 핵심 개선 영역입니다.
+각 항목에 심각도와 예상 비즈니스 임팩트를 표기했습니다.
+
+<PainPointGrid />
+
+---
+
+## codemon AX 컨설팅
+
+<MethodologySection />
+
+<ConsultingCTA />
