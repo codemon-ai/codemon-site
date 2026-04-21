@@ -17,8 +17,15 @@ export interface SurveyResponse {
   submittedAt: number
 }
 
+export const SUPPORTED_LECTURE_IDS = [
+  'lecture-agency-ai',
+  'lecture-startup-ai',
+  'lecture-podl-ai',
+  'airpremia-lv1',
+] as const
+
 export function isValidLectureId(id: string): boolean {
-  return /^lecture-[a-z0-9-]+$/.test(id)
+  return (SUPPORTED_LECTURE_IDS as readonly string[]).includes(id)
 }
 
 async function saveSurveyToSupabase(data: SurveyResponse): Promise<boolean> {

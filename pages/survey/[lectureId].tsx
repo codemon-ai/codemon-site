@@ -7,6 +7,7 @@ const LECTURES: Record<string, string> = {
   'lecture-agency-ai': 'AI 에이전트로 에이전시 업무 자동화하기',
   'lecture-startup-ai': 'AI 시대, 5명이 50명을 이기는 법',
   'lecture-podl-ai': 'AI로 일하는 방법',
+  'airpremia-lv1': 'Airpremia Level 1 · Claude 생태계 실무 교육',
 }
 
 export default function SurveyPage() {

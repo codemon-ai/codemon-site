@@ -9,6 +9,7 @@ const LECTURES = [
   { id: 'lecture-agency-ai', label: 'AI 업무 자동화' },
   { id: 'lecture-startup-ai', label: '스타트업 AI' },
   { id: 'lecture-podl-ai', label: '포들 AI' },
+  { id: 'airpremia-lv1', label: 'Airpremia Lv1' },
 ]
 
 export default function SurveysPage() {
