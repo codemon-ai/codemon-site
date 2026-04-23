@@ -83,6 +83,30 @@ export default function SurveyTable({ surveys }: SurveyTableProps) {
                           <p className="whitespace-pre-wrap text-zinc-300">{s.gains}</p>
                         </div>
                       )}
+                      {s.learnings && (
+                        <div className="md:col-span-2">
+                          <p className="text-xs text-zinc-500">배운 것</p>
+                          <p className="whitespace-pre-wrap text-zinc-300">{s.learnings}</p>
+                        </div>
+                      )}
+                      {s.follow_along && (
+                        <div className="md:col-span-2">
+                          <p className="text-xs text-zinc-500">진행도</p>
+                          <p className="whitespace-pre-wrap text-zinc-300">{s.follow_along}</p>
+                        </div>
+                      )}
+                      {s.would_help && (
+                        <div className="md:col-span-2">
+                          <p className="text-xs text-zinc-500">있으면 좋을 것</p>
+                          <p className="whitespace-pre-wrap text-zinc-300">{s.would_help}</p>
+                        </div>
+                      )}
+                      {s.improvements && (
+                        <div className="md:col-span-2">
+                          <p className="text-xs text-zinc-500">개선 요청</p>
+                          <p className="whitespace-pre-wrap text-zinc-300">{s.improvements}</p>
+                        </div>
+                      )}
                       {s.questions && (
                         <div className="md:col-span-2">
                           <p className="text-xs text-zinc-500">궁금한 점</p>

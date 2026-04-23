@@ -13,6 +13,10 @@ export interface SurveyResponse {
   rating: number
   gains: string
   questions: string
+  learnings: string
+  followAlong: string
+  wouldHelp: string
+  improvements: string
   privacyConsent: boolean
   submittedAt: number
 }
@@ -41,6 +45,10 @@ async function saveSurveyToSupabase(data: SurveyResponse): Promise<boolean> {
       rating: data.rating,
       gains: data.gains,
       questions: data.questions,
+      learnings: data.learnings,
+      follow_along: data.followAlong,
+      would_help: data.wouldHelp,
+      improvements: data.improvements,
       privacy_consent: data.privacyConsent,
     })
     return !error
