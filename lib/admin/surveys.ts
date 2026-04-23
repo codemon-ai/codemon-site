@@ -46,7 +46,7 @@ export async function exportSurveysCSV(lectureId?: string): Promise<string> {
   const supabase = createAdminClient()
   let query = supabase
     .from('survey_responses')
-    .select('lecture_id, company_name, contact_name, title, email, phone, rating, gains, questions, submitted_at')
+    .select('lecture_id, company_name, contact_name, title, email, phone, rating, gains, learnings, follow_along, would_help, improvements, questions, submitted_at')
     .order('submitted_at', { ascending: false })
 
   if (lectureId) {
@@ -57,11 +57,11 @@ export async function exportSurveysCSV(lectureId?: string): Promise<string> {
   if (error) throw error
 
   const rows = (data ?? []) as SurveyResponse[]
-  const header = 'lecture_id,company_name,contact_name,title,email,phone,rating,gains,questions,submitted_at'
-  const escape = (v: string) => `"${String(v).replace(/"/g, '""')}"`
+  const header = 'lecture_id,company_name,contact_name,title,email,phone,rating,gains,learnings,follow_along,would_help,improvements,questions,submitted_at'
+  const escape = (v: string | null) => `"${String(v ?? '').replace(/"/g, '""')}"`
   const csv = rows
     .map((r) =>
-      [r.lecture_id, r.company_name, r.contact_name, r.title, r.email, r.phone, r.rating, escape(r.gains), escape(r.questions), r.submitted_at].join(',')
+      [r.lecture_id, r.company_name, r.contact_name, r.title, r.email, r.phone, r.rating, escape(r.gains), escape(r.learnings), escape(r.follow_along), escape(r.would_help), escape(r.improvements), escape(r.questions), r.submitted_at].join(',')
     )
     .join('\n')
   return `${header}\n${csv}`

@@ -18,6 +18,10 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
   const [phone, setPhone] = useState('')
   const [rating, setRating] = useState(0)
   const [gains, setGains] = useState('')
+  const [learnings, setLearnings] = useState('')
+  const [followAlong, setFollowAlong] = useState('')
+  const [wouldHelp, setWouldHelp] = useState('')
+  const [improvements, setImprovements] = useState('')
   const [questions, setQuestions] = useState('')
   const [privacyConsent, setPrivacyConsent] = useState(false)
   const [status, setStatus] = useState<'form' | 'sending' | 'success'>('form')
@@ -43,7 +47,9 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           lectureId, companyName, contactName, title,
-          email, phone, rating, gains, questions, privacyConsent,
+          email, phone, rating, gains, questions,
+          learnings, followAlong, wouldHelp, improvements,
+          privacyConsent,
         }),
       })
       const data = await res.json()
@@ -187,6 +193,62 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
             value={gains}
             onChange={(e) => setGains(e.target.value)}
             placeholder="강의를 통해 얻은 인사이트가 있다면 알려주세요"
+            rows={3}
+            className={inputClass + ' resize-none'}
+          />
+        </div>
+
+        {/* 본인이 배운 것들 */}
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-1.5">
+            본인이 배운 것들 <span className="text-black/30 dark:text-white/30">(선택)</span>
+          </label>
+          <textarea
+            value={learnings}
+            onChange={(e) => setLearnings(e.target.value)}
+            placeholder="강의에서 새로 배운 개념·도구·방법이 있다면 적어주세요"
+            rows={3}
+            className={inputClass + ' resize-none'}
+          />
+        </div>
+
+        {/* 어디까지 따라 갔는지 */}
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-1.5">
+            어디까지 따라 갔는지 <span className="text-black/30 dark:text-white/30">(선택)</span>
+          </label>
+          <textarea
+            value={followAlong}
+            onChange={(e) => setFollowAlong(e.target.value)}
+            placeholder="실습·예제를 어느 단계까지 따라 하셨는지 알려주세요 (막힌 구간이 있다면 함께 적어주세요)"
+            rows={3}
+            className={inputClass + ' resize-none'}
+          />
+        </div>
+
+        {/* 어떤 것이 있으면 도움이 될지 */}
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-1.5">
+            어떤 것이 있으면 도움이 될지 <span className="text-black/30 dark:text-white/30">(선택)</span>
+          </label>
+          <textarea
+            value={wouldHelp}
+            onChange={(e) => setWouldHelp(e.target.value)}
+            placeholder="추가 자료·실습·템플릿 등 있으면 좋겠다 싶은 것을 적어주세요"
+            rows={3}
+            className={inputClass + ' resize-none'}
+          />
+        </div>
+
+        {/* 개선이 되었으면 하는 부분 */}
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-1.5">
+            개선이 되었으면 하는 부분 <span className="text-black/30 dark:text-white/30">(선택)</span>
+          </label>
+          <textarea
+            value={improvements}
+            onChange={(e) => setImprovements(e.target.value)}
+            placeholder="강의 구성·속도·난이도 등 개선 의견을 자유롭게 적어주세요"
             rows={3}
             className={inputClass + ' resize-none'}
           />
