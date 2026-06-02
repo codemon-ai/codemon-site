@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" font-family="-apple-system, 'Helvetica Neue', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A1A"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#B83A2C"/>
+    </marker>
+    <marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A8A8A"/>
+    </marker>
+    <style>
+      .label { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.06em; fill: #8A8A8A; text-transform: uppercase; }
+      .box-title { font-family: 'Fraunces', Georgia, serif; font-size: 14px; font-weight: 500; fill: #1A1A1A; }
+      .box-sub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; fill: #4A4A4A; }
+      .box-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; fill: #B83A2C; }
+      .phase-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; fill: #B83A2C; font-weight: 500; text-transform: uppercase; }
+      .annot { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #8A8A8A; font-style: italic; }
+      .bridge-text { font-family: 'Fraunces', Georgia, serif; font-size: 13px; font-style: italic; fill: #4A4A4A; }
+    </style>
+  </defs>
+
+  <!-- Phase backdrop bands -->
+  <rect x="30" y="60" width="560" height="540" rx="8" fill="#FCFAF5" stroke="#E8E5DC" stroke-width="1"/>
+  <rect x="610" y="60" width="560" height="540" rx="8" fill="#FCFAF5" stroke="#E8E5DC" stroke-width="1"/>
+
+  <!-- Phase labels -->
+  <text x="50" y="40" class="phase-label">TRAINING — one-time, ≈ 6 s on MPS</text>
+  <text x="630" y="40" class="phase-label">RETRIEVAL — at query time, &lt; 50 ms</text>
+
+  <!-- =========================== LEFT: TRAINING =========================== -->
+
+  <!-- 1. Vault -->
+  <rect x="220" y="80" width="180" height="58" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="310" y="100" class="box-title" text-anchor="middle">Obsidian Vault</text>
+  <text x="310" y="118" class="box-sub" text-anchor="middle">459 .md  ·  PARA scope</text>
+  <text x="310" y="131" class="box-sub" text-anchor="middle">wikilinks + folder + #tag</text>
+
+  <!-- arrow vault → preprocess -->
+  <line x1="310" y1="138" x2="310" y2="166" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="318" y="156" class="annot">extract</text>
+
+  <!-- 2. Preprocess -->
+  <rect x="220" y="168" width="180" height="44" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="310" y="187" class="box-title" text-anchor="middle">Preprocess</text>
+  <text x="310" y="202" class="box-sub" text-anchor="middle">tokenize · OOV · vocab</text>
+
+  <!-- arrow preprocess → tokens -->
+  <line x1="310" y1="212" x2="310" y2="238" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- 3. Vocab + tokens -->
+  <rect x="200" y="240" width="220" height="44" rx="4" fill="#F4F1E8" stroke="#1A1A1A" stroke-width="1"/>
+  <text x="310" y="259" class="box-title" text-anchor="middle">vocab.json + token stream</text>
+  <text x="310" y="274" class="box-sub" text-anchor="middle">17,024 vocab  ·  232,917 tokens</text>
+
+  <!-- 4. Three pair sets -->
+  <text x="310" y="306" class="label" text-anchor="middle">PAIR GENERATION (3 SOURCES)</text>
+
+  <!-- intra -->
+  <rect x="60" y="318" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="140" y="338" class="box-title" text-anchor="middle">intra-note</text>
+  <text x="140" y="354" class="box-num" text-anchor="middle">231,085</text>
+
+  <!-- wiki -->
+  <rect x="230" y="318" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#B83A2C" stroke-width="1.2"/>
+  <text x="310" y="338" class="box-title" text-anchor="middle">wikilink</text>
+  <text x="310" y="354" class="box-num" text-anchor="middle">180</text>
+
+  <!-- cat -->
+  <rect x="400" y="318" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#1B6B3A" stroke-width="1.2"/>
+  <text x="480" y="338" class="box-title" text-anchor="middle">category</text>
+  <text x="480" y="354" class="box-num" text-anchor="middle" style="fill:#1B6B3A">96,780</text>
+
+  <!-- Arrows from vocab to three pair sets -->
+  <path d="M 250 284 L 140 318" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+  <path d="M 310 284 L 310 318" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+  <path d="M 370 284 L 480 318" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+
+  <!-- Lambda mixing -->
+  <line x1="140" y1="368" x2="295" y2="394" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+  <line x1="310" y1="368" x2="310" y2="394" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+  <line x1="480" y1="368" x2="325" y2="394" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+
+  <rect x="220" y="396" width="180" height="34" rx="4" fill="#F4F1E8" stroke="#1A1A1A" stroke-width="1"/>
+  <text x="310" y="418" class="box-sub" text-anchor="middle" style="font-weight:600">λ-mixed stratified batches</text>
+
+  <!-- Arrow → Model -->
+  <line x1="310" y1="430" x2="310" y2="458" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- 5. Model -->
+  <rect x="160" y="460" width="300" height="72" rx="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.6"/>
+  <text x="310" y="481" class="box-title" text-anchor="middle" style="font-size:16px">WikiCBOWModel · PyTorch</text>
+  <text x="310" y="500" class="box-sub" text-anchor="middle">W₁ [V × 64] input  +  W₂ [V × 64] output</text>
+  <text x="310" y="516" class="box-sub" text-anchor="middle">NS loss · K_neg=5 · alias sampler</text>
+  <text x="310" y="528" class="box-sub" text-anchor="middle" style="fill:#B83A2C">Adam · 5 epochs · MPS</text>
+
+  <!-- Arrow Model → W1 -->
+  <line x1="310" y1="532" x2="310" y2="558" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- 6. Learned W1 -->
+  <rect x="200" y="560" width="220" height="34" rx="4" fill="#F4F1E8" stroke="#B83A2C" stroke-width="1.4"/>
+  <text x="310" y="582" class="box-title" text-anchor="middle" style="fill:#B83A2C">Learned W₁ embeddings</text>
+
+  <!-- =========================== BRIDGE =========================== -->
+
+  <line x1="420" y1="577" x2="610" y2="577" stroke="#B83A2C" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arrow-red)"/>
+  <text x="515" y="569" class="bridge-text" text-anchor="middle">handover</text>
+
+  <!-- =========================== RIGHT: RETRIEVAL =========================== -->
+
+  <!-- Query input top -->
+  <rect x="800" y="80" width="180" height="58" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="890" y="100" class="box-title" text-anchor="middle">User Query</text>
+  <text x="890" y="118" class="box-sub" text-anchor="middle">"맥락 자동화"</text>
+  <text x="890" y="131" class="annot" text-anchor="middle">free-form text</text>
+
+  <line x1="890" y1="138" x2="890" y2="166" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="898" y="156" class="annot">tokenize</text>
+
+  <!-- Query embedding -->
+  <rect x="820" y="168" width="140" height="44" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="890" y="187" class="box-title" text-anchor="middle">Query e_q</text>
+  <text x="890" y="202" class="box-sub" text-anchor="middle">pooled vector ∈ ℝ⁶⁴</text>
+
+  <!-- Pooling label -->
+  <text x="890" y="234" class="label" text-anchor="middle">SHARED POOLING (mean / TF-IDF)</text>
+
+  <!-- Mean pool -->
+  <rect x="640" y="244" width="220" height="44" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="750" y="263" class="box-title" text-anchor="middle">Mean pooling</text>
+  <text x="750" y="278" class="box-sub" text-anchor="middle">average of W₁ word vectors</text>
+
+  <!-- TF-IDF pool -->
+  <rect x="900" y="244" width="220" height="44" rx="4" fill="#FFFFFF" stroke="#1B6B3A" stroke-width="1.2"/>
+  <text x="1010" y="263" class="box-title" text-anchor="middle" style="fill:#1B6B3A">TF-IDF weighted ★</text>
+  <text x="1010" y="278" class="box-sub" text-anchor="middle">rare-word-emphasizing average</text>
+
+  <!-- Arrows pools → note embeddings -->
+  <line x1="750" y1="288" x2="855" y2="316" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+  <line x1="1010" y1="288" x2="905" y2="316" stroke="#8A8A8A" stroke-width="1" fill="none" marker-end="url(#arrow-soft)"/>
+
+  <!-- Note embeddings store -->
+  <rect x="720" y="318" width="320" height="48" rx="4" fill="#F4F1E8" stroke="#1A1A1A" stroke-width="1"/>
+  <text x="880" y="338" class="box-title" text-anchor="middle">Pre-computed note embeddings</text>
+  <text x="880" y="356" class="box-sub" text-anchor="middle">459 × 64  ·  cached after first build</text>
+
+  <!-- Note embeddings → cosine -->
+  <line x1="880" y1="366" x2="880" y2="394" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- Cosine -->
+  <rect x="760" y="396" width="240" height="44" rx="4" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.2"/>
+  <text x="880" y="415" class="box-title" text-anchor="middle">cosine(e_q, e_n)</text>
+  <text x="880" y="430" class="box-sub" text-anchor="middle">matmul → vector of 459 scores</text>
+
+  <!-- Query feeds cosine too -->
+  <path d="M 890 212 Q 890 280 880 396" stroke="#8A8A8A" stroke-width="1" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow-soft)"/>
+
+  <!-- Cosine → topk -->
+  <line x1="880" y1="440" x2="880" y2="468" stroke="#1A1A1A" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="888" y="458" class="annot">argtop-k</text>
+
+  <!-- Top-5 -->
+  <rect x="750" y="470" width="260" height="74" rx="6" fill="#FFFFFF" stroke="#B83A2C" stroke-width="1.6"/>
+  <text x="880" y="491" class="box-title" text-anchor="middle" style="font-size:16px;fill:#B83A2C">Top-5 ranked notes</text>
+  <text x="880" y="510" class="box-sub" text-anchor="middle">e.g. wiki_context_system_design (0.66)</text>
+  <text x="880" y="525" class="box-sub" text-anchor="middle">agentic-team-for-agency (0.65)</text>
+  <text x="880" y="540" class="box-sub" text-anchor="middle">agent_engine_evolution_plan (0.49)</text>
+
+  <!-- Evaluation footnote -->
+  <text x="880" y="566" class="annot" text-anchor="middle">→ measured via P@k, R@k, MRR on n=20 hand-curated queries</text>
+
+  <!-- Bottom caption -->
+  <text x="600" y="624" class="label" text-anchor="middle">WikiCBOW · two-phase pipeline · all 7 baselines (B0–B6) share this structure with different signal subsets</text>
+</svg>
