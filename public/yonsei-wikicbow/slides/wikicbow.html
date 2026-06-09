@@ -400,14 +400,24 @@
   window.addEventListener('resize', resize);
   resize();
   function setBar(){ bar.style.width = ((cur + 1) / slides.length * 100) + '%'; }
+  // Notify a parent frame (study viewer) whenever the active slide changes,
+  // so narration can stay locked to the slide no matter how it was advanced.
+  function notifyParent(){
+    try{
+      if(window.parent && window.parent !== window){
+        window.parent.postMessage({ type:'wikicbow:slide', n: cur + 1, total: slides.length }, '*');
+      }
+    }catch(_){}
+  }
   function show(i){
     i = Math.max(0, Math.min(slides.length - 1, i));
-    if(i === cur) return;
+    if(i === cur){ notifyParent(); return; }
     slides[cur].classList.remove('active');
     slides[i].classList.add('active');
     cur = i;
     setBar();
     history.replaceState(null, '', '#' + (cur + 1));
+    notifyParent();
   }
   setBar();
   if(window.location.hash){
@@ -416,6 +426,13 @@
       slides[0].classList.remove('active'); slides[n - 1].classList.add('active'); cur = n - 1; setBar();
     }
   }
+  // React to hash changes driven by the parent frame (study viewer sync).
+  window.addEventListener('hashchange', function(){
+    var n = parseInt(window.location.hash.slice(1), 10);
+    if(!isNaN(n) && n >= 1 && n <= slides.length){ show(n - 1); }
+  });
+  // Announce initial slide to the parent once loaded.
+  notifyParent();
   document.addEventListener('keydown', function(e){
     if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter'){ e.preventDefault(); show(cur + 1); }
     else if(e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace'){ e.preventDefault(); show(cur - 1); }
