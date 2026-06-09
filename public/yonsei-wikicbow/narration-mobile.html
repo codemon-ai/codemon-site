@@ -437,6 +437,13 @@
       <div class="desc">softmax 대신 부정 샘플 5개와만 비교</div>
     </div>
   </div>
+
+  <div class="speak-box" style="border-left-color:var(--forest);background:linear-gradient(135deg,var(--paper-soft),var(--paper-soft) 75%,rgba(27,107,58,0.06))">
+    <div class="speak-hd" style="color:var(--forest)">💡 CBOW 한 줄 — 비개발자도 알아보게</div>
+    <div class="speak-body">
+      "CBOW(씨바우)는 <strong>'주변 단어로 가운데 단어를 맞히는 빈칸 채우기 게임'</strong> 이에요. 예를 들어 <em>'오늘 학교 ___ 갔다'</em> 의 빈칸에 '에' 가 들어간다고 맞히는 거죠. 이걸 수십만 번 반복하면 <strong>각 단어가 64개 숫자(벡터)로 표현</strong> 되고, <em>비슷한 자리에 자주 들어가는 단어들</em>(학교·도서관·학원)은 비슷한 벡터를 갖게 됩니다. 즉 <strong>단어 의미가 숫자로 변환</strong> 되는 거예요."
+    </div>
+  </div>
 </section>
 
 <section id="s3" class="slide" data-n="3">
@@ -780,9 +787,9 @@
   </div>
 
   <div class="speak-box">
-    <div class="speak-hd">🗣️ 이렇게 말하면 됩니다 · 15초</div>
+    <div class="speak-hd">🗣️ 이렇게 말하면 됩니다 · 18초</div>
     <div class="speak-body">
-      "B0(비제로)부터 B6(비식스)까지 <strong>신호를 하나씩 켜고 끄면서</strong> 비교합니다. 데이터는 459 노트, 어휘 1만 7천 개. 모델당 6초로 끝나서 일곱 개 baseline(베이스라인) 전부 돌릴 수 있었어요."
+      "B0(비제로)부터 B6(비식스)까지 <strong>신호를 하나씩 켜고 끄면서</strong> 비교합니다. 데이터는 제 옵시디언 vault <strong>1,300여 노트 중에서 활성 프로젝트와 가이드 폴더만 459개 추렸어요</strong> — 일일 메모나 봇 자동 메모는 잡음이라 뺐습니다. 어휘 1만 7천 개, Mac MPS로 모델당 6초. 평가는 <strong>직접 만든 20개 쿼리-정답 노트 쌍</strong> 으로 측정했습니다."
     </div>
   </div>
 </section>
@@ -822,6 +829,14 @@
 </blockquote>
 <hr>
 
+  </div>
+
+  <div class="speak-box" style="border-left-color:var(--forest);background:linear-gradient(135deg,var(--paper-soft),var(--paper-soft) 75%,rgba(27,107,58,0.06))">
+    <div class="speak-hd" style="color:var(--forest)">💡 발음 + B6 가 1.00 까지 가는 이유</div>
+    <div class="speak-body">
+      <strong>수치 발음</strong> — P@1 → <strong>"피 앳 원"</strong> (정답이 1위에 있을 확률), P@3 → "피 앳 쓰리", R@5 → <strong>"알 앳 파이브"</strong>, MRR → <strong>"엠알알"</strong>.<br><br>
+      <strong>B5 → B6 가 1.00 까지 가는 이유</strong>: B5는 노트 안 단어 임베딩을 <em>단순 평균</em>, B6는 <strong>TF-IDF로 가중 평균</strong> 해요. TF-IDF는 <em>"그 노트에 자주 나오면서 다른 노트엔 드문 단어 — 그 노트의 시그니처 단어"</em> 에 더 큰 가중치를 줍니다. 그러면 노트 벡터에서 <strong>흔한 단어 잡음이 줄고 특징 단어가 살아남아서</strong> 검색이 정확해져요.
+    </div>
   </div>
 </section>
 
@@ -929,6 +944,13 @@
     <div class="speak-hd" style="color:var(--forest)">⭐ 닫는 한 호흡 — 한 줄로 정리하면 · 25~30초</div>
     <div class="speak-body">
       "한 줄로 정리하면 — <strong>'구조가 신호다.'</strong> 모델은 HW2 CBOW(에이치더블유 투 씨바우) + Mikolov(미콜로프) 2013 네거티브 샘플링이라는 <em>기성품</em> 을 그대로 가져왔고, 제가 한 건 <strong>위키링크와 카테고리를 학습 신호로 흡수시키는 부분</strong> 이에요. 그 결과 plain CBOW 0.45가 0.85로, TF-IDF 가중까지 더하면 <strong>1.00</strong> 까지 갑니다. 5MB 모델, 6초 학습, 큰 LLM 없이 — 이게 본 발표의 한 줄 결론입니다. 부트스트랩 caveat은 명시했으니 Q&amp;A에서 가져가셔도 됩니다. 감사합니다."
+    </div>
+  </div>
+
+  <div class="speak-box" style="border-left-color:var(--forest);background:linear-gradient(135deg,var(--paper-soft),var(--paper-soft) 75%,rgba(27,107,58,0.06));margin-top:16px">
+    <div class="speak-hd" style="color:var(--forest)">💡 더 쉬운 버전 — 청중 비전공자 비율 높으면 이쪽 (위 ⭐ 박스 대신)</div>
+    <div class="speak-body">
+      "정리하면 — <strong>CBOW + 위키링크 + 카테고리</strong> 이게 전부예요. 모델 자체는 <em>수업 HW2 의 CBOW</em> 와 <em>Mikolov 2013 word2vec 학습법</em> 이라는 <strong>이미 있는 도구</strong> 를 그대로 가져왔고, 제가 직접 한 건 <strong>이 모델한테 '제 노트의 위키링크와 폴더 구조' 를 추가로 가르친 부분</strong> 입니다. 그 결과 plain CBOW의 검색 정답률 0.45가 <strong>0.85로 두 배 가까이 점프</strong>, TF-IDF 가중까지 더하면 <strong>1.00</strong> 입니다. <strong>5MB 모델, 6초 학습, 큰 LLM 없이</strong> — 이게 본 발표의 한 줄 결론입니다. 감사합니다."
     </div>
   </div>
 </section>
