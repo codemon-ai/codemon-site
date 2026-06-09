@@ -78,7 +78,37 @@
 
 ---
 
-## Slide 2 — Problem & Approach (45초)
+## Slide 2 — Karpathy's LLM Wiki Pattern (25초)
+
+> "아이디어 자체는 **Karpathy(카파시)의 LLM Wiki 패턴** 에서 출발했어요. RAG처럼 매 질의마다 새로 검색하는 게 아니라, *LLM이 점진적으로 빌드·유지하는 구조화된 위키* 라는 아이디어인데, 핵심은 — **'the wiki is a persistent, compounding artifact'** — 위키 자체가 누적되는 구조가 되는 거죠. 본 프로젝트의 *지식 구조 = 학습 신호* 아이디어가 여기서 나왔습니다."
+
+---
+
+## Slide 3 — My Obsidian Vault — 1,300+ Notes (25초)
+
+> "발표 시작 전에 제 작업 환경을 잠깐 보여드릴게요. 이게 제 옵시디언 vault의 graph view 입니다. **1,300여 개 노트가 위키링크와 폴더·태그로 연결** 되어 있고요. 자주 함께 등장하거나 같은 토픽 노트들이 자연스럽게 군집을 형성하는 게 보이실 거예요. 이 **구조 자체가 본 프로젝트의 학습 데이터** 가 됩니다."
+
+---
+
+## Slide 4 — One Personal Feed (Vision) (25초)
+
+> "그리고 제가 옆에서 만들고 있는 통합 피드 앱입니다. **일기·할일·일정·메모·위키·결정사항** 을 한 화면에서 보는 게 목표인데, 여기 안에서 *작은 모델이 검색·연결·요약* 을 담당하게 하고 싶었어요. 본 프로젝트는 그 검색 부분의 **작은 임베딩** 을 직접 만들어 본 시도입니다."
+
+---
+
+## Slide 5 — Why a Small Model? — StackChan (20초)
+
+> "그래서 *작은 모델* 에 집중합니다. 이게 **StackChan(스택챈)** 이라는 손바닥만 한 디바이스인데, 큰 LLM이 클라우드에 떠 있어야 하는 시대에도 *이런 작은 기기 안에서 돌아가는 모델* 로 의미 있는 검색이 가능한지가 본 프로젝트의 출발점이에요."
+
+---
+
+## Slide 6 — Tiny Hardware Budget (15초)
+
+> "스택챈의 스펙입니다. **ESP32-S3 듀얼코어 240MHz, 16MB Flash, 8MB PSRAM** — 클라우드 LLM은 절대 들어갈 수 없는 작은 하드웨어죠. 그래서 *5MB 임베딩 + numpy CPU 추론* 같은 가벼운 모델이 필요한 이유입니다."
+
+---
+
+## Slide 7 — Problem & Approach (45초)
 
 > **(15초) 문제 정의**
 >
@@ -113,7 +143,7 @@ $$ v_{\text{ctx}} = \frac{1}{|\text{ctx}|}\sum_{w\in\text{ctx}} W_1[w], \qquad P
 
 ---
 
-## Slide 3 — System Architecture & Flow (60초)
+## Slide 8 — System Architecture & Flow (60초)
 
 > **(60초) 전체 흐름 안내**
 >
@@ -127,7 +157,7 @@ $$ v_{\text{ctx}} = \frac{1}{|\text{ctx}|}\sum_{w\in\text{ctx}} W_1[w], \qquad P
 
 ---
 
-## Slide 4 — Three Sources of Co-occurrence (45초)
+## Slide 9 — Three Sources of Co-occurrence (45초)
 
 > **(45초) 세 신호 직관**
 >
@@ -153,7 +183,7 @@ $$ (\,w_a \in n_A,\quad w_b \in n_B\,) $$
 
 ---
 
-## Slide 5 — Pair Generation Formalized (65초)
+## Slide 10 — Pair Generation Formalized (65초)
 
 > **(65초) 수식 형식화**
 >
@@ -188,7 +218,7 @@ $$ \mathcal{D}_{\text{cat}} = \{\,(\{w_a\},\ w_b)\ :\ (n_A,n_B)\in E_C,\ w_a\sim
 
 ---
 
-## Slide 6 — Loss: NS + λ Mixing (55초)
+## Slide 11 — Loss: NS + λ Mixing (55초)
 
 > **(35초) NS 손실**
 >
@@ -216,7 +246,7 @@ $$ P_n(w)\propto f(w)^{0.75}, \qquad \mathcal L = \lambda_{\text{intra}}\mathcal
 
 ---
 
-## Slide 7 — Query↔Note Mapping (50초)
+## Slide 12 — Query↔Note Mapping (50초)
 
 > **(50초) 검색 함수**
 >
@@ -247,7 +277,7 @@ $$ \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \co
 
 ---
 
-## Slide 8 — Baselines & Corpus (40초)
+## Slide 13 — Baselines & Corpus (40초)
 
 > **(40초) 비교 구조**
 >
@@ -259,7 +289,7 @@ $$ \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \co
 
 ---
 
-## Slide 9 — Results — Retrieval@k (75초) ★ 가장 중요
+## Slide 14 — Results — Retrieval@k (75초) ★ 가장 중요
 
 > **(75초) 결과 발표**
 >
@@ -288,7 +318,7 @@ $$ \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \co
 
 ---
 
-## Slide 10 — t-SNE (50초)
+## Slide 15 — t-SNE (50초)
 
 > **(50초) 시각화**
 >
@@ -302,7 +332,7 @@ $$ \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \co
 
 ---
 
-## Slide 11 — Caveats · LLM · Future (25초)
+## Slide 16 — Caveats · LLM · Future (25초)
 
 > **(25초) 한계와 마무리**
 >

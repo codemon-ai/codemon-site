@@ -131,9 +131,6 @@
   }
   .nar-body p{margin:0 0 12px;font-size:15.5px;line-height:1.7}
   .nar-body strong{color:var(--vermillion);font-weight:600}
-  /* KaTeX: let long display formulas scroll instead of overflowing the pane */
-  .nar-body .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0;margin:10px 0}
-  .nar-body .katex{font-size:1em}
   .nar-body em{font-style:italic;color:var(--ink-soft)}
   .nar-body code{
     font-family:var(--mono);font-size:0.85em;background:var(--paper-soft);
@@ -234,21 +231,21 @@
       <button data-mode="sync" class="active" title="슬라이드와 나레이션 동시 이동 (← →)">🔗 Sync</button>
       <button data-mode="solo" title="나레이션만 이동 (← →), 슬라이드 별도 (Shift+← →)">📜 Solo</button>
     </div>
-    <span>slide <strong id="cur-slide">1</strong> / 11</span>
-    <span>nar <strong id="cur-nar">1</strong> / 11</span>
+    <span>slide <strong id="cur-slide">1</strong> / 16</span>
+    <span>nar <strong id="cur-nar">1</strong> / 16</span>
   </div>
 </div>
 
 <div class="main">
   <div class="slide-pane">
-    <div class="slide-status" id="slide-status">slide 1 / 11</div>
+    <div class="slide-status" id="slide-status">slide 1 / 16</div>
     <div class="progress-bar"><div class="fill" id="bar"></div></div>
     <iframe id="slide-frame" src="wikicbow.html#1" title="slide"></iframe>
   </div>
 
   <div class="nar-pane">
     <div class="nar-header">
-      <div class="num" id="nar-num">01 / 11</div>
+      <div class="num" id="nar-num">01 / 16</div>
       <div class="title" id="nar-title">Loading…</div>
       <div class="time" id="nar-time">—</div>
       <div class="solo-badge">SOLO</div>
@@ -277,17 +274,22 @@
 
 <script>
 const SLIDE_META = [
-  { n: 1,  title: "Title",                         time: "15s" },
-  { n: 2,  title: "Problem & Approach",            time: "45s" },
-  { n: 3,  title: "System Architecture & Flow",    time: "60s" },
-  { n: 4,  title: "Three Sources of Co-occurrence",time: "50s" },
-  { n: 5,  title: "Pair Generation Formalized",    time: "75s" },
-  { n: 6,  title: "Loss: NS + λ Mixing",           time: "55s" },
-  { n: 7,  title: "Query↔Note Mapping",            time: "50s" },
-  { n: 8,  title: "Baselines & Corpus",            time: "40s" },
-  { n: 9,  title: "Results — Retrieval@k",         time: "75s" },
-  { n: 10, title: "t-SNE",                         time: "50s" },
-  { n: 11, title: "Caveats · LLM · Future",        time: "25s" }
+  { n: 1,  title: "Title",                            time: "15s" },
+  { n: 2,  title: "Karpathy's LLM Wiki Pattern",      time: "25s" },
+  { n: 3,  title: "My Obsidian Vault — 1,300+ Notes", time: "25s" },
+  { n: 4,  title: "One Personal Feed (Vision)",       time: "25s" },
+  { n: 5,  title: "Why a Small Model? — StackChan",   time: "20s" },
+  { n: 6,  title: "Tiny Hardware Budget",             time: "15s" },
+  { n: 7,  title: "Problem & Approach",               time: "45s" },
+  { n: 8,  title: "System Architecture & Flow",       time: "60s" },
+  { n: 9,  title: "Three Sources of Co-occurrence",   time: "50s" },
+  { n: 10, title: "Pair Generation Formalized",       time: "75s" },
+  { n: 11, title: "Loss: NS + λ Mixing",              time: "55s" },
+  { n: 12, title: "Query↔Note Mapping",               time: "50s" },
+  { n: 13, title: "Baselines & Corpus",               time: "40s" },
+  { n: 14, title: "Results — Retrieval@k",            time: "75s" },
+  { n: 15, title: "t-SNE",                            time: "50s" },
+  { n: 16, title: "Caveats · LLM · Future",           time: "25s" }
 ];
 
 // ============ State ============
@@ -398,23 +400,9 @@ function splitIntoSlides(md) {
   m.setOptions({ gfm:true, breaks:false });
 
   for (const s of sections) {
-    s.html = parseWithMath(m, s.body.join('\n'));
+    s.html = m.parse(s.body.join('\n'));
   }
   return sections;
-}
-
-// marked() mangles LaTeX (e.g. `W_1 ... W_2` → emphasis). Shield every $…$ / $$…$$
-// span behind a placeholder, run marked, then restore the raw TeX so KaTeX's
-// auto-render sees clean delimiters.
-function parseWithMath(m, md) {
-  const store = [];
-  const stash = (s) => { store.push(s); return `xKTXx${store.length - 1}x`; };
-  let protectedMd = md
-    .replace(/\$\$([\s\S]+?)\$\$/g, (x) => stash(x))   // display first
-    .replace(/\$([^$\n]+?)\$/g,    (x) => stash(x));   // then inline
-  let html = m.parse(protectedMd);
-  html = html.replace(/xKTXx(\d+)x/g, (_, i) => store[+i]);
-  return html;
 }
 
 // ============ KaTeX render ============
@@ -443,7 +431,7 @@ function renderNarration() {
   }
   const meta = SLIDE_META[narCur] || { title: s.title, time: s.time };
 
-  narNum.textContent = `${pad2(s.n)} / 11`;
+  narNum.textContent = `${pad2(s.n)} / 16`;
   narTitle.textContent = s.title;
   narTime.textContent = s.time;
   curNar.textContent = s.n;
@@ -457,55 +445,21 @@ function renderNarration() {
 
 function syncSlideFrame() {
   const targetN = slideCur + 1;
-  // Drive the slide deck by setting the iframe's hash (same-origin) — the deck
-  // listens for hashchange and switches slides without a full reload. Falls back
-  // to reassigning src when the iframe isn't reachable yet (or cross-origin file://).
-  let driven = false;
-  try {
-    const win = frame.contentWindow;
-    if (win && win.location) {
-      if (String(win.location.hash) !== '#' + targetN) {
-        win.location.hash = String(targetN);
+  const wantSrc = `wikicbow.html#${targetN}`;
+  if (!frame.src.endsWith(wantSrc.replace(/^.*#/, '#'))) {
+    frame.src = wantSrc;
+  } else {
+    // already set; force hash change to trigger slide change inside iframe
+    try {
+      if (frame.contentWindow) {
+        frame.contentWindow.location.hash = String(targetN);
       }
-      driven = true;
-    }
-  } catch (_) { /* cross-origin — fall through to src */ }
-  if (!driven) {
-    frame.src = `wikicbow.html#${targetN}`;
+    } catch(_) {}
   }
   curSlide.textContent = targetN;
-  slideStatus.textContent = `slide ${targetN} / 11`;
-  bar.style.width = ((slideCur + 1) / 11 * 100) + '%';
+  slideStatus.textContent = `slide ${targetN} / 16`;
+  bar.style.width = ((slideCur + 1) / 16 * 100) + '%';
 }
-
-// Keep state in lockstep when the slide changes *inside* the iframe
-// (clicking the slide, arrow keys while the deck has focus, etc.).
-function onSlideMessage(e) {
-  const d = e && e.data;
-  if (!d || d.type !== 'wikicbow:slide') return;
-  const i = Math.max(0, Math.min(10, (d.n | 0) - 1));
-  if (i === slideCur && (mode !== 'sync' || i === narCur)) {
-    // already in sync — just refresh the chrome
-    curSlide.textContent = i + 1;
-    slideStatus.textContent = `slide ${i + 1} / 11`;
-    bar.style.width = ((i + 1) / 11 * 100) + '%';
-    return;
-  }
-  slideCur = i;
-  viewedSlides.add(i);
-  curSlide.textContent = i + 1;
-  slideStatus.textContent = `slide ${i + 1} / 11`;
-  bar.style.width = ((i + 1) / 11 * 100) + '%';
-  if (mode === 'sync' && narCur !== i) {
-    narCur = i;
-    viewedNars.add(i);
-    renderNarration();
-  }
-  updateDots();
-  updateButtons();
-  persistHash();
-}
-window.addEventListener('message', onSlideMessage);
 
 function updateDots() {
   document.querySelectorAll('.nav-dot').forEach((d, idx) => {
@@ -538,7 +492,7 @@ function persistHash() {
 
 // ============ Navigation ============
 function goSlide(i, andSyncNar = false) {
-  i = Math.max(0, Math.min(10, i));
+  i = Math.max(0, Math.min(15, i));
   slideCur = i;
   viewedSlides.add(i);
   syncSlideFrame();
@@ -553,7 +507,7 @@ function goSlide(i, andSyncNar = false) {
 }
 
 function goNar(i) {
-  i = Math.max(0, Math.min(10, i));
+  i = Math.max(0, Math.min(15, i));
   narCur = i;
   viewedNars.add(i);
   renderNarration();
@@ -563,7 +517,7 @@ function goNar(i) {
 }
 
 function goBoth(i) {
-  i = Math.max(0, Math.min(10, i));
+  i = Math.max(0, Math.min(15, i));
   slideCur = i;
   narCur = i;
   viewedSlides.add(i);
@@ -593,7 +547,7 @@ function setMode(m) {
 // ============ Init ============
 async function init() {
   // Build dots
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 16; i++) {
     const d = document.createElement('button');
     d.className = 'nav-dot';
     d.dataset.idx = i;
@@ -675,10 +629,10 @@ async function init() {
   const m1 = /^(\d+)$/.exec(h);
   const m2 = /^s(\d+)-n(\d+)$/.exec(h);
   if (m1) {
-    initSlide = initNar = Math.max(0, Math.min(10, parseInt(m1[1],10) - 1));
+    initSlide = initNar = Math.max(0, Math.min(15, parseInt(m1[1],10) - 1));
   } else if (m2) {
-    initSlide = Math.max(0, Math.min(10, parseInt(m2[1],10) - 1));
-    initNar = Math.max(0, Math.min(10, parseInt(m2[2],10) - 1));
+    initSlide = Math.max(0, Math.min(15, parseInt(m2[1],10) - 1));
+    initNar = Math.max(0, Math.min(15, parseInt(m2[2],10) - 1));
     if (initSlide !== initNar) initMode = 'solo';
   }
   slideCur = initSlide;
