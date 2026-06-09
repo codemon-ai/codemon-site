@@ -131,6 +131,9 @@
   }
   .nar-body p{margin:0 0 12px;font-size:15.5px;line-height:1.7}
   .nar-body strong{color:var(--vermillion);font-weight:600}
+  /* KaTeX: let long display formulas scroll instead of overflowing the pane */
+  .nar-body .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0;margin:10px 0}
+  .nar-body .katex{font-size:1em}
   .nar-body em{font-style:italic;color:var(--ink-soft)}
   .nar-body code{
     font-family:var(--mono);font-size:0.85em;background:var(--paper-soft);
@@ -395,9 +398,23 @@ function splitIntoSlides(md) {
   m.setOptions({ gfm:true, breaks:false });
 
   for (const s of sections) {
-    s.html = m.parse(s.body.join('\n'));
+    s.html = parseWithMath(m, s.body.join('\n'));
   }
   return sections;
+}
+
+// marked() mangles LaTeX (e.g. `W_1 ... W_2` → emphasis). Shield every $…$ / $$…$$
+// span behind a placeholder, run marked, then restore the raw TeX so KaTeX's
+// auto-render sees clean delimiters.
+function parseWithMath(m, md) {
+  const store = [];
+  const stash = (s) => { store.push(s); return `xKTXx${store.length - 1}x`; };
+  let protectedMd = md
+    .replace(/\$\$([\s\S]+?)\$\$/g, (x) => stash(x))   // display first
+    .replace(/\$([^$\n]+?)\$/g,    (x) => stash(x));   // then inline
+  let html = m.parse(protectedMd);
+  html = html.replace(/xKTXx(\d+)x/g, (_, i) => store[+i]);
+  return html;
 }
 
 // ============ KaTeX render ============
@@ -440,21 +457,55 @@ function renderNarration() {
 
 function syncSlideFrame() {
   const targetN = slideCur + 1;
-  const wantSrc = `wikicbow.html#${targetN}`;
-  if (!frame.src.endsWith(wantSrc.replace(/^.*#/, '#'))) {
-    frame.src = wantSrc;
-  } else {
-    // already set; force hash change to trigger slide change inside iframe
-    try {
-      if (frame.contentWindow) {
-        frame.contentWindow.location.hash = String(targetN);
+  // Drive the slide deck by setting the iframe's hash (same-origin) — the deck
+  // listens for hashchange and switches slides without a full reload. Falls back
+  // to reassigning src when the iframe isn't reachable yet (or cross-origin file://).
+  let driven = false;
+  try {
+    const win = frame.contentWindow;
+    if (win && win.location) {
+      if (String(win.location.hash) !== '#' + targetN) {
+        win.location.hash = String(targetN);
       }
-    } catch(_) {}
+      driven = true;
+    }
+  } catch (_) { /* cross-origin — fall through to src */ }
+  if (!driven) {
+    frame.src = `wikicbow.html#${targetN}`;
   }
   curSlide.textContent = targetN;
   slideStatus.textContent = `slide ${targetN} / 11`;
   bar.style.width = ((slideCur + 1) / 11 * 100) + '%';
 }
+
+// Keep state in lockstep when the slide changes *inside* the iframe
+// (clicking the slide, arrow keys while the deck has focus, etc.).
+function onSlideMessage(e) {
+  const d = e && e.data;
+  if (!d || d.type !== 'wikicbow:slide') return;
+  const i = Math.max(0, Math.min(10, (d.n | 0) - 1));
+  if (i === slideCur && (mode !== 'sync' || i === narCur)) {
+    // already in sync — just refresh the chrome
+    curSlide.textContent = i + 1;
+    slideStatus.textContent = `slide ${i + 1} / 11`;
+    bar.style.width = ((i + 1) / 11 * 100) + '%';
+    return;
+  }
+  slideCur = i;
+  viewedSlides.add(i);
+  curSlide.textContent = i + 1;
+  slideStatus.textContent = `slide ${i + 1} / 11`;
+  bar.style.width = ((i + 1) / 11 * 100) + '%';
+  if (mode === 'sync' && narCur !== i) {
+    narCur = i;
+    viewedNars.add(i);
+    renderNarration();
+  }
+  updateDots();
+  updateButtons();
+  persistHash();
+}
+window.addEventListener('message', onSlideMessage);
 
 function updateDots() {
   document.querySelectorAll('.nav-dot').forEach((d, idx) => {
