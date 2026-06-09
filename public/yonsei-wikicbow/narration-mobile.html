@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<meta name="theme-color" content="#1a1a1a">
+<title>WikiCBOW 발표 나레이션 — 모바일</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+
+<style>
+  :root{
+    --paper:#FBFAF6;--paper-soft:#F4F1E8;--ink:#1A1A1A;--ink-soft:#3A3A3A;
+    --muted:#6A6A6A;--hair:#D8D5CC;--hair-soft:#E8E5DC;
+    --vermillion:#B83A2C;--vermillion-soft:#E8E3DE;--forest:#1B6B3A;
+    --display:'Fraunces',Georgia,serif;
+    --body:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1a1a1a;--paper-soft:#2a2a26;--ink:#f0eee8;--ink-soft:#cccac4;
+      --muted:#8a8a8a;--hair:#3a3a3a;--hair-soft:#2a2a2a;
+      --vermillion:#e76e5d;--vermillion-soft:#3a2a26;--forest:#5fb87a;
+    }
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--body);
+    font-size:17px;line-height:1.65;
+    padding-top:64px;padding-bottom:80px;
+    overscroll-behavior-y:contain;
+  }
+
+  /* Top sticky nav with chips */
+  .nav{
+    position:fixed;top:0;left:0;right:0;height:64px;
+    background:rgba(251,250,246,0.92);
+    border-bottom:1px solid var(--hair);
+    backdrop-filter:saturate(180%) blur(12px);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+    z-index:100;
+    display:flex;align-items:center;padding:0 12px;gap:8px;
+  }
+  @media (prefers-color-scheme: dark){
+    .nav{background:rgba(26,26,26,0.92)}
+  }
+  .nav .brand{
+    font-family:var(--display);font-size:16px;color:var(--ink);font-weight:500;
+    flex-shrink:0;padding:0 4px;
+  }
+  .nav .brand .glyph{color:var(--vermillion);font-style:italic}
+  .nav .chips{
+    flex:1;display:flex;gap:6px;overflow-x:auto;
+    scrollbar-width:none;-ms-overflow-style:none;
+    padding:0 4px;
+  }
+  .nav .chips::-webkit-scrollbar{display:none}
+  .nav .chip{
+    border:1px solid var(--hair);background:transparent;color:var(--ink-soft);
+    padding:6px 10px;border-radius:14px;cursor:pointer;
+    font-family:var(--mono);font-size:11.5px;font-weight:500;
+    text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+    flex-shrink:0;transition:all 100ms;
+  }
+  .nav .chip:hover,.nav .chip:focus{border-color:var(--vermillion);color:var(--vermillion);outline:none}
+  .nav .chip.current{background:var(--vermillion);border-color:var(--vermillion);color:#fff}
+
+  /* Toolbar (font size + wake lock) */
+  .toolbar{
+    display:flex;gap:6px;align-items:center;flex-shrink:0;
+  }
+  .tbtn{
+    background:transparent;border:1px solid var(--hair);
+    width:32px;height:32px;border-radius:6px;
+    color:var(--ink-soft);font-family:var(--mono);font-size:12px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tbtn:hover,.tbtn:focus{border-color:var(--vermillion);color:var(--vermillion);outline:none}
+  .tbtn.active{background:var(--vermillion);border-color:var(--vermillion);color:#fff}
+
+  /* Slide cards */
+  main{max-width:760px;margin:0 auto;padding:20px 16px}
+  .slide{
+    background:var(--paper);
+    border:1px solid var(--hair-soft);border-radius:8px;
+    margin-bottom:28px;padding:22px 20px;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  @media (prefers-color-scheme: dark){
+    .slide{background:#202020;border-color:#333}
+  }
+  .slide-head{
+    margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair-soft);
+  }
+  .slide-head .row1{
+    display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;
+  }
+  .slide-head .num{
+    font-family:var(--mono);font-size:11px;letter-spacing:0.12em;
+    color:var(--vermillion);font-weight:600;text-transform:uppercase;
+    background:var(--vermillion-soft);padding:3px 8px;border-radius:4px;
+  }
+  .slide-head .time{
+    font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:500;
+    margin-left:auto;
+  }
+  .slide-head .title-en{
+    font-family:var(--display);font-size:23px;font-weight:500;
+    color:var(--ink);line-height:1.2;margin:6px 0 4px;letter-spacing:-0.01em;
+  }
+  .slide-head .title-ko{
+    font-family:var(--body);font-size:16px;font-weight:600;
+    color:var(--vermillion);margin:2px 0 4px;
+  }
+  .slide-head .title-sub{
+    font-family:var(--body);font-size:13.5px;color:var(--muted);font-weight:400;
+  }
+
+  /* Slide body — content from extracted html */
+  .slide-body{font-size:16.5px;line-height:1.75;color:var(--ink)}
+  .slide-body p{margin:0 0 14px}
+  .slide-body strong{color:var(--vermillion);font-weight:600}
+  .slide-body em{font-style:italic;color:var(--ink-soft)}
+  .slide-body blockquote{
+    border-left:3px solid var(--vermillion);
+    padding:12px 16px;margin:0 0 16px;
+    background:var(--paper-soft);border-radius:0 6px 6px 0;
+  }
+  .slide-body blockquote p{margin:0 0 8px;line-height:1.7;font-size:16.5px}
+  .slide-body blockquote p:last-child{margin-bottom:0}
+  .slide-body code{
+    font-family:var(--mono);font-size:0.85em;
+    background:var(--paper-soft);padding:1px 6px;border-radius:3px;
+  }
+  .slide-body ul,.slide-body ol{padding-left:22px;margin:0 0 14px}
+  .slide-body li{margin-bottom:6px;line-height:1.65}
+  .slide-body h2,.slide-body h3{
+    font-family:var(--display);font-weight:500;color:var(--ink);
+    font-size:18px;margin:16px 0 8px;line-height:1.3;
+  }
+  .slide-body hr{border:none;border-top:1px solid var(--hair-soft);margin:20px 0}
+  .slide-body table{
+    border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;
+    border:1px solid var(--hair-soft);
+  }
+  .slide-body th{
+    text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);padding:8px 10px;
+    background:var(--paper-soft);border-bottom:1px solid var(--ink);
+  }
+  .slide-body td{padding:7px 10px;border-bottom:1px solid var(--hair-soft);font-size:14px;vertical-align:top}
+
+  /* Formula reading box */
+  .formula-box{
+    margin:20px 0 16px;padding:16px 18px;
+    background:linear-gradient(180deg,var(--paper-soft),var(--paper-soft) 80%);
+    border:1px solid var(--vermillion);border-radius:8px;
+    box-shadow:0 1px 0 rgba(184,58,44,0.06);
+  }
+  .formula-box .hd{
+    font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--vermillion);font-weight:600;
+    margin-bottom:12px;display:flex;align-items:center;gap:6px;
+  }
+  .formula-box .row{
+    display:flex;flex-direction:column;gap:4px;
+    padding:10px 0;border-bottom:1px dashed var(--hair-soft);
+  }
+  .formula-box .row:last-child{border-bottom:none}
+  .formula-box .sym{font-size:17px;line-height:1.3;color:var(--ink)}
+  .formula-box .read{
+    font-family:var(--body);font-weight:600;font-size:15px;
+    color:var(--vermillion);
+  }
+  .formula-box .desc{
+    font-family:var(--body);font-size:13.5px;color:var(--ink-soft);line-height:1.55;
+  }
+
+  /* Footer bar */
+  footer{
+    position:fixed;bottom:0;left:0;right:0;height:64px;
+    background:rgba(251,250,246,0.92);
+    border-top:1px solid var(--hair);
+    backdrop-filter:saturate(180%) blur(12px);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+    z-index:100;
+    display:flex;align-items:center;padding:0 14px;gap:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    footer{background:rgba(26,26,26,0.92)}
+  }
+  footer .progress{
+    flex:1;height:6px;background:var(--hair-soft);border-radius:3px;overflow:hidden;
+    position:relative;cursor:pointer;
+  }
+  footer .progress .fill{
+    height:100%;background:var(--vermillion);width:0;
+    transition:width 200ms ease-out;
+  }
+  footer .nav-btn{
+    border:1px solid var(--hair);background:var(--paper);color:var(--ink);
+    width:44px;height:44px;border-radius:8px;cursor:pointer;
+    font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  }
+  footer .nav-btn:hover:not(:disabled),footer .nav-btn:focus{border-color:var(--vermillion);color:var(--vermillion);outline:none}
+  footer .nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+  footer .status{
+    font-family:var(--mono);font-size:11px;color:var(--muted);min-width:60px;text-align:center;
+    letter-spacing:0.06em;
+  }
+  footer .status strong{color:var(--ink);font-weight:600}
+
+  /* Font size scale modes */
+  body.font-l{font-size:19px}
+  body.font-l .slide-body,body.font-l .slide-body blockquote p{font-size:18.5px;line-height:1.8}
+  body.font-l .slide-head .title-en{font-size:25px}
+  body.font-xl{font-size:21px}
+  body.font-xl .slide-body,body.font-xl .slide-body blockquote p{font-size:20px;line-height:1.85}
+  body.font-xl .slide-head .title-en{font-size:28px}
+
+  /* KaTeX size adjust */
+  .katex{font-size:1em !important}
+  .katex-display{font-size:0.95em !important;margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+
+  /* Print friendly */
+  @media print{
+    .nav,footer{display:none}
+    body{padding-top:0;padding-bottom:0}
+    .slide{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">Wiki<span class="glyph">CBOW</span></div>
+  <div class="chips" id="chips">    <a href="#s1" class="chip" data-n="1">01</a>
+    <a href="#s2" class="chip" data-n="2">02</a>
+    <a href="#s3" class="chip" data-n="3">03</a>
+    <a href="#s4" class="chip" data-n="4">04</a>
+    <a href="#s5" class="chip" data-n="5">05</a>
+    <a href="#s6" class="chip" data-n="6">06</a>
+    <a href="#s7" class="chip" data-n="7">07</a>
+    <a href="#s8" class="chip" data-n="8">08</a>
+    <a href="#s9" class="chip" data-n="9">09</a>
+    <a href="#s10" class="chip" data-n="10">10</a>
+    <a href="#s11" class="chip" data-n="11">11</a>
+  </div>
+  <div class="toolbar">
+    <button class="tbtn" id="font-down" title="글자 작게">A−</button>
+    <button class="tbtn" id="font-up" title="글자 크게">A+</button>
+    <button class="tbtn" id="wake" title="화면 켜둠">☀</button>
+  </div>
+</nav>
+
+<main>
+<section id="s1" class="slide" data-n="1">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 01 / 11</span>
+      <span class="time">⏱ 45초</span>
+    </div>
+    <div class="title-en">Title</div>
+    <div class="title-ko">표지 — 인사</div>
+    <div class="title-sub">발표 시작 · 핵심 한 줄 + 동기</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p>"안녕하세요, 융합인문공학 박상용입니다. 오늘 발표할 기말 프로젝트는 <strong>WikiCBOW(위키 씨바우)</strong> 인데요, <strong>수업에서 배운 CBOW(씨바우) 모델을 제 옵시디언 노트에 맞게 확장</strong>한 작업입니다. 솔직히 말씀드리면 처음부터 새로 짠 게 아니라, HW2(에이치더블유 투)에서 만든 CBOW 코드에 두 가지를 더 얹은 거예요."</p>
+</blockquote>
+<p><strong>🌱 왜 이걸 하게 됐나 — 시작한 계기 (오프닝 훅)</strong></p>
+<blockquote>
+<p>"사실 이 프로젝트는 제 평소 작업 환경에서 출발했어요. 저는 모든 노트를 <strong>Karpathy(카파시)의 <em>LLM Wiki</em> 방식</strong>으로 정리해서 씁니다 — 원본 자료, 위키링크와 폴더·태그로 의미적으로 엮인 마크다운 위키, 그리고 그 규칙을 적은 스키마, 이렇게 세 층으로요. 그런데 큰 LLM한테 물어보면 이 <strong>구조 덕분에</strong> 제 노트를 정말 잘 찾아줍니다. 그걸 보다가 든 생각이 — *'검색이 잘 되는 핵심은 모델 크기가 아니라 이 구조 아닐까? 그렇다면 클라우드의 큰 모델 없이, 라즈베리 파이나 작은 로봇 같은 기기에 들어갈 만한 <strong>작은 모델</strong>로도 내 노트를 찾을 수 있지 않을까?'* 였어요. 그래서 가장 가벼운 임베딩 모델인 CBOW에 이 위키 구조(위키링크·카테고리)를 학습 신호로 먹여보자 — 그게 <strong>WikiCBOW</strong>입니다."</p>
+</blockquote>
+<p><strong>한 호흡에 정리하면 (읽기용)</strong></p>
+<ul>
+<li><strong>출발점</strong> — 내 Obsidian 볼트를 Karpathy <em>LLM Wiki</em> 스키마로 정리 → 큰 LLM이 <em>구조</em> 덕에 검색을 잘함.</li>
+<li><strong>관찰</strong> — 검색이 잘 되는 진짜 이유는 모델 크기보다 <strong>구조(위키링크·카테고리)</strong> 다.</li>
+<li><strong>도약</strong> — 구조가 신호라면, 그 구조를 직접 학습한 <strong>작은 모델</strong>로 <em>클라우드 없이</em> 온디바이스(파이·소형 로봇) 검색이 가능하지 않을까?</li>
+<li><strong>그래서</strong> — 제일 가벼운 word2vec인 <strong>CBOW + 위키 구조 신호 = WikiCBOW</strong>. (실제 파이 배포는 S11 <em>다음 조사</em>로 연결)</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다 (20초 훅):</strong> "제 노트를 Karpathy LLM Wiki 방식으로 정리해 쓰는데, 큰 LLM이 그 <em>구조</em> 덕에 검색을 잘하더라고요. 그래서 '구조가 핵심이면, 작은 기기에 들어갈 작은 모델로도 되지 않을까?' 싶어 직접 만들어 본 게 이 프로젝트입니다."</p>
+</blockquote>
+<blockquote>
+<p>📎 <strong>솔직 포인트:</strong> 작은 기기 배포 자체는 교수님 말씀대로 <em>보조 목표(점수 무관)</em> 고요, 발표의 핵심은 <em>작은 모델이 위키 구조를 학습 신호로 쓰는 부분</em> 입니다. (Karpathy <em>LLM Wiki</em> 는 Vannevar Bush의 <em>Memex</em> 계보 — '개인 지식 도구'라는 큰 맥락도 여기 닿아 있어요.)</p>
+</blockquote>
+<p><strong>🎓 이 발표는 "교수님 피드백 7항"을 추가로 적용한 버전입니다</strong></p>
+<p>5/26에 받은 교수님 손글씨 피드백 7가지를, 각 슬라이드가 하나씩 답하도록 다시 구성했어요. 발표 중 해당 슬라이드에서 <em>"이 부분은 교수님 피드백 ○번을 반영한 거예요"</em> 라고 짚으면 됩니다.</p>
+<table>
+<thead>
+<tr>
+<th>교수님 코멘트</th>
+<th>반영 슬라이드</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 키워드 데모는 보조 (Pi·LED·앱은 점수 무관)</td>
+<td>S2 — 모델 본체 중심으로 재구성</td>
+</tr>
+<tr>
+<td>② Query↔Note 사상 명시 (mean vs TF-IDF)</td>
+<td>S7</td>
+</tr>
+<tr>
+<td>③ ★ 학습 pair 생성 규칙 <strong>수식화</strong></td>
+<td>S5</td>
+</tr>
+<tr>
+<td>④ Negative sampling (예: sampled softmax)</td>
+<td>S6</td>
+</tr>
+<tr>
+<td>⑤ ★ Baseline 비교 (Plain CBOW · TF-IDF · ablation)</td>
+<td>S8 · S9</td>
+</tr>
+<tr>
+<td>⑥ (Optional) Graph embedding 확장 · Hetero-DeepWalk</td>
+<td>S11 (다음 조사)</td>
+</tr>
+<tr>
+<td>⑦ LLM 활용 ✓</td>
+<td>S11 + 각 슬라이드 각주</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "제출본 이후 교수님께서 7가지를 코멘트해 주셨는데, 이번 발표 자료는 그 7가지를 각 슬라이드에 하나씩 반영해서 <em>전후로 무엇이 강해졌는지</em> 보여드리는 데 초점을 맞췄습니다."</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s2" class="slide" data-n="2">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 02 / 11</span>
+      <span class="time">⏱ 45초</span>
+    </div>
+    <div class="title-en">Problem &amp; Approach</div>
+    <div class="title-ko">문제 정의 &amp; 접근</div>
+    <div class="title-sub">왜 만드는가 + HW2 CBOW 확장</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(15초) 문제 정의</strong></p>
+<p>"문제는 단순합니다. ChatGPT(챗 지피티) 같은 일반 LLM(엘엘엠 — Large Language Model)은 제가 평소 쓰는 약어나 프로젝트 이름을 모릅니다. 그래서 <strong>제 옵시디언 노트로 직접 학습한 작은 모델</strong>로 노트를 검색해보자, 가 출발점이었어요."</p>
+<p><strong>(30초) 접근</strong></p>
+<p>"방법은 HW2 CBOW에서 출발합니다. 이 가운데 수식은 수업에서 다룬 식 그대로고요 — 주변 단어들 임베딩을 평균 내서 중심 단어를 예측하는 표준 CBOW 입니다. 손실은 softmax(소프트맥스) 대신 <strong>NS(엔에스), 즉 negative sampling(네거티브 샘플링)</strong> 으로 바꿨는데, 이건 뒤에서 다시 설명드릴게요. <strong>제가 추가한 건 두 가지</strong> — 옵시디언의 위키링크와 폴더·태그를 학습 신호로 더한 부분, 그리고 7개 baseline(베이스라인) 으로 비교한 부분입니다."</p>
+</blockquote>
+<p><strong>🤔 왜 CBOW를 골랐나 (질문 대비)</strong></p>
+<p>수업에서 배운 word2vec 두 모델 중에서 골랐습니다.</p>
+<ul>
+<li><strong>Skip-Gram(스킵그램)</strong> — 단어 <em>하나로 주변 여러 개</em>를 예측 → 학습·메모리가 무겁다.</li>
+<li><strong>CBOW(씨바우)</strong> — 주변을 모아 <em>가운데 하나</em>만 예측 → 가장 가볍고, <strong>HW2에서 numpy로 짠 backprop(백프롭) 코드를 그대로 확장</strong>할 수 있다. 출력 쪽 기울기가 <em>(예측 − 정답)</em> 으로 깔끔히 떨어져 디버깅·해석도 쉽다.</li>
+<li>그래서 <em>수업 범위 안에서 가장 현실적인 출발점</em> 으로 CBOW를 골랐고, 여기에 그래프 신호 두 개(위키링크·카테고리)를 <strong>최소 변형</strong>으로 얹었습니다.</li>
+</ul>
+<p><strong>📐 수식 풀이 — 발표 중 막히면 그대로 읽으세요</strong></p>
+<p><span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>v</mi><mtext>ctx</mtext></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi mathvariant="normal">∣</mi><mtext>ctx</mtext><mi mathvariant="normal">∣</mi></mrow></mfrac><munder><mo>∑</mo><mrow><mi>w</mi><mo>∈</mo><mtext>ctx</mtext></mrow></munder><msub><mi>W</mi><mn>1</mn></msub><mo stretchy="false">[</mo><mi>w</mi><mo stretchy="false">]</mo><mo separator="true">,</mo><mspace width="2em"></mspace><mi>P</mi><mo stretchy="false">(</mo><mi>w</mi><mo>∣</mo><mtext>ctx</mtext><mo stretchy="false">)</mo><mo>≈</mo><mi>σ</mi> ⁣<mrow><mo fence="true">(</mo><msub><mi>W</mi><mn>2</mn></msub><mo stretchy="false">[</mo><mi>w</mi><msup><mo stretchy="false">]</mo><mi mathvariant="normal">⊤</mi></msup><msub><mi>v</mi><mtext>ctx</mtext></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex"> v_{\text{ctx}} = \frac{1}{|\text{ctx}|}\sum_{w\in\text{ctx}} W_1[w], \qquad P(w\mid\text{ctx}) \approx \sigma\!\left(W_2[w]^\top v_{\text{ctx}}\right) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.5988em; vertical-align: -1.2774em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord text"><span class="mord">ctx</span></span><span class="mord">∣</span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.05em;"><span class="" style="top: -1.9em; margin-left: 0em;"><span class="pstrut" style="height: 3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0269em;">w</span><span class="mrel mtight">∈</span><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span><span class="" style="top: -3.05em;"><span class="pstrut" style="height: 3.05em;"></span><span class=""><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.2774em;"><span class=""></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 2em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal" style="margin-right: 0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">ctx</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.2491em; vertical-align: -0.35em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span><span class="mspace" style="margin-right: -0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8991em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose delimcenter" style="top: 0em;"><span class="delimsizing size1">)</span></span></span></span></span></span></span></span></p>
+<ul>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mn>1</mn></msub><mo stretchy="false">[</mo><mi>w</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">W_1[w]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">]</span></span></span></span></span></strong> — 단어 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span></span></span></span></span>의 임베딩(숫자 64개짜리 벡터). <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">W_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>은 '입력 임베딩' 표.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>ctx</mtext></mrow><annotation encoding="application/x-tex">\text{ctx}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6151em;"></span><span class="mord text"><span class="mord">ctx</span></span></span></span></span></span></strong> — 가운데 단어의 <em>주변 단어들</em>(문맥).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mrow><mi mathvariant="normal">∣</mi><mtext>ctx</mtext><mi mathvariant="normal">∣</mi></mrow></mfrac><mo>∑</mo></mrow><annotation encoding="application/x-tex">\frac{1}{|\text{ctx}|}\sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.3651em; vertical-align: -0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.8451em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∣</span><span class="mord text mtight"><span class="mord mtight">ctx</span></span><span class="mord mtight">∣</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.52em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span></span></span></span></span></strong> — 주변 단어 벡터를 다 더해 개수로 나눔 = <strong>평균</strong>.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mtext>ctx</mtext></msub></mrow><annotation encoding="application/x-tex">v_{\text{ctx}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 그렇게 만든 '문맥 벡터' 하나.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span></span></span></span></span> (시그마)</strong> — 시그모이드. 어떤 숫자든 <strong>0~1 사이 확률</strong>로 눌러주는 함수.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mn>2</mn></msub><mo stretchy="false">[</mo><mi>w</mi><msup><mo stretchy="false">]</mo><mi mathvariant="normal">⊤</mi></msup><msub><mi>v</mi><mtext>ctx</mtext></msub></mrow><annotation encoding="application/x-tex">W_2[w]^\top v_{\text{ctx}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.0991em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8491em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 두 벡터의 <em>내적(닮음 점수)</em>. 방향이 비슷할수록 커진다.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>w</mi><mo>∣</mo><mtext>ctx</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(w\mid\text{ctx})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">ctx</span></span><span class="mclose">)</span></span></span></span></span></strong> — 문맥이 주어졌을 때 그 단어가 정답일 확률.</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "주변 단어 벡터를 평균 내서 문맥 벡터를 만들고, 그게 가운데 단어와 방향이 잘 맞으면 점수가 커집니다. 그 점수를 시그모이드로 0~1 확률로 바꾸는, '주변을 보고 가운데 단어를 맞히는' 표준 CBOW 식이에요."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ① 반영:</strong> Pi·LED·앱 같은 키워드 데모는 <em>보조</em>로 내리고, 모델 본체 중심으로 발표를 다시 짰습니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+  <div class="formula-box">
+    <div class="hd">📐 수식 읽는 법</div>
+    <div class="row">
+      <div class="sym">$v_{\text{ctx}}$</div>
+      <div class="read">→ 브이 콘텍스트</div>
+      <div class="desc">컨텍스트 단어들의 W₁ 임베딩 평균 (길이 64 벡터)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$P(w \mid \text{ctx})$</div>
+      <div class="read">→ P 콘디셔널 더블유 콘텍스트</div>
+      <div class="desc">컨텍스트가 주어졌을 때 단어 w가 나올 확률</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\sigma$</div>
+      <div class="read">→ 시그마</div>
+      <div class="desc">시그모이드 함수 (출력 0~1)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$W_2[w]^\top v_{\text{ctx}}$</div>
+      <div class="read">→ 더블유 투 트랜스포즈 곱 브이 콘텍스트</div>
+      <div class="desc">출력 임베딩과 컨텍스트 벡터의 내적</div>
+    </div>
+    <div class="row">
+      <div class="sym">NS</div>
+      <div class="read">→ 엔에스 (네거티브 샘플링)</div>
+      <div class="desc">softmax 대신 부정 샘플 5개와만 비교</div>
+    </div>
+  </div>
+</section>
+
+<section id="s3" class="slide" data-n="3">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 03 / 11</span>
+      <span class="time">⏱ 60초</span>
+    </div>
+    <div class="title-en">System Architecture &amp; Flow</div>
+    <div class="title-ko">시스템 구조와 흐름</div>
+    <div class="title-sub">학습(왼쪽) ↔ 추론(오른쪽) 파이프라인</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(60초) 전체 흐름 안내</strong></p>
+<p>"이 한 장으로 전체 시스템을 보여드립니다. 왼쪽이 <strong>학습 phase(페이즈)</strong>, 오른쪽이 <strong>추론 phase</strong> 예요. 학습은 한 번만 6초 만에 끝나고, 추론은 검색마다 50밀리초 안에 끝납니다.</p>
+<p><strong>왼쪽</strong> — Vault(볼트) 에서 459개 노트를 뽑아서 전처리하고, 어휘 17,024개와 토큰 23만개를 만듭니다. 거기서 세 종류 페어를 생성해요: 노트 내부 윈도우 페어 23만개, 위키링크 페어 180개, 카테고리 페어 9만 7천개. 이걸 λ(람다) 비율로 섞어서 PyTorch(파이토치) CBOW 에 통과시키고, 5 epoch(에폭) 학습 후 <strong>W₁(더블유 원) 임베딩</strong> 이 나옵니다.</p>
+<p><strong>오른쪽</strong> — 학습된 W₁ 을 가지고 노트와 쿼리를 같은 방식으로 임베딩화합니다. mean pooling(민 풀링) 또는 <strong>TF-IDF(티에프 아이디에프) pooling</strong> 둘 중 하나로요. 미리 459개 노트의 벡터를 계산해두고, 쿼리가 들어오면 코사인 유사도로 top-k(탑 케이) 를 뽑습니다.</p>
+<p><strong>핵심은 가운데 빨간 점선</strong> — 두 phase 가 W₁ 임베딩 하나를 공유한다는 점이에요."</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s4" class="slide" data-n="4">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 04 / 11</span>
+      <span class="time">⏱ 45초</span>
+    </div>
+    <div class="title-en">Three Sources of Co-occurrence</div>
+    <div class="title-ko">세 종류 동시출현 신호</div>
+    <div class="title-sub">intra-note · wikilink · category</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(45초) 세 신호 직관</strong></p>
+<p>"동시출현 신호 세 가지입니다. 수식 없이 직관으로 먼저 설명드릴게요.</p>
+<p>첫째 <strong>intra-note(인트라 노트)</strong> — 한 노트 안의 슬라이딩 윈도우. 이건 표준 CBOW고요, <strong>HW2 코드 그대로</strong> 입니다.</p>
+<p>둘째 <strong>wikilink(위키링크)</strong> — 옵시디언에서 노트 A가 <code>[[노트 B]]</code> 로 다른 노트를 가리킬 때, 두 노트에서 각각 단어 하나씩 뽑아서 페어로 만듭니다.</p>
+<p>셋째 <strong>category(카테고리)</strong> — 같은 폴더에 있거나 같은 태그를 공유하는 노트 사이에서 같은 방식으로 단어 페어를 만들어요.</p>
+<p>가정은 단순합니다 — <strong>링크되거나 같은 카테고리에 있는 노트는 임베딩 공간에서 가까워야 한다.</strong> 이 세 신호를 하나의 손실 함수 안에 섞었습니다."</p>
+</blockquote>
+<p><strong>📐 표 안의 페어 기호 풀이</strong></p>
+<p><span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo> <msub><mi>w</mi><mi>a</mi></msub><mo>∈</mo><msub><mi>n</mi><mi>A</mi></msub><mo separator="true">,</mo><mspace width="1em"></mspace><msub><mi>w</mi><mi>b</mi></msub><mo>∈</mo><msub><mi>n</mi><mi>B</mi></msub> <mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> (\,w_a \in n_A,\quad w_b \in n_B\,) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7335em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 1em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">)</span></span></span></span></span></span></p>
+<ul>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>A</mi></msub><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>n</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">n_A,\ n_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노트 A, 노트 B.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>a</mi></msub><mo>∈</mo><msub><mi>n</mi><mi>A</mi></msub></mrow><annotation encoding="application/x-tex">w_a \in n_A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6891em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노트 A '안에 있는' 단어 하나 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">w_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>. (<span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo></mrow><annotation encoding="application/x-tex">\in</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">∈</span></span></span></span></span> 은 '~에 속한다'는 기호)</li>
+<li>즉 한 페어 = <strong>(A에서 뽑은 단어, B에서 뽑은 단어)</strong>.</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "연결된 두 노트에서 단어를 하나씩 뽑아 짝지어, '이 둘은 가까운 사이'라고 모델에 알려주는 겁니다. 다음 장에서 이걸 수식으로 정리했어요."</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s5" class="slide" data-n="5">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 05 / 11</span>
+      <span class="time">⏱ 65초</span>
+    </div>
+    <div class="title-en">Pair Generation Formalized</div>
+    <div class="title-ko">학습 페어 생성 — 수식화</div>
+    <div class="title-sub">D-인트라 / D-위키 / D-캣 정식 정의</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(65초) 수식 형식화</strong></p>
+<p>"이 슬라이드가 수식이 좀 많아 보이는데, <strong>사실 어렵지 않습니다</strong>.</p>
+<p>첫 번째 식 — <strong>D_intra(디 인트라)</strong>. 그냥 <em>각 노트 안에서 윈도우 잡아서 컨텍스트와 타겟 만든다</em> 는 뜻이에요. 표준 CBOW 식이고 수업에서 그대로 다룬 부분입니다.</p>
+<p>두 번째 식 — <strong>D_wiki(디 위키)</strong>. <em>위키링크 엣지가 있을 때마다 단어 5개씩 샘플링</em> 한다는 거고요. K_wiki(케이 위키)가 5라는 게 그 뜻입니다.</p>
+<p>세 번째 식 — <strong>D_cat(디 캣)</strong>. <em>카테고리 엣지마다 단어 3개씩.</em> 똑같은 형식입니다.</p>
+<p>솔직히 이 수식 형태로 정형화한 건 <strong>교수님 피드백을 받고 정리한 부분</strong>이에요. 처음엔 그냥 글로 풀어 썼었는데, 피드백에서 '학습 페어 생성 규칙을 수식화하라' 고 하셔서 이렇게 정리했습니다."</p>
+</blockquote>
+<p><strong>📐 수식 풀이 — 세 줄 다 형태가 똑같습니다</strong></p>
+<p><span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="script">D</mi><mtext>intra</mtext></msub><mo>=</mo><mo stretchy="false">{</mo> <mo stretchy="false">(</mo><msubsup><mtext>ctx</mtext><mi>t</mi><mi>n</mi></msubsup><mo separator="true">,</mo><mtext>&nbsp;</mtext><msubsup><mi>w</mi><mi>t</mi><mi>n</mi></msubsup><mo stretchy="false">)</mo><mtext>&nbsp;</mtext><mo>:</mo><mtext>&nbsp;</mtext><mi>n</mi><mo>∈</mo><mi mathvariant="script">N</mi><mo separator="true">,</mo><mtext>&nbsp;</mtext><mi>c</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>L</mi><mi>n</mi></msub><mo>−</mo><mi>c</mi> <mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex"> \mathcal{D}_{\text{intra}} = \{\,(\text{ctx}_t^n,\ w_t^n)\ :\ n\in\mathcal N,\ c\le t\le L_n-c\,\} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right: 0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3175em;"><span class="" style="top: -2.55em; margin-left: -0.0278em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">intra</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mopen">(</span><span class="mord"><span class="mord text"><span class="mord">ctx</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.7144em;"><span class="" style="top: -2.453em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.7144em;"><span class="" style="top: -2.453em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">:</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8778em; vertical-align: -0.1944em;"></span><span class="mord mathcal" style="margin-right: 0.1474em;">N</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7719em; vertical-align: -0.136em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">}</span></span></span></span></span></span>
+<span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="script">D</mi><mtext>wiki</mtext></msub><mo>=</mo><mo stretchy="false">{</mo> <mo stretchy="false">(</mo><mo stretchy="false">{</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">}</mo><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>b</mi></msub><mo stretchy="false">)</mo><mtext>&nbsp;</mtext><mo>:</mo><mtext>&nbsp;</mtext><mo stretchy="false">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo separator="true">,</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false">)</mo><mo>∈</mo><msub><mi>E</mi><mi>W</mi></msub><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>a</mi></msub><mo>∼</mo><mi mathvariant="script">U</mi><mo stretchy="false">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>b</mi></msub><mo>∼</mo><mi mathvariant="script">U</mi><mo stretchy="false">(</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false">)</mo> <mo stretchy="false">}</mo><mo separator="true">,</mo><mtext>&nbsp;&nbsp;</mtext><msub><mi>K</mi><mtext>wiki</mtext></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex"> \mathcal{D}_{\text{wiki}} = \{\,(\{w_a\},\ w_b)\ :\ (n_A,n_B)\in E_W,\ w_a\sim\mathcal U(n_A),\ w_b\sim\mathcal U(n_B)\,\},\ \ K_{\text{wiki}}=5 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right: 0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0278em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">wiki</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mopen">({</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">}</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">:</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8778em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0576em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.1389em;">W</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">}</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0715em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">wiki</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">5</span></span></span></span></span></span>
+<span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="script">D</mi><mtext>cat</mtext></msub><mo>=</mo><mo stretchy="false">{</mo> <mo stretchy="false">(</mo><mo stretchy="false">{</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">}</mo><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>b</mi></msub><mo stretchy="false">)</mo><mtext>&nbsp;</mtext><mo>:</mo><mtext>&nbsp;</mtext><mo stretchy="false">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo separator="true">,</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false">)</mo><mo>∈</mo><msub><mi>E</mi><mi>C</mi></msub><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>a</mi></msub><mo>∼</mo><mi mathvariant="script">U</mi><mo stretchy="false">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>w</mi><mi>b</mi></msub><mo>∼</mo><mi mathvariant="script">U</mi><mo stretchy="false">(</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false">)</mo> <mo stretchy="false">}</mo><mo separator="true">,</mo><mtext>&nbsp;&nbsp;</mtext><msub><mi>K</mi><mtext>cat</mtext></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex"> \mathcal{D}_{\text{cat}} = \{\,(\{w_a\},\ w_b)\ :\ (n_A,n_B)\in E_C,\ w_a\sim\mathcal U(n_A),\ w_b\sim\mathcal U(n_B)\,\},\ \ K_{\text{cat}}=3 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right: 0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0278em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">cat</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mopen">({</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">}</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">:</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8778em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0576em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">}</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0715em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">cat</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">3</span></span></span></span></span></span></p>
+<ul>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\mathcal{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathcal" style="margin-right: 0.0278em;">D</span></span></span></span></span></strong> — 학습용 페어들의 <em>모음(데이터셋)</em>. 아래첨자가 종류(intra·wiki·cat).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo> <mo stretchy="false">(</mo><mo>⋯</mo> <mo stretchy="false">)</mo><mtext>&nbsp;</mtext><mo>:</mo><mtext>&nbsp;</mtext><mo>⋯</mo> <mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\,(\cdots)\ :\ \cdots\,\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mopen">(</span><span class="minner">⋯</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">)</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">:</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mclose">}</span></span></span></span></span></strong> — "오른쪽 <em>조건</em>을 만족하는 모든 (왼쪽) 페어의 모음"이라는 집합 기호. 콜론 <code>:</code> 은 '단, ~인 것'.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="script">N</mi></mrow><annotation encoding="application/x-tex">n\in\mathcal{N}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathcal" style="margin-right: 0.1474em;">N</span></span></span></span></span></strong> — 모든 노트 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span>에 대해 (<span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">N</mi></mrow><annotation encoding="application/x-tex">\mathcal{N}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathcal" style="margin-right: 0.1474em;">N</span></span></span></span></span> = 노트 전체).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mtext>ctx</mtext><mi>t</mi><mi>n</mi></msubsup><mo separator="true">,</mo><mtext>&nbsp;</mtext><msubsup><mi>w</mi><mi>t</mi><mi>n</mi></msubsup></mrow><annotation encoding="application/x-tex">\text{ctx}_t^n,\ w_t^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.9164em; vertical-align: -0.247em;"></span><span class="mord"><span class="mord text"><span class="mord">ctx</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.6694em;"><span class="" style="top: -2.453em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span class="" style="top: -3.068em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.6644em;"><span class="" style="top: -2.453em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노트 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span>의 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span></span>번째 위치에서의 (문맥, 타겟 단어).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>≤</mo><mi>t</mi><mo>≤</mo><msub><mi>L</mi><mi>n</mi></msub><mo>−</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">c\le t\le L_n-c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.7719em; vertical-align: -0.136em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7719em; vertical-align: -0.136em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></span></strong> — 윈도우(폭 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></span>)가 노트 양끝에서 삐져나가지 않는 위치만. <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">L_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> = 노트 길이.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>W</mi></msub><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>E</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">E_W,\ E_C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8778em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0576em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.1389em;">W</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0576em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 위키링크 엣지 / 카테고리 엣지 (= 연결된 노트 쌍들의 집합).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>a</mi></msub><mo>∼</mo><mi mathvariant="script">U</mi><mo stretchy="false">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">w_a\sim\mathcal U(n_A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></strong> — 노트 A의 단어 중에서 <em>균등(무작위)하게</em> 하나 뽑기. <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">U</mi></mrow><annotation encoding="application/x-tex">\mathcal U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathcal" style="margin-right: 0.0993em;">U</span></span></span></span></span> = uniform(균등분포), <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∼</mo></mrow><annotation encoding="application/x-tex">\sim</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">∼</span></span></span></span></span> = '~에서 뽑는다'.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mtext>wiki</mtext></msub><mo>=</mo><mn>5</mn><mo separator="true">,</mo><mtext>&nbsp;</mtext><msub><mi>K</mi><mtext>cat</mtext></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">K_{\text{wiki}}=5,\ K_{\text{cat}}=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0715em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">wiki</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8778em; vertical-align: -0.1944em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0715em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">cat</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">3</span></span></span></span></span></strong> — 엣지 하나당 페어를 각각 5번·3번 샘플.</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "세 줄 모두 모양은 같고 <em>'어디서 페어를 만드냐'</em> 만 달라요. 첫 줄은 한 노트 안에서(표준 CBOW), 둘째는 위키링크로 이어진 노트 쌍에서 단어를 5개씩, 셋째는 같은 폴더·태그 노트 쌍에서 3개씩 무작위로 뽑아 짝짓는다는 뜻입니다."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ③ ★ 반영:</strong> 원래 글로만 풀어 썼던 페어 생성 규칙을, <em>"intra·wiki·cat 차이를 수식으로 정형화하라"</em> 는 피드백에 맞춰 위처럼 집합 표기로 정리했습니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+  <div class="formula-box">
+    <div class="hd">📐 수식 읽는 법</div>
+    <div class="row">
+      <div class="sym">$\mathcal{D}_{\text{intra}}$</div>
+      <div class="read">→ 디 인트라</div>
+      <div class="desc">노트 내부 슬라이딩 윈도우 페어 집합 — 표준 CBOW</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathcal{D}_{\text{wiki}}$</div>
+      <div class="read">→ 디 위키</div>
+      <div class="desc">위키링크 노트 쌍에서 단어 5개 무작위 페어 집합</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathcal{D}_{\text{cat}}$</div>
+      <div class="read">→ 디 캣</div>
+      <div class="desc">같은 폴더·태그 노트 쌍에서 단어 3개 페어 집합</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\text{ctx}_t^n,\ w_t^n$</div>
+      <div class="read">→ 콘텍스트 티 노트엔, 더블유 티 노트엔</div>
+      <div class="desc">노트 n의 위치 t에서 컨텍스트와 타겟</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathcal{N}$</div>
+      <div class="read">→ 엔 (커리)</div>
+      <div class="desc">전체 노트 집합</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathcal{U}(n)$</div>
+      <div class="read">→ 유 노트엔</div>
+      <div class="desc">노트 n 단어 위 균등 분포 (무작위 추출)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$K_{\text{wiki}}=5,\ K_{\text{cat}}=3$</div>
+      <div class="read">→ 케이 위키 = 5, 케이 캣 = 3</div>
+      <div class="desc">엣지 하나당 만드는 페어 개수</div>
+    </div>
+    <div class="row">
+      <div class="sym">$E_W,\ E_C$</div>
+      <div class="read">→ 이 더블유, 이 시</div>
+      <div class="desc">위키링크 엣지 집합, 카테고리 엣지 집합</div>
+    </div>
+  </div>
+</section>
+
+<section id="s6" class="slide" data-n="6">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 06 / 11</span>
+      <span class="time">⏱ 55초</span>
+    </div>
+    <div class="title-en">Loss: NS + λ Mixing</div>
+    <div class="title-ko">손실 함수 — NS + 람다 혼합</div>
+    <div class="title-sub">Mikolov 네거티브 샘플링 + λ stratified</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(35초) NS 손실</strong></p>
+<p>"이 손실 함수도 솔직히 말씀드리면 <strong>제가 발명한 식이 아닙니다</strong>. <strong>Mikolov(미콜로프) 2013 논문의 Negative Sampling(네거티브 샘플링) 식</strong> 그대로예요. positive(포지티브) 페어 하나에 노이즈 분포에서 뽑은 negative(네거티브) 5개를 비교합니다. 노이즈 분포는 단어 빈도의 0.75 제곱 — 이것도 Mikolov 논문에서 제안한 그대로고요."</p>
+<p><strong>(20초) λ 혼합</strong></p>
+<p>"두 번째 식이 세 데이터셋을 람다 비율로 섞는 부분인데, 이건 단순히 <em>epoch 마다 정해진 비율로 미니배치를 구성한다</em> 는 뜻입니다. <strong>제가 직접 한 건 alias method(앨리어스 메서드)로 negative 샘플링을 O(1)으로 구현한 부분</strong> — 이건 빠른 학습을 위한 표준 기법인데 numpy(넘파이)로 직접 짰습니다."</p>
+</blockquote>
+<p><strong>📐 수식 풀이 — 정답은 끌어올리고, 가짜는 끌어내리고</strong></p>
+<p><span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">ℓ</mi><mo>=</mo><mo>−</mo><mi>log</mi><mo>⁡</mo><mi>σ</mi> ⁣<mrow><mo fence="true">(</mo><msub><mi>W</mi><mn>2</mn></msub><mo stretchy="false">[</mo><mi>w</mi><msup><mo stretchy="false">]</mo><mi mathvariant="normal">⊤</mi></msup><msub><mi>v</mi><mtext>ctx</mtext></msub><mo fence="true">)</mo></mrow><mtext>&nbsp;</mtext><mo>−</mo><mtext>&nbsp;</mtext><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>K</mi><mtext>neg</mtext></msub></munderover><mi>log</mi><mo>⁡</mo><mi>σ</mi> ⁣<mrow><mo fence="true">(</mo><mo>−</mo> <msub><mi>W</mi><mn>2</mn></msub><mo stretchy="false">[</mo><msub><mi>w</mi><mi>k</mi></msub><msup><mo stretchy="false">]</mo><mi mathvariant="normal">⊤</mi></msup><msub><mi>v</mi><mtext>ctx</mtext></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex"> \ell = -\log\sigma\!\left(W_2[w]^\top v_{\text{ctx}}\right)\ -\ \sum_{k=1}^{K_{\text{neg}}}\log\sigma\!\left(-\,W_2[w_k]^\top v_{\text{ctx}}\right) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord">ℓ</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.2491em; vertical-align: -0.35em;"></span><span class="mord">−</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">lo<span style="margin-right: 0.0139em;">g</span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span><span class="mspace" style="margin-right: -0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8991em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose delimcenter" style="top: 0em;"><span class="delimsizing size1">)</span></span></span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 3.2388em; vertical-align: -1.3021em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.9367em;"><span class="" style="top: -1.8479em; margin-left: 0em;"><span class="pstrut" style="height: 3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0315em;">k</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span class="" style="top: -3.05em;"><span class="pstrut" style="height: 3.05em;"></span><span class=""><span class="mop op-symbol large-op">∑</span></span></span><span class="" style="top: -4.4083em; margin-left: 0em;"><span class="pstrut" style="height: 3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1645em;"><span class="" style="top: -2.357em; margin-left: -0.0715em; margin-right: 0.0714em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">neg</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2819em;"><span class=""></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.3021em;"><span class=""></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">lo<span style="margin-right: 0.0139em;">g</span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span><span class="mspace" style="margin-right: -0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size1">(</span></span><span class="mord">−</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8991em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0359em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ctx</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose delimcenter" style="top: 0em;"><span class="delimsizing size1">)</span></span></span></span></span></span></span></span>
+<span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mo>∝</mo><mi>f</mi><mo stretchy="false">(</mo><mi>w</mi><msup><mo stretchy="false">)</mo><mn>0.75</mn></msup><mo separator="true">,</mo><mspace width="2em"></mspace><mi mathvariant="script">L</mi><mo>=</mo><msub><mi>λ</mi><mtext>intra</mtext></msub><msub><mi mathvariant="script">L</mi><mtext>intra</mtext></msub><mo>+</mo><msub><mi>λ</mi><mtext>wiki</mtext></msub><msub><mi mathvariant="script">L</mi><mtext>wiki</mtext></msub><mo>+</mo><msub><mi>λ</mi><mtext>cat</mtext></msub><msub><mi mathvariant="script">L</mi><mtext>cat</mtext></msub><mo separator="true">,</mo><mspace width="1em"></mspace><mstyle scriptlevel="0" displaystyle="false"><mo>∑</mo><mi>λ</mi><mo>=</mo><mn>1</mn></mstyle></mrow><annotation encoding="application/x-tex"> P_n(w)\propto f(w)^{0.75}, \qquad \mathcal L = \lambda_{\text{intra}}\mathcal L_{\text{intra}} + \lambda_{\text{wiki}}\mathcal L_{\text{wiki}} + \lambda_{\text{cat}}\mathcal L_{\text{cat}}, \quad \textstyle\sum\lambda = 1 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.1141em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8641em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0.75</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 2em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathcal">L</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3175em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">intra</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3175em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">intra</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">wiki</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">wiki</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">cat</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.2806em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">cat</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 1em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">1</span></span></span></span></span></span></p>
+<ul>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">ℓ</mi></mrow><annotation encoding="application/x-tex">\ell</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord">ℓ</span></span></span></span></span> (엘)</strong> — 페어 하나의 손실. <em>작을수록 잘 맞춘 것</em>.</li>
+<li><strong>첫째 항 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>log</mi><mo>⁡</mo><mi>σ</mi><mo stretchy="false">(</mo><mtext>정답&nbsp;점수</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">-\log\sigma(\text{정답 점수})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">−</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">lo<span style="margin-right: 0.0139em;">g</span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span><span class="mopen">(</span><span class="mord text"><span class="mord hangul_fallback">정답</span><span class="mord">&nbsp;</span><span class="mord hangul_fallback">점수</span></span><span class="mclose">)</span></span></span></span></span></strong> — 정답 단어 점수를 <em>+쪽(크게)</em> 으로 밀어 올림.</li>
+<li><strong>둘째 항 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mo>∑</mo><mi>log</mi><mo>⁡</mo><mi>σ</mi><mo stretchy="false">(</mo><mo>−</mo> <mtext>점수</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">-\sum\log\sigma(-\,\text{점수})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">−</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">lo<span style="margin-right: 0.0139em;">g</span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal" style="margin-right: 0.0359em;">σ</span><span class="mopen">(</span><span class="mord">−</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord text"><span class="mord hangul_fallback">점수</span></span><span class="mclose">)</span></span></span></span></span></strong> — 무작위로 뽑은 가짜 단어 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mtext>neg</mtext></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">K_{\text{neg}}=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.9694em; vertical-align: -0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0715em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.0715em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">neg</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2861em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">5</span></span></span></span></span>개의 점수를 <em>−쪽(작게)</em> 으로 눌러 내림.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">w_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: -0.0269em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노이즈 분포에서 뽑은 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord mathnormal" style="margin-right: 0.0315em;">k</span></span></span></span></span>번째 가짜(부정) 단어.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mo>∝</mo><mi>f</mi><mo stretchy="false">(</mo><mi>w</mi><msup><mo stretchy="false">)</mo><mn>0.75</mn></msup></mrow><annotation encoding="application/x-tex">P_n(w)\propto f(w)^{0.75}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.0641em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0.75</span></span></span></span></span></span></span></span></span></span></span></span></span></strong> — 가짜 단어를 뽑을 확률은 단어 빈도 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(w)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">)</span></span></span></span></span>의 0.75제곱에 비례 (<span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∝</mo></mrow><annotation encoding="application/x-tex">\propto</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mrel">∝</span></span></span></span></span> = '~에 비례'). 너무 흔한 단어가 과하게 뽑히지 않게 살짝 눌러 줌.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">L</mi></mrow><annotation encoding="application/x-tex">\mathcal L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathcal">L</span></span></span></span></span> · <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span></span> (람다)</strong> — 전체 손실 = 세 손실(intra·wiki·cat)을 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span></span> 비율로 섞은 것, <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mi>λ</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sum\lambda=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">1</span></span></span></span></span>(비율 합 = 1).</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "정답 단어는 점수를 끌어올리고, 무작위로 뽑은 가짜 5개는 점수를 끌어내리는 게 손실의 전부예요. 이 식은 제가 만든 게 아니라 Mikolov 2013 네거티브 샘플링 그대로고, 저는 세 신호를 λ 비율로 섞는 부분만 직접 했습니다."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ④ 반영:</strong> <em>"손실을 negative sampling으로, 예를 들면 sampled softmax처럼"</em> 이라는 피드백에 따라, 전체 softmax 대신 NS 손실을 채택했습니다. (대안인 <em>sampled softmax</em> 도 한 번 비교 가능하도록 설계엔 적어 뒀습니다.) λ 비율도 피드백의 <em>"비율 조절은 코드에서"</em> 대로 epoch마다 코드에서 조절합니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+  <div class="formula-box">
+    <div class="hd">📐 수식 읽는 법</div>
+    <div class="row">
+      <div class="sym">$\ell$</div>
+      <div class="read">→ 엘 (스몰)</div>
+      <div class="desc">한 페어의 손실 — 정답은 +, 부정은 −</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\sigma$</div>
+      <div class="read">→ 시그마</div>
+      <div class="desc">시그모이드</div>
+    </div>
+    <div class="row">
+      <div class="sym">$W_2[w]^\top v_{\text{ctx}}$</div>
+      <div class="read">→ 더블유 투 곱 브이 콘텍스트</div>
+      <div class="desc">정답 단어와 컨텍스트의 내적</div>
+    </div>
+    <div class="row">
+      <div class="sym">$W_2[w_k]^\top v_{\text{ctx}}$</div>
+      <div class="read">→ 더블유 투 케이 곱 브이 콘텍스트</div>
+      <div class="desc">부정 샘플과 컨텍스트의 내적 (음수로 밀어냄)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$K_{\text{neg}}=5$</div>
+      <div class="read">→ 케이 네거티브 = 5</div>
+      <div class="desc">부정 샘플 개수 (Mikolov 권장)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$P_n(w) \propto f(w)^{0.75}$</div>
+      <div class="read">→ P 노이즈 더블유 = f(w)의 0.75제곱에 비례</div>
+      <div class="desc">부정 샘플 추출 노이즈 분포 (Mikolov 2013)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathcal{L}$</div>
+      <div class="read">→ 엘 (대문자)</div>
+      <div class="desc">전체 손실 함수</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\lambda_{\text{intra}},\ \lambda_{\text{wiki}},\ \lambda_{\text{cat}}$</div>
+      <div class="read">→ 람다 인트라, 람다 위키, 람다 캣</div>
+      <div class="desc">세 손실의 혼합 비율 (합 = 1)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\sum\lambda = 1$</div>
+      <div class="read">→ 시그마 람다 = 1</div>
+      <div class="desc">비율 합은 1로 정규화</div>
+    </div>
+  </div>
+</section>
+
+<section id="s7" class="slide" data-n="7">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 07 / 11</span>
+      <span class="time">⏱ 50초</span>
+    </div>
+    <div class="title-en">Query↔Note Mapping</div>
+    <div class="title-ko">쿼리 ↔ 노트 매핑</div>
+    <div class="title-sub">검색 모듈: mean vs TF-IDF 풀링</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(50초) 검색 함수</strong></p>
+<p>"검색 함수입니다. 모델 학습이 끝난 뒤에 <strong>별도로 적용하는 모듈</strong> 이에요. 학습된 단어 임베딩 W₁ 을 가지고 노트와 쿼리를 벡터로 만드는 두 가지 방법을 비교했습니다.</p>
+<p>왼쪽 <strong>mean pooling</strong> — 노트 안 단어 임베딩의 단순 평균. 가장 흔한 방식이고요.</p>
+<p>오른쪽 <strong>TF-IDF 가중 평균</strong> — 노트 안 흔한 단어는 가중치를 낮추고 희귀한 단어는 가중치를 높입니다. TF-IDF 자체는 <strong>정보 검색의 고전 기법</strong> 입니다, 1970년대부터 있는 거고요. 제가 한 건 <em>이걸 학습된 임베딩 위에 결합</em> 한 부분이에요.</p>
+<p>검색은 단순합니다 — 쿼리 벡터와 노트 벡터의 코사인 유사도 top-k."</p>
+</blockquote>
+<p><strong>📐 수식 풀이 — 노트·검색어를 벡터 하나로 만들고, 가까운 걸 찾기</strong></p>
+<p><span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>e</mi><mi>n</mi><mtext>mean</mtext></msubsup><mo>=</mo><mfrac><mn>1</mn><mrow><mi mathvariant="normal">∣</mi><mi>n</mi><mi mathvariant="normal">∣</mi></mrow></mfrac><munder><mo>∑</mo><mrow><mi>w</mi><mo>∈</mo><mi>n</mi></mrow></munder><msub><mi>W</mi><mn>1</mn></msub><mo stretchy="false">[</mo><mi>w</mi><mo stretchy="false">]</mo><mspace width="2em"></mspace><mspace width="2em"></mspace><msubsup><mi>e</mi><mi>n</mi><mtext>tfidf</mtext></msubsup><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>w</mi></munder><mtext>tfidf</mtext><mo stretchy="false">(</mo><mi>w</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo> <msub><mi>W</mi><mn>1</mn></msub><mo stretchy="false">[</mo><mi>w</mi><mo stretchy="false">]</mo></mrow><mrow><munder><mo>∑</mo><mi>w</mi></munder><mtext>tfidf</mtext><mo stretchy="false">(</mo><mi>w</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex"> e_n^{\text{mean}} = \frac{1}{|n|}\sum_{w\in n} W_1[w] \qquad\qquad e_n^{\text{tfidf}} = \frac{\sum_w \text{tfidf}(w,n)\,W_1[w]}{\sum_w \text{tfidf}(w,n)} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.9614em; vertical-align: -0.247em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.7144em;"><span class="" style="top: -2.453em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">mean</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.5988em; vertical-align: -1.2774em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">n</span><span class="mord">∣</span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.05em;"><span class="" style="top: -1.9em; margin-left: 0em;"><span class="pstrut" style="height: 3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0269em;">w</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight">n</span></span></span></span><span class="" style="top: -3.05em;"><span class="pstrut" style="height: 3.05em;"></span><span class=""><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.2774em;"><span class=""></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">]</span><span class="mspace" style="margin-right: 2em;"></span><span class="mspace" style="margin-right: 2em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.8991em;"><span class="" style="top: -2.453em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">tfidf</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4254em; vertical-align: -0.9857em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4397em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.0017em;"><span class="" style="top: -2.4003em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0269em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2997em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord text"><span class="mord">tfidf</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.6897em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.0017em;"><span class="" style="top: -2.4003em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0269em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2997em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord text"><span class="mord">tfidf</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.1389em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span class="" style="top: -2.55em; margin-left: -0.1389em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.9857em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></span>
+<span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mover accent="true"><mi>n</mi><mo>^</mo></mover><mrow><mn>1</mn><mo>…</mo><mi>k</mi></mrow></msub><mo>=</mo><munder><mrow><mi mathvariant="normal">arg top-k</mi><mo>⁡</mo></mrow><mrow> <mi>n</mi><mo>∈</mo><mi mathvariant="script">N</mi></mrow></munder><mtext>&nbsp;</mtext><mi>cos</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi>e</mi><mi>q</mi></msub><mo separator="true">,</mo><msub><mi>e</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \cos(e_q, e_n) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.6944em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord mathnormal">n</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3361em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="minner mtight">…</span><span class="mord mathnormal mtight" style="margin-right: 0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.7161em; vertical-align: -0.9661em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.6944em;"><span class="" style="top: -2.1612em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mspace mtight" style="margin-right: 0.1952em;"></span><span class="mord mathnormal mtight">n</span><span class="mrel mtight">∈</span><span class="mord mathcal mtight" style="margin-right: 0.1474em;">N</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop"><span class="mord mathrm" style="margin-right: 0.0139em;">arg</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathrm">top</span><span class="mord text"><span class="mord">-</span></span><span class="mord mathrm">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.9661em;"><span class=""></span></span></span></span></span><span class="mspace">&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">cos</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0359em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2861em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></span></p>
+<ul>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">e_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노트 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span>을 대표하는 <em>벡터 하나</em>.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>e</mi><mi>n</mi><mtext>mean</mtext></msubsup></mrow><annotation encoding="application/x-tex">e_n^{\text{mean}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.9114em; vertical-align: -0.247em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.6644em;"><span class="" style="top: -2.453em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">mean</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 노트 안 단어 임베딩들의 <em>단순 평균</em>.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>e</mi><mi>n</mi><mtext>tfidf</mtext></msubsup></mrow><annotation encoding="application/x-tex">e_n^{\text{tfidf}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.0961em; vertical-align: -0.247em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.8491em;"><span class="" style="top: -2.453em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">tfidf</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.247em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — TF-IDF로 <em>가중한 평균</em>. 흔한 단어는 가중치↓, 희귀한 단어는↑.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>tfidf</mtext><mo stretchy="false">(</mo><mi>w</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{tfidf}(w,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">tfidf</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></strong> — 단어 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal" style="margin-right: 0.0269em;">w</span></span></span></span></span>가 노트 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span>에서 갖는 <em>중요도 점수</em>(흔하면 낮고 희귀하면 높음).</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">e_q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.7167em; vertical-align: -0.2861em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0359em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2861em;"><span class=""></span></span></span></span></span></span></span></span></span></span></strong> — 같은 방식으로 만든 <em>쿼리(검색어) 벡터</em>.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi>e</mi><mi>q</mi></msub><mo separator="true">,</mo><msub><mi>e</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\cos(e_q,e_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.0361em; vertical-align: -0.2861em;"></span><span class="mop">cos</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0359em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2861em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.1514em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></strong> — 두 벡터의 <em>코사인 유사도</em>. 방향이 같으면 1, 무관하면 0.</li>
+<li><strong><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">arg top-k</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{arg\,top\text{-}k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8889em; vertical-align: -0.1944em;"></span><span class="mop"><span class="mord mathrm" style="margin-right: 0.0139em;">arg</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord mathrm">top</span><span class="mord text"><span class="mord">-</span></span><span class="mord mathrm">k</span></span></span></span></span></span></strong> — 유사도가 가장 큰 노트 <span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord mathnormal" style="margin-right: 0.0315em;">k</span></span></span></span></span>개를 골라 반환.</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "노트와 검색어를 <em>같은 방법</em>으로 벡터 하나씩 만든 뒤, 코사인 유사도가 가장 높은 노트 k개를 돌려주는 검색식이에요. 평균이냐, 희귀 단어를 더 쳐주는 TF-IDF 가중평균이냐의 차이만 있습니다."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ② 반영:</strong> <em>"Query embedding ↔ Note embedding 사상을 명시하라 (예: 각 단어 임베딩 평균 / TF-IDF 가중 평균)"</em> 는 피드백 그대로, 두 가지 사상을 식으로 분리해 비교했습니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+  <div class="formula-box">
+    <div class="hd">📐 수식 읽는 법</div>
+    <div class="row">
+      <div class="sym">$e_n^{\text{mean}}$</div>
+      <div class="read">→ 이 노트엔 민</div>
+      <div class="desc">노트 n의 mean pooling 임베딩</div>
+    </div>
+    <div class="row">
+      <div class="sym">$e_n^{\text{tfidf}}$</div>
+      <div class="read">→ 이 노트엔 티에프 아이디에프</div>
+      <div class="desc">노트 n의 TF-IDF 가중 임베딩 (★ 권장)</div>
+    </div>
+    <div class="row">
+      <div class="sym">$e_q$</div>
+      <div class="read">→ 이 큐</div>
+      <div class="desc">쿼리 임베딩</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\mathrm{tfidf}(w, n)$</div>
+      <div class="read">→ 티에프 아이디에프 더블유 콤마 노트엔</div>
+      <div class="desc">단어 w가 노트 n에서 얼마나 특징적인지 점수</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\cos(e_q, e_n)$</div>
+      <div class="read">→ 코사인 이 큐 콤마 이 노트엔</div>
+      <div class="desc">쿼리 벡터와 노트 벡터의 각도 유사도</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\hat{n}_{1..k}$</div>
+      <div class="read">→ 노트 햇 원부터 케이까지</div>
+      <div class="desc">top-k 순위의 노트 인덱스들</div>
+    </div>
+    <div class="row">
+      <div class="sym">$\operatorname*{arg\,top\text{-}k}$</div>
+      <div class="read">→ 아그 탑 케이</div>
+      <div class="desc">유사도 점수가 가장 큰 k개 항목의 인덱스 선택</div>
+    </div>
+  </div>
+</section>
+
+<section id="s8" class="slide" data-n="8">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 08 / 11</span>
+      <span class="time">⏱ 40초</span>
+    </div>
+    <div class="title-en">Baselines &amp; Corpus</div>
+    <div class="title-ko">베이스라인 &amp; 데이터</div>
+    <div class="title-sub">B0–B6 비교 셋업 + 459 노트</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(40초) 비교 구조</strong></p>
+<p>"비교 구조입니다. 이것도 <strong>교수님 피드백에서 받은 가이드라인</strong> 따른 거예요. Plain CBOW 와 비교해라, TF-IDF 단독 baseline 도 넣어라, 그래프 신호는 ablation(애블레이션) 으로 효과 측정해라 — 세 가지 다 반영했습니다.</p>
+<p><strong>B0(비제로)</strong> 은 sklearn TF-IDF 단독 — 학습 없음. <strong>B1(비원)</strong> 은 HW2 CBOW 그대로. <strong>B2(비투)</strong> 는 거기에 TF-IDF 풀링만 추가. <strong>B3, B4(비쓰리, 비포)</strong> 는 wiki, cat 신호를 하나씩만 켠 것. <strong>B5(비파이브)</strong> 는 세 신호 다, <strong>B6(비식스)</strong> 는 거기에 TF-IDF 풀링까지. 데이터는 459 노트, <strong>MPS(엠피에스)</strong> 로 모델당 6초."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ⑤ ★ 반영:</strong> 피드백의 세 가지 — <em>"① Plain CBOW(intra-note pair만)와 비교하라, ② 다른 pairing은 ablation으로 평가하라, ③ TF-IDF weighted embedding도 넣어라"</em> — 를 그대로 baseline 표로 옮겼습니다. <strong>B1 = Plain CBOW</strong>, <strong>B3·B4 = wiki·cat을 하나씩만 켠 ablation</strong>, <strong>B2·B6 = TF-IDF 풀링</strong> 이 각각 그 답입니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s9" class="slide" data-n="9">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 09 / 11</span>
+      <span class="time">⏱ 75초</span>
+    </div>
+    <div class="title-en">Results — Retrieval@k</div>
+    <div class="title-ko">결과 — Retrieval@k</div>
+    <div class="title-sub">P@1: B0 0.40 → B5 0.85 → B6 1.00</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(75초) 결과 발표</strong></p>
+<p>"여기가 발표의 핵심입니다. <strong>이 수치들은 제가 직접 측정한 거예요.</strong></p>
+<p>B0 TF-IDF 단독은 <strong>P@1(피 앳 원) 0.40</strong>. plain CBOW B1 은 0.45. CBOW에 TF-IDF 풀링만 더하면 (B2) 0.50.</p>
+<p><strong>여기 주목해주세요</strong> — B3, 위키링크만 추가하면 향상이 거의 없어요 (0.45). 이건 한계예요 — 제 vault(볼트) 의 위키링크 중 36개만 학습 범위 안에서 해석됐거든요. wiki signal 자체가 sparse(스파스) 한 거고요.</p>
+<p>카테고리만 추가한 B4는 0.50 으로 약간 향상. 카테고리 페어는 9만개라 신호가 충분합니다.</p>
+<p><strong>세 신호 다 결합한 B5 가 0.85 로 점프</strong>, TF-IDF 풀링까지 더한 B6 는 1.00 까지 갑니다.</p>
+<p>다만 <strong>솔직히 인정할 부분이 있어요</strong> — 평가 라벨이 B5+TFIDF 추천에서 부트스트랩된 거라 B6=1.00 에는 일부 tautology(토톨로지 — 자기 자신을 정답이라고 평가하는 동어반복) 가 있습니다. 그래도 B0~B4 의 상대 순위는 부트스트랩과 무관해서 그래프 신호의 기여를 보여주는 데는 유효합니다."</p>
+</blockquote>
+<p><strong>📐 평가 지표 풀이 (표 맨 윗줄 약어)</strong></p>
+<ul>
+<li><strong>P@1 (피 앳 원)</strong> — top-1 추천이 정답일 비율. <em>1등으로 맞힌 비율</em>.</li>
+<li><strong>P@3</strong> — top-3 안에 정답이 든 비율(정밀도).</li>
+<li><strong>R@5 (알 앳 파이브)</strong> — 정답들 중 top-5 안에 들어온 비율(재현율).</li>
+<li><strong>MRR (엠알알)</strong> — 정답이 <em>몇 등</em>에 나왔는지의 역수 평균. 정답이 1등이면 1, 2등이면 0.5… <em>높을수록 위쪽에 정답</em>.</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "전부 <em>0~1 사이, 높을수록 좋은</em> 검색 정확도 지표예요. 핵심은 절대값이 아니라 baseline 사이의 <em>순서</em> 입니다 — 세 신호를 합친 B5에서 0.45 → 0.85로 점프하는 게 그래프 신호가 실제로 기여했다는 증거입니다."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ⑤ ★ 반영:</strong> 이 표가 바로 <em>ablation 평가</em> 의 결과예요. wiki만(B3)·cat만(B4)·둘 다(B5)를 끄고 켜며 각 신호의 기여를 수치로 분리했습니다.</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s10" class="slide" data-n="10">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 10 / 11</span>
+      <span class="time">⏱ 50초</span>
+    </div>
+    <div class="title-en">t-SNE</div>
+    <div class="title-ko">티스니 — 노트 임베딩 시각화</div>
+    <div class="title-sub">458 노트 2D + wikilink 36 엣지</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(50초) 시각화</strong></p>
+<p>"시각화입니다. <strong>sklearn 의 t-SNE(티스니) 함수를 그대로</strong> 썼고요, 458개 노트 임베딩을 2D(이디 — 2차원) 로 펼친 다음 위키링크 엣지 36 개를 겹쳐 그린 그림입니다.</p>
+<p>주황색이 <strong>3-Resources 폴더 노트들</strong> — 우하단에 깔끔하게 응집했습니다. 옵시디언 워크플로우 가이드, 태그 컨벤션 같은 토픽적으로 일관된 노트들이 모인 거예요.</p>
+<p>파란색 <strong>1-Projects</strong> 는 더 넓게 펼쳐졌는데, 그 안에서 blog-codemon, rsquare, moneymon 같은 sub-cluster(서브 클러스터) 들이 따로 형성됐어요.</p>
+<p>해석은 단순합니다 — <strong>그래프 신호가 폴더 구조를 임베딩 공간에 자연스럽게 복원한다.</strong> 이게 시각적으로 확인되는 거고요."</p>
+</blockquote>
+<hr>
+
+  </div>
+</section>
+
+<section id="s11" class="slide" data-n="11">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 11 / 11</span>
+      <span class="time">⏱ 25초</span>
+    </div>
+    <div class="title-en">Caveats · LLM · Future</div>
+    <div class="title-ko">한계 · LLM 활용 · 후속 작업</div>
+    <div class="title-sub">라벨 부트스트랩 caveat + 정직 정리</div>
+  </header>
+  <div class="slide-body">
+<blockquote>
+<p><strong>(25초) 한계와 마무리</strong></p>
+<p>"한계와 후속 작업을 솔직히 명시합니다.</p>
+<p>라벨 부트스트랩은 매뉴얼 refine(리파인 — 정제) 절차를 따로 문서화했고, 발표 후 피드백 받고 정리하겠습니다.</p>
+<p><strong>n=1(엔 이퀄 1) 케이스 스터디</strong>, 한국어 <strong>OOV(오오브이 — Out-Of-Vocabulary)</strong> 처리 한계, 위키링크 해석률 12.5% 같은 구조적 한계들 — 다 명시했습니다.</p>
+<p><strong>LLM 활용은 Claude(클로드) Opus</strong> 를 코드 스캐폴딩과 디버깅, 문서 정리, 그리고 <strong>이 슬라이드의 수식 LaTeX(라텍) 정리·해설</strong>에 썼고, 사용 구간 전체를 LLM_USAGE_LOG.md(엘엘엠 유시지 로그 닷 엠디) 에 기록했습니다. 의사결정과 평가 라벨링은 제가 직접 한 부분입니다.</p>
+<p>감사합니다."</p>
+</blockquote>
+<p><strong>🔭 다음 조사 (Future Work — 교수님 코멘트 ⑥ 반영)</strong></p>
+<p>교수님이 <em>"(Optional) Graph embedding 확장 — wikilink graph 기반, Heterogeneous DeepWalk 고려"</em> 라고 적어 주신 부분을, 이번엔 시간상 <em>다음 단계</em>로 명시해 둡니다.</p>
+<ul>
+<li><strong>① 라벨 수동 refine</strong> — 부트스트랩 라벨을 사람이 다시 검수해 B6=1.00 의 동어반복(tautology)을 걷어내기.</li>
+<li><strong>② Heterogeneous DeepWalk(헤테로 딥워크)</strong> — 지금은 위키링크로 <em>단어 페어</em>만 만들지만, 다음엔 <strong>(노트–단어) 그래프 위를 random walk(랜덤 워크)로 돌아다니며</strong> 더 긴 문맥을 만드는 방식. 노트·단어처럼 <em>종류가 다른 노드</em>가 섞인 그래프라 'heterogeneous(이질적)'라고 부릅니다. 단, 그래프가 충분히 빽빽해야(dense) 해서 먼저 vault 범위(PARA 0~4)를 넓혀야 합니다.</li>
+<li><strong>③ learnable λ(학습되는 람다)</strong> — 세 신호의 혼합 비율을 <em>손으로 정하지 않고</em> 모델이 학습으로 직접 찾게 만들기 (<span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>i</mi></msub><mo>=</mo><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><msub><mo>∑</mo><mi>j</mi></msub><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\lambda_i = \exp(\theta_i)/\sum_j \exp(\theta_j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3117em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.1858em; vertical-align: -0.4358em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0278em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3117em;"><span class="" style="top: -2.55em; margin-left: -0.0278em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">/</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.162em;"><span class="" style="top: -2.4003em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.4358em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.0278em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3117em;"><span class="" style="top: -2.55em; margin-left: -0.0278em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2861em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 형태).</li>
+<li><strong>④ Pi 4 on-device 배포</strong> — 학습된 모델을 라즈베리파이에서 추론만 돌려보기(점수와 무관한 보조 데모).</li>
+</ul>
+<blockquote>
+<p>🗣️ <strong>이렇게 말하면 됩니다:</strong> "오늘은 위키링크를 단어 페어로 쓰는 데까지 했고요, <em>다음 조사</em>로는 노트–단어 그래프 위를 직접 걸어다니는 Heterogeneous DeepWalk, 그리고 혼합 비율 λ를 학습으로 정하는 방향을 잡아 뒀습니다. 이건 교수님이 optional로 제안해 주신 확장이에요."</p>
+</blockquote>
+<blockquote>
+<p>🎓 <strong>교수님 코멘트 ⑦ 반영:</strong> LLM(Claude Opus) 사용 구간을 전부 <code>LLM_USAGE_LOG.md</code> 에 기록했고, 의사결정·알고리즘 선택·평가 라벨링은 저자 본인이 했음을 명시했습니다.</p>
+</blockquote>
+<hr>
+<h2>🎤 Q&amp;A 대비 (2분, 솔직 톤 5문항)</h2>
+<h3>Q1. 왜 hetero-DeepWalk 안 했어요?</h3>
+<blockquote>
+<p>"솔직히 시간 문제예요. 본 모델에서 위키링크가 36개밖에 해석이 안 됐는데, <strong>random walk(랜덤 워크)</strong> 베이스로 가려면 그래프가 충분히 dense(덴스) 해야 해서요. <strong>scope(스코프) 를 PARA(파라) 1-4 전체로 넓힌 다음</strong> 다시 시도할 계획이고요, 그건 후속 작업으로 빼뒀습니다."</p>
+</blockquote>
+<h3>Q2. P@1 = 1.00 너무 잘 나온 거 아닌가요?</h3>
+<blockquote>
+<p>"맞습니다, 의심하실 만해요. 평가 라벨이 B5+TFIDF top-2 에서 부트스트랩됐기 때문에 B6=1.00 에는 일부 tautology(토톨로지) 가 있어요. <strong>수동으로 라벨 refine 하면 0.65~0.75 정도로 떨어질 거라 예상</strong> 합니다. 다만 B0 (0.40), B1 (0.45) 와의 <em>상대 차이</em> 는 부트스트랩과 무관해서 그래프 신호의 기여 자체는 유효합니다."</p>
+</blockquote>
+<h3>Q3. 위키링크 12.5% 만 해석된 게 문제 아닌가요?</h3>
+<blockquote>
+<p>"네, 인정합니다. 대부분의 미해석 링크는 학습 scope 밖 — 0-Inbox(제로 인박스), 2-Areas — 노트를 가리켜요. <strong>scope 를 넓히면 해석률 70%대로 오를 거라</strong> 추정하지만, 그러면 vault 의 일일 노트 같은 노이즈가 섞이는 트레이드오프가 있어서 첫 실험에서는 작게 시작했습니다."</p>
+</blockquote>
+<h3>Q4. HW2 랑 뭐가 다른가요?</h3>
+<blockquote>
+<p>"<strong>HW2 는 plain CBOW</strong> 였고요, 본 프로젝트는 거기에 (1) 위키링크·카테고리 두 그래프 신호 추가, (2) negative sampling 손실로 교체, (3) TF-IDF pooling 결합, (4) 7-baseline ablation 비교 — 이 네 가지를 얹었습니다. <strong>HW2 코드는 골격으로 재사용</strong> 했고요, 새로 짠 부분은 명확히 분리되어 있어요."</p>
+</blockquote>
+<h3>Q5. 평가셋 본인이 만든 거 자기 편향 아닌가요?</h3>
+<blockquote>
+<p>"네, 그렇습니다. <strong>n=1 사용자 vault 의 한계가 곧 평가셋의 한계</strong>예요. <strong>IAA(아이에이에이 — Inter-Annotator Agreement)</strong> 가 이상적이지만 단독 진행이라 못 했고요, 한계로 솔직히 명시했습니다. <strong>그래도 정성 top-5 비교 표도 함께 봐주시면</strong> 정량 수치 위에 정성적 검증이 한 겹 더 있습니다."</p>
+</blockquote>
+<hr>
+<h2>🧠 발표 직전 체크리스트</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 20:25 (5분 전) D504 도착</li>
+<li><input disabled="" type="checkbox"> USB 또는 클라우드에서 <code>wikicbow.pdf</code> 띄우기 (백업: <code>wikicbow.html</code>)</li>
+<li><input disabled="" type="checkbox"> fullscreen 단축키 확인 (Preview ⌘L, Adobe F5, Chrome F11)</li>
+<li><input disabled="" type="checkbox"> 본 narration 한 번 더 빠르게 훑기 (8분 타이머)</li>
+<li><input disabled="" type="checkbox"> <strong>숨 한 번 길게</strong></li>
+</ul>
+<blockquote>
+<p>발표 직후 받은 피드백 메모 → 최종 보고서에 흡수.</p>
+</blockquote>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <button class="nav-btn" id="prev-btn" aria-label="이전 슬라이드">‹</button>
+  <div class="progress" id="progress" role="progressbar">
+    <div class="fill" id="progress-fill"></div>
+  </div>
+  <div class="status"><strong id="cur-n">1</strong> / 11</div>
+  <button class="nav-btn" id="next-btn" aria-label="다음 슬라이드">›</button>
+</footer>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const fill = document.getElementById('progress-fill');
+  const curN = document.getElementById('cur-n');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const fontUp = document.getElementById('font-up');
+  const fontDown = document.getElementById('font-down');
+  const wake = document.getElementById('wake');
+
+  let cur = 0;
+  let fontMode = localStorage.getItem('wkc-font') || 'm';
+  if (fontMode === 'l') document.body.classList.add('font-l');
+  if (fontMode === 'xl') document.body.classList.add('font-xl');
+
+  function setActive(i){
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    chips.forEach((c, idx) => c.classList.toggle('current', idx === cur));
+    fill.style.width = ((cur + 1) / slides.length * 100) + '%';
+    curN.textContent = cur + 1;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === slides.length - 1;
+  }
+
+  function scrollTo(i){
+    setActive(i);
+    const el = slides[cur];
+    const top = el.getBoundingClientRect().top + window.scrollY - 76;
+    window.scrollTo({ top, behavior: 'smooth' });
+    history.replaceState(null, '', '#s' + (cur + 1));
+  }
+
+  // chip click → scroll
+  chips.forEach((c, i) => {
+    c.addEventListener('click', (e) => {
+      e.preventDefault();
+      scrollTo(i);
+    });
+  });
+
+  // Buttons
+  prevBtn.addEventListener('click', () => scrollTo(cur - 1));
+  nextBtn.addEventListener('click', () => scrollTo(cur + 1));
+
+  // Progress click
+  document.getElementById('progress').addEventListener('click', (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const ratio = x / rect.width;
+    scrollTo(Math.floor(ratio * slides.length));
+  });
+
+  // Detect current slide on scroll
+  const io = new IntersectionObserver((entries) => {
+    let topMost = null;
+    let topMostRatio = 0;
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > topMostRatio) {
+        topMost = e.target;
+        topMostRatio = e.intersectionRatio;
+      }
+    });
+    if (topMost) {
+      const i = slides.indexOf(topMost);
+      if (i >= 0 && i !== cur) setActive(i);
+    }
+  }, { rootMargin: '-30% 0px -50% 0px', threshold: [0, 0.1, 0.5] });
+  slides.forEach(s => io.observe(s));
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault(); scrollTo(cur + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); scrollTo(cur - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); scrollTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); scrollTo(slides.length - 1);
+    }
+  });
+
+  // Font size
+  function applyFont(mode){
+    document.body.classList.remove('font-l', 'font-xl');
+    if (mode === 'l') document.body.classList.add('font-l');
+    if (mode === 'xl') document.body.classList.add('font-xl');
+    localStorage.setItem('wkc-font', mode);
+    fontMode = mode;
+  }
+  fontUp.addEventListener('click', () => {
+    if (fontMode === 'm') applyFont('l');
+    else if (fontMode === 'l') applyFont('xl');
+  });
+  fontDown.addEventListener('click', () => {
+    if (fontMode === 'xl') applyFont('l');
+    else if (fontMode === 'l') applyFont('m');
+  });
+
+  // Wake lock
+  let wakeLock = null;
+  wake.addEventListener('click', async () => {
+    if (!('wakeLock' in navigator)) {
+      alert('이 브라우저에서는 화면 켜둠 기능을 지원하지 않습니다');
+      return;
+    }
+    if (wakeLock) {
+      try { await wakeLock.release(); } catch {}
+      wakeLock = null;
+      wake.classList.remove('active');
+    } else {
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wake.classList.add('active');
+        wakeLock.addEventListener('release', () => {
+          wakeLock = null;
+          wake.classList.remove('active');
+        });
+      } catch (e) {
+        alert('화면 켜둠 실패: ' + e.message);
+      }
+    }
+  });
+
+  // Initial hash
+  const m = /^#s(\d+)$/.exec(window.location.hash);
+  if (m) {
+    const n = Math.max(1, Math.min(11, parseInt(m[1], 10)));
+    setTimeout(() => scrollTo(n - 1), 100);
+  } else {
+    setActive(0);
+  }
+})();
+</script>
+</body>
+</html>
