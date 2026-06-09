@@ -233,6 +233,29 @@
   .katex{font-size:1em !important}
   .katex-display{font-size:0.95em !important;margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
 
+
+  /* Speak box — additional "🗣️ 이렇게 말하면 됩니다" content (post-deploy supplement) */
+  .speak-box{
+    margin:20px 0 8px;padding:16px 18px;
+    background:var(--paper-soft);
+    border-left:4px solid var(--vermillion);
+    border-radius:0 8px 8px 0;
+    box-shadow:0 1px 0 rgba(184,58,44,0.06);
+  }
+  .speak-box .speak-hd{
+    font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--vermillion);font-weight:600;
+    margin-bottom:10px;display:flex;align-items:center;gap:6px;
+  }
+  .speak-box .speak-body{
+    font-family:var(--body);font-size:16.5px;line-height:1.75;color:var(--ink);
+    font-weight:500;
+  }
+  body.font-l .speak-box .speak-body{font-size:18px;line-height:1.8}
+  body.font-xl .speak-box .speak-body{font-size:19.5px;line-height:1.85}
+  .speak-box .speak-body strong{color:var(--vermillion)}
+  .speak-box .speak-body em{font-style:italic;color:var(--ink-soft)}
+
   /* Print friendly */
   @media print{
     .nav,footer{display:none}
@@ -436,6 +459,13 @@
 </blockquote>
 <hr>
 
+  </div>
+
+  <div class="speak-box">
+    <div class="speak-hd">🗣️ 이렇게 말하면 됩니다 · 15~20초</div>
+    <div class="speak-body">
+      "그림 한 장이 전체예요 — 왼쪽이 학습, 오른쪽이 검색. 학습은 한 번만 6초, 검색은 매번 50밀리초 안에 끝나고요. 가장 중요한 건 가운데 빨간 점선 — 두 단계가 <strong>W₁(더블유 원) 임베딩 <em>하나</em></strong> 를 공유한다는 점입니다."
+    </div>
   </div>
 </section>
 
@@ -748,6 +778,13 @@
 <hr>
 
   </div>
+
+  <div class="speak-box">
+    <div class="speak-hd">🗣️ 이렇게 말하면 됩니다 · 15초</div>
+    <div class="speak-body">
+      "B0(비제로)부터 B6(비식스)까지 <strong>신호를 하나씩 켜고 끄면서</strong> 비교합니다. 데이터는 459 노트, 어휘 1만 7천 개. 모델당 6초로 끝나서 일곱 개 baseline(베이스라인) 전부 돌릴 수 있었어요."
+    </div>
+  </div>
 </section>
 
 <section id="s9" class="slide" data-n="9">
@@ -808,6 +845,13 @@
 </blockquote>
 <hr>
 
+  </div>
+
+  <div class="speak-box">
+    <div class="speak-hd">🗣️ 이렇게 말하면 됩니다 · 15초</div>
+    <div class="speak-body">
+      "색이 폴더, 선이 위키링크예요. 같은 폴더 노트가 알아서 뭉치는 게 보이는데, 이게 <strong>그래프 신호가 폴더 구조를 임베딩 공간에 자연스럽게 복원했다</strong> 는 시각적 증거입니다."
+    </div>
   </div>
 </section>
 
@@ -879,6 +923,13 @@
 <p>발표 직후 받은 피드백 메모 → 최종 보고서에 흡수.</p>
 </blockquote>
 
+  </div>
+
+  <div class="speak-box" style="border-left-color:var(--forest);background:linear-gradient(135deg,var(--paper-soft),var(--paper-soft) 70%,rgba(27,107,58,0.06));margin-top:24px">
+    <div class="speak-hd" style="color:var(--forest)">⭐ 닫는 한 호흡 — 한 줄로 정리하면 · 25~30초</div>
+    <div class="speak-body">
+      "한 줄로 정리하면 — <strong>'구조가 신호다.'</strong> 모델은 HW2 CBOW(에이치더블유 투 씨바우) + Mikolov(미콜로프) 2013 네거티브 샘플링이라는 <em>기성품</em> 을 그대로 가져왔고, 제가 한 건 <strong>위키링크와 카테고리를 학습 신호로 흡수시키는 부분</strong> 이에요. 그 결과 plain CBOW 0.45가 0.85로, TF-IDF 가중까지 더하면 <strong>1.00</strong> 까지 갑니다. 5MB 모델, 6초 학습, 큰 LLM 없이 — 이게 본 발표의 한 줄 결론입니다. 부트스트랩 caveat은 명시했으니 Q&amp;A에서 가져가셔도 됩니다. 감사합니다."
+    </div>
   </div>
 </section>
 
