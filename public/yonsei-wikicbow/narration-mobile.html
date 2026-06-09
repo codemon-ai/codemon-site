@@ -268,7 +268,8 @@
 
 <nav class="nav">
   <div class="brand">Wiki<span class="glyph">CBOW</span></div>
-  <div class="chips" id="chips">    <a href="#s1" class="chip" data-n="1">01</a>
+  <div class="chips" id="chips">
+    <a href="#s1" class="chip" data-n="1">01</a>
     <a href="#s2" class="chip" data-n="2">02</a>
     <a href="#s3" class="chip" data-n="3">03</a>
     <a href="#s4" class="chip" data-n="4">04</a>
@@ -279,6 +280,11 @@
     <a href="#s9" class="chip" data-n="9">09</a>
     <a href="#s10" class="chip" data-n="10">10</a>
     <a href="#s11" class="chip" data-n="11">11</a>
+    <a href="#s12" class="chip" data-n="12">12</a>
+    <a href="#s13" class="chip" data-n="13">13</a>
+    <a href="#s14" class="chip" data-n="14">14</a>
+    <a href="#s15" class="chip" data-n="15">15</a>
+    <a href="#s16" class="chip" data-n="16">16</a>
   </div>
   <div class="toolbar">
     <button class="tbtn" id="font-down" title="글자 작게">A−</button>
@@ -291,7 +297,7 @@
 <section id="s1" class="slide" data-n="1">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 01 / 11</span>
+      <span class="num">SLIDE 01 / 16</span>
       <span class="time">⏱ 45초</span>
     </div>
     <div class="title-en">Title</div>
@@ -368,7 +374,97 @@
 <section id="s2" class="slide" data-n="2">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 02 / 11</span>
+      <span class="num">SLIDE 02 / 16</span>
+      <span class="time">⏱ 25초</span>
+    </div>
+    <div class="title-en">My Obsidian Vault — 1,300+ Notes</div>
+    <div class="title-ko">제 옵시디언 vault — 1,300여 노트</div>
+    <div class="title-sub">발표 도입 1 · 작업 환경 소개</div>
+  </header>
+  <div class="slide-body">
+          <blockquote>
+            <p>"발표 시작 전에 제 작업 환경을 잠깐 보여드릴게요. 이게 제 옵시디언 vault의 graph view 입니다. <strong>1,300여 개 노트가 위키링크와 폴더·태그로 연결</strong> 되어 있고요. 자주 함께 등장하거나 같은 토픽 노트들이 자연스럽게 군집을 형성하는 게 보이실 거예요. 이 <strong>구조 자체가 본 프로젝트의 학습 데이터</strong> 가 됩니다."</p>
+          </blockquote>
+  </div>
+</section>
+
+
+<section id="s3" class="slide" data-n="3">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 03 / 16</span>
+      <span class="time">⏱ 25초</span>
+    </div>
+    <div class="title-en">One Personal Feed (Vision)</div>
+    <div class="title-ko">하나의 통합 피드 — 지향점</div>
+    <div class="title-sub">발표 도입 2 · 만들고 있는 앱</div>
+  </header>
+  <div class="slide-body">
+          <blockquote>
+            <p>"그리고 제가 옆에서 만들고 있는 통합 피드 앱입니다. <strong>일기·할일·일정·메모·위키·결정사항</strong> 을 한 화면에서 보는 게 목표인데, 여기 안에서 <em>작은 모델이 검색·연결·요약</em> 을 담당하게 하고 싶었어요. 본 프로젝트는 그 검색 부분의 <strong>작은 임베딩</strong> 을 직접 만들어 본 시도입니다."</p>
+          </blockquote>
+  </div>
+</section>
+
+
+<section id="s4" class="slide" data-n="4">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 04 / 16</span>
+      <span class="time">⏱ 20초</span>
+    </div>
+    <div class="title-en">Why a Small Model? — StackChan</div>
+    <div class="title-ko">왜 작은 모델인가 — StackChan</div>
+    <div class="title-sub">발표 도입 3 · 작은 기기 동기</div>
+  </header>
+  <div class="slide-body">
+          <blockquote>
+            <p>"그래서 <em>작은 모델</em> 에 집중합니다. 이게 <strong>StackChan(스택챈)</strong> 이라는 손바닥만 한 디바이스인데, 큰 LLM이 클라우드에 떠 있어야 하는 시대에도 <em>이런 작은 기기 안에서 돌아가는 모델</em> 로 의미 있는 검색이 가능한지가 본 프로젝트의 출발점이에요."</p>
+          </blockquote>
+  </div>
+</section>
+
+
+<section id="s5" class="slide" data-n="5">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 05 / 16</span>
+      <span class="time">⏱ 15초</span>
+    </div>
+    <div class="title-en">Tiny Hardware Budget</div>
+    <div class="title-ko">작은 하드웨어 예산</div>
+    <div class="title-sub">발표 도입 4 · 스택챈 스펙</div>
+  </header>
+  <div class="slide-body">
+          <blockquote>
+            <p>"스택챈의 스펙입니다. <strong>ESP32-S3 듀얼코어 240MHz, 16MB Flash, 8MB PSRAM</strong> — 클라우드 LLM은 절대 들어갈 수 없는 작은 하드웨어죠. 그래서 <em>5MB 임베딩 + numpy CPU 추론</em> 같은 가벼운 모델이 필요한 이유입니다."</p>
+          </blockquote>
+  </div>
+</section>
+
+
+<section id="s6" class="slide" data-n="6">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 06 / 16</span>
+      <span class="time">⏱ 25초</span>
+    </div>
+    <div class="title-en">Karpathy's LLM Wiki Pattern</div>
+    <div class="title-ko">출발 아이디어 — Karpathy의 LLM Wiki</div>
+    <div class="title-sub">발표 도입 5 · 영감의 출처</div>
+  </header>
+  <div class="slide-body">
+          <blockquote>
+            <p>"아이디어 자체는 <strong>Karpathy(카파시)의 LLM Wiki 패턴</strong> 에서 출발했어요. RAG처럼 매 질의마다 새로 검색하는 게 아니라, <em>LLM이 점진적으로 빌드·유지하는 구조화된 위키</em> 라는 아이디어인데, 핵심은 — <strong>'the wiki is a persistent, compounding artifact'</strong> — 위키 자체가 누적되는 구조가 되는 거죠. 본 프로젝트의 <em>지식 구조 = 학습 신호</em> 아이디어가 여기서 나왔습니다."</p>
+          </blockquote>
+  </div>
+</section>
+
+
+<section id="s7" class="slide" data-n="7">
+  <header class="slide-head">
+    <div class="row1">
+      <span class="num">SLIDE 07 / 16</span>
       <span class="time">⏱ 45초</span>
     </div>
     <div class="title-en">Problem &amp; Approach</div>
@@ -446,10 +542,10 @@
   </div>
 </section>
 
-<section id="s3" class="slide" data-n="3">
+<section id="s8" class="slide" data-n="8">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 03 / 11</span>
+      <span class="num">SLIDE 08 / 16</span>
       <span class="time">⏱ 60초</span>
     </div>
     <div class="title-en">System Architecture &amp; Flow</div>
@@ -476,10 +572,10 @@
   </div>
 </section>
 
-<section id="s4" class="slide" data-n="4">
+<section id="s9" class="slide" data-n="9">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 04 / 11</span>
+      <span class="num">SLIDE 09 / 16</span>
       <span class="time">⏱ 45초</span>
     </div>
     <div class="title-en">Three Sources of Co-occurrence</div>
@@ -510,10 +606,10 @@
   </div>
 </section>
 
-<section id="s5" class="slide" data-n="5">
+<section id="s10" class="slide" data-n="10">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 05 / 11</span>
+      <span class="num">SLIDE 10 / 16</span>
       <span class="time">⏱ 65초</span>
     </div>
     <div class="title-en">Pair Generation Formalized</div>
@@ -597,10 +693,10 @@
   </div>
 </section>
 
-<section id="s6" class="slide" data-n="6">
+<section id="s11" class="slide" data-n="11">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 06 / 11</span>
+      <span class="num">SLIDE 11 / 16</span>
       <span class="time">⏱ 55초</span>
     </div>
     <div class="title-en">Loss: NS + λ Mixing</div>
@@ -684,10 +780,10 @@
   </div>
 </section>
 
-<section id="s7" class="slide" data-n="7">
+<section id="s12" class="slide" data-n="12">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 07 / 11</span>
+      <span class="num">SLIDE 12 / 16</span>
       <span class="time">⏱ 50초</span>
     </div>
     <div class="title-en">Query↔Note Mapping</div>
@@ -763,10 +859,10 @@
   </div>
 </section>
 
-<section id="s8" class="slide" data-n="8">
+<section id="s13" class="slide" data-n="13">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 08 / 11</span>
+      <span class="num">SLIDE 13 / 16</span>
       <span class="time">⏱ 40초</span>
     </div>
     <div class="title-en">Baselines &amp; Corpus</div>
@@ -794,10 +890,10 @@
   </div>
 </section>
 
-<section id="s9" class="slide" data-n="9">
+<section id="s14" class="slide" data-n="14">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 09 / 11</span>
+      <span class="num">SLIDE 14 / 16</span>
       <span class="time">⏱ 75초</span>
     </div>
     <div class="title-en">Results — Retrieval@k</div>
@@ -840,10 +936,10 @@
   </div>
 </section>
 
-<section id="s10" class="slide" data-n="10">
+<section id="s15" class="slide" data-n="15">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 10 / 11</span>
+      <span class="num">SLIDE 15 / 16</span>
       <span class="time">⏱ 50초</span>
     </div>
     <div class="title-en">t-SNE</div>
@@ -870,10 +966,10 @@
   </div>
 </section>
 
-<section id="s11" class="slide" data-n="11">
+<section id="s16" class="slide" data-n="16">
   <header class="slide-head">
     <div class="row1">
-      <span class="num">SLIDE 11 / 11</span>
+      <span class="num">SLIDE 16 / 16</span>
       <span class="time">⏱ 25초</span>
     </div>
     <div class="title-en">Caveats · LLM · Future</div>
@@ -962,7 +1058,7 @@
   <div class="progress" id="progress" role="progressbar">
     <div class="fill" id="progress-fill"></div>
   </div>
-  <div class="status"><strong id="cur-n">1</strong> / 11</div>
+  <div class="status"><strong id="cur-n">1</strong> / 16</div>
   <button class="nav-btn" id="next-btn" aria-label="다음 슬라이드">›</button>
 </footer>
 

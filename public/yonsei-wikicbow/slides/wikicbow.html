@@ -164,13 +164,78 @@
           <div class="meta-cell"><div class="label">Stack</div><div class="value">PyTorch · scikit-learn<br><span class="muted">459-note Obsidian vault</span></div></div>
           <div class="meta-cell"><div class="label">Format</div><div class="value">8-minute talk<br><span class="muted">Korean narration · English slides</span></div></div>
         </div>
-        <div class="bottom-mark" style="margin-top:18px">— No. 01 in a series of eleven</div>
+        <div class="bottom-mark" style="margin-top:18px">— No. 01 in a series of sixteen</div>
       </div>
     </div>
   </section>
 
+  <section class="slide figure-slide">
+    <div class="page-num"><strong>02</strong> / 16</div>
+    <div class="h-eyebrow">§ 0 — My Vault</div>
+    <h1 class="slide-title">My Obsidian Vault &mdash; 1,300+ Notes</h1>
+    <div class="title-rule"></div>
+    <div class="figure" style="background:#1a1a1a;padding:0">
+      <img src="../figures/obsidian-graph.png" alt="Obsidian graph view of personal vault">
+    </div>
+    <p class="figure-caption">
+      제 옵시디언 vault의 graph view — <b>1,300여 노트</b> 가 <em>위키링크와 폴더·태그</em> 로 묶여 있습니다. 같은 토픽 노트는 자연스럽게 군집을 형성. 이게 본 프로젝트의 <em>학습 코퍼스</em> 입니다.
+    </p>
+  </section>
+
+  <section class="slide figure-slide">
+    <div class="page-num"><strong>03</strong> / 16</div>
+    <div class="h-eyebrow">§ 0 — Vision</div>
+    <h1 class="slide-title">One Personal Feed (Vision)</h1>
+    <div class="title-rule"></div>
+    <div class="figure">
+      <img src="../figures/personal-feed-app.png" alt="Personal integrated feed app — diary, todo, schedule, notes">
+    </div>
+    <p class="figure-caption">
+      제가 만들고 있는 통합 피드 — <b>일기·할일·일정·메모·위키·결정사항</b> 을 한 화면에. <em>작은 모델이 이런 개인 도구 안에서 검색·연결·요약을 담당</em> 하는 게 본 프로젝트의 비전입니다.
+    </p>
+  </section>
+
+  <section class="slide figure-slide">
+    <div class="page-num"><strong>04</strong> / 16</div>
+    <div class="h-eyebrow">§ 0 — Inspiration · Small Device</div>
+    <h1 class="slide-title">Why a Small Model?</h1>
+    <div class="title-rule"></div>
+    <div class="figure">
+      <img src="../figures/stackchan.png" alt="StackChan — small palm-sized device">
+    </div>
+    <p class="figure-caption">
+      <b>StackChan</b> — 손바닥만 한 작은 디바이스 (70.5 × 54 × 61.5 mm). 클라우드 LLM 없이 <em>작은 기기 안에 들어가는 모델</em> 로도 의미 있는 작업이 가능할까? 가 본 프로젝트의 출발점입니다.
+    </p>
+  </section>
+
+  <section class="slide figure-slide">
+    <div class="page-num"><strong>05</strong> / 16</div>
+    <div class="h-eyebrow">§ 0 — Hardware Constraint</div>
+    <h1 class="slide-title">Tiny Hardware Budget</h1>
+    <div class="title-rule"></div>
+    <div class="figure">
+      <img src="../figures/stackchan-spec.png" alt="StackChan ESP32-S3 spec">
+    </div>
+    <p class="figure-caption">
+      <b>ESP32-S3 · Xtensa dual-core 32-bit LX7 · 240 MHz · 16 MB Flash · 8 MB Quad PSRAM.</b> 클라우드 LLM은 절대 불가능. <em>5 MB 임베딩 + numpy CPU 추론</em> 정도의 가벼운 모델이 필요한 이유.
+    </p>
+  </section>
+
+  <section class="slide figure-slide">
+    <div class="page-num"><strong>06</strong> / 16</div>
+    <div class="h-eyebrow">§ 0 — Origin Idea</div>
+    <h1 class="slide-title">Karpathy's LLM Wiki Pattern</h1>
+    <div class="title-rule"></div>
+    <div class="figure">
+      <img src="../figures/karpathy-llm-wiki.png" alt="Karpathy LLM Wiki idea file">
+    </div>
+    <p class="figure-caption">
+      Karpathy(카파시)의 <b>LLM Wiki</b> — RAG와 달리 <em>LLM이 점진적으로 빌드·유지하는 구조화된 위키</em>. <b>"the wiki is a persistent, compounding artifact"</b>. 본 프로젝트의 <em>지식 구조 = 학습 신호</em> 아이디어가 여기서 출발했습니다.
+    </p>
+  </section>
+
   <section class="slide">
-    <div class="page-num"><strong>02</strong> / 11</div>
+    <div class="page-num"><strong>07</strong> / 16</div>
     <div class="h-eyebrow">§ 1 — Premise</div>
     <h1 class="slide-title">Problem &amp; Approach</h1>
     <div class="title-rule"></div>
@@ -187,7 +252,7 @@
   </section>
 
   <section class="slide arch-slide figure-slide">
-    <div class="page-num"><strong>03</strong> / 11</div>
+    <div class="page-num"><strong>08</strong> / 16</div>
     <div class="h-eyebrow">§ 2 — System Architecture</div>
     <h1 class="slide-title">Architecture &amp; Flow</h1>
     <div class="title-rule"></div>
@@ -202,7 +267,7 @@
   </section>
 
   <section class="slide">
-    <div class="page-num"><strong>04</strong> / 11</div>
+    <div class="page-num"><strong>09</strong> / 16</div>
     <div class="h-eyebrow">§ 3 — Idea</div>
     <h1 class="slide-title">Three Sources of Co-occurrence</h1>
     <div class="title-rule"></div>
@@ -221,7 +286,7 @@
   </section>
 
   <section class="slide">
-    <div class="page-num"><strong>05</strong> / 11</div>
+    <div class="page-num"><strong>10</strong> / 16</div>
     <div class="h-eyebrow">§ 4 — Method · Data</div>
     <h1 class="slide-title">Pair Generation &mdash; Formalized</h1>
     <div class="title-rule"></div>
@@ -254,7 +319,7 @@
   </section>
 
   <section class="slide">
-    <div class="page-num"><strong>06</strong> / 11</div>
+    <div class="page-num"><strong>11</strong> / 16</div>
     <div class="h-eyebrow">§ 5 — Method · Loss</div>
     <h1 class="slide-title">Loss &mdash; Negative Sampling + λ Mixing</h1>
     <div class="title-rule"></div>
@@ -276,7 +341,7 @@
   </section>
 
   <section class="slide">
-    <div class="page-num"><strong>07</strong> / 11</div>
+    <div class="page-num"><strong>12</strong> / 16</div>
     <div class="h-eyebrow">§ 6 — Retrieval Head</div>
     <h1 class="slide-title">Query &harr; Note Mapping</h1>
     <div class="title-rule"></div>
@@ -301,7 +366,7 @@
   </section>
 
   <section class="slide compact">
-    <div class="page-num"><strong>08</strong> / 11</div>
+    <div class="page-num"><strong>13</strong> / 16</div>
     <div class="h-eyebrow">§ 7 — Experiment Design</div>
     <h1 class="slide-title">Baselines &amp; Corpus</h1>
     <div class="title-rule"></div>
@@ -326,7 +391,7 @@
   </section>
 
   <section class="slide compact">
-    <div class="page-num"><strong>09</strong> / 11</div>
+    <div class="page-num"><strong>14</strong> / 16</div>
     <div class="h-eyebrow">§ 8 — Findings</div>
     <h1 class="slide-title">Results &mdash; Retrieval@k <em>(n = 20)</em></h1>
     <div class="title-rule"></div>
@@ -348,7 +413,7 @@
   </section>
 
   <section class="slide figure-slide">
-    <div class="page-num"><strong>10</strong> / 11</div>
+    <div class="page-num"><strong>15</strong> / 16</div>
     <div class="h-eyebrow">§ 9 — Visualization</div>
     <h1 class="slide-title">t-SNE &mdash; Notes &amp; Wikilinks</h1>
     <div class="title-rule"></div>
@@ -359,7 +424,7 @@
   </section>
 
   <section class="slide compact">
-    <div class="page-num"><strong>11</strong> / 11</div>
+    <div class="page-num"><strong>16</strong> / 16</div>
     <div class="h-eyebrow">§ 10 — Honesty</div>
     <h1 class="slide-title">Caveats &middot; LLM Usage &middot; Future</h1>
     <div class="title-rule"></div>
@@ -400,24 +465,14 @@
   window.addEventListener('resize', resize);
   resize();
   function setBar(){ bar.style.width = ((cur + 1) / slides.length * 100) + '%'; }
-  // Notify a parent frame (study viewer) whenever the active slide changes,
-  // so narration can stay locked to the slide no matter how it was advanced.
-  function notifyParent(){
-    try{
-      if(window.parent && window.parent !== window){
-        window.parent.postMessage({ type:'wikicbow:slide', n: cur + 1, total: slides.length }, '*');
-      }
-    }catch(_){}
-  }
   function show(i){
     i = Math.max(0, Math.min(slides.length - 1, i));
-    if(i === cur){ notifyParent(); return; }
+    if(i === cur) return;
     slides[cur].classList.remove('active');
     slides[i].classList.add('active');
     cur = i;
     setBar();
     history.replaceState(null, '', '#' + (cur + 1));
-    notifyParent();
   }
   setBar();
   if(window.location.hash){
@@ -426,13 +481,6 @@
       slides[0].classList.remove('active'); slides[n - 1].classList.add('active'); cur = n - 1; setBar();
     }
   }
-  // React to hash changes driven by the parent frame (study viewer sync).
-  window.addEventListener('hashchange', function(){
-    var n = parseInt(window.location.hash.slice(1), 10);
-    if(!isNaN(n) && n >= 1 && n <= slides.length){ show(n - 1); }
-  });
-  // Announce initial slide to the parent once loaded.
-  notifyParent();
   document.addEventListener('keydown', function(e){
     if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter'){ e.preventDefault(); show(cur + 1); }
     else if(e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace'){ e.preventDefault(); show(cur - 1); }
