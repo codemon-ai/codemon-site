@@ -10,6 +10,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="window.renderKatexNow && window.renderKatexNow();"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+
 <style>
   :root{
     --paper:#FBFAF6;--paper-soft:#F4F1E8;--ink:#1A1A1A;--ink-soft:#4A4A4A;
@@ -23,22 +29,33 @@
   html,body{height:100%;background:var(--paper)}
   body{font-family:var(--body);color:var(--ink);overflow:hidden;display:flex;flex-direction:column}
 
-  /* Top bar */
+  /* ─── Top bar ─── */
   .topbar{
     height:54px;background:#fff;border-bottom:1px solid var(--hair);
-    display:flex;align-items:center;padding:0 24px;gap:24px;
-    font-family:var(--mono);font-size:12px;color:var(--ink-soft);
-    z-index:10;
+    display:flex;align-items:center;padding:0 24px;gap:18px;
+    font-family:var(--mono);font-size:12px;color:var(--ink-soft);z-index:10;flex-shrink:0;
   }
-  .topbar .brand{
-    font-family:var(--display);font-size:18px;color:var(--ink);font-weight:500;
-  }
+  .topbar .brand{font-family:var(--display);font-size:18px;color:var(--ink);font-weight:500}
   .topbar .brand .glyph{color:var(--vermillion);font-style:italic}
-  .topbar .meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.06em}
+  .topbar .tagline{color:var(--muted);font-size:11px;letter-spacing:0.06em}
+  .topbar .meta{margin-left:auto;font-size:11px;color:var(--muted);letter-spacing:0.06em;display:flex;align-items:center;gap:14px}
   .topbar .meta strong{color:var(--ink);font-weight:600}
 
-  /* Main split */
-  .main{flex:1;display:grid;grid-template-columns:62% 38%;min-height:0;overflow:hidden}
+  /* mode toggle */
+  .mode-toggle{
+    display:flex;border:1px solid var(--hair);border-radius:4px;overflow:hidden;
+    background:#fff;font-family:var(--mono);font-size:11px;
+  }
+  .mode-toggle button{
+    background:#fff;border:none;padding:6px 12px;cursor:pointer;
+    font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+    letter-spacing:0.06em;transition:all 120ms;
+  }
+  .mode-toggle button.active{background:var(--vermillion);color:#fff;font-weight:500}
+  .mode-toggle button:hover:not(.active){background:var(--paper-soft);color:var(--ink)}
+
+  /* ─── Main split ─── */
+  .main{flex:1;display:grid;grid-template-columns:58% 42%;min-height:0;overflow:hidden}
 
   /* Left: slide iframe */
   .slide-pane{
@@ -46,74 +63,119 @@
     display:flex;flex-direction:column;min-height:0;position:relative;
   }
   .slide-pane iframe{flex:1;border:none;width:100%;height:100%}
+  .slide-pane .slide-status{
+    position:absolute;top:8px;left:8px;
+    font-family:var(--mono);font-size:10px;color:var(--muted);
+    background:rgba(255,255,255,0.85);padding:3px 8px;border-radius:3px;
+    letter-spacing:0.06em;backdrop-filter:blur(4px);z-index:5;
+  }
+  .progress-bar{position:absolute;left:0;right:0;top:0;height:2px;background:transparent;z-index:9}
+  .progress-bar .fill{height:100%;background:var(--vermillion);width:0;transition:width 220ms ease-out}
 
   /* Right: narration */
   .nar-pane{
-    background:#fff;display:flex;flex-direction:column;min-height:0;
-    overflow:hidden;
+    background:#fff;display:flex;flex-direction:column;min-height:0;overflow:hidden;
+    position:relative;
   }
   .nar-header{
-    padding:18px 24px 12px;border-bottom:1px solid var(--hair-soft);
-    display:flex;align-items:baseline;gap:14px;
+    padding:14px 22px 12px;border-bottom:1px solid var(--hair-soft);
+    display:flex;align-items:baseline;gap:14px;flex-shrink:0;background:#fff;
   }
   .nar-header .num{
     font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
     color:var(--muted);text-transform:uppercase;
   }
   .nar-header .title{
-    font-family:var(--display);font-size:21px;font-weight:500;color:var(--ink);
+    font-family:var(--display);font-size:20px;font-weight:500;color:var(--ink);
     flex:1;line-height:1.2;
   }
   .nar-header .time{
-    font-family:var(--mono);font-size:12px;color:var(--vermillion);
+    font-family:var(--mono);font-size:11.5px;color:var(--vermillion);
     background:var(--paper-soft);padding:3px 8px;border-radius:3px;font-weight:500;
   }
+  .nar-header .solo-badge{
+    font-family:var(--mono);font-size:10px;color:#fff;background:var(--vermillion);
+    padding:2px 6px;border-radius:3px;letter-spacing:0.08em;display:none;
+  }
+  body.solo .nar-header .solo-badge{display:inline-block}
+
+  /* Solo-mode mini nav inside narration header */
+  .nar-mini-nav{
+    display:none;align-items:center;gap:6px;margin-left:auto;
+    font-family:var(--mono);font-size:11px;
+  }
+  body.solo .nar-mini-nav{display:flex}
+  .nar-mini-nav button{
+    background:#fff;border:1px solid var(--hair);border-radius:3px;
+    width:24px;height:24px;cursor:pointer;font-family:var(--mono);font-size:14px;
+    color:var(--ink-soft);transition:all 100ms;display:flex;align-items:center;justify-content:center;
+  }
+  .nar-mini-nav button:hover:not(:disabled){border-color:var(--vermillion);color:var(--vermillion)}
+  .nar-mini-nav button:disabled{opacity:0.3;cursor:not-allowed}
 
   .nar-body{
-    flex:1;overflow-y:auto;padding:20px 24px 80px;
-    font-size:15.5px;line-height:1.7;color:var(--ink);
+    flex:1;overflow-y:auto;padding:18px 24px 100px;
+    font-size:15.5px;line-height:1.75;color:var(--ink);
+    scroll-behavior:smooth;
   }
-  .nar-body .section-label{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:0.14em;
+  /* Rendered markdown */
+  .nar-body h1{display:none}
+  .nar-body h2{
+    font-family:var(--display);font-size:19px;font-weight:500;color:var(--ink);
+    margin:22px 0 10px;letter-spacing:-0.01em;
+  }
+  .nar-body h2:first-child{margin-top:0}
+  .nar-body h3{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:0.12em;
     color:var(--vermillion);text-transform:uppercase;margin:18px 0 8px;font-weight:500;
   }
-  .nar-body .section-label:first-child{margin-top:0}
-  .nar-body .quote{
-    border-left:3px solid var(--vermillion);padding:8px 14px;margin:0;
-    background:var(--paper);font-family:var(--body);color:var(--ink);
-    border-radius:0 4px 4px 0;
+  .nar-body p{margin:0 0 12px;font-size:15.5px;line-height:1.7}
+  .nar-body strong{color:var(--vermillion);font-weight:600}
+  .nar-body em{font-style:italic;color:var(--ink-soft)}
+  .nar-body code{
+    font-family:var(--mono);font-size:0.85em;background:var(--paper-soft);
+    padding:1px 5px;border-radius:3px;color:var(--ink);
   }
-  .nar-body .quote p{margin-bottom:8px}
-  .nar-body .quote p:last-child{margin-bottom:0}
-  .nar-body .quote strong{font-weight:600;color:var(--vermillion)}
-  .nar-body .quote em{font-style:italic;color:var(--ink-soft)}
+  .nar-body blockquote{
+    border-left:3px solid var(--vermillion);padding:10px 16px;margin:0 0 14px;
+    background:var(--paper);border-radius:0 4px 4px 0;
+  }
+  .nar-body blockquote p{margin:0 0 8px;font-size:15.5px}
+  .nar-body blockquote p:last-child{margin-bottom:0}
+  .nar-body hr{border:none;border-top:1px solid var(--hair-soft);margin:24px 0}
+  .nar-body ul,.nar-body ol{padding-left:22px;margin:0 0 14px}
+  .nar-body li{margin-bottom:6px;font-size:15px;line-height:1.65}
+  .nar-body table{
+    border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px;
+    border:1px solid var(--hair-soft);
+  }
+  .nar-body th{
+    text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);padding:8px 10px;
+    border-bottom:1px solid var(--ink);background:var(--paper);
+  }
+  .nar-body td{padding:7px 10px;border-bottom:1px solid var(--hair-soft);font-size:13.5px;vertical-align:top}
+  .nar-body td:first-child{font-family:var(--mono);color:var(--vermillion);font-weight:500;white-space:nowrap}
 
-  .math-meanings{
-    margin-top:8px;
-    background:var(--paper);
-    border:1px solid var(--hair-soft);border-radius:4px;
-    padding:12px 16px;
+  /* Section markers */
+  .nar-body .section-anchor{
+    scroll-margin-top:20px;
+    border-left:2px solid var(--vermillion);
+    padding:14px 16px;background:var(--paper-soft);
+    margin:24px 0 16px;border-radius:0 4px 4px 0;
   }
-  .math-meanings .label{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:0.14em;
-    color:var(--muted);text-transform:uppercase;margin-bottom:8px;
+  .nar-body .section-anchor .anchor-label{
+    font-family:var(--mono);font-size:10px;letter-spacing:0.14em;
+    color:var(--vermillion);text-transform:uppercase;font-weight:600;margin-bottom:4px;
   }
-  .math-meanings .row{
-    display:flex;align-items:flex-start;gap:10px;
-    padding:6px 0;border-bottom:1px dashed var(--hair-soft);
-    font-size:14px;line-height:1.5;
+  .nar-body .section-anchor h2{
+    margin:0;font-size:18px;
   }
-  .math-meanings .row:last-child{border-bottom:none}
-  .math-meanings .row .symbol{
-    font-family:var(--mono);color:var(--vermillion);font-weight:500;
-    flex-shrink:0;width:100px;font-size:13px;
-  }
-  .math-meanings .row .meaning{color:var(--ink-soft)}
 
-  /* Bottom nav */
+  /* ─── Bottom nav ─── */
   .navbar{
-    height:64px;background:#fff;border-top:1px solid var(--hair);
-    display:flex;align-items:center;padding:0 24px;gap:8px;
+    height:60px;background:#fff;border-top:1px solid var(--hair);
+    display:flex;align-items:center;padding:0 24px;gap:8px;flex-shrink:0;
   }
   .nav-btn{
     border:1px solid var(--hair);background:#fff;color:var(--ink);
@@ -122,24 +184,21 @@
     transition:all 120ms;
   }
   .nav-btn:hover:not(:disabled){border-color:var(--vermillion);color:var(--vermillion)}
-  .nav-btn:disabled{opacity:0.4;cursor:not-allowed}
-  .nav-dots{
-    flex:1;display:flex;justify-content:center;gap:6px;align-items:center;
-  }
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+  .nav-dots{flex:1;display:flex;justify-content:center;gap:6px;align-items:center}
   .nav-dot{
     width:8px;height:8px;border-radius:50%;background:var(--hair);
-    cursor:pointer;transition:all 120ms;border:none;padding:0;
+    cursor:pointer;transition:all 120ms;border:none;padding:0;position:relative;
   }
-  .nav-dot:hover{background:var(--muted)}
-  .nav-dot.active{background:var(--vermillion);transform:scale(1.4)}
+  .nav-dot:hover{background:var(--muted);transform:scale(1.2)}
+  .nav-dot.slide-active{background:var(--vermillion);transform:scale(1.4)}
+  .nav-dot.nar-active::after{
+    content:"";position:absolute;left:-3px;top:-3px;right:-3px;bottom:-3px;
+    border:1.5px solid var(--vermillion);border-radius:50%;
+  }
   .nav-dot.viewed{background:var(--ink-soft)}
 
-  .progress-bar{
-    position:absolute;left:0;right:0;top:0;height:2px;background:transparent;z-index:9;
-  }
-  .progress-bar .fill{height:100%;background:var(--vermillion);width:0;transition:width 220ms ease-out}
-
-  /* Help text */
+  /* ─── Help text + hint ─── */
   .help-text{
     position:fixed;bottom:8px;right:14px;
     font-family:var(--mono);font-size:9.5px;color:var(--muted);
@@ -150,8 +209,13 @@
     background:rgba(255,255,255,0.7);font-family:var(--mono);font-size:9px;color:var(--ink-soft);margin:0 2px;
   }
 
-  /* Mobile fallback */
-  @media (max-width: 900px){
+  /* loading state */
+  .nar-body.loading{
+    display:flex;align-items:center;justify-content:center;color:var(--muted);
+    font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+  }
+
+  @media (max-width: 1000px){
     .main{grid-template-columns:1fr;grid-template-rows:50vh 1fr}
     .slide-pane{border-right:none;border-bottom:1px solid var(--hair)}
   }
@@ -161,12 +225,20 @@
 
 <div class="topbar">
   <div class="brand">Wiki<span class="glyph">CBOW</span> · 학습용</div>
-  <div style="color:var(--muted);font-size:11px;letter-spacing:0.06em;">발표 준비 — 슬라이드 + 한국어 나레이션 + 수식 의미</div>
-  <div class="meta">slide <strong id="cur-num">1</strong> / 11 · ⏱ <strong id="cur-time">15s</strong> · total <strong>8:00</strong></div>
+  <div class="tagline">슬라이드 + 한국어 나레이션 + 약어 발음</div>
+  <div class="meta">
+    <div class="mode-toggle">
+      <button data-mode="sync" class="active" title="슬라이드와 나레이션 동시 이동 (← →)">🔗 Sync</button>
+      <button data-mode="solo" title="나레이션만 이동 (← →), 슬라이드 별도 (Shift+← →)">📜 Solo</button>
+    </div>
+    <span>slide <strong id="cur-slide">1</strong> / 11</span>
+    <span>nar <strong id="cur-nar">1</strong> / 11</span>
+  </div>
 </div>
 
 <div class="main">
   <div class="slide-pane">
+    <div class="slide-status" id="slide-status">slide 1 / 11</div>
     <div class="progress-bar"><div class="fill" id="bar"></div></div>
     <iframe id="slide-frame" src="wikicbow.html#1" title="slide"></iframe>
   </div>
@@ -174,12 +246,15 @@
   <div class="nar-pane">
     <div class="nar-header">
       <div class="num" id="nar-num">01 / 11</div>
-      <div class="title" id="nar-title">Title</div>
-      <div class="time" id="nar-time">15s</div>
+      <div class="title" id="nar-title">Loading…</div>
+      <div class="time" id="nar-time">—</div>
+      <div class="solo-badge">SOLO</div>
+      <div class="nar-mini-nav">
+        <button id="nar-prev-mini" title="이전 나레이션">‹</button>
+        <button id="nar-next-mini" title="다음 나레이션">›</button>
+      </div>
     </div>
-    <div class="nar-body" id="nar-body">
-      <!-- populated by JS -->
-    </div>
+    <div class="nar-body loading" id="nar-body">나레이션 불러오는 중…</div>
   </div>
 </div>
 
@@ -189,238 +264,387 @@
   <button class="nav-btn" id="next-btn">Next →</button>
 </div>
 
-<div class="help-text">
-  <kbd>←</kbd> <kbd>→</kbd> slide &nbsp;·&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> scroll narration
+<div class="help-text" id="help-text">
+  <span class="sync-help">
+    <kbd>←</kbd> <kbd>→</kbd> 둘 다 이동 &nbsp;·&nbsp;
+    <kbd>↑</kbd> <kbd>↓</kbd> 나레이션 스크롤 &nbsp;·&nbsp;
+    <kbd>S</kbd> 모드 토글
+  </span>
 </div>
 
 <script>
-const SLIDES = [
-  {
-    n: 1, title: "표지", time: 15,
-    narration: [
-      ["인사 (15초)", "안녕하세요, 융합인문공학 박상용입니다. 오늘 발표할 기말 프로젝트는 **WikiCBOW** 인데요, **수업에서 배운 CBOW 모델을 제 옵시디언 노트에 맞게 확장**한 작업입니다. 솔직히 말씀드리면 처음부터 새로 짠 게 아니라, HW2에서 만든 CBOW 코드에 두 가지를 더 얹은 거예요."]
-    ]
-  },
-  {
-    n: 2, title: "Problem & Approach", time: 40,
-    narration: [
-      ["문제 정의 (15초)", "문제는 단순합니다. ChatGPT 같은 일반 LLM은 제가 평소 쓰는 약어나 프로젝트 이름을 모릅니다. 그래서 **제 옵시디언 노트로 직접 학습한 작은 모델**로 노트를 검색해보자, 가 출발점이었어요."],
-      ["접근 (25초)", "방법은 HW2 CBOW에서 출발합니다. 이 가운데 수식은 수업에서 다룬 식 그대로고요 — 주변 단어들 임베딩을 평균 내서 중심 단어를 예측하는 표준 CBOW 입니다. 손실은 softmax 대신 negative sampling 으로 바꿨는데, 이건 뒤에서 다시 설명드릴게요. **제가 추가한 건 두 가지** — 옵시디언의 위키링크와 폴더·태그를 학습 신호로 더한 부분, 그리고 7개 baseline 으로 비교한 부분입니다."]
-    ],
-    formulas: [
-      ["v_ctx", "컨텍스트 단어들의 임베딩을 단순 평균 — 길이 64짜리 벡터 하나로 만듦"],
-      ["P(w|ctx)", "그 평균 벡터로 다음 단어가 무엇일지 확률을 출력 — 시그모이드 함수"],
-      ["NS", "Negative Sampling — 전체 어휘 정규화 대신 부정 샘플 5개와만 비교"]
-    ]
-  },
-  {
-    n: 3, title: "System Architecture & Flow", time: 60,
-    narration: [
-      ["전체 흐름 안내 (60초)", "이 한 장으로 전체 시스템을 보여드립니다. 왼쪽이 **학습 phase**, 오른쪽이 **추론 phase** 예요. 학습은 한 번만 6초 만에 끝나고, 추론은 검색마다 50밀리초 안에 끝납니다.\n\n**왼쪽** — Vault 에서 459개 노트를 뽑아서 전처리하고, 어휘 17,024개와 토큰 23만개를 만듭니다. 거기서 세 종류 페어를 생성해요: 노트 내부 윈도우 페어 23만개, 위키링크 페어 180개, 카테고리 페어 9만 7천개. 이걸 λ 비율로 섞어서 PyTorch CBOW 에 통과시키고, 5 epoch 학습 후 W₁ 임베딩이 나옵니다.\n\n**오른쪽** — 학습된 W₁ 을 가지고 노트와 쿼리를 같은 방식으로 임베딩화합니다. mean pooling 또는 TF-IDF pooling 둘 중 하나로요. 미리 459개 노트의 벡터를 계산해두고, 쿼리가 들어오면 코사인 유사도로 top-k 를 뽑습니다.\n\n**핵심은 가운데 빨간 점선** — 두 phase 가 W₁ 임베딩 하나를 공유한다는 점이에요."]
-    ]
-  },
-  {
-    n: 4, title: "Three Sources of Co-occurrence", time: 45,
-    narration: [
-      ["세 신호 직관 (45초)", "동시출현 신호 세 가지입니다. 수식 없이 직관으로 먼저 설명드릴게요.\n\n첫째 **intra-note** — 한 노트 안의 슬라이딩 윈도우. 이건 표준 CBOW고요, **HW2 코드 그대로** 입니다.\n\n둘째 **wikilink** — 옵시디언에서 노트 A가 `[[노트 B]]` 로 다른 노트를 가리킬 때, 두 노트에서 각각 단어 하나씩 뽑아서 페어로 만듭니다.\n\n셋째 **category** — 같은 폴더에 있거나 같은 태그를 공유하는 노트 사이에서 같은 방식으로 단어 페어를 만들어요.\n\n가정은 단순합니다 — **링크되거나 같은 카테고리에 있는 노트는 임베딩 공간에서 가까워야 한다.** 이 세 신호를 하나의 손실 함수 안에 섞었습니다."]
-    ]
-  },
-  {
-    n: 5, title: "Pair Generation — Formalized", time: 65,
-    narration: [
-      ["수식 형식화 (65초)", "이 슬라이드가 수식이 좀 많아 보이는데, **사실 어렵지 않습니다**.\n\n첫 번째 식 — `D_intra`. 그냥 *각 노트 안에서 윈도우 잡아서 컨텍스트와 타겟 만든다* 는 뜻이에요. 표준 CBOW 식이고 수업에서 그대로 다룬 부분입니다.\n\n두 번째 식 — `D_wiki`. *위키링크 엣지가 있을 때마다 단어 5개씩 샘플링* 한다는 거고요.\n\n세 번째 식 — `D_cat`. *카테고리 엣지마다 단어 3개씩.* 똑같은 형식입니다.\n\n솔직히 이 수식 형태로 정형화한 건 **교수님 피드백을 받고 정리한 부분**이에요. 처음엔 그냥 글로 풀어 썼었는데, 피드백에서 '학습 페어 생성 규칙을 수식화하라' 고 하셔서 이렇게 정리했습니다."]
-    ],
-    formulas: [
-      ["D_intra", "각 노트 내부에서 컨텍스트(주변 단어)와 타겟(중심 단어) 페어를 모두 모은 집합"],
-      ["D_wiki", "위키링크가 있는 노트 A·B 쌍마다 단어 5개를 무작위로 뽑아 페어로 만든 집합"],
-      ["D_cat", "같은 폴더·태그를 공유하는 노트 A·B 쌍마다 단어 3개를 무작위로 뽑은 집합"],
-      ["U(n)", "노트 n의 단어들 위에서의 균등 분포 — 단어 하나를 무작위로 뽑는다는 뜻"],
-      ["K_wiki, K_cat", "엣지 하나당 몇 개의 페어를 만들 것인지 (5개·3개)"]
-    ]
-  },
-  {
-    n: 6, title: "Loss — Negative Sampling + λ Mixing", time: 55,
-    narration: [
-      ["NS 손실 (35초)", "이 손실 함수도 솔직히 말씀드리면 **제가 발명한 식이 아닙니다**. **Mikolov 2013 논문의 Negative Sampling 식** 그대로예요. positive 페어 하나에 노이즈 분포에서 뽑은 negative 5개를 비교합니다. 노이즈 분포는 단어 빈도의 0.75 제곱 — 이것도 Mikolov 논문에서 제안한 그대로고요."],
-      ["λ 혼합 (20초)", "두 번째 식이 세 데이터셋을 람다 비율로 섞는 부분인데, 이건 단순히 *epoch 마다 정해진 비율로 미니배치를 구성한다* 는 뜻입니다. **제가 직접 한 건 alias method 로 negative 샘플링을 O(1)으로 구현한 부분** — 이건 빠른 학습을 위한 표준 기법인데 numpy로 직접 짰습니다."]
-    ],
-    formulas: [
-      ["ℓ", "한 페어의 손실 — 정답은 +방향, 부정 5개는 -방향으로 밀어내는 식"],
-      ["σ", "시그모이드 — 임의 실수를 0과 1 사이로 압축"],
-      ["W_2[w]", "타겟 단어 w의 출력 임베딩 벡터"],
-      ["v_ctx", "컨텍스트 단어들의 입력 임베딩 평균 (앞 슬라이드 식)"],
-      ["P_n(w)", "부정 샘플 뽑을 때 쓰는 분포 — 흔한 단어가 자주, 희귀한 단어가 가끔"],
-      ["λ", "세 손실의 혼합 비율 — 합이 1, epoch마다 stratified batching"]
-    ]
-  },
-  {
-    n: 7, title: "Query ↔ Note Mapping", time: 45,
-    narration: [
-      ["검색 함수 (45초)", "검색 함수입니다. 모델 학습이 끝난 뒤에 **별도로 적용하는 모듈** 이에요. 학습된 단어 임베딩 W₁ 을 가지고 노트와 쿼리를 벡터로 만드는 두 가지 방법을 비교했습니다.\n\n왼쪽 **mean pooling** — 노트 안 단어 임베딩의 단순 평균. 가장 흔한 방식이고요.\n\n오른쪽 **TF-IDF 가중 평균** — 노트 안 흔한 단어는 가중치를 낮추고 희귀한 단어는 가중치를 높입니다. TF-IDF 자체는 **정보 검색의 고전 기법** 입니다, 1970년대부터 있는 거고요. 제가 한 건 *이걸 학습된 임베딩 위에 결합* 한 부분이에요.\n\n검색은 단순합니다 — 쿼리 벡터와 노트 벡터의 코사인 유사도 top-k."]
-    ],
-    formulas: [
-      ["e_n^mean", "노트 n의 모든 단어 W₁ 벡터를 평균낸 노트 임베딩"],
-      ["e_n^tfidf", "각 단어에 TF-IDF 가중치를 곱해 평균낸 노트 임베딩"],
-      ["tfidf(w,n)", "단어 w가 노트 n에서 얼마나 특징적인지 점수 (TF × IDF)"],
-      ["cos(e_q, e_n)", "쿼리 벡터와 노트 벡터의 각도 유사도 (1에 가까울수록 비슷)"],
-      ["argtop-k", "유사도 점수가 가장 큰 노트 k개의 인덱스"]
-    ]
-  },
-  {
-    n: 8, title: "Baselines & Corpus", time: 35,
-    narration: [
-      ["비교 구조 (35초)", "비교 구조입니다. 이것도 **교수님 피드백에서 받은 가이드라인** 따른 거예요. Plain CBOW 와 비교해라, TF-IDF 단독 baseline 도 넣어라, 그래프 신호는 ablation 으로 효과 측정해라 — 세 가지 다 반영했습니다.\n\nB0 은 sklearn TF-IDF 단독 — 학습 없음. B1 은 HW2 CBOW 그대로. B2 는 거기에 TF-IDF 풀링만 추가. B3, B4 는 wiki, cat 신호를 하나씩만 켠 것. B5 는 세 신호 다, B6 는 거기에 TF-IDF 풀링까지. 데이터는 459 노트, MPS 로 모델당 6초."]
-    ]
-  },
-  {
-    n: 9, title: "Results — Retrieval@k", time: 70,
-    narration: [
-      ["결과 발표 (70초) ★", "여기가 발표의 핵심입니다. **이 수치들은 제가 직접 측정한 거예요.**\n\nB0 TF-IDF 단독은 P@1 0.40. plain CBOW B1 은 0.45. CBOW에 TF-IDF 풀링만 더하면 (B2) 0.50.\n\n**여기 주목해주세요** — B3, 위키링크만 추가하면 향상이 거의 없어요 (0.45). 이건 한계예요 — 제 vault 의 위키링크 중 36개만 학습 범위 안에서 해석됐거든요. wiki signal 자체가 sparse 한 거고요.\n\n카테고리만 추가한 B4는 0.50 으로 약간 향상. 카테고리 페어는 9만개라 신호가 충분합니다.\n\n**세 신호 다 결합한 B5 가 0.85 로 점프**, TF-IDF 풀링까지 더한 B6 는 1.00 까지 갑니다.\n\n다만 **솔직히 인정할 부분이 있어요** — 평가 라벨이 B5+TFIDF 추천에서 부트스트랩된 거라 B6=1.00 에는 일부 tautology 가 있습니다. 그래도 B0~B4 의 상대 순위는 부트스트랩과 무관해서 그래프 신호의 기여를 보여주는 데는 유효합니다."]
-    ]
-  },
-  {
-    n: 10, title: "t-SNE — Notes & Wikilinks", time: 45,
-    narration: [
-      ["시각화 (45초)", "시각화입니다. **sklearn 의 t-SNE 함수를 그대로** 썼고요, 458개 노트 임베딩을 2D 로 펼친 다음 위키링크 엣지 36 개를 겹쳐 그린 그림입니다.\n\n주황색이 **3-Resources 폴더 노트들** — 우하단에 깔끔하게 응집했습니다. 옵시디언 워크플로우 가이드, 태그 컨벤션 같은 토픽적으로 일관된 노트들이 모인 거예요.\n\n파란색 **1-Projects** 는 더 넓게 펼쳐졌는데, 그 안에서 blog-codemon, rsquare, moneymon 같은 sub-cluster 들이 따로 형성됐어요.\n\n해석은 단순합니다 — **그래프 신호가 폴더 구조를 임베딩 공간에 자연스럽게 복원한다.** 이게 시각적으로 확인되는 거고요."]
-    ]
-  },
-  {
-    n: 11, title: "Caveats · LLM Usage · Future", time: 25,
-    narration: [
-      ["한계와 마무리 (25초)", "한계와 후속 작업을 솔직히 명시합니다.\n\n라벨 부트스트랩은 매뉴얼 refine 절차를 따로 문서화했고, 발표 후 피드백 받고 정리하겠습니다.\n\nn=1 케이스 스터디, 한국어 OOV 처리 한계, 위키링크 해석률 12.5% 같은 구조적 한계들 — 다 명시했습니다.\n\n**LLM 활용은 Claude Opus** 를 코드 스캐폴딩과 디버깅, 문서 정리, 그리고 **이 슬라이드의 수식 LaTeX 정리·해설**에 썼고, 사용 구간 전체를 LLM_USAGE_LOG.md 에 기록했습니다. 의사결정과 평가 라벨링은 제가 직접 한 부분입니다.\n\n감사합니다."]
-    ]
-  }
+const SLIDE_META = [
+  { n: 1,  title: "Title",                         time: "15s" },
+  { n: 2,  title: "Problem & Approach",            time: "45s" },
+  { n: 3,  title: "System Architecture & Flow",    time: "60s" },
+  { n: 4,  title: "Three Sources of Co-occurrence",time: "50s" },
+  { n: 5,  title: "Pair Generation Formalized",    time: "75s" },
+  { n: 6,  title: "Loss: NS + λ Mixing",           time: "55s" },
+  { n: 7,  title: "Query↔Note Mapping",            time: "50s" },
+  { n: 8,  title: "Baselines & Corpus",            time: "40s" },
+  { n: 9,  title: "Results — Retrieval@k",         time: "75s" },
+  { n: 10, title: "t-SNE",                         time: "50s" },
+  { n: 11, title: "Caveats · LLM · Future",        time: "25s" }
 ];
 
-const QA = [
-  ["Q1. 왜 hetero-DeepWalk 안 했어요?", "솔직히 시간 문제예요. 본 모델에서 위키링크가 36개밖에 해석이 안 됐는데, random walk 베이스로 가려면 그래프가 충분히 dense 해야 해서요. **scope 를 PARA 1-4 전체로 넓힌 다음** 다시 시도할 계획이고요, 그건 후속 작업으로 빼뒀습니다."],
-  ["Q2. P@1 = 1.00 너무 잘 나온 거 아닌가요?", "맞습니다, 의심하실 만해요. 평가 라벨이 B5+TFIDF top-2 에서 부트스트랩됐기 때문에 B6=1.00 에는 일부 tautology 가 있어요. **수동으로 라벨 refine 하면 0.65~0.75 정도로 떨어질 거라 예상** 합니다. 다만 B0 (0.40), B1 (0.45) 와의 *상대 차이* 는 부트스트랩과 무관해서 그래프 신호의 기여 자체는 유효합니다."],
-  ["Q3. 위키링크 12.5% 만 해석된 게 문제 아닌가요?", "네, 인정합니다. 대부분의 미해석 링크는 학습 scope 밖 — 0-Inbox, 2-Areas — 노트를 가리켜요. **scope 를 넓히면 해석률 70%대로 오를 거라** 추정하지만, 그러면 vault 의 일일 노트 같은 노이즈가 섞이는 트레이드오프가 있어서 첫 실험에서는 작게 시작했습니다."],
-  ["Q4. HW2 랑 뭐가 다른가요?", "**HW2 는 plain CBOW** 였고요, 본 프로젝트는 거기에 (1) 위키링크·카테고리 두 그래프 신호 추가, (2) negative sampling 손실로 교체, (3) TF-IDF pooling 결합, (4) 7-baseline ablation 비교 — 이 네 가지를 얹었습니다. **HW2 코드는 골격으로 재사용** 했고요, 새로 짠 부분은 명확히 분리되어 있어요."],
-  ["Q5. 평가셋 본인이 만든 거 자기 편향 아닌가요?", "네, 그렇습니다. n=1 사용자 vault 의 한계가 곧 평가셋의 한계예요. IAA (inter-annotator agreement) 가 이상적이지만 단독 진행이라 못 했고요, 한계로 솔직히 명시했습니다. **그래도 정성 top-5 비교 표도 함께 봐주시면** 정량 수치 위에 정성적 검증이 한 겹 더 있습니다."]
-];
+// ============ State ============
+let mode = "sync";       // "sync" | "solo"
+let slideCur = 0;        // 0..10
+let narCur = 0;          // 0..10
+let narSections = [];    // [{n, title, time, html}]
+const viewedSlides = new Set([0]);
+const viewedNars = new Set([0]);
 
-// =========== Render ============
-function mdToHTML(text){
-  // very small markdown: **bold**, *italic*, `code`, line breaks
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>');
+// ============ DOM refs ============
+const frame      = document.getElementById('slide-frame');
+const narNum     = document.getElementById('nar-num');
+const narTitle   = document.getElementById('nar-title');
+const narTime    = document.getElementById('nar-time');
+const narBody    = document.getElementById('nar-body');
+const curSlide   = document.getElementById('cur-slide');
+const curNar     = document.getElementById('cur-nar');
+const bar        = document.getElementById('bar');
+const dotsEl     = document.getElementById('dots');
+const prevBtn    = document.getElementById('prev-btn');
+const nextBtn    = document.getElementById('next-btn');
+const narPrevMini= document.getElementById('nar-prev-mini');
+const narNextMini= document.getElementById('nar-next-mini');
+const slideStatus= document.getElementById('slide-status');
+const helpText   = document.getElementById('help-text');
+
+// ============ Markdown loading + parsing ============
+
+// Wait for marked.js (loaded as classic script, should be ready by now)
+async function loadAndParseNarration() {
+  try {
+    const r = await fetch('narration_ko_natural.md', { cache: 'no-cache' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const text = await r.text();
+    narSections = splitIntoSlides(text);
+    if (narSections.length === 0) {
+      throw new Error('No slide sections found in narration md');
+    }
+    return narSections;
+  } catch (e) {
+    console.error('failed to load narration:', e);
+    narBody.innerHTML = `<div style="padding:30px;color:var(--vermillion);font-family:var(--mono);font-size:12px">⚠ 나레이션 로드 실패: ${e.message}<br>fallback 데이터 사용.</div>`;
+    return null;
+  }
 }
 
-const frame = document.getElementById('slide-frame');
-const narNum = document.getElementById('nar-num');
-const narTitle = document.getElementById('nar-title');
-const narTime = document.getElementById('nar-time');
-const narBody = document.getElementById('nar-body');
-const curNum = document.getElementById('cur-num');
-const curTime = document.getElementById('cur-time');
-const bar = document.getElementById('bar');
-const dotsEl = document.getElementById('dots');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
+function splitIntoSlides(md) {
+  // Pattern: ## Slide N — title (Ns)   or   ## Slide N — title (N초)
+  const lines = md.split(/\r?\n/);
+  const slidePattern = /^## Slide (\d+)\s*[—–-]\s*(.+?)\s*\((\d+\s*[s초])\)?\s*(.*)$/i;
+  const sections = [];
+  const intro = [];          // 슬라이드 전 헤더 부분 (톤가이드 · 약어사전)
+  const qaStart = /^## 🎤 Q&A/;
+  const checklistStart = /^## 🧠 발표 직전/;
 
-let cur = 0;
-const viewed = new Set([0]);
+  let current = null;
+  let qaBuffer = [];
+  let inQA = false;
+  let inChecklist = false;
 
-// Build dots
-SLIDES.forEach((s, i) => {
-  const d = document.createElement('button');
-  d.className = 'nav-dot';
-  d.dataset.idx = i;
-  d.title = `${i+1}. ${s.title}`;
-  d.addEventListener('click', () => show(i));
-  dotsEl.appendChild(d);
-});
-
-function renderNarration(s) {
-  let html = '';
-  for (const [label, text] of (s.narration || [])) {
-    html += `<div class="section-label">${label}</div>`;
-    html += `<blockquote class="quote"><p>${mdToHTML(text)}</p></blockquote>`;
-  }
-
-  if (s.formulas && s.formulas.length) {
-    html += `<div class="math-meanings">`;
-    html += `<div class="label">수식 의미 한 줄</div>`;
-    for (const [sym, mean] of s.formulas) {
-      html += `<div class="row"><div class="symbol">${sym}</div><div class="meaning">${mean}</div></div>`;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const m = slidePattern.exec(line);
+    if (m) {
+      if (current) sections.push(current);
+      current = {
+        n: parseInt(m[1], 10),
+        title: m[2].trim(),
+        time: m[3].replace(/\s+/g,''),
+        body: []
+      };
+      inQA = false;
+      inChecklist = false;
+      continue;
     }
-    html += `</div>`;
-  }
-
-  // Last slide gets Q&A appended
-  if (s.n === 11) {
-    html += `<div class="section-label">Q&amp;A 대비 (5문항)</div>`;
-    for (const [q, a] of QA) {
-      html += `<div style="margin-bottom:14px"><div style="font-weight:600;color:var(--vermillion);font-size:14px;margin-bottom:4px">${q}</div>`;
-      html += `<blockquote class="quote" style="font-size:14px">${mdToHTML(a)}</blockquote></div>`;
+    if (qaStart.test(line)) {
+      if (current) { sections.push(current); current = null; }
+      inQA = true;
+      qaBuffer.push(line);
+      continue;
+    }
+    if (checklistStart.test(line)) {
+      inQA = false;
+      inChecklist = true;
+      qaBuffer.push(line);
+      continue;
+    }
+    if (inQA || inChecklist) {
+      qaBuffer.push(line);
+      continue;
+    }
+    if (current) {
+      current.body.push(line);
+    } else {
+      intro.push(line);
     }
   }
+  if (current) sections.push(current);
 
-  narBody.innerHTML = html;
+  // Attach Q&A + checklist to last slide (slide 11)
+  if (sections.length && qaBuffer.length) {
+    sections[sections.length - 1].body.push('', ...qaBuffer);
+  }
+
+  // Render to HTML
+  const m = window.marked;
+  m.setOptions({ gfm:true, breaks:false });
+
+  for (const s of sections) {
+    s.html = m.parse(s.body.join('\n'));
+  }
+  return sections;
 }
 
-function show(i) {
-  if (i < 0 || i >= SLIDES.length) return;
-  cur = i;
-  viewed.add(i);
-  const s = SLIDES[i];
+// ============ KaTeX render ============
+window.renderKatexNow = function() {
+  if (window.renderMathInElement) {
+    try {
+      window.renderMathInElement(narBody, {
+        delimiters: [
+          {left:'$$', right:'$$', display:true},
+          {left:'$',  right:'$',  display:false}
+        ],
+        throwOnError: false
+      });
+    } catch(_) {}
+  }
+};
 
-  // update iframe
-  frame.src = `wikicbow.html#${s.n}`;
+// ============ Rendering ============
+function pad2(n){ return String(n).padStart(2,'0'); }
 
-  // update right pane
-  narNum.textContent = String(s.n).padStart(2, '0') + ' / 11';
+function renderNarration() {
+  const s = narSections[narCur];
+  if (!s) {
+    narBody.innerHTML = `<div style="padding:30px;color:var(--muted);font-family:var(--mono);font-size:12px">나레이션 데이터 없음 (slide ${narCur + 1})</div>`;
+    return;
+  }
+  const meta = SLIDE_META[narCur] || { title: s.title, time: s.time };
+
+  narNum.textContent = `${pad2(s.n)} / 11`;
   narTitle.textContent = s.title;
-  narTime.textContent = `${s.time}s`;
-  curNum.textContent = s.n;
-  curTime.textContent = `${s.time}s`;
+  narTime.textContent = s.time;
+  curNar.textContent = s.n;
 
-  renderNarration(s);
+  narBody.classList.remove('loading');
+  narBody.innerHTML = s.html;
   narBody.scrollTop = 0;
 
-  // dots
+  renderKatexNow();
+}
+
+function syncSlideFrame() {
+  const targetN = slideCur + 1;
+  const wantSrc = `wikicbow.html#${targetN}`;
+  if (!frame.src.endsWith(wantSrc.replace(/^.*#/, '#'))) {
+    frame.src = wantSrc;
+  } else {
+    // already set; force hash change to trigger slide change inside iframe
+    try {
+      if (frame.contentWindow) {
+        frame.contentWindow.location.hash = String(targetN);
+      }
+    } catch(_) {}
+  }
+  curSlide.textContent = targetN;
+  slideStatus.textContent = `slide ${targetN} / 11`;
+  bar.style.width = ((slideCur + 1) / 11 * 100) + '%';
+}
+
+function updateDots() {
   document.querySelectorAll('.nav-dot').forEach((d, idx) => {
-    d.classList.toggle('active', idx === i);
-    d.classList.toggle('viewed', viewed.has(idx) && idx !== i);
+    d.classList.toggle('slide-active', idx === slideCur);
+    d.classList.toggle('nar-active', idx === narCur);
+    const isViewed = viewedSlides.has(idx) || viewedNars.has(idx);
+    d.classList.toggle('viewed', isViewed && idx !== slideCur && idx !== narCur);
+  });
+}
+
+function updateButtons() {
+  if (mode === 'sync') {
+    prevBtn.disabled = slideCur === 0;
+    nextBtn.disabled = slideCur === 10;
+  } else {
+    prevBtn.disabled = narCur === 0;
+    nextBtn.disabled = narCur === 10;
+  }
+  narPrevMini.disabled = narCur === 0;
+  narNextMini.disabled = narCur === 10;
+}
+
+function persistHash() {
+  if (mode === 'sync' && slideCur === narCur) {
+    history.replaceState(null, '', `#${slideCur + 1}`);
+  } else {
+    history.replaceState(null, '', `#s${slideCur + 1}-n${narCur + 1}`);
+  }
+}
+
+// ============ Navigation ============
+function goSlide(i, andSyncNar = false) {
+  i = Math.max(0, Math.min(10, i));
+  slideCur = i;
+  viewedSlides.add(i);
+  syncSlideFrame();
+  if (andSyncNar) {
+    narCur = i;
+    viewedNars.add(i);
+    renderNarration();
+  }
+  updateDots();
+  updateButtons();
+  persistHash();
+}
+
+function goNar(i) {
+  i = Math.max(0, Math.min(10, i));
+  narCur = i;
+  viewedNars.add(i);
+  renderNarration();
+  updateDots();
+  updateButtons();
+  persistHash();
+}
+
+function goBoth(i) {
+  i = Math.max(0, Math.min(10, i));
+  slideCur = i;
+  narCur = i;
+  viewedSlides.add(i);
+  viewedNars.add(i);
+  syncSlideFrame();
+  renderNarration();
+  updateDots();
+  updateButtons();
+  persistHash();
+}
+
+// ============ Mode toggle ============
+function setMode(m) {
+  mode = m;
+  document.body.classList.toggle('solo', m === 'solo');
+  document.querySelectorAll('.mode-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === m);
+  });
+  // update help text
+  helpText.innerHTML = m === 'solo'
+    ? `<kbd>←</kbd> <kbd>→</kbd> 나레이션만 &nbsp;·&nbsp; <kbd>Shift</kbd>+<kbd>←</kbd>/<kbd>→</kbd> 슬라이드만 &nbsp;·&nbsp; <kbd>=</kbd> 동기 맞추기 &nbsp;·&nbsp; <kbd>S</kbd> 모드 토글`
+    : `<kbd>←</kbd> <kbd>→</kbd> 둘 다 이동 &nbsp;·&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> 나레이션 스크롤 &nbsp;·&nbsp; <kbd>S</kbd> 모드 토글`;
+  updateButtons();
+  persistHash();
+}
+
+// ============ Init ============
+async function init() {
+  // Build dots
+  for (let i = 0; i < 11; i++) {
+    const d = document.createElement('button');
+    d.className = 'nav-dot';
+    d.dataset.idx = i;
+    const m = SLIDE_META[i];
+    d.title = `${i+1}. ${m.title}`;
+    d.addEventListener('click', (e) => {
+      if (mode === 'solo' && e.shiftKey) {
+        goSlide(i);
+      } else if (mode === 'solo') {
+        goNar(i);
+      } else {
+        goBoth(i);
+      }
+    });
+    dotsEl.appendChild(d);
+  }
+
+  // Mode toggle buttons
+  document.querySelectorAll('.mode-toggle button').forEach(b => {
+    b.addEventListener('click', () => setMode(b.dataset.mode));
   });
 
-  // bar
-  bar.style.width = ((i + 1) / SLIDES.length * 100) + '%';
+  // Nav buttons
+  prevBtn.addEventListener('click', () => {
+    if (mode === 'sync') goBoth(slideCur - 1);
+    else goNar(narCur - 1);
+  });
+  nextBtn.addEventListener('click', () => {
+    if (mode === 'sync') goBoth(slideCur + 1);
+    else goNar(narCur + 1);
+  });
 
-  // buttons
-  prevBtn.disabled = i === 0;
-  nextBtn.disabled = i === SLIDES.length - 1;
+  // Mini nav (always controls narration)
+  narPrevMini.addEventListener('click', () => goNar(narCur - 1));
+  narNextMini.addEventListener('click', () => goNar(narCur + 1));
 
-  // url hash
-  history.replaceState(null, '', '#' + s.n);
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const k = e.key;
+
+    if (k === 's' || k === 'S') {
+      e.preventDefault();
+      setMode(mode === 'sync' ? 'solo' : 'sync');
+      return;
+    }
+    if (k === '=' || k === '+') {
+      e.preventDefault();
+      goBoth(narCur);  // sync slide to current narration position
+      return;
+    }
+    if (mode === 'sync') {
+      if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); goBoth(slideCur + 1); }
+      else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); goBoth(slideCur - 1); }
+      else if (k === 'Home') { e.preventDefault(); goBoth(0); }
+      else if (k === 'End') { e.preventDefault(); goBoth(10); }
+      // ArrowUp/Down: let it scroll narBody naturally
+      else if (k === 'ArrowUp') { e.preventDefault(); narBody.scrollBy(0, -60); }
+      else if (k === 'ArrowDown') { e.preventDefault(); narBody.scrollBy(0, 60); }
+    } else {
+      // solo mode
+      if (e.shiftKey && (k === 'ArrowRight' || k === 'PageDown')) { e.preventDefault(); goSlide(slideCur + 1); }
+      else if (e.shiftKey && (k === 'ArrowLeft' || k === 'PageUp')) { e.preventDefault(); goSlide(slideCur - 1); }
+      else if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); goNar(narCur + 1); }
+      else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); goNar(narCur - 1); }
+      else if (k === 'Home') { e.preventDefault(); goNar(0); }
+      else if (k === 'End') { e.preventDefault(); goNar(10); }
+      else if (k === 'ArrowUp') { e.preventDefault(); narBody.scrollBy(0, -60); }
+      else if (k === 'ArrowDown') { e.preventDefault(); narBody.scrollBy(0, 60); }
+    }
+  });
+
+  // Load narration
+  await loadAndParseNarration();
+
+  // Hash init: support both #N and #sX-nY
+  const h = window.location.hash.slice(1);
+  let initSlide = 0, initNar = 0, initMode = 'sync';
+  const m1 = /^(\d+)$/.exec(h);
+  const m2 = /^s(\d+)-n(\d+)$/.exec(h);
+  if (m1) {
+    initSlide = initNar = Math.max(0, Math.min(10, parseInt(m1[1],10) - 1));
+  } else if (m2) {
+    initSlide = Math.max(0, Math.min(10, parseInt(m2[1],10) - 1));
+    initNar = Math.max(0, Math.min(10, parseInt(m2[2],10) - 1));
+    if (initSlide !== initNar) initMode = 'solo';
+  }
+  slideCur = initSlide;
+  narCur = initNar;
+  setMode(initMode);
+  syncSlideFrame();
+  renderNarration();
+  updateDots();
+  updateButtons();
 }
 
-prevBtn.addEventListener('click', () => show(cur - 1));
-nextBtn.addEventListener('click', () => show(cur + 1));
-
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); show(cur + 1); }
-  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(cur - 1); }
-  else if (e.key === 'Home') { e.preventDefault(); show(0); }
-  else if (e.key === 'End') { e.preventDefault(); show(SLIDES.length - 1); }
-});
-
-// Init from hash
-const hashN = parseInt(window.location.hash.slice(1), 10);
-if (!isNaN(hashN) && hashN >= 1 && hashN <= SLIDES.length) {
-  show(hashN - 1);
-} else {
-  show(0);
+// Wait for marked to be ready
+function whenMarkedReady(cb) {
+  if (window.marked && window.marked.parse) cb();
+  else setTimeout(() => whenMarkedReady(cb), 50);
 }
+whenMarkedReady(init);
 </script>
 </body>
 </html>
