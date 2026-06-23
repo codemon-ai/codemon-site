@@ -1,105 +1,459 @@
-<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)"/><style>:root{--nextra-primary-hue:212deg;--nextra-primary-saturation:100%;--nextra-primary-lightness:45%;--nextra-navbar-height:64px;--nextra-menu-height:3.75rem;--nextra-banner-height:2.5rem;--nextra-bg:250,250,250;}.dark{--nextra-primary-hue:204deg;--nextra-primary-saturation:100%;--nextra-primary-lightness:55%;--nextra-bg:17,17,17;}</style><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="icon" href="/favicon.ico"/><link rel="canonical" href="https://codemon.ai/partner/lecture-claude-build"/><meta property="og:title" content="클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트"/><meta property="og:description" content="비개발자 4시간 핸즈온 — Obsidian 지식노트, Skill·MCP·Cowork, Vercel+Supabase로 실제 배포되는 사이트까지 직접 만든다."/><meta property="og:image" content="https://codemon.ai/api/og?title=%ED%81%B4%EB%A1%9C%EB%93%9C%EB%A1%9C%20%EB%A7%8C%EB%93%9C%EB%8A%94%20%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%A7%80%EC%8B%9D%EB%85%B8%ED%8A%B8%20%2B%20%EB%B0%B0%ED%8F%AC%EB%90%98%EB%8A%94%20%EB%82%B4%20%EC%82%AC%EC%9D%B4%ED%8A%B8&amp;tags="/><meta property="og:url" content="https://codemon.ai/partner/lecture-claude-build"/><meta property="og:site_name" content="codemon"/><meta property="og:locale" content="ko_KR"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트"/><meta name="twitter:description" content="비개발자 4시간 핸즈온 — Obsidian 지식노트, Skill·MCP·Cowork, Vercel+Supabase로 실제 배포되는 사이트까지 직접 만든다."/><meta name="twitter:image" content="https://codemon.ai/api/og?title=%ED%81%B4%EB%A1%9C%EB%93%9C%EB%A1%9C%20%EB%A7%8C%EB%93%9C%EB%8A%94%20%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%A7%80%EC%8B%9D%EB%85%B8%ED%8A%B8%20%2B%20%EB%B0%B0%ED%8F%AC%EB%90%98%EB%8A%94%20%EB%82%B4%20%EC%82%AC%EC%9D%B4%ED%8A%B8&amp;tags="/><link rel="alternate" hrefLang="ko" href="https://codemon.ai/partner/lecture-claude-build"/><link rel="alternate" hrefLang="en" href="https://codemon.ai/en/partner/lecture-claude-build"/><link rel="alternate" hrefLang="x-default" href="https://codemon.ai/partner/lecture-claude-build"/><meta name="next-head-count" content="20"/><link rel="preload" href="/_next/static/css/88eb7ac147ca6c2d.css" as="style"/><link rel="stylesheet" href="/_next/static/css/88eb7ac147ca6c2d.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-42372ed130431b0a.js"></script><script src="/_next/static/chunks/webpack-2124efbfcacb712f.js" defer=""></script><script src="/_next/static/chunks/framework-945b357d4a851f4b.js" defer=""></script><script src="/_next/static/chunks/main-657671b9e37caf24.js" defer=""></script><script src="/_next/static/chunks/pages/_app-65ec995ca9b74003.js" defer=""></script><script src="/_next/static/chunks/7812-ece8160b1b060d7a.js" defer=""></script><script src="/_next/static/chunks/6642-04824e6e74b69875.js" defer=""></script><script src="/_next/static/chunks/pages/partner/lecture-claude-build-ec46e0c4b5d51ec6.js" defer=""></script><script src="/_next/static/KhQ12jqyvtEyq_l-mPrwq/_buildManifest.js" defer=""></script><script src="/_next/static/KhQ12jqyvtEyq_l-mPrwq/_ssgManifest.js" defer=""></script></head><body><div id="__next"><script>((e,i,s,u,m,a,l,h)=>{let d=document.documentElement,w=["light","dark"];function p(n){(Array.isArray(e)?e:[e]).forEach(y=>{let k=y==="class",S=k&&a?m.map(f=>a[f]||f):m;k?(d.classList.remove(...S),d.classList.add(a&&a[n]?a[n]:n)):d.setAttribute(y,n)}),R(n)}function R(n){h&&w.includes(n)&&(d.style.colorScheme=n)}function c(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(u)p(u);else try{let n=localStorage.getItem(i)||s,y=l&&n==="system"?c():n;p(y)}catch(n){}})("class","theme","system",null,["light","dark"],null,true,true)</script><div dir="ltr"><script>document.documentElement.setAttribute('dir','ltr')</script><div class="nextra-nav-container _sticky _top-0 _z-20 _w-full _bg-transparent print:_hidden"><div class="nextra-nav-container-blur"></div><nav class="_mx-auto _flex _h-[var(--nextra-navbar-height)] _max-w-[90rem] _items-center _justify-end _gap-4 _pl-[max(env(safe-area-inset-left),1.5rem)] _pr-[max(env(safe-area-inset-right),1.5rem)]"><a class="nextra-focus _flex _items-center hover:_opacity-75 ltr:_mr-auto rtl:_ml-auto" href="/"><span style="font-weight:700;font-size:1.2rem">codemon</span></a><div class="_flex _gap-4 _overflow-x-auto nextra-scrollbar _py-1.5"><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/">Home</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/about">About</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/showcase">Showcase</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/projects">Projects</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/blog">Blog</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/news">News</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="https://tools.codemon.ai" target="_blank" rel="noreferrer">Tools</a><a class="nextra-focus _text-sm contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100 max-md:_hidden _whitespace-nowrap _ring-inset _text-gray-600 hover:_text-gray-800 dark:_text-gray-400 dark:hover:_text-gray-200" aria-current="false" href="/docs">Docs</a></div><div class="_not-prose _relative _flex _items-center _text-gray-900 dark:_text-gray-300 contrast-more:_text-gray-800 contrast-more:dark:_text-gray-300 max-md:_hidden"><input spellcheck="false" class="_rounded-lg _px-3 _py-2 _transition-colors _w-full md:_w-64 _text-base _leading-tight md:_text-sm _bg-black/[.05] dark:_bg-gray-50/10 placeholder:_text-gray-500 dark:placeholder:_text-gray-400 contrast-more:_border contrast-more:_border-current [&amp;::-webkit-search-cancel-button]:_appearance-none" autoComplete="off" placeholder="Search documentation…" id="headlessui-combobox-input-:Rbdq9m:" role="combobox" type="search" aria-expanded="false" aria-autocomplete="list" data-headlessui-state="" value=""/></div><a class="nextra-focus" href="https://github.com/codemon-ai" target="_blank" rel="noreferrer"><svg width="24" height="24" fill="currentColor" viewBox="3 3 18 18"><title>GitHub</title><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg><span class="_sr-only">GitHub</span></a><button class="_transition nextra-hamburger _rounded md:_hidden" aria-label="Menu" type="button" data-headlessui-state=""><svg fill="none" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" class=""><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path></g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path></g></svg></button></nav></div><div class="_mx-auto _flex _max-w-[90rem]"><div class="max-xl:_hidden _h-0 _w-64 _shrink-0"></div><div class="[transition:background-color_1.5s_ease] _bg-transparent"></div><aside class="nextra-sidebar-container _flex _flex-col md:_top-16 md:_shrink-0 motion-reduce:_transform-none motion-reduce:_transition-none [.resizing_&amp;]:_transition-none _transform-gpu _transition-all _ease-in-out print:_hidden md:_w-64 md:_hidden max-md:[transform:translate3d(0,-100%,0)]"><div class="_px-4 _pt-4 md:_hidden"><div class="_not-prose _relative _flex _items-center _text-gray-900 dark:_text-gray-300 contrast-more:_text-gray-800 contrast-more:dark:_text-gray-300"><input spellcheck="false" class="_rounded-lg _px-3 _py-2 _transition-colors _w-full md:_w-64 _text-base _leading-tight md:_text-sm _bg-black/[.05] dark:_bg-gray-50/10 placeholder:_text-gray-500 dark:placeholder:_text-gray-400 contrast-more:_border contrast-more:_border-current [&amp;::-webkit-search-cancel-button]:_appearance-none" autoComplete="off" placeholder="Search documentation…" id="headlessui-combobox-input-:R1dn6pm:" role="combobox" type="search" aria-expanded="false" aria-autocomplete="list" data-headlessui-state="" value=""/></div></div><div class="_overflow-y-auto _p-4 _grow md:_h-[calc(100vh-var(--nextra-navbar-height)-var(--nextra-menu-height))] nextra-scrollbar"></div><div class="nextra-sidebar-footer _sticky _bottom-0 _flex _items-center _gap-2 _py-4 _mx-3 _px-1" data-toggle-animation="off"><div class="_grow _flex _flex-col"><button title="Change theme" class="_h-7 _rounded-md _px-2 _text-xs _font-medium _transition-colors _text-gray-600 dark:_text-gray-400" id="headlessui-listbox-button-:R1nf6pm:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><div class="_flex _items-center _gap-2 _capitalize"><svg fill="none" viewBox="3 3 18 18" width="12" height="12" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill="currentColor" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><span class="">Light</span></div></button></div><button class="_transition max-md:_hidden _rounded-md _p-2 _text-gray-600 dark:_text-gray-400" title="Hide sidebar" type="button" data-headlessui-state=""><svg viewBox="0 0 16 16" fill="currentColor" height="12" class=""><path d="M4.177 7.823l2.396-2.396A.25.25 0 017 5.604v4.792a.25.25 0 01-.427.177L4.177 8.177a.25.25 0 010-.354z"></path><path fill-rule="evenodd" d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0114.25 16H1.75A1.75 1.75 0 010 14.25V1.75zm1.75-.25a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25H9.5v-13H1.75zm12.5 13H11v-13h3.25a.25.25 0 01.25.25v12.5a.25.25 0 01-.25.25z"></path></svg></button></div></aside><nav class="nextra-toc _order-last max-xl:_hidden _w-64 _shrink-0 print:_hidden" aria-label="table of contents"><div class="_grid _grid-rows-[min-content_1fr_min-content] _sticky _top-[--nextra-navbar-height] _pt-6 _text-sm _max-h-[calc(100vh-var(--nextra-navbar-height))]"><p class="_mx-4 _font-semibold _tracking-tight _pb-2 _shadow-[0_12px_16px_rgb(var(--nextra-bg))] contrast-more:_shadow-none _z-[1]">On This Page</p><ul class="_px-4 nextra-scrollbar _overscroll-y-contain _overflow-y-auto _hyphens-auto _py-1.5"><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#개요" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">개요</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#이런-분에게-추천합니다" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">이런 분에게 추천합니다</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#핵심-성과" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">핵심 성과</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#준비물" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">준비물</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#커리큘럼-240분" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">커리큘럼 (240분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#0교시-세팅--워밍업-20분" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">0교시. 세팅 &amp; 워밍업 (20분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#1교시-llm-위키--나만의-지식-노트-60분" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">1교시. LLM 위키 = 나만의 지식 노트 (60분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#2교시-skillmcp-개념--claudecowork-핸즈온-60분" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">2교시. Skill·MCP 개념 + Claude·Cowork 핸즈온 (60분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#3교시-실제-배포되는-사이트-만들기-핵심-90분" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">3교시. 실제 배포되는 사이트 만들기 ★핵심 (90분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#4교시-마무리--자립-10분" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">4교시. 마무리 &amp; 자립 (10분)</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#사용-도구--가장-단순안정한-경로" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">사용 도구 — 가장 단순·안정한 경로</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#강사-소개" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">강사 소개</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#코드몬--aiax-engineer" class="nextra-focus _ms-4 _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">코드몬 — AI/AX Engineer</a></li><li class="_my-2 _scroll-my-6 _scroll-py-6"><a href="#키워드" class="nextra-focus _font-semibold _block _transition-colors _subpixel-antialiased _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300 contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _break-words">키워드</a></li></ul><div class="nextra-toc-footer _pt-4 _flex _flex-col _items-start _gap-2 _pb-4 _mx-4"><a class="nextra-focus _text-xs _font-medium _text-gray-600 dark:_text-gray-400 hover:_text-gray-800 dark:hover:_text-gray-200 contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100" href="https://github.com/codemon-ai/codemon-site/issues/new?title=Feedback%20for%20%E2%80%9C%ED%81%B4%EB%A1%9C%EB%93%9C%EB%A1%9C%20%EB%A7%8C%EB%93%9C%EB%8A%94%20%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%A7%80%EC%8B%9D%EB%85%B8%ED%8A%B8%20%2B%20%EB%B0%B0%ED%8F%AC%EB%90%98%EB%8A%94%20%EB%82%B4%20%EC%82%AC%EC%9D%B4%ED%8A%B8%E2%80%9D&amp;labels=feedback" target="_blank" rel="noreferrer">Question? Give us feedback →</a><a class="nextra-focus _text-xs _font-medium _text-gray-600 dark:_text-gray-400 hover:_text-gray-800 dark:hover:_text-gray-200 contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100" href="https://github.com/codemon-ai/codemon-site/pages/partner/lecture-claude-build/index.mdx">Edit this page</a><button class="_transition _flex _items-center _gap-1.5 _whitespace-nowrap _opacity-0 _text-xs _font-medium _text-gray-600 dark:_text-gray-400 hover:_text-gray-800 dark:hover:_text-gray-200 contrast-more:_text-gray-700 contrast-more:dark:_text-gray-100" aria-hidden="true" type="button" disabled="" data-headlessui-state="disabled" data-disabled=""><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" height="16" class="_-rotate-90 _border _rounded-full _border-current"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div></div></nav><div id="reach-skip-nav"></div><article class="_w-full _break-words nextra-content _flex _min-h-[calc(100vh-var(--nextra-navbar-height))] _min-w-0 _justify-center _pb-8 _pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main class="_w-full _min-w-0 _max-w-6xl _px-6 _pt-4 md:_px-12"><div class="nextra-breadcrumb _mt-1.5 _flex _items-center _gap-1 _overflow-hidden _text-sm _text-gray-500 dark:_text-gray-400 contrast-more:_text-current"></div><h1 class="_mt-2 _text-4xl _font-bold _tracking-tight _text-slate-900 dark:_text-slate-100">클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트</h1>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">📌 본 페이지는 <strong>강의 개요(목차)</strong> 입니다. 슬라이드·실습 자료는 추후 추가됩니다.</p>
-</blockquote>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">📄 <strong><a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="/partner/lecture-claude-build.html">전체 강의 자료 페이지 보기 →</a></strong> — 세로 스크롤 풀 버전(준비물·여정·커리큘럼·도구 한눈에)</p>
-</blockquote>
-<h2 id="개요" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">개요<a href="#개요" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<table class="_not-prose _block _overflow-x-auto nextra-scrollbar [&amp;:not(:first-child)]:_mt-6 _p-0"><thead><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">항목</th><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">내용</th></tr></thead><tbody><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">제목</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">형식</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">핸즈온 + 개인교습 (4시간 / 240분)</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">대상</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">비개발 실무자 (프롬프트·코딩 경험 무관)</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">강사</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">코드몬 (codemon.ai)</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">최종 산출물</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">① 클로드가 읽는 내 지식노트 볼트   ② 인터넷에 배포된 내 사이트 URL</td></tr></tbody></table>
-<h2 id="이런-분에게-추천합니다" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">이런 분에게 추천합니다<a href="#이런-분에게-추천합니다" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">AI를 써보고 싶은데 <strong>어디서부터 시작해야 할지</strong> 모르겠는 분</li>
-<li class="_my-2">메모는 쌓는데 다시 안 보게 되는 분 — <strong>AI가 읽고 정리해주는 지식노트</strong>가 필요한 분</li>
-<li class="_my-2">코드 한 줄 몰라도 <strong>내 사이트를 인터넷에 띄워보고</strong> 싶은 분</li>
-<li class="_my-2">클로드를 ‘대화’를 넘어 <strong>‘일 맡기는 도구’</strong> 로 쓰고 싶은 분</li>
-</ul>
-<h2 id="핵심-성과" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">핵심 성과<a href="#핵심-성과" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">4시간 후, 손에 <strong>동작하는 결과물 2개</strong>를 들고 나갑니다.</p>
-</blockquote>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">클로드가 읽고 <strong>요약·검색·정리</strong>해주는 내 지식노트 볼트</li>
-<li class="_my-2">친구에게 바로 보낼 수 있는, <strong>인터넷에 떠 있는 내 사이트 URL</strong></li>
-<li class="_my-2">혼자서도 이어갈 <strong>30일 자립 로드맵</strong></li>
-</ul>
-<hr class="_my-8 _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400"/>
-<h2 id="준비물" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">준비물<a href="#준비물" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<table class="_not-prose _block _overflow-x-auto nextra-scrollbar [&amp;:not(:first-child)]:_mt-6 _p-0"><thead><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">준비물</th><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">설명</th><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">비용</th></tr></thead><tbody><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>클로드 유료 플랜</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Claude Code·Cowork는 유료 전용. 안정성 위해 <strong>Max 권장</strong>(5x $100 / 20x $200·월). 네이티브 설치라 Node 없이도 설치됨</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">유료</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>클로드 데스크탑 앱</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">맥/윈도우 공통. <strong>Cowork</strong>(터미널 없이 파일 다루는 에이전트 모드) 실행</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">—</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>옵시디언(Obsidian)</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">지식노트 ‘볼트’(.md 폴더). 변환 없이 클로드가 그대로 읽음</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">무료</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>Node.js</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">일부 도구 연결·사이트 빌드에 사용 (<a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://nodejs.org/ko/download" target="_blank" rel="noreferrer">nodejs.org/ko/download</a>)</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">무료</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>안티그래비티 IDE</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">구글 에이전트-우선 IDE (<a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://antigravity.google/" target="_blank" rel="noreferrer">antigravity.google</a>). 무료 사용량 제한 있어 <strong>보조</strong>로 사용</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">무료</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>GitHub · Vercel · Supabase</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>GitHub는 구글로</strong> 가입 → <strong>Vercel은 그 GitHub로</strong> 가입 → Supabase 가입</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">무료</td></tr></tbody></table>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">다 못 깔아도 괜찮습니다 — <strong>0교시(20분)</strong> 에 강사와 함께 세팅합니다.</p>
-</blockquote>
-<hr class="_my-8 _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400"/>
-<h2 id="커리큘럼-240분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">커리큘럼 (240분)<a href="#커리큘럼-240분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">시연 20% · <strong>직접 실습 60%</strong> · 산출물 확인 20% — 각 교시 끝에 손에 잡히는 결과 하나씩.</p>
-</blockquote>
-<h3 id="0교시-세팅--워밍업-20분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">0교시. 세팅 &amp; 워밍업 (20분)<a href="#0교시-세팅--워밍업-20분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">오늘 만들 <strong>산출물 2개</strong> 완성본 미리보기</li>
-<li class="_my-2">준비물 점검·설치 트러블슈팅, 계정 연결(<strong>GitHub→Vercel→Supabase</strong>)</li>
-<li class="_my-2">안전 수칙 — ‘넣지 말 것’ 레드리스트</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7"><strong>산출물 — 전원 세팅 완료</strong></p>
-</blockquote>
-<h3 id="1교시-llm-위키--나만의-지식-노트-60분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">1교시. LLM 위키 = 나만의 지식 노트 (60분)<a href="#1교시-llm-위키--나만의-지식-노트-60분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">(개념 10’) 마크다운 볼트 + 백링크 <code class="nextra-code" dir="ltr">[[ ]]</code> = <strong>변환 없이 그대로 읽히는</strong> 지식창고</li>
-<li class="_my-2">(실습 40’) 옵시디언 볼트 생성 → 노트 3~5개 + 백링크 → <strong>클로드 파일시스템 커넥터로 폴더 연결</strong>(Settings → Connectors → Filesystem)</li>
-<li class="_my-2">클로드에게 내 볼트 <strong>요약·검색·새 노트 생성·정리</strong> 위임</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7"><strong>산출물 — 내 지식 볼트 + 정리 노트 1개</strong></p>
-</blockquote>
-<h3 id="2교시-skillmcp-개념--claudecowork-핸즈온-60분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">2교시. Skill·MCP 개념 + Claude·Cowork 핸즈온 (60분)<a href="#2교시-skillmcp-개념--claudecowork-핸즈온-60분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">(개념 15’) <strong>Skill</strong> = 클로드에게 ‘하는 법’을 패키지로 가르침(PDF·엑셀·PPT 내장 스킬) / <strong>MCP</strong> = 외부 도구·로컬 파일에 잇는 통로 / <strong>Cowork</strong> = 터미널 없이 에이전트로 파일 작업</li>
-<li class="_my-2">(실습 35’) 내장 Skill 체감(PDF·엑셀 자동 처리) → 커넥터/MCP <strong>원클릭</strong> 추가 → Cowork로 폴더 통째 작업해 실파일 산출</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7"><strong>산출물 — 내 커넥터·스킬로 만든 산출물</strong></p>
-</blockquote>
-<h3 id="3교시-실제-배포되는-사이트-만들기-핵심-90분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">3교시. 실제 배포되는 사이트 만들기 ★핵심 (90분)<a href="#3교시-실제-배포되는-사이트-만들기-핵심-90분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">(설계 15’) 만들 사이트(프로필 + 즉흥 주제) · 스택 그림 <strong>GitHub→Vercel→Supabase</strong> · 무료 한도 고지</li>
-<li class="_my-2">(빌드 60’) <strong>Vercel ‘Supabase Starter’ Deploy</strong> → 환경변수 자동 주입 → <strong>라이브 URL</strong> 발급 → 클로드 코드/안티그래비티 에이전트로 내용·디자인 수정 → <strong>git push → 자동 재배포</strong> → 즉흥 주제 페이지 변형</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7"><strong>산출물 — 인터넷에 떠 있는 내 사이트 URL</strong></p>
-</blockquote>
-<h3 id="4교시-마무리--자립-10분" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">4교시. 마무리 &amp; 자립 (10분)<a href="#4교시-마무리--자립-10분" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">산출물 2개 회고 + 라이브 URL 공유</li>
-<li class="_my-2"><strong>30일 자립 로드맵</strong> · 비용 정리 · Q&amp;A</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7"><strong>산출물 — 30일 자립 플랜</strong></p>
-</blockquote>
-<hr class="_my-8 _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400"/>
-<h2 id="사용-도구--가장-단순안정한-경로" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">사용 도구 — 가장 단순·안정한 경로<a href="#사용-도구--가장-단순안정한-경로" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">4시간 안에 ‘실제 동작’까지 가려면 길 선택이 전부입니다. 모두 <strong>공식 문서로 확인한 경로</strong>만 채택했습니다.</p>
-</blockquote>
-<table class="_not-prose _block _overflow-x-auto nextra-scrollbar [&amp;:not(:first-child)]:_mt-6 _p-0"><thead><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">목표</th><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">채택 경로 (가장 쉬움)</th><th class="_m-0 _border _border-gray-300 _px-4 _py-2 _font-semibold dark:_border-gray-600">주의</th></tr></thead><tbody><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">지식노트(LLM 위키)</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Obsidian 볼트 + <strong>클로드 파일시스템 커넥터</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">볼트는 .md 폴더라 그대로 읽힘</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Skill·MCP 핸즈온</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">데스크탑 <strong>Extensions 원클릭</strong> + Cowork</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Cowork는 유료·데스크탑 전용</td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">배포되는 사이트</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Vercel <strong>‘Supabase Starter’ Deploy</strong></td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">Vercel Hobby <strong>비상업 전용</strong> / Supabase Free <strong>1주 비활성 시 일시정지</strong></td></tr><tr class="_m-0 _border-t _border-gray-300 _p-0 dark:_border-gray-600 even:_bg-gray-100 even:dark:_bg-gray-600/20"><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">코딩 에이전트</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600"><strong>클로드 코드(Max) 주력</strong> + 안티그래비티 보조</td><td class="_m-0 _border _border-gray-300 _px-4 _py-2 dark:_border-gray-600">안티그래비티 무료 사용량 제한</td></tr></tbody></table>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">비용·정책은 공식 문서 기준(2025년 말~2026년)이며 수업일 재확인이 원칙입니다.
-출처: <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://code.claude.com/docs/en/setup" target="_blank" rel="noreferrer">Claude Code</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://support.claude.com/en/articles/11049741-what-is-the-max-plan" target="_blank" rel="noreferrer">Max 플랜</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" target="_blank" rel="noreferrer">Cowork</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank" rel="noreferrer">Agent Skills</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://modelcontextprotocol.io/docs/develop/connect-local-servers" target="_blank" rel="noreferrer">MCP</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://antigravity.google/" target="_blank" rel="noreferrer">Antigravity</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://vercel.com/templates/authentication/supabase" target="_blank" rel="noreferrer">Supabase Starter</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://supabase.com/pricing" target="_blank" rel="noreferrer">Supabase 요금</a> · <a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noreferrer">Vercel Hobby</a></p>
-</blockquote>
-<hr class="_my-8 _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400"/>
-<h2 id="강사-소개" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">강사 소개<a href="#강사-소개" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<h3 id="코드몬--aiax-engineer" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-8 _text-2xl">코드몬 — AI/AX Engineer<a href="#코드몬--aiax-engineer" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h3>
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">대기업에서 10년, 스타트업에서 10년.
-삼성전자 종합기술원·생산기술연구소, SK텔레콤을 거쳐
-지금은 AI 에이전트 팀과 함께 매일 서비스를 만들고 자동화합니다.</p>
-<ul class="[:is(ol,ul)_&amp;]:_my-3 [&amp;:not(:first-child)]:_mt-6 _list-disc ltr:_ml-6 rtl:_mr-6">
-<li class="_my-2">경력 20년+ | 런칭한 서비스 10+ | 자동화한 업무 100+</li>
-<li class="_my-2">AI 에이전트 7명으로 구성된 팀 운영</li>
-<li class="_my-2"><a class="nextra-focus _text-primary-600 _underline hover:_no-underline _decoration-from-font [text-underline-position:from-font]" href="https://codemon.ai" target="_blank" rel="noreferrer">codemon.ai</a>에서 40편+ AI 실전 블로그 운영</li>
-</ul>
-<blockquote class="[&amp;:not(:first-child)]:_mt-6 _border-gray-300 _italic _text-gray-700 dark:_border-gray-700 dark:_text-gray-400 ltr:_border-l-2 ltr:_pl-6 rtl:_border-r-2 rtl:_pr-6">
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">“만들고, 자동화하고, 공유합니다.”</p>
-</blockquote>
-<hr class="_my-8 _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400"/>
-<h2 id="키워드" class="_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100 _mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400">키워드<a href="#키워드" class="nextra-focus subheading-anchor" aria-label="Permalink for this section"></a></h2>
-<p class="[&amp;:not(:first-child)]:_mt-6 _leading-7">Claude · Claude Code · Cowork · MCP · Agent Skills · Obsidian · LLM 위키 · 지식노트 · Vercel · Supabase · 바이브 코딩 · 사이트 배포 · 비개발자 · 핸즈온</p><div class="_mt-16"></div></main></article></div><footer class="_bg-gray-100 _pb-[env(safe-area-inset-bottom)] dark:_bg-neutral-900 print:_bg-transparent"><div class="_mx-auto _flex _max-w-[90rem] _gap-2 _py-2 _px-4 _flex"><button title="Change theme" class="_h-7 _rounded-md _px-2 _text-xs _font-medium _transition-colors _text-gray-600 dark:_text-gray-400" id="headlessui-listbox-button-:R1n79m:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><div class="_flex _items-center _gap-2 _capitalize"><svg fill="none" viewBox="3 3 18 18" width="12" height="12" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill="currentColor" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><span class="">Light</span></div></button></div><hr class="dark:_border-neutral-800"/><div class="_mx-auto _flex _max-w-[90rem] _justify-center _py-12 _text-gray-600 dark:_text-gray-400 md:_justify-start _pl-[max(env(safe-area-inset-left),1.5rem)] _pr-[max(env(safe-area-inset-right),1.5rem)]"><div class="flex flex-col items-center gap-2 w-full"><div class="flex gap-4 text-xs"><a href="/terms" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">이용약관</a><a href="/privacy" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">개인정보처리방침</a></div><span>© <!-- -->2026<!-- --> codemon.ai</span></div></div></footer></div><button aria-label="문의하기" style="position:fixed;bottom:24px;right:24px;z-index:9999;height:60px;padding:0 24px;width:auto;border-radius:30px;background:#111827;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);transition:all 0.2s;font-size:17px;font-weight:700">💬 문의하기</button></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{}},"page":"/partner/lecture-claude-build","query":{},"buildId":"KhQ12jqyvtEyq_l-mPrwq","nextExport":true,"autoExport":true,"isFallback":false,"scriptLoader":[]}</script></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트 — 4시간 핸즈온 · codemon</title>
+<meta name="description" content="비개발자를 위한 4시간 핸즈온. Obsidian 지식노트, Skill·MCP·Cowork, Vercel+Supabase로 실제 배포되는 사이트까지 직접 만든다." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --bg:#F4F1E8;          /* 크림 오프화이트 */
+    --bg-2:#EFEBDD;
+    --panel:#FBF9F3;
+    --ink:#211C15;         /* 다크 브라운 */
+    --ink-soft:#544B3D;
+    --ink-faint:#8B8170;
+    --line:#DED7C5;
+    --line-strong:#C9BFA8;
+    --clay:#C2542F;        /* 클레이 오렌지 */
+    --teal:#2F5249;
+    --ochre:#B8862F;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-body:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;
+    --max:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);font-size:16px;line-height:1.72;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--clay);color:#fff;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+  a{color:var(--clay);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* ── nav ── */
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(244,241,232,.86);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line);}
+  nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;}
+  nav.top .brand{font-family:var(--font-display);font-weight:900;font-size:18px;letter-spacing:-.02em;}
+  nav.top .brand span{color:var(--clay);}
+  nav.top .links{display:flex;gap:22px;font-size:13px;font-weight:600;}
+  nav.top .links a{color:var(--ink-soft);}
+  nav.top .links a:hover{color:var(--clay);text-decoration:none;}
+  @media(max-width:760px){nav.top .links{display:none;}}
+
+  /* ── reveal ── */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  section{padding:74px 0;border-top:1px solid var(--line);}
+  section:first-of-type{border-top:none;}
+  .eyebrow{display:inline-flex;align-items:center;gap:.6em;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--clay);}
+  h2{font-family:var(--font-display);font-weight:600;font-size:34px;line-height:1.16;letter-spacing:-.015em;margin:14px 0 0;}
+  h2 em{font-style:italic;}
+  .sec-lead{margin-top:14px;font-size:16px;color:var(--ink-soft);max-width:660px;}
+
+  /* ── hero ── */
+  .hero{padding:88px 0 64px;border-top:none;}
+  .hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .chip{font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:5px 12px;border-radius:100px;border:1.4px solid var(--ink);}
+  .chip.solid{background:var(--ink);color:var(--bg);}
+  .chip.clay{background:var(--clay);border-color:var(--clay);color:#fff;}
+  h1{font-family:var(--font-display);font-weight:600;font-size:52px;line-height:1.04;letter-spacing:-.025em;}
+  h1 .l2{display:block;font-style:italic;color:var(--clay);}
+  .hero .lead{margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:640px;}
+  .hero .lead b{color:var(--ink);font-weight:700;}
+  @media(max-width:620px){h1{font-size:38px;}}
+
+  /* ── outcome cards ── */
+  .out-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;}
+  .out{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:18px 18px 0 rgba(33,28,21,.05);}
+  .out .n{font-family:var(--font-display);font-style:italic;font-size:30px;color:var(--clay);}
+  .out h3{font-family:var(--font-display);font-size:21px;font-weight:600;margin:6px 0 8px;}
+  .out p{font-size:14.5px;color:var(--ink-soft);}
+  @media(max-width:620px){.out-grid{grid-template-columns:1fr;}}
+
+  /* ── prep checklist ── */
+  .prep{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;}
+  .pcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+  .pcard h4{font-family:var(--font-display);font-size:17px;font-weight:600;display:flex;align-items:center;gap:9px;}
+  .pcard h4 .ic{width:26px;height:26px;border-radius:7px;background:var(--bg-2);display:grid;place-items:center;font-size:14px;flex:0 0 auto;border:1px solid var(--line);}
+  .pcard p{font-size:13.5px;color:var(--ink-soft);margin-top:7px;}
+  .pcard p a{font-weight:600;}
+  .pcard .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:9px;background:var(--bg-2);color:var(--ink-faint);border:1px solid var(--line);}
+  .pcard .tag.pay{background:#f7e9e2;color:var(--clay);border-color:#eccdbf;}
+  .pcard .tag.free{background:#e6efe9;color:var(--teal);border-color:#cfe0d5;}
+  @media(max-width:620px){.prep{grid-template-columns:1fr;}}
+  .prepnote{margin-top:18px;font-size:13.5px;color:var(--ink-faint);border-left:3px solid var(--ochre);padding-left:14px;}
+
+  /* ── journey ── */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;position:relative;}
+  .steps::before{content:"";position:absolute;top:30px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--ink-faint) 0 7px,transparent 7px 15px);opacity:.5;}
+  .step{position:relative;text-align:center;}
+  .step .dot{width:60px;height:60px;margin:0 auto;border-radius:50%;background:var(--bg);border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--font-display);font-style:italic;font-size:24px;}
+  .step:nth-child(1) .dot{color:var(--clay);}
+  .step:nth-child(2) .dot{color:var(--ochre);}
+  .step:nth-child(3) .dot{color:var(--teal);}
+  .step h4{font-family:var(--font-display);font-size:18px;font-weight:600;margin-top:14px;}
+  .step p{font-size:13.5px;color:var(--ink-soft);margin-top:6px;}
+  @media(max-width:620px){.steps{grid-template-columns:1fr;}.steps::before{display:none;}}
+
+  /* ── curriculum timeline ── */
+  .timeline{margin-top:38px;border-left:2px solid var(--line-strong);padding-left:0;}
+  .ses{position:relative;padding:0 0 30px 34px;}
+  .ses::before{content:"";position:absolute;left:-8px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--clay);border:3px solid var(--bg);}
+  .ses.set::before{background:var(--ink-faint);}
+  .ses .when{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--clay);text-transform:uppercase;}
+  .ses.set .when{color:var(--ink-faint);}
+  .ses h3{font-family:var(--font-display);font-size:22px;font-weight:600;margin:3px 0 2px;}
+  .ses .dur{font-size:12.5px;color:var(--ink-faint);font-weight:600;}
+  .ses ul{margin:11px 0 0;padding:0;list-style:none;}
+  .ses li{position:relative;padding:4px 0 4px 18px;font-size:14.5px;color:var(--ink-soft);}
+  .ses li::before{content:"›";position:absolute;left:2px;color:var(--clay);font-weight:700;}
+  .ses li b{color:var(--ink);font-weight:700;}
+  .ses .out-pill{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:var(--ink);color:var(--bg);font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:8px;}
+  .ses .out-pill::before{content:"산출물";font-size:9.5px;letter-spacing:.06em;opacity:.65;font-weight:800;}
+  .ses.star h3::after{content:"★ 핵심";font-family:var(--font-body);font-size:11px;font-weight:800;color:var(--clay);background:#f7e9e2;border:1px solid #eccdbf;border-radius:6px;padding:2px 8px;margin-left:10px;vertical-align:middle;}
+
+  /* ── tool table ── */
+  .tools{margin-top:32px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);}
+  .trow{display:grid;grid-template-columns:0.8fr 1.1fr 1.3fr;border-top:1px solid var(--line);}
+  .trow:first-child{border-top:none;background:var(--bg-2);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);}
+  .trow>div{padding:14px 16px;border-left:1px solid var(--line);font-size:14px;}
+  .trow>div:first-child{border-left:none;}
+  .trow .goal{font-weight:700;color:var(--ink);}
+  .trow .path b{color:var(--clay);}
+  .trow .note{font-size:13px;color:var(--ink-soft);}
+  .trow .warn{color:var(--clay);font-weight:600;}
+  @media(max-width:760px){.trow{grid-template-columns:1fr;}.trow>div{border-left:none;border-top:1px dashed var(--line);}.trow>div:first-child{border-top:none;}.trow:first-child{display:none;}}
+
+  /* ── caveats ── */
+  .cav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;}
+  .ccard{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel);}
+  .ccard.risk{border-color:#eccdbf;background:#fbf2ec;}
+  .ccard h4{font-family:var(--font-display);font-size:16px;font-weight:600;margin-bottom:8px;}
+  .ccard.risk h4{color:var(--clay);}
+  .ccard ul{margin:0;padding-left:18px;}
+  .ccard li{font-size:13.5px;color:var(--ink-soft);padding:3px 0;}
+  .ccard li b{color:var(--ink);}
+  @media(max-width:620px){.cav{grid-template-columns:1fr;}}
+
+  /* ── roadmap ── */
+  .road{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;}
+  .rw{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .rw .w{font-family:var(--font-display);font-style:italic;color:var(--teal);font-size:15px;}
+  .rw p{font-size:13.5px;color:var(--ink-soft);margin-top:6px;}
+
+  /* ── footer ── */
+  footer{background:var(--ink);color:var(--bg);padding:54px 0 40px;}
+  footer .wrap{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+  footer .fb{font-family:var(--font-display);font-weight:900;font-size:22px;}
+  footer .fb small{display:block;font-family:var(--font-body);font-size:12.5px;opacity:.6;font-weight:400;margin-top:6px;}
+  footer .src{font-size:11.5px;opacity:.62;line-height:1.85;max-width:520px;}
+  footer .src b{opacity:.9;font-weight:700;display:block;margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase;font-size:10.5px;}
+  footer .src a{color:#e8c9b9;}
+  .conf{display:inline-block;margin-top:14px;border:1px solid rgba(244,241,232,.3);padding:3px 10px;border-radius:6px;font-size:10.5px;letter-spacing:.1em;font-weight:700;opacity:.7;}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand">codemon<span>.</span></div>
+    <div class="links">
+      <a href="#prep">준비물</a>
+      <a href="#journey">여정</a>
+      <a href="#curriculum">커리큘럼</a>
+      <a href="#tools">툴 경로</a>
+      <a href="#notes">주의사항</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap reveal">
+    <div class="tags">
+      <span class="chip clay">4시간 핸즈온</span>
+      <span class="chip">비개발자 대상</span>
+      <span class="chip">개인교습형</span>
+      <span class="chip solid">실제 프로덕트 배포</span>
+    </div>
+    <h1>클로드로 만드는<span class="l2">나만의 지식노트 + 배포되는 내 사이트</span></h1>
+    <p class="lead">코드 한 줄 몰라도 괜찮습니다. 클로드에게 <b>일을 맡겨</b> 흩어진 메모를 <b>AI가 읽는 지식노트</b>로 만들고, 끝나면 <b>인터넷에 실제로 떠 있는 내 사이트 주소</b> 하나를 손에 쥐고 나가는 4시간입니다.</p>
+  </div>
+</header>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">오늘 손에 남는 것</span>
+      <h2>말이 아니라, <em>동작하는 결과물 2개</em></h2>
+    </div>
+    <div class="out-grid">
+      <div class="out reveal">
+        <div class="n">01</div>
+        <h3>내 지식노트 볼트</h3>
+        <p>Obsidian 마크다운 볼트 + 클로드 연결. 내가 쌓은 메모를 클로드가 읽고 요약·검색·정리해 주는, 살아있는 제2의 뇌.</p>
+      </div>
+      <div class="out reveal">
+        <div class="n">02</div>
+        <h3>배포된 내 사이트</h3>
+        <p>Vercel + Supabase로 인터넷에 실제로 올라간 프로필/주제 사이트. 친구에게 바로 보낼 수 있는 라이브 URL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREP -->
+<section id="prep">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">시작 전 준비물</span>
+      <h2>이참에 <em>세팅부터</em> 끝내시죠</h2>
+      <p class="sec-lead">아래는 미리 깔아 오면 좋은 것들. 못 하셔도 괜찮습니다 — 수업 0교시에 같이 합니다.</p>
+    </div>
+    <div class="prep">
+      <div class="pcard reveal">
+        <h4><span class="ic">🟣</span> 클로드 (Claude) 유료 플랜</h4>
+        <p>Claude Code·Cowork는 <b>유료 플랜에서만</b> 동작합니다. 안정적으로 가려면 <b>Max</b> 권장(Max 5x $100/월 · 20x $200/월). 네이티브 설치라 <b>Node.js 없이</b>도 깔립니다.</p>
+        <span class="tag pay">유료 · Max 권장</span>
+      </div>
+      <div class="pcard reveal">
+        <h4><span class="ic">💬</span> 클로드 데스크탑 앱</h4>
+        <p>맥/윈도우 공통. <b>Cowork</b>(터미널 없이 파일을 직접 다루는 에이전트 모드)가 여기서 돕니다. 앱은 켜둔 채로 작업.</p>
+        <span class="tag">맥 / 윈도우</span>
+      </div>
+      <div class="pcard reveal">
+        <h4><span class="ic">🪨</span> 옵시디언 (Obsidian)</h4>
+        <p>설치 필수. 우리 지식노트의 '볼트'가 됩니다. 그냥 <b>마크다운(.md) 폴더</b>라 별도 변환 없이 클로드가 그대로 읽습니다.</p>
+        <span class="tag free">무료</span>
+      </div>
+      <div class="pcard reveal">
+        <h4><span class="ic">🟩</span> Node.js</h4>
+        <p>일부 도구 연결(파일시스템 MCP)과 사이트 빌드에 쓰입니다. <a href="https://nodejs.org/ko/download" target="_blank" rel="noopener">nodejs.org/ko/download</a> 에서 설치.</p>
+        <span class="tag free">무료</span>
+      </div>
+      <div class="pcard reveal">
+        <h4><span class="ic">🚀</span> 안티그래비티 IDE</h4>
+        <p>구글의 에이전트-우선 IDE(무료). 에이전트가 계획→실행→검증을 보여줍니다. <a href="https://antigravity.google/product/antigravity-ide" target="_blank" rel="noopener">antigravity.google</a> · ⚠️무료 사용량 제한이 있어 수업에선 보조로 사용.</p>
+        <span class="tag free">무료 · 보조</span>
+      </div>
+      <div class="pcard reveal">
+        <h4><span class="ic">🔗</span> GitHub · Vercel · Supabase 가입</h4>
+        <p><b>GitHub는 구글로</b> 가입 → <b>Vercel은 그 GitHub로</b> 가입 → Supabase 가입. 사이트 배포 3종 세트입니다.</p>
+        <span class="tag free">무료</span>
+      </div>
+    </div>
+    <p class="prepnote reveal">위 준비물을 다 못 깔아도 괜찮습니다. 수업 0교시(20분)에서 강사와 1:1로 함께 세팅합니다.</p>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">한 장으로 보는 흐름</span>
+      <h2>쌓고 → <em>맡기고</em> → 띄운다</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="dot">1</div>
+        <h4>지식을 쌓는다</h4>
+        <p>옵시디언에 메모를 모으고 클로드를 연결해 'AI가 읽는 지식노트'로.</p>
+      </div>
+      <div class="step reveal">
+        <div class="dot">2</div>
+        <h4>일을 맡긴다</h4>
+        <p>Skill·MCP·Cowork로 클로드에게 파일 작업·도구 연결을 위임.</p>
+      </div>
+      <div class="step reveal">
+        <div class="dot">3</div>
+        <h4>사이트를 띄운다</h4>
+        <p>Vercel+Supabase로 내 사이트를 인터넷에 실제 배포.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">커리큘럼 · 240분</span>
+      <h2>4시간, <em>5교시</em> · 누적 핸즈온</h2>
+      <p class="sec-lead">시연 20% · 직접 실습 60% · 산출물 확인 20%. 각 교시 끝에 손에 잡히는 결과 하나씩.</p>
+    </div>
+    <div class="timeline reveal">
+
+      <div class="ses set">
+        <div class="when">0교시 · 20분</div>
+        <h3>세팅 &amp; 워밍업</h3>
+        <ul>
+          <li>오늘 만들 <b>산출물 2개</b> 완성본 미리보기</li>
+          <li>준비물 점검·설치 트러블슈팅 (클로드·옵시디언·Node·안티그래비티)</li>
+          <li>계정: <b>GitHub(구글)</b> → <b>Vercel(깃허브)</b> → Supabase</li>
+          <li>안전 수칙 — '넣지 말 것' 레드리스트</li>
+        </ul>
+        <span class="out-pill">전원 세팅 완료</span>
+      </div>
+
+      <div class="ses">
+        <div class="when">1교시 · 60분</div>
+        <h3>LLM 위키 = 나만의 지식 노트</h3>
+        <ul>
+          <li>(개념 10') 마크다운 볼트 + 백링크 <b>[[ ]]</b> = 변환 없이 그대로 읽히는 지식창고</li>
+          <li>(실습 40') 옵시디언 볼트 생성 → 노트 3~5개 + 백링크 → <b>클로드 파일시스템 커넥터로 폴더 연결</b>(Settings→Connectors→Filesystem)</li>
+          <li>클로드에게 내 볼트 요약·검색·새 노트 생성·정리 위임</li>
+        </ul>
+        <span class="out-pill">내 지식 볼트 + 정리 노트 1개</span>
+      </div>
+
+      <div class="ses">
+        <div class="when">2교시 · 60분</div>
+        <h3>Skill · MCP 개념 + Claude · Cowork 핸즈온</h3>
+        <ul>
+          <li>(개념 15') <b>Skill</b> = 클로드에게 '하는 법'을 패키지로 가르침(PDF·엑셀·PPT 내장 스킬) / <b>MCP</b> = 외부 도구·로컬 파일에 잇는 통로 / <b>Cowork</b> = 터미널 없이 에이전트로 파일 작업</li>
+          <li>(실습 35') 내장 Skill 체감(PDF·엑셀 자동 처리) → 커넥터/MCP <b>원클릭</b> 추가 → Cowork로 폴더 통째 작업해 실파일 산출</li>
+        </ul>
+        <span class="out-pill">내 커넥터·스킬로 만든 산출물</span>
+      </div>
+
+      <div class="ses star">
+        <div class="when">3교시 · 90분</div>
+        <h3>실제 배포되는 사이트 만들기</h3>
+        <ul>
+          <li>(설계 15') 만들 사이트(프로필 + 즉흥 주제) · 스택 그림 GitHub→Vercel→Supabase · 무료 한도 고지</li>
+          <li>(빌드 60') <b>Vercel 'Supabase Starter' Deploy</b> → GitHub clone + 환경변수 자동 주입 → <b>라이브 URL</b> 발급</li>
+          <li>클로드 코드/안티그래비티 에이전트로 내용·디자인 수정 → <b>git push → 자동 재배포</b> → 즉흥 주제 페이지 변형</li>
+        </ul>
+        <span class="out-pill">인터넷에 떠 있는 내 사이트 URL</span>
+      </div>
+
+      <div class="ses set">
+        <div class="when">4교시 · 10분</div>
+        <h3>마무리 &amp; 자립</h3>
+        <ul>
+          <li>산출물 2개 회고 + 라이브 URL 공유</li>
+          <li>30일 자립 로드맵 · 비용 정리 · Q&amp;A</li>
+        </ul>
+        <span class="out-pill">30일 자립 플랜</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">왜 이 길로 가는가 · 공식 출처 검증</span>
+      <h2>비개발자에게 <em>가장 단순·안정한</em> 경로</h2>
+      <p class="sec-lead">4시간 안에 '실제 동작'까지 가려면 길 선택이 전부입니다. 모두 공식 문서로 확인한 경로만 채택했습니다.</p>
+    </div>
+    <div class="tools reveal">
+      <div class="trow"><div>목표</div><div>채택 경로 (가장 쉬움)</div><div>근거 · 주의</div></div>
+      <div class="trow">
+        <div class="goal">지식노트<br/>(LLM 위키)</div>
+        <div class="path">Obsidian 볼트(.md) + <b>클로드 파일시스템 커넥터</b><br/>(폴더만 지정, 터미널·MCP 설정 불필요)</div>
+        <div class="note">볼트는 그냥 .md 폴더라 변환 없이 읽힘. <span class="warn">표현 주의: 'AI가 더 잘 이해'(미확인)가 아니라 '원본 그대로 읽힘'</span></div>
+      </div>
+      <div class="trow">
+        <div class="goal">Skill · MCP<br/>핸즈온</div>
+        <div class="path">클로드 데스크탑 <b>Extensions/Connectors 원클릭</b> + <b>Cowork</b></div>
+        <div class="note">JSON 편집보다 UI 원클릭이 비개발자에 쉬움(공식 헬프). Cowork = Claude Code 아키텍처의 GUI, 유료·데스크탑 전용</div>
+      </div>
+      <div class="trow">
+        <div class="goal">배포되는<br/>사이트</div>
+        <div class="path">Vercel <b>'Supabase Starter' 템플릿 Deploy</b><br/>(GitHub clone + 환경변수 자동 주입)</div>
+        <div class="note"><span class="warn">Vercel Hobby = 비상업 전용 / Supabase Free = 1주 비활성 시 일시정지·활성 프로젝트 2개</span></div>
+      </div>
+      <div class="trow">
+        <div class="goal">코딩 에이전트<br/>(빌드)</div>
+        <div class="path"><b>클로드 코드(Max) 주력</b> + 안티그래비티 보조</div>
+        <div class="note"><span class="warn">안티그래비티 무료티어 사용량 제한 급축소(락아웃 보고)</span> → 라이브 단체수업 리스크. 클로드 코드 네이티브 설치 = Node 불필요(유료)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES / CAVEATS -->
+<section id="notes">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">미리 알아둘 것</span>
+      <h2>비용 · 무료 한도 · <em>리스크</em></h2>
+      <p class="sec-lead">전부 공식 문서 기준(2025년 말~2026년 시점). SaaS 정책은 빠르게 바뀌니 수업일 재확인이 원칙입니다.</p>
+    </div>
+    <div class="cav">
+      <div class="ccard reveal">
+        <h4>💰 비용</h4>
+        <ul>
+          <li><b>클로드 Max</b> 5x $100 / 20x $200 (월) — Claude Code·Cowork 포함</li>
+          <li><b>옵시디언 · Node · 안티그래비티</b> 무료</li>
+          <li><b>Vercel Hobby · Supabase Free</b> 무료 (한도 내)</li>
+        </ul>
+      </div>
+      <div class="ccard risk reveal">
+        <h4>⚠️ 검증된 리스크</h4>
+        <ul>
+          <li><b>안티그래비티</b> 무료 사용량 제한 → 수업 전 쿼터 확인, 클로드 코드 폴백</li>
+          <li><b>Pro의 Claude Code 포함</b>은 변동 이력 → 수업일 재확인, 안전하게 Max</li>
+          <li><b>Vercel Hobby 비상업 전용</b> / <b>Supabase Free 1주 비활성 일시정지</b> 반드시 고지</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">수료 후 30일</span>
+      <h2>혼자서도 <em>계속 굴러가게</em></h2>
+    </div>
+    <div class="road">
+      <div class="rw reveal"><div class="w">Week 1</div><p>지식노트 볼트에 매일 메모 → 클로드로 주간 요약 습관화</p></div>
+      <div class="rw reveal"><div class="w">Week 2</div><p>자주 쓰는 작업을 Skill로 등록 · 커넥터 1개 더 붙이기</p></div>
+      <div class="rw reveal"><div class="w">Week 3</div><p>내 사이트에 섹션·페이지 추가 → git push로 갱신 반복</p></div>
+      <div class="rw reveal"><div class="w">Week 4</div><p>즉흥 주제 사이트 1개 더 만들어 배포 → 나만의 포트폴리오</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="fb">codemon.<small>AI 교육 · 도입 파트너</small></div>
+      <div class="conf">수업 자료 초안 v0.1 · 2026</div>
+    </div>
+    <div class="src">
+      <b>출처 (공식 1차 자료 직접 확인)</b>
+      Antigravity — <a href="https://antigravity.google/" target="_blank" rel="noopener">antigravity.google</a> · <a href="https://developers.googleblog.com/build-with-google-antigravity-our-new-agentic-development-platform/" target="_blank" rel="noopener">출시 블로그</a><br/>
+      Claude Code · Max — <a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">code.claude.com/setup</a> · <a href="https://support.claude.com/en/articles/11049741-what-is-the-max-plan" target="_blank" rel="noopener">Max 플랜</a><br/>
+      Cowork — <a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" target="_blank" rel="noopener">Cowork 가이드</a><br/>
+      Skills · MCP — <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank" rel="noopener">Agent Skills</a> · <a href="https://modelcontextprotocol.io/docs/develop/connect-local-servers" target="_blank" rel="noopener">MCP</a><br/>
+      Vercel · Supabase — <a href="https://vercel.com/templates/authentication/supabase" target="_blank" rel="noopener">Supabase Starter</a> · <a href="https://supabase.com/pricing" target="_blank" rel="noopener">Supabase 요금</a> · <a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Vercel Hobby</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms'; io.observe(el); });
+</script>
+</body>
+</html>
