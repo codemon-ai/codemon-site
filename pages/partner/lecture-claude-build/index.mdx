@@ -1,0 +1,129 @@
+---
+title: "클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트"
+description: "비개발자 4시간 핸즈온 — Obsidian 지식노트, Skill·MCP·Cowork, Vercel+Supabase로 실제 배포되는 사이트까지 직접 만든다."
+---
+
+# 클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트
+
+> 📌 본 페이지는 **강의 개요(목차)** 입니다. 슬라이드·실습 자료는 추후 추가됩니다.
+
+## 개요
+
+| 항목 | 내용 |
+|------|------|
+| 제목 | 클로드로 만드는 나만의 지식노트 + 배포되는 내 사이트 |
+| 형식 | 핸즈온 + 개인교습 (4시간 / 240분) |
+| 대상 | 비개발 실무자 (프롬프트·코딩 경험 무관) |
+| 강사 | 코드몬 (codemon.ai) |
+| 최종 산출물 | ① 클로드가 읽는 내 지식노트 볼트 &nbsp; ② 인터넷에 배포된 내 사이트 URL |
+
+## 이런 분에게 추천합니다
+
+- AI를 써보고 싶은데 **어디서부터 시작해야 할지** 모르겠는 분
+- 메모는 쌓는데 다시 안 보게 되는 분 — **AI가 읽고 정리해주는 지식노트**가 필요한 분
+- 코드 한 줄 몰라도 **내 사이트를 인터넷에 띄워보고** 싶은 분
+- 클로드를 '대화'를 넘어 **'일 맡기는 도구'** 로 쓰고 싶은 분
+
+## 핵심 성과
+
+> 4시간 후, 손에 **동작하는 결과물 2개**를 들고 나갑니다.
+
+- 클로드가 읽고 **요약·검색·정리**해주는 내 지식노트 볼트
+- 친구에게 바로 보낼 수 있는, **인터넷에 떠 있는 내 사이트 URL**
+- 혼자서도 이어갈 **30일 자립 로드맵**
+
+---
+
+## 준비물
+
+| 준비물 | 설명 | 비용 |
+|------|------|------|
+| **클로드 유료 플랜** | Claude Code·Cowork는 유료 전용. 안정성 위해 **Max 권장**(5x $100 / 20x $200·월). 네이티브 설치라 Node 없이도 설치됨 | 유료 |
+| **클로드 데스크탑 앱** | 맥/윈도우 공통. **Cowork**(터미널 없이 파일 다루는 에이전트 모드) 실행 | — |
+| **옵시디언(Obsidian)** | 지식노트 '볼트'(.md 폴더). 변환 없이 클로드가 그대로 읽음 | 무료 |
+| **Node.js** | 일부 도구 연결·사이트 빌드에 사용 ([nodejs.org/ko/download](https://nodejs.org/ko/download)) | 무료 |
+| **안티그래비티 IDE** | 구글 에이전트-우선 IDE ([antigravity.google](https://antigravity.google/)). 무료 사용량 제한 있어 **보조**로 사용 | 무료 |
+| **GitHub · Vercel · Supabase** | **GitHub는 구글로** 가입 → **Vercel은 그 GitHub로** 가입 → Supabase 가입 | 무료 |
+
+> 다 못 깔아도 괜찮습니다 — **0교시(20분)** 에 강사와 함께 세팅합니다.
+
+---
+
+## 커리큘럼 (240분)
+
+> 시연 20% · **직접 실습 60%** · 산출물 확인 20% — 각 교시 끝에 손에 잡히는 결과 하나씩.
+
+### 0교시. 세팅 & 워밍업 (20분)
+
+- 오늘 만들 **산출물 2개** 완성본 미리보기
+- 준비물 점검·설치 트러블슈팅, 계정 연결(**GitHub→Vercel→Supabase**)
+- 안전 수칙 — '넣지 말 것' 레드리스트
+
+> **산출물 — 전원 세팅 완료**
+
+### 1교시. LLM 위키 = 나만의 지식 노트 (60분)
+
+- (개념 10') 마크다운 볼트 + 백링크 `[[ ]]` = **변환 없이 그대로 읽히는** 지식창고
+- (실습 40') 옵시디언 볼트 생성 → 노트 3~5개 + 백링크 → **클로드 파일시스템 커넥터로 폴더 연결**(Settings → Connectors → Filesystem)
+- 클로드에게 내 볼트 **요약·검색·새 노트 생성·정리** 위임
+
+> **산출물 — 내 지식 볼트 + 정리 노트 1개**
+
+### 2교시. Skill·MCP 개념 + Claude·Cowork 핸즈온 (60분)
+
+- (개념 15') **Skill** = 클로드에게 '하는 법'을 패키지로 가르침(PDF·엑셀·PPT 내장 스킬) / **MCP** = 외부 도구·로컬 파일에 잇는 통로 / **Cowork** = 터미널 없이 에이전트로 파일 작업
+- (실습 35') 내장 Skill 체감(PDF·엑셀 자동 처리) → 커넥터/MCP **원클릭** 추가 → Cowork로 폴더 통째 작업해 실파일 산출
+
+> **산출물 — 내 커넥터·스킬로 만든 산출물**
+
+### 3교시. 실제 배포되는 사이트 만들기 ★핵심 (90분)
+
+- (설계 15') 만들 사이트(프로필 + 즉흥 주제) · 스택 그림 **GitHub→Vercel→Supabase** · 무료 한도 고지
+- (빌드 60') **Vercel 'Supabase Starter' Deploy** → 환경변수 자동 주입 → **라이브 URL** 발급 → 클로드 코드/안티그래비티 에이전트로 내용·디자인 수정 → **git push → 자동 재배포** → 즉흥 주제 페이지 변형
+
+> **산출물 — 인터넷에 떠 있는 내 사이트 URL**
+
+### 4교시. 마무리 & 자립 (10분)
+
+- 산출물 2개 회고 + 라이브 URL 공유
+- **30일 자립 로드맵** · 비용 정리 · Q&A
+
+> **산출물 — 30일 자립 플랜**
+
+---
+
+## 사용 도구 — 가장 단순·안정한 경로
+
+> 4시간 안에 '실제 동작'까지 가려면 길 선택이 전부입니다. 모두 **공식 문서로 확인한 경로**만 채택했습니다.
+
+| 목표 | 채택 경로 (가장 쉬움) | 주의 |
+|------|------|------|
+| 지식노트(LLM 위키) | Obsidian 볼트 + **클로드 파일시스템 커넥터** | 볼트는 .md 폴더라 그대로 읽힘 |
+| Skill·MCP 핸즈온 | 데스크탑 **Extensions 원클릭** + Cowork | Cowork는 유료·데스크탑 전용 |
+| 배포되는 사이트 | Vercel **'Supabase Starter' Deploy** | Vercel Hobby **비상업 전용** / Supabase Free **1주 비활성 시 일시정지** |
+| 코딩 에이전트 | **클로드 코드(Max) 주력** + 안티그래비티 보조 | 안티그래비티 무료 사용량 제한 |
+
+> 비용·정책은 공식 문서 기준(2025년 말~2026년)이며 수업일 재확인이 원칙입니다.
+> 출처: [Claude Code](https://code.claude.com/docs/en/setup) · [Max 플랜](https://support.claude.com/en/articles/11049741-what-is-the-max-plan) · [Cowork](https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork) · [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) · [MCP](https://modelcontextprotocol.io/docs/develop/connect-local-servers) · [Antigravity](https://antigravity.google/) · [Supabase Starter](https://vercel.com/templates/authentication/supabase) · [Supabase 요금](https://supabase.com/pricing) · [Vercel Hobby](https://vercel.com/docs/plans/hobby)
+
+---
+
+## 강사 소개
+
+### 코드몬 — AI/AX Engineer
+
+대기업에서 10년, 스타트업에서 10년.
+삼성전자 종합기술원·생산기술연구소, SK텔레콤을 거쳐
+지금은 AI 에이전트 팀과 함께 매일 서비스를 만들고 자동화합니다.
+
+- 경력 20년+ | 런칭한 서비스 10+ | 자동화한 업무 100+
+- AI 에이전트 7명으로 구성된 팀 운영
+- [codemon.ai](https://codemon.ai)에서 40편+ AI 실전 블로그 운영
+
+> "만들고, 자동화하고, 공유합니다."
+
+---
+
+## 키워드
+
+Claude · Claude Code · Cowork · MCP · Agent Skills · Obsidian · LLM 위키 · 지식노트 · Vercel · Supabase · 바이브 코딩 · 사이트 배포 · 비개발자 · 핸즈온
