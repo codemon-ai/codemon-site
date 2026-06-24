@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>신호가 오면 자동 주문하는 나만의 투자 봇 — 2시간 핸즈온 · codemon</title>
+<meta name="description" content="TradingView 신호 → 웹훅 → Alpaca 페이퍼 자동 주문 + 텔레그램 알림 + 대시보드. 입문자용 2시간 핸즈온. 페이퍼(모의) 전용." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --bg:#F4F1E8; --bg-2:#EFEBDD; --panel:#FBF9F3;
+    --ink:#211C15; --ink-soft:#544B3D; --ink-faint:#8B8170;
+    --line:#DED7C5; --line-strong:#C9BFA8;
+    --clay:#C2542F; --teal:#2F5249; --ochre:#B8862F;
+    --code-bg:#211C15; --code-ink:#EDE7D6; --code-key:#E0A35E; --code-str:#9BB89A; --code-cmt:#8B8170;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-body:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --max:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  ::selection{background:var(--clay);color:#fff;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+  a{color:var(--clay);text-decoration:none;} a:hover{text-decoration:underline;}
+
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(244,241,232,.86);backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line);}
+  nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;}
+  nav.top .brand{font-family:var(--font-display);font-weight:900;font-size:18px;letter-spacing:-.02em;}
+  nav.top .brand span{color:var(--clay);}
+  nav.top .links{display:flex;gap:20px;font-size:13px;font-weight:600;}
+  nav.top .links a{color:var(--ink-soft);} nav.top .links a:hover{color:var(--clay);text-decoration:none;}
+  @media(max-width:760px){nav.top .links{display:none;}}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  section{padding:72px 0;border-top:1px solid var(--line);}
+  section:first-of-type{border-top:none;}
+  .eyebrow{display:inline-flex;align-items:center;gap:.6em;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--clay);}
+  h2{font-family:var(--font-display);font-weight:600;font-size:33px;line-height:1.16;letter-spacing:-.015em;margin:14px 0 0;}
+  h2 em{font-style:italic;}
+  .sec-lead{margin-top:14px;font-size:16px;color:var(--ink-soft);max-width:680px;}
+
+  .hero{padding:84px 0 60px;border-top:none;}
+  .hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .chip{font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:5px 12px;border-radius:100px;border:1.4px solid var(--ink);}
+  .chip.solid{background:var(--ink);color:var(--bg);}
+  .chip.clay{background:var(--clay);border-color:var(--clay);color:#fff;}
+  h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.05;letter-spacing:-.025em;}
+  h1 .l2{display:block;font-style:italic;color:var(--clay);}
+  .hero .lead{margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:660px;}
+  .hero .lead b{color:var(--ink);font-weight:700;}
+  @media(max-width:620px){h1{font-size:37px;}}
+
+  /* safety banner */
+  .safety{margin-top:30px;border:1.5px solid var(--clay);background:#FBF0EA;border-radius:14px;padding:20px 22px;}
+  .safety h3{font-family:var(--font-body);font-size:15px;font-weight:800;color:var(--clay);display:flex;align-items:center;gap:8px;}
+  .safety p{font-size:13.5px;color:#7a3a22;margin-top:8px;}
+  .safety b{color:var(--clay);}
+
+  /* architecture diagram */
+  .arch{margin-top:30px;display:flex;flex-direction:column;gap:0;align-items:center;}
+  .arow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;}
+  .abox{background:var(--panel);border:1.5px solid var(--ink);border-radius:12px;padding:14px 18px;text-align:center;min-width:150px;box-shadow:6px 6px 0 rgba(33,28,21,.06);}
+  .abox .t{font-family:var(--font-display);font-weight:600;font-size:15px;}
+  .abox .s{font-size:11.5px;color:var(--ink-faint);margin-top:3px;}
+  .abox.hub{border-color:var(--clay);background:#FBF0EA;}
+  .abox.hub .t{color:var(--clay);}
+  .aarr{font-size:22px;color:var(--ink-faint);font-weight:700;}
+  .adown{font-size:20px;color:var(--ink-faint);margin:8px 0;}
+  .abranch{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+  .abox.sm{min-width:130px;padding:11px 14px;border-width:1px;border-color:var(--line-strong);box-shadow:none;}
+  .abox.sm .t{font-size:13.5px;font-family:var(--font-body);font-weight:700;}
+
+  /* prep table */
+  .prep{margin-top:30px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);}
+  .prow{display:grid;grid-template-columns:0.9fr 1.7fr 0.6fr;border-top:1px solid var(--line);}
+  .prow:first-child{border-top:none;background:var(--bg-2);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);}
+  .prow>div{padding:13px 16px;border-left:1px solid var(--line);font-size:14px;}
+  .prow>div:first-child{border-left:none;font-weight:700;}
+  .prow .cost{font-weight:700;}
+  .free{color:var(--teal);} .pay{color:var(--clay);}
+  @media(max-width:680px){.prow{grid-template-columns:1fr;}.prow>div{border-left:none;border-top:1px dashed var(--line);}.prow>div:first-child{border-top:none;}.prow:first-child{display:none;}}
+
+  /* timeline */
+  .timeline{margin-top:36px;border-left:2px solid var(--line-strong);}
+  .ses{position:relative;padding:0 0 28px 34px;}
+  .ses::before{content:"";position:absolute;left:-8px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--clay);border:3px solid var(--bg);}
+  .ses.set::before{background:var(--ink-faint);}
+  .ses .when{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--clay);text-transform:uppercase;}
+  .ses.set .when{color:var(--ink-faint);}
+  .ses h3{font-family:var(--font-display);font-size:21px;font-weight:600;margin:3px 0 2px;}
+  .ses p{font-size:14.5px;color:var(--ink-soft);margin-top:6px;}
+  .ses .out-pill{display:inline-flex;align-items:center;gap:7px;margin-top:11px;background:var(--ink);color:var(--bg);font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:8px;}
+  .ses .out-pill::before{content:"산출물";font-size:9.5px;letter-spacing:.06em;opacity:.65;font-weight:800;}
+  .ses.star h3::after{content:"★ 핵심";font-family:var(--font-body);font-size:11px;font-weight:800;color:var(--clay);background:#f7e9e2;border:1px solid #eccdbf;border-radius:6px;padding:2px 8px;margin-left:10px;vertical-align:middle;}
+
+  /* code blocks */
+  .code-wrap{margin-top:20px;}
+  .code-label{font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .code-label .tag{font-size:10.5px;font-weight:700;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-faint);border-radius:5px;padding:1px 7px;}
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13px;line-height:1.65;}
+  pre .k{color:var(--code-key);} pre .s{color:var(--code-str);} pre .c{color:var(--code-cmt);font-style:italic;}
+  .codecards{display:grid;gap:22px;margin-top:26px;}
+
+  .note{margin-top:18px;background:#f3f6ff00;border:1px solid var(--line);border-radius:11px;padding:15px 18px;font-size:13.5px;color:var(--ink-soft);background:var(--panel);}
+  .note b{color:var(--ink);}
+  .note.warn{border-color:#eccdbf;background:#FBF0EA;color:#7a3a22;}
+  .note.warn b{color:var(--clay);}
+
+  /* honesty list */
+  .honest{margin-top:24px;list-style:none;display:grid;gap:12px;}
+  .honest li{padding:15px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:14px;color:var(--ink-soft);}
+  .honest li b{color:var(--ink);display:block;margin-bottom:3px;font-family:var(--font-display);font-weight:600;font-size:15px;}
+
+  footer{background:var(--ink);color:var(--bg);padding:52px 0 40px;}
+  footer .wrap{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+  footer .fb{font-family:var(--font-display);font-weight:900;font-size:22px;}
+  footer .fb small{display:block;font-family:var(--font-body);font-size:12.5px;opacity:.6;font-weight:400;margin-top:6px;}
+  footer .src{font-size:11.5px;opacity:.62;line-height:1.85;max-width:540px;}
+  footer .src b{opacity:.9;font-weight:700;display:block;margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase;font-size:10.5px;}
+  footer .src a{color:#e8c9b9;}
+  .conf{display:inline-block;margin-top:14px;border:1px solid rgba(244,241,232,.3);padding:3px 10px;border-radius:6px;font-size:10.5px;letter-spacing:.1em;font-weight:700;opacity:.7;}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand">codemon<span>.</span></div>
+    <div class="links">
+      <a href="#safety">안전</a><a href="#arch">구조</a><a href="#prep">준비물</a>
+      <a href="#curriculum">커리큘럼</a><a href="#code">핵심 코드</a><a href="#honest">정직 포인트</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap reveal">
+    <div class="tags">
+      <span class="chip clay">2시간 핸즈온</span>
+      <span class="chip">입문</span>
+      <span class="chip solid">📄 페이퍼(모의) 전용</span>
+      <span class="chip">Python</span>
+    </div>
+    <h1>신호가 오면 자동으로 주문하는<span class="l2">나만의 투자 봇</span></h1>
+    <p class="lead">TradingView 신호 → <b>내 웹훅 서버</b> → <b>Alpaca 페이퍼 자동 주문</b> → 텔레그램 알림 + 대시보드. 코드 한 줄씩 따라 만들고, <b>실제 돈 없이 모의계좌</b>에서 동작까지 확인하는 2시간입니다.</p>
+  </div>
+</header>
+
+<!-- SAFETY -->
+<section id="safety" style="padding-top:0;border-top:none;">
+  <div class="wrap reveal">
+    <div class="safety">
+      <h3>⚠️ 먼저 읽어주세요 — 이 수업은 모의(페이퍼) 투자 전용입니다</h3>
+      <p>이 과정의 모든 코드는 <b>Alpaca 페이퍼 트레이딩(가짜 돈)</b>으로 동작합니다(<code>paper=True</code>). <b>투자 조언이 아니며</b>, 교육·프로토타입 목적입니다. 실거래 전환은 본인 책임이며 손실 위험이 크고, 자동매매·레버리지는 특히 위험합니다. API 키는 절대 공유·하드코딩하지 마세요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">한 장으로 보는 구조</span>
+      <h2>신호 → 웹훅 → <em>자동 주문</em></h2>
+      <p class="sec-lead">TradingView가 (또는 연습용 <code>curl</code>이) 신호를 보내면, 내 서버가 받아 Alpaca에 주문을 넣고, 결과를 텔레그램으로 알리고 대시보드에 보여줍니다.</p>
+    </div>
+    <div class="arch reveal">
+      <div class="arow">
+        <div class="abox"><div class="t">TradingView 알림</div><div class="s">또는 curl 시뮬레이션</div></div>
+        <div class="aarr">→</div>
+        <div class="abox hub"><div class="t">내 웹훅 서버</div><div class="s">Flask <code>/webhook</code></div></div>
+        <div class="aarr">→</div>
+        <div class="abox"><div class="t">Alpaca 페이퍼</div><div class="s">자동 주문 (모의)</div></div>
+      </div>
+      <div class="adown">↓</div>
+      <div class="abranch">
+        <div class="abox sm"><div class="t">📱 텔레그램 알림</div></div>
+        <div class="abox sm"><div class="t">📊 Streamlit 대시보드</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREP -->
+<section id="prep">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">준비물</span>
+      <h2>대부분 <em>무료</em>입니다</h2>
+    </div>
+    <div class="prep reveal">
+      <div class="prow"><div>도구</div><div>역할 · 설치</div><div>비용</div></div>
+      <div class="prow"><div>Alpaca 페이퍼</div><div>모의 주문 브로커. <code>app.alpaca.markets</code> 가입 → Paper 계정 → API 키(Secret은 1회 노출)</div><div class="cost free">무료</div></div>
+      <div class="prow"><div>TradingView</div><div>신호 발생원. <b>웹훅은 유료(Essential+) + 2FA 필수</b> — 없으면 <code>curl</code> 시뮬레이션으로 대체(전원 가능)</div><div class="cost pay">선택·유료</div></div>
+      <div class="prow"><div>텔레그램</div><div>@BotFather로 봇 생성 → 토큰 → chat_id</div><div class="cost free">무료</div></div>
+      <div class="prow"><div>Python + 패키지</div><div><code>pip install alpaca-py flask requests streamlit</code></div><div class="cost free">무료</div></div>
+      <div class="prow"><div>ngrok</div><div>로컬 서버를 공개 HTTPS URL로 노출. <code>ngrok http 5000</code></div><div class="cost free">무료</div></div>
+    </div>
+    <div class="note warn reveal"><b>비용 핵심</b> · Alpaca 페이퍼·텔레그램·ngrok·Python 전부 무료. <b>TradingView 웹훅만 유료(Essential+)+2FA</b> — 그래서 수업은 <b>무료 <code>curl</code> 시뮬레이션을 기본</b>으로, 유료 TradingView가 있으면 실제 알림까지 연결합니다.</div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">커리큘럼 · 120분</span>
+      <h2>2시간, <em>7단계</em> · 누적 핸즈온</h2>
+      <p class="sec-lead">계좌 만들기 → 첫 주문 → 웹훅 봇 → 텔레그램 → 대시보드. 매 단계 끝에 동작하는 결과 하나씩.</p>
+    </div>
+    <div class="timeline reveal">
+      <div class="ses set"><div class="when">0 · 10분</div><h3>큰 그림 & 안전</h3>
+        <p>전체 아키텍처 그림, <b>페이퍼 전용·리스크·비용</b> 고지. "신호→웹훅→주문" 한 문장으로 이해.</p>
+        <span class="out-pill">전체 구조 이해</span></div>
+      <div class="ses"><div class="when">1 · 20분</div><h3>계정·키 준비</h3>
+        <p>Alpaca 페이퍼 가입 + 키 발급(Secret 1회 저장) · 텔레그램 BotFather 봇+토큰+chat_id · <code>pip install</code> · (TradingView 웹훅 유료·2FA 안내)</p>
+        <span class="out-pill">키 3종 + 환경 준비</span></div>
+      <div class="ses"><div class="when">2 · 20분</div><h3>첫 주문 — Alpaca 페이퍼</h3>
+        <p><code>TradingClient(paper=True)</code>로 시장가 주문 1건 → <code>get_account</code>·<code>get_all_positions</code>로 확인. "내 코드가 진짜 주문을 넣는다"를 체감.</p>
+        <span class="out-pill">모의 주문 1건 체결</span></div>
+      <div class="ses star"><div class="when">3 · 35분</div><h3>웹훅 봇 — 신호가 오면 자동 주문</h3>
+        <p>Flask <code>/webhook</code>(passphrase 검증 → 주문) → <code>ngrok http 5000</code>로 공개 → <b>curl로 신호 쏘기</b>(또는 TradingView 알림 JSON) → 자동 주문 확인. 보안: passphrase + 발신 IP 4개 + <code>paper</code>.</p>
+        <span class="out-pill">동작하는 웹훅 봇</span></div>
+      <div class="ses"><div class="when">4 · 15분</div><h3>텔레그램 알림 연결</h3>
+        <p>주문이 들어가면 <code>sendMessage</code>로 폰에 푸시. 봇이 "방금 AAPL 매수했어요" 하고 알림.</p>
+        <span class="out-pill">체결 → 폰 알림</span></div>
+      <div class="ses"><div class="when">5 · 15분</div><h3>대시보드 — Streamlit</h3>
+        <p><code>streamlit run</code> 한 줄로 포트폴리오 가치·보유 포지션·손익을 표로. 같은 Python·15줄.</p>
+        <span class="out-pill">내 대시보드 화면</span></div>
+      <div class="ses set"><div class="when">6 · 5분</div><h3>마무리 & 리스크</h3>
+        <p>백테스트 <b>과최적화</b> 경고, 실거래 위험, 다음 단계(전략·손절·로깅). 안전 재강조.</p>
+        <span class="out-pill">리스크 체크리스트</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section id="code">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">핵심 코드 — 검증된 현행 SDK</span>
+      <h2>실제로 <em>이렇게 짭니다</em></h2>
+      <p class="sec-lead">전부 공식 문서로 확인한 현행 코드입니다. (주의: 유명 튜토리얼 레포는 <b>구버전 <code>alpaca-trade-api</code></b> — 우리는 현행 <code>alpaca-py</code>로.)</p>
+    </div>
+    <div class="codecards">
+      <div class="code-wrap reveal">
+        <div class="code-label">① 첫 주문 — Alpaca 페이퍼 <span class="tag">alpaca-py</span></div>
+<pre><span class="c"># pip install alpaca-py</span>
+<span class="k">from</span> alpaca.trading.client <span class="k">import</span> TradingClient
+<span class="k">from</span> alpaca.trading.requests <span class="k">import</span> MarketOrderRequest
+<span class="k">from</span> alpaca.trading.enums <span class="k">import</span> OrderSide, TimeInForce
+
+client = TradingClient(<span class="s">"KEY"</span>, <span class="s">"SECRET"</span>, paper=<span class="k">True</span>)   <span class="c"># 모의계좌</span>
+
+order = MarketOrderRequest(symbol=<span class="s">"AAPL"</span>, qty=<span class="s">1</span>,
+        side=OrderSide.BUY, time_in_force=TimeInForce.DAY)
+client.submit_order(order_data=order)
+
+print(client.get_account().portfolio_value)   <span class="c"># 계좌</span>
+print(client.get_all_positions())              <span class="c"># 포지션</span></pre>
+      </div>
+
+      <div class="code-wrap reveal">
+        <div class="code-label">② 웹훅 서버 — 신호 받으면 주문 <span class="tag">Flask</span></div>
+<pre><span class="c"># pip install flask alpaca-py</span>
+<span class="k">from</span> flask <span class="k">import</span> Flask, request, abort
+<span class="k">from</span> alpaca.trading.client <span class="k">import</span> TradingClient
+<span class="k">from</span> alpaca.trading.requests <span class="k">import</span> MarketOrderRequest
+<span class="k">from</span> alpaca.trading.enums <span class="k">import</span> OrderSide, TimeInForce
+
+PASS = <span class="s">"my-long-random-token"</span>   <span class="c"># TV 웹훅엔 인증이 없어 직접 방어</span>
+app = Flask(__name__)
+client = TradingClient(<span class="s">"KEY"</span>, <span class="s">"SECRET"</span>, paper=<span class="k">True</span>)
+
+<span class="k">@app</span>.route(<span class="s">"/webhook"</span>, methods=[<span class="s">"POST"</span>])
+<span class="k">def</span> webhook():
+    d = request.get_json(force=<span class="k">True</span>)
+    <span class="k">if</span> d.get(<span class="s">"passphrase"</span>) != PASS: abort(<span class="s">403</span>)
+    side = OrderSide.BUY <span class="k">if</span> d[<span class="s">"action"</span>] == <span class="s">"buy"</span> <span class="k">else</span> OrderSide.SELL
+    o = MarketOrderRequest(symbol=d[<span class="s">"ticker"</span>], qty=<span class="s">1</span>,
+        side=side, time_in_force=TimeInForce.GTC)
+    client.submit_order(order_data=o)
+    <span class="k">return</span> {<span class="s">"status"</span>: <span class="s">"ok"</span>}, <span class="s">200</span>
+
+app.run(host=<span class="s">"0.0.0.0"</span>, port=<span class="s">5000</span>)</pre>
+      </div>
+
+      <div class="code-wrap reveal">
+        <div class="code-label">③ 공개 + 신호 쏘기 <span class="tag">ngrok</span> <span class="tag">curl 시뮬</span></div>
+<pre><span class="c"># 1) 로컬 서버를 공개 HTTPS 로</span>
+ngrok http 5000
+<span class="c"># → https://xxxx.ngrok-free.app  (재시작하면 URL 바뀜!)</span>
+
+<span class="c"># 2) TradingView 없이 신호 직접 쏘기 (전원 가능)</span>
+curl -X POST https://xxxx.ngrok-free.app/webhook \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"passphrase":"my-long-random-token","action":"buy","ticker":"AAPL"}'</span>
+
+<span class="c"># TradingView 알림 메시지(JSON) — 유료 사용자는 이 형식으로</span>
+<span class="c"># {"passphrase":"...","action":"{{strategy.order.action}}","ticker":"{{ticker}}"}</span></pre>
+      </div>
+
+      <div class="code-wrap reveal">
+        <div class="code-label">④ 텔레그램 알림 <span class="tag">Bot API</span></div>
+<pre><span class="c"># BotFather /newbot → 토큰,  봇에 메시지 후 getUpdates → chat_id</span>
+<span class="k">import</span> requests
+TOKEN, CHAT = <span class="s">"123:ABC"</span>, <span class="s">"987654321"</span>
+requests.post(<span class="s">f"https://api.telegram.org/bot{TOKEN}/sendMessage"</span>,
+  data={<span class="s">"chat_id"</span>: CHAT, <span class="s">"text"</span>: <span class="s">"✅ 매수 체결: AAPL 1주 (paper)"</span>})</pre>
+      </div>
+
+      <div class="code-wrap reveal">
+        <div class="code-label">⑤ 대시보드 <span class="tag">Streamlit</span></div>
+<pre><span class="c"># pip install streamlit alpaca-py pandas  →  streamlit run app.py</span>
+<span class="k">import</span> streamlit <span class="k">as</span> st, pandas <span class="k">as</span> pd
+<span class="k">from</span> alpaca.trading.client <span class="k">import</span> TradingClient
+
+c = TradingClient(<span class="s">"KEY"</span>, <span class="s">"SECRET"</span>, paper=<span class="k">True</span>)
+acc, pos = c.get_account(), c.get_all_positions()
+
+st.title(<span class="s">"내 트레이딩 대시보드"</span>)
+st.metric(<span class="s">"포트폴리오 가치"</span>, <span class="s">f"${acc.portfolio_value}"</span>)
+st.dataframe(pd.DataFrame([{<span class="s">"종목"</span>: p.symbol, <span class="s">"수량"</span>: p.qty,
+  <span class="s">"평가손익"</span>: p.unrealized_pl} <span class="k">for</span> p <span class="k">in</span> pos]))</pre>
+      </div>
+    </div>
+    <div class="note reveal"><b>강사 사전 점검</b> · 수업 전 실제 페이퍼 키로 한 번 실행해 alpaca-py 속성 철자(<code>portfolio_value</code>·<code>unrealized_pl</code> 등)를 확정하세요. SDK 버전에 따라 다를 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- HONESTY -->
+<section id="honest">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">정직 포인트 · 리스크</span>
+      <h2>과장하지 않고 <em>사실대로</em></h2>
+    </div>
+    <ul class="honest reveal">
+      <li><b>TradingView엔 '사용자용 체결 API'가 없습니다</b>자동매매의 표준 경로는 <b>알림 → 웹훅 → 브로커(Alpaca) API</b>입니다. TradingView 공식 Broker API는 '브로커가 자사를 TradingView에 연동'하는 프레임워크지, 우리가 주문 내는 API가 아닙니다.</li>
+      <li><b>"TradingView MCP"는 전부 비공식입니다</b>커뮤니티 제작(예: <code>bidouilles/mcp-tradingview-server</code> 등)이고 스크래핑 기반이라 ToS 리스크가 있습니다. 데이터 라이브러리(<code>tvdatafeed</code>·<code>tradingview-ta</code>)도 비공식이며 일부는 유지보수 종료. 교육/프로토타입용으로만.</li>
+      <li><b>가장 유명한 튜토리얼은 구버전 SDK입니다</b>hackingthemarkets 레포(★189)는 deprecated <code>alpaca-trade-api</code>를 씁니다. 패턴은 거기서 배우되 <b>현행 <code>alpaca-py</code></b>로 작성하세요.</li>
+      <li><b>웹훅은 누구나 POST할 수 있습니다</b>TradingView 웹훅엔 서명 인증이 없습니다. 1차 방어로 <b>passphrase 검증 + 발신 IP 4개 화이트리스트</b>, 그리고 데모는 반드시 <code>paper=True</code>. 키는 환경변수로.</li>
+      <li><b>백테스트가 좋다고 미래가 좋은 건 아닙니다</b>과최적화(curve fitting)·생존편향을 조심하고, 항상 모의계좌에서 충분히 검증하세요. 이 수업의 목표는 '돈 버는 봇'이 아니라 <b>'파이프라인을 직접 만들어보는 것'</b>입니다.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="fb">codemon.<small>AI 교육 · 도입 파트너</small></div>
+      <div class="conf">수업 자료 초안 v0.1 · 2026 · 모의(페이퍼) 전용</div>
+    </div>
+    <div class="src">
+      <b>출처 (공식 1차 자료 직접 확인)</b>
+      Alpaca — <a href="https://docs.alpaca.markets/docs/paper-trading" target="_blank" rel="noopener">페이퍼 트레이딩</a> · <a href="https://alpaca.markets/sdks/python/trading.html" target="_blank" rel="noopener">alpaca-py</a><br/>
+      TradingView 웹훅 — <a href="https://www.tradingview.com/support/solutions/43000529348-how-to-configure-webhook-alerts/" target="_blank" rel="noopener">설정</a> · <a href="https://www.tradingview.com/support/solutions/43000531021-how-to-use-a-variable-value-in-alert/" target="_blank" rel="noopener">변수</a> · <a href="https://www.tradingview.com/pricing/" target="_blank" rel="noopener">요금(웹훅 플랜)</a><br/>
+      Telegram — <a href="https://core.telegram.org/bots/api#sendmessage" target="_blank" rel="noopener">Bot API sendMessage</a><br/>
+      Streamlit — <a href="https://docs.streamlit.io/" target="_blank" rel="noopener">docs</a> · ngrok — <a href="https://ngrok.com/docs/getting-started/" target="_blank" rel="noopener">getting started</a><br/>
+      예제 레포 — <a href="https://github.com/hackingthemarkets/tradingview-alpaca-strategy-alert-webhook-heroku" target="_blank" rel="noopener">hackingthemarkets (구 SDK 참고)</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.1,rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms';io.observe(el);});
+</script>
+</body>
+</html>

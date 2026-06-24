@@ -2,6 +2,7 @@ export default {
   index: '강의 자료',
   'lecture-ai-masterclass': 'Claude 마스터클래스',
   'lecture-claude-build': '클로드 핸즈온 — 지식노트+사이트',
+  'lecture-trading-bot': '자동 투자 봇 (페이퍼)',
   'lecture-agency-ai': 'AI 업무 자동화 강의',
   'lecture-startup-ai': '스타트업 AI 강의',
   'lecture-podl-ai': '포들 AI 강의',
