@@ -128,8 +128,8 @@
 <main>
   <header>
     <h1>파트너 핸즈온 강의 2종 수정 계획</h1>
-    <p class="meta">작성: 2026-06-27 · 대상: <code>lecture-claude-build</code>, <code>lecture-trading-bot</code> · 상태: <strong>완료</strong></p>
-    <p>목표는 강의 내용을 최신 사실과 실제 수업 운영 흐름에 맞게 다듬는 것이다. 개요 페이지는 대상·산출물·준비물을 명확히 하고, HTML 가이드는 수강생이 막히지 않도록 Core / Fallback / Optional 경로를 분리한다.</p>
+    <p class="meta">작성: 2026-06-27 · 대상: <code>lecture-claude-build</code>, <code>lecture-trading-bot</code> · 상태: <strong>2차 톤 정리 완료</strong></p>
+    <p>목표는 강의 내용을 최신 사실과 실제 수업 운영 흐름에 맞게 다듬는 것이다. 개요 페이지는 대상·결과·준비물을 명확히 하고, HTML 가이드는 수강생이 막히지 않도록 기본 진행 / 막힐 때 / 선택 실습 경로를 분리한다. 2차 작업은 공개 페이지의 AI식 라벨과 반복 표현을 줄이고, 실제 강의 안내문처럼 읽히게 만드는 데 집중한다.</p>
   </header>
 
   <section>
@@ -174,6 +174,12 @@
           <td><span class="status done">DONE</span></td>
           <td><code>npm run build</code>가 통과하고, 변경 범위가 두 강의와 문서화에 한정된다.</td>
         </tr>
+        <tr>
+          <td>6</td>
+          <td>공개 문구 톤 정리</td>
+          <td><span class="status done">DONE</span></td>
+          <td>Core/Fallback/Optional, 목표, 산출물, 단계별 같은 반복 라벨을 줄이고 자연스러운 수업 안내 문장으로 바꾼다.</td>
+        </tr>
       </tbody>
     </table>
   </section>
@@ -186,8 +192,8 @@
         <p>개요 페이지는 누가, 왜, 무엇을 만드는지 빠르게 판단하게 한다. HTML 가이드는 클릭 경로, 명령어, 실패 시 대체 루트를 제공한다.</p>
       </article>
       <article class="card">
-        <h3>Core / Fallback / Optional</h3>
-        <p>모든 수강생이 끝낼 최소 경로를 Core로 두고, 계정·유료 플랜·설치 실패 시 Fallback, 시간이 남을 때 Optional을 둔다.</p>
+        <h3>수업 경로는 내부 기준으로 유지</h3>
+        <p>모든 수강생이 끝낼 최소 경로, 막힐 때의 대체 경로, 시간이 남을 때의 선택 실습은 유지한다. 공개 문구에서는 영어 라벨 대신 기본 진행 / 막힐 때 / 더 해볼 것처럼 말한다.</p>
       </article>
       <article class="card">
         <h3>정책·가격 단정 완화</h3>
@@ -198,6 +204,16 @@
         <p>멋진 확장보다 수강생 전원이 동작 결과를 확인하는 것을 우선한다. 복잡한 기능은 선택 과제로 분리한다.</p>
       </article>
     </div>
+  </section>
+
+  <section>
+    <h2>2차 톤 정리 기준</h2>
+    <ul>
+      <li><strong>라벨 줄이기:</strong> Core / Fallback / Optional / Extension은 표 구조가 꼭 필요한 곳만 남기고, 수강생에게는 "모두 같이", "막히면", "시간이 남으면"으로 설명한다.</li>
+      <li><strong>광고 문구 낮추기:</strong> "따라하면 끝", "손에 쥔다", "스스로"처럼 과하게 매끈한 표현은 실제 확인 행동 중심으로 바꾼다.</li>
+      <li><strong>반복어 정리:</strong> 목표, 산출물, 핵심, 단계별은 섹션 제목에 몰려 있으므로 본문에서는 결과, 확인, 실습, 범위 같은 말로 분산한다.</li>
+      <li><strong>안전 고지는 유지:</strong> Trading Bot의 페이퍼 전용·비투자조언 문구는 줄이되, 상단 경고와 수업 범위에는 명확히 남긴다.</li>
+    </ul>
   </section>
 
   <section>
@@ -280,6 +296,9 @@
       <p><strong>2026-06-27 7차:</strong> 문서화 완료. changelog에 후속 정정 내역과 보류 판단을 기록하고, docs index 최근 변경 top 3를 갱신.</p>
       <p><strong>2026-06-27 8차:</strong> 빌드와 최종 diff 검토 단계로 진입.</p>
       <p><strong>2026-06-27 9차:</strong> <code>npm run build</code> 통과. HTML section 균형과 주요 단정 표현 제거 여부를 확인하고 전체 작업 완료.</p>
+      <p><strong>2026-06-27 10차:</strong> 공개 문구 톤 정리 단계로 재진입. AI식 라벨 반복, 광고형 문장, 과한 방어 문구를 우선 수정 대상으로 잡음.</p>
+      <p><strong>2026-06-27 11차:</strong> 개요 페이지, 파트너 목록, HTML 가이드의 공개 문구를 수정. 영어 운영 라벨은 한글 진행 표현으로 바꾸고, 과한 홍보 문구는 실제 확인 행동 중심으로 낮춤.</p>
+      <p><strong>2026-06-27 12차:</strong> <code>npm run build</code> 통과. 공개 페이지에서 의도치 않게 남은 영어 운영 라벨은 공식 기능명 또는 계획/변경 기록의 설명 문맥만 남음.</p>
     </div>
   </section>
 </main>
