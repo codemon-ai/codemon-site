@@ -21,5 +21,32 @@
 - 두 HTML(원본↔배포본) `diff` 결과 byte-identical (동기화 유지 확인)
 - section 태그 5/5 균형, 새 마커(`.concept`, 섹션 D, Ingest/Query/Lint) 삽입 확인
 
-## 미반영 (별도 작업 필요)
-- 동일 세션의 deep-research 사실검증 결과 정정 2건(투자봇 강의): TradingView 웹훅 최소 플랜 "Essential 이상"→"Plus 이상", ngrok 무료 URL 단정 보완. 강의1 정정 1건: 커스텀 스킬 업로드 위치 "Settings>Features"→"Customize>Skills".
+## 후속 정정 — 강의 2종 운영 구조 재정리
+
+### 변경
+- `docs/plans/2026-06-27-partner-handson-revision-plan.html` 추가 — Claude Build / Trading Bot 수정 계획과 진행 상태를 HTML 계획서로 관리.
+- `lecture-claude-build` 개요와 HTML 가이드 정리:
+  - "자료는 추후 추가" 문구 제거, `/partner` 목록에 전체 자료 링크 추가.
+  - Core / Fallback / Optional 운영 방식 추가.
+  - 준비물을 필수·권장·선택으로 재분류.
+  - Node.js 역할을 Desktop Extensions와 Claude Code/npm/로컬 빌드 용도로 분리.
+  - Skill / MCP / Cowork 용어 설명 순서 정리.
+  - Vercel 배포 성공 기준을 최소 / 표준 / 확장으로 분리.
+- `lecture-trading-bot` 개요와 HTML 가이드 정리:
+  - 페이퍼 전용·비투자조언·비실거래 전환 고지 강화.
+  - `curl` 시뮬레이션을 Core 경로로 두고 TradingView 웹훅은 Optional로 낮춤.
+  - TradingView 플랜 표기는 "웹훅 지원 유료 플랜 + 2FA, 수업일 가격표 재확인"으로 완화. 현재 가격표 확인상 Basic은 미지원, Essential 이상은 지원되는 것으로 보여 "Plus 이상" 단정은 반영하지 않음.
+  - ngrok은 "재시작마다 URL 변경" 단정 대신 터미널의 Forwarding URL 확인/갱신 방식으로 보완.
+  - starter 보안(passphrase + `paper=True`)과 운영 보안(IP allowlist, 환경변수, rate limit, 주문 수량 제한)을 분리.
+  - Streamlit 대시보드는 선택 확장으로 분리.
+
+### 추가 수정 파일
+- `docs/plans/2026-06-27-partner-handson-revision-plan.html`
+- `pages/partner/index.mdx`
+- `pages/partner/lecture-claude-build/index.mdx`
+- `pages/partner/lecture-trading-bot/index.mdx`
+- `public/slides/lecture-claude-build.html`
+- `public/slides/lecture-trading-bot.html`
+
+### 보류
+- 커스텀 Skill 업로드 위치는 공식 Agent Skills 문서에 `Settings > Features` 계열로 남아 있어, `Customize > Skills`로 단정 변경하지 않음. 대신 UI 명칭이 바뀔 수 있으므로 수업일 화면에서 재확인하도록 가이드 문구를 완화.

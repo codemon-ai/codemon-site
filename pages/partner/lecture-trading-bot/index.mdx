@@ -5,7 +5,7 @@ description: "TradingView 신호 → 웹훅 → Alpaca 페이퍼 자동 주문 +
 
 # 신호가 오면 자동 주문하는 나만의 투자 봇
 
-> ⚠️ **모의(페이퍼) 투자 전용 · 교육/프로토타입용 · 투자 조언 아님.** 모든 코드는 `paper=True`(가짜 돈)로 동작합니다.
+> ⚠️ **모의(페이퍼) 투자 전용 · 교육/프로토타입용 · 투자 조언 아님.** 모든 코드는 `paper=True`(가짜 돈)로 동작합니다. 이 강의는 수익 전략이나 실거래 전환을 다루지 않고, 신호→웹훅→모의 주문 파이프라인을 이해하는 수업입니다.
 
 > 📄 **[단계별 핸즈온 가이드 (전체 자료) →](/slides/lecture-trading-bot.html)** — 모든 코드·명령어·확인 방법을 따라하면 봇이 도는 풀 가이드
 
@@ -19,7 +19,7 @@ description: "TradingView 신호 → 웹훅 → Alpaca 페이퍼 자동 주문 +
 | 형식 | 핸즈온 (2시간 / 120분) · 입문 |
 | 대상 | 코딩 입문자 + 자동매매 원리가 궁금한 분 |
 | 강사 | 코드몬 (codemon.ai) |
-| 구조 | TradingView 알림 → 웹훅(Flask) → Alpaca 페이퍼 주문 → 텔레그램 알림 + Streamlit 대시보드 |
+| 구조 | `curl` 또는 TradingView 알림 → 웹훅(Flask) → Alpaca 페이퍼 주문 → 텔레그램 알림 + 선택 대시보드 |
 | 전제 | **모의(페이퍼) 전용**, 실제 돈 사용 안 함 |
 
 ## 이런 분에게 추천합니다
@@ -33,22 +33,31 @@ description: "TradingView 신호 → 웹훅 → Alpaca 페이퍼 자동 주문 +
 > 2시간 후, **신호를 받으면 스스로 모의 주문을 넣고 폰으로 알려주는 봇 1개**를 손에 쥡니다.
 
 - 내 코드가 Alpaca 페이퍼에 실제로 주문을 넣는 경험
-- TradingView(또는 `curl`) 신호 → 웹훅 → 자동 주문까지 동작하는 봇
-- 텔레그램 체결 알림 + Streamlit 대시보드
+- `curl` 신호 → 웹훅 → 자동 주문까지 전원이 따라 할 수 있는 봇
+- 텔레그램 체결 알림 + 선택형 Streamlit 대시보드
+
+## 수업 운영 방식
+
+| 경로 | 의미 | 목표 |
+|------|------|------|
+| **Core** | 전원이 따라가는 무료 기본 경로 | `curl` → Flask 웹훅 → Alpaca 페이퍼 주문 → 텔레그램 알림 |
+| **Optional** | TradingView 유료 플랜이 있는 수강생 | 실제 TradingView 알림 JSON을 웹훅에 연결 |
+| **Extension** | 시간이 남을 때 | Streamlit 대시보드, IP allowlist, 환경변수, 로깅 보강 |
 
 ---
 
 ## 준비물
 
-| 도구 | 역할 | 비용 |
-|------|------|------|
-| **Alpaca 페이퍼** | 모의 주문 브로커 (가입 → Paper 계정 → API 키, Secret 1회 노출) | 무료 |
-| **TradingView** | 신호 발생원. **웹훅은 유료(Essential+) + 2FA 필수** — 없으면 `curl` 시뮬레이션으로 대체(전원 가능) | 선택·유료 |
-| **텔레그램** | @BotFather 봇 생성 → 토큰 → chat_id | 무료 |
-| **Python + 패키지** | `pip install alpaca-py flask requests streamlit` | 무료 |
-| **ngrok** | 로컬 서버를 공개 HTTPS로. `ngrok http 5000` | 무료 |
+| 구분 | 도구 | 역할 | 비용 |
+|------|------|------|------|
+| **필수** | **Alpaca 페이퍼** | 모의 주문 브로커 (가입 → Paper 계정 → API 키, Secret 1회 노출) | 무료 |
+| **필수** | **Python + 패키지** | `pip install alpaca-py flask requests` | 무료 |
+| **필수** | **ngrok** | 로컬 Flask 서버를 공개 HTTPS URL로 연결. 실행 시 터미널에 표시되는 forwarding URL을 사용 | 무료 |
+| **권장** | **텔레그램** | @BotFather 봇 생성 → 토큰 → chat_id. 체결 알림 확인에 사용 | 무료 |
+| **선택** | **TradingView** | 실제 알림 신호 발생원. 웹훅은 지원 유료 플랜 + 2FA 필요, 수업일 가격표 재확인 | 선택·유료 |
+| **선택** | **Streamlit** | 포트폴리오 대시보드 확장 (`pip install streamlit`) | 무료 |
 
-> Alpaca 페이퍼·텔레그램·ngrok·Python은 전부 무료. **TradingView 웹훅만 유료**라, 수업은 **무료 `curl` 시뮬레이션을 기본**으로 진행하고 유료 TradingView가 있으면 실제 알림까지 연결합니다.
+> 수업은 **무료 `curl` 시뮬레이션을 Core**로 진행합니다. TradingView 유료 웹훅과 Streamlit 대시보드는 준비된 분만 Optional로 연결합니다.
 
 ---
 
@@ -60,18 +69,18 @@ description: "TradingView 신호 → 웹훅 → Alpaca 페이퍼 자동 주문 +
 전체 아키텍처, **페이퍼 전용·리스크·비용** 고지. "신호 → 웹훅 → 주문" 한 문장 이해.
 
 ### 1. 계정·키 준비 (20분)
-Alpaca 페이퍼 가입 + 키(Secret 1회 저장) · 텔레그램 BotFather 봇+토큰+chat_id · `pip install` · (TradingView 웹훅 유료·2FA 안내)
+Alpaca 페이퍼 가입 + 키(Secret 1회 저장) · 텔레그램 BotFather 봇+토큰+chat_id · `pip install` · TradingView는 Optional 안내
 
 ### 2. 첫 주문 — Alpaca 페이퍼 (20분)
 `TradingClient(paper=True)` → 시장가 주문 1건 → `get_account`·`get_all_positions`로 확인.
 
 ### 3. ★ 웹훅 봇 — 신호가 오면 자동 주문 (35분)
-Flask `/webhook`(passphrase 검증 → 주문) → `ngrok http 5000` 공개 → **`curl`로 신호 쏘기**(또는 TradingView 알림 JSON) → 자동 주문 확인. 보안: passphrase + 발신 IP 4개 + `paper`.
+Flask `/webhook`(passphrase 검증 → 주문) → `ngrok http 5000` 공개 → **`curl`로 신호 쏘기** → 자동 주문 확인. TradingView 알림 JSON은 유료 플랜이 있는 경우만 연결. starter 코드는 passphrase 중심, 보안 강화는 IP allowlist·환경변수·rate limit로 확장.
 
 ### 4. 텔레그램 알림 연결 (15분)
 주문 체결 시 `sendMessage`로 폰에 푸시.
 
-### 5. 대시보드 — Streamlit (15분)
+### 5. 선택 확장 — Streamlit 대시보드 (15분)
 `streamlit run`으로 포트폴리오 가치·포지션·손익 표시.
 
 ### 6. 마무리 & 리스크 (5분)
@@ -84,8 +93,8 @@ Flask `/webhook`(passphrase 검증 → 주문) → `ngrok http 5000` 공개 → 
 - **TradingView엔 '사용자용 체결 API'가 없습니다.** 표준은 *알림 → 웹훅 → 브로커(Alpaca) API*.
 - **"TradingView MCP"는 전부 비공식** 커뮤니티 제작·스크래핑 기반(ToS 리스크) — 교육/프로토타입용으로만.
 - 가장 유명한 튜토리얼 레포는 **구버전 `alpaca-trade-api`** → 현행 **`alpaca-py`** 로 작성.
-- 웹훅엔 서명 인증이 없으니 **passphrase + 발신 IP 화이트리스트 + `paper=True`** 로 방어.
-- 이 수업의 목표는 '돈 버는 봇'이 아니라 **'파이프라인을 직접 만들어보는 것'** 입니다.
+- starter 코드는 **passphrase + `paper=True`** 로 시작합니다. 운영 보안은 발신 IP allowlist, 환경변수, rate limit, 주문 크기 제한을 추가해야 합니다.
+- 이 수업에서 **만드는 것**은 이벤트 기반 자동 주문 파이프라인입니다. **만들지 않는 것**은 수익 전략, 백테스트 검증, 실거래 전환, 리스크 관리 시스템입니다.
 
 > 출처: [Alpaca 페이퍼](https://docs.alpaca.markets/docs/paper-trading) · [alpaca-py](https://alpaca.markets/sdks/python/trading.html) · [TradingView 웹훅](https://www.tradingview.com/support/solutions/43000529348-how-to-configure-webhook-alerts/) · [Telegram Bot API](https://core.telegram.org/bots/api#sendmessage) · [Streamlit](https://docs.streamlit.io/) · [ngrok](https://ngrok.com/docs/getting-started/)
 
