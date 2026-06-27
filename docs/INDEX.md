@@ -51,6 +51,6 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-06-27]** Claude Build + Trading Bot 핸즈온 강의 2종 개요/HTML 가이드 추가, 운영 구조와 공개 문구 톤 정리
 - **[2026-04-21]** Airpremia Lv1 서베이(`/survey/airpremia-lv1`) 추가 + `lib/survey.ts` 화이트리스트 전환
 - **[2026-04-06]** 데모 3~7 전용 컴포넌트 구현 + Demo 6 패키지 라벨 + Demo 7 반품 분석 + 설명 팝업 + Stitch MCP 연동
-- **[2026-04-02]** 포들 강의 + 보들 라이브 데모 시스템 구축 (데모 5개 + AI 대시보드 + Claude API) + 스킬 3종

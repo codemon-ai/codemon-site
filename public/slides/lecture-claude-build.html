@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>클로드 지식노트 + 배포 사이트 — 단계별 핸즈온 가이드 · codemon</title>
-<meta name="description" content="Obsidian 지식노트 + Skill·MCP·Cowork + Vercel·Supabase 사이트 배포. 따라하면 끝나는 4시간 단계별 핸즈온 가이드." />
+<title>클로드 지식노트 + 배포 사이트 — 실습 가이드 · codemon</title>
+<meta name="description" content="Obsidian 지식노트 + Skill·MCP·Cowork + Vercel·Supabase 사이트 배포. 설치부터 배포까지 같이 진행하는 4시간 실습 가이드." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -121,13 +121,13 @@
 <header class="hero">
   <div class="wrap reveal">
     <div class="tags">
-      <span class="chip clay">단계별 핸즈온 가이드</span>
+      <span class="chip clay">실습 가이드</span>
       <span class="chip">4시간 · 비개발자</span>
       <span class="chip solid">결과물 2개</span>
     </div>
     <h1>클로드로 만드는 지식노트<span class="l2">+ 배포되는 내 사이트</span></h1>
-    <p class="lead">코드 한 줄 몰라도 따라 할 수 있게, <b>모든 클릭 경로·명령어·예시 프롬프트</b>를 단계별로 적었습니다. 끝나면 <b>클로드가 읽는 지식노트</b>와 <b>인터넷에 떠 있는 내 사이트</b> 두 개가 손에 남습니다.</p>
-    <div class="tip">계정·설치가 안 돼 있어도 STEP 0(20분)에서 함께 세팅합니다. Claude는 <b>유료(Max 권장)</b>, 나머지는 대부분 무료입니다.</div>
+    <p class="lead">설치부터 배포까지 화면을 보면서 같이 진행합니다. 수업이 끝나면 <b>클로드가 읽는 지식노트</b>와 <b>공유 가능한 사이트 URL</b>을 직접 확인합니다.</p>
+    <div class="tip">모두 같은 기본 경로로 시작합니다. 설치·계정에서 막히면 대체 경로로 진행하고, 시간이 남는 분은 Supabase나 Cowork 작업까지 이어갑니다.</div>
   </div>
 </header>
 
@@ -136,7 +136,17 @@
   <div class="wrap reveal">
     <span class="eyebrow">세팅 &amp; 워밍업</span>
     <h2><span class="step-badge">STEP 0</span>준비물 세팅<span class="dur">20분</span></h2>
-    <div class="goal"><b>목표</b> · 계정·설치를 끝내고 안전 수칙을 잡는다.</div>
+    <div class="goal"><b>목표</b> · 계정·설치를 끝내고 오늘 따라갈 경로를 정한다.</div>
+
+    <h4 class="blk">오늘은 이렇게 진행합니다</h4>
+    <table class="cost">
+      <thead><tr><th>경로</th><th>무엇을 하나</th><th>성공 기준</th></tr></thead>
+      <tbody>
+        <tr><td><span class="free">기본 진행</span></td><td>Obsidian 볼트 + Vercel 배포</td><td>클로드가 읽는 지식노트와 라이브 URL 1개</td></tr>
+        <tr><td>막힐 때</td><td>권한·설치가 막히면 강사 데모/대체 템플릿</td><td>전체 흐름을 확인하고 다음 액션 확정</td></tr>
+        <tr><td>더 해볼 것</td><td>Cowork 폴더 작업, Supabase 기능, 추가 페이지</td><td>내 업무에 맞춘 추가 실습 1개</td></tr>
+      </tbody>
+    </table>
 
     <h4 class="blk">계정 — 순서대로 가입</h4>
     <ol class="steps">
@@ -145,12 +155,12 @@
       <li><b>Supabase 가입</b><div class="sub">사이트의 데이터베이스/로그인.</div></li>
     </ol>
 
-    <h4 class="blk">설치</h4>
+    <h4 class="blk">설치 — 필수와 선택을 나눠서</h4>
     <ol class="steps">
-      <li><b>Claude — 데스크탑 앱 + 유료 플랜</b><div class="sub">Cowork·파일 작업은 유료 전용. 안정성 위해 <b>Max 권장</b>.</div></li>
-      <li><b>Obsidian</b><div class="sub">지식노트 볼트. <a href="https://obsidian.md" target="_blank" rel="noopener">obsidian.md</a> (무료).</div></li>
-      <li><b>Node.js</b><div class="sub"><a href="https://nodejs.org/ko/download" target="_blank" rel="noopener">nodejs.org/ko/download</a> — 일부 도구 연결·사이트 빌드용.</div></li>
-      <li><b>Antigravity IDE (선택)</b><div class="sub"><a href="https://antigravity.google" target="_blank" rel="noopener">antigravity.google</a> — 무료. 사용량 제한이 있어 보조로.</div></li>
+      <li><b>Obsidian — 필수</b><div class="sub">지식노트 볼트. <a href="https://obsidian.md" target="_blank" rel="noopener">obsidian.md</a> (무료).</div></li>
+      <li><b>Claude Desktop + 유료 플랜 — 권장</b><div class="sub">Cowork·파일 작업 실습에 필요. 안정성 위해 <b>Max 권장</b>.</div></li>
+      <li><b>Node.js — 권장</b><div class="sub"><a href="https://nodejs.org/ko/download" target="_blank" rel="noopener">nodejs.org/ko/download</a> — Claude Code npm 설치, 로컬 Next.js 실행, 사이트 빌드용. Desktop Extensions만 쓰면 별도 Node 설치가 필요 없을 수 있습니다.</div></li>
+      <li><b>Antigravity IDE — 선택</b><div class="sub"><a href="https://antigravity.google" target="_blank" rel="noopener">antigravity.google</a> — Claude Code 보조 경로. 정책·사용량은 수업일 다시 확인.</div></li>
     </ol>
     <div class="warnnote">안전 레드리스트 — AI에 넣지 말 것: 비밀번호·API 키·주민번호·카드번호 등 민감정보. 키는 환경변수/비밀저장소에.</div>
   </div>
@@ -165,8 +175,8 @@
 
     <div class="concept">
       <div class="ct">왜 'LLM 위키'인가 — RAG와 뭐가 다른가</div>
-      <p>흔한 방식(RAG·파일 업로드)은 질문할 때마다 원본에서 조각을 <b>매번 다시 찾아</b> 답을 만듭니다 — 쌓이는 게 없죠. <b>LLM 위키</b>는 다릅니다: 클로드가 소스를 읽고 <b>한 번 정리해 마크다운 위키로 남긴 뒤, 새 소스가 들어올 때마다 갱신</b>합니다. 교차링크·모순 표시·요약이 계속 누적돼 <b>쓸수록 똑똑해지는(복리) 내 지식창고</b>가 됩니다.</p>
-      <p>당신은 <b>소스 수집·질문</b>만 하고, 요약·연결·정리 같은 잡일은 <b>클로드가 전부</b> 맡습니다. (안드레아 카파시의 <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank" rel="noopener">LLM Wiki 패턴</a> 기반.)</p>
+      <p>흔한 방식(RAG·파일 업로드)은 질문할 때마다 원본에서 관련 조각을 찾아 답을 만듭니다. <b>LLM 위키</b>는 클로드가 소스를 읽고 <b>마크다운 페이지로 남긴 뒤, 새 소스가 들어올 때마다 다시 갱신</b>하는 방식입니다. 요약·링크·모순 표시가 파일로 남아서 다음 질문에 재사용됩니다.</p>
+      <p>수강생은 <b>소스를 넣고 질문</b>하고, 클로드는 요약·연결·정리 작업을 맡습니다. (안드레아 카파시의 <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank" rel="noopener">LLM Wiki 패턴</a> 기반.)</p>
     </div>
 
     <h4 class="blk">A. Obsidian 볼트 &amp; 첫 노트</h4>
@@ -178,11 +188,20 @@
     </ol>
     <div class="tip">볼트는 그냥 <code>.md</code> 파일 폴더입니다 — 별도 DB·변환 없이 클로드가 <b>원본 그대로</b> 읽습니다(그래서 'AI가 읽기 좋은' 노트).</div>
 
+    <h4 class="blk">좋은 노트의 기준</h4>
+    <table class="cost">
+      <thead><tr><th>나쁜 시작</th><th>좋은 시작</th></tr></thead>
+      <tbody>
+        <tr><td>제목 없는 긴 메모, 출처 없음, 연결 없음</td><td>제목 + 출처 + 핵심 3줄 + 관련 노트 <code>[[링크]]</code></td></tr>
+        <tr><td>채팅 답변을 복사해두고 끝</td><td>답변을 새 페이지로 저장하고 <code>index.md</code>, <code>log.md</code> 갱신</td></tr>
+      </tbody>
+    </table>
+
     <h4 class="blk">B. 클로드 데스크탑에 볼트 폴더 연결 (파일시스템 MCP)</h4>
-    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">두 가지 방법 중 하나. 비개발자는 <b>방법 1(원클릭)</b> 권장.</p>
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">기본은 <b>방법 1(Extensions 원클릭)</b>입니다. JSON 방식은 원클릭이 안 되거나 수동 서버가 필요할 때만 씁니다.</p>
     <ol class="steps">
       <li><b>방법 1 — 원클릭: <code>Settings &gt; Extensions</code> → "Browse extensions"</b><div class="sub">Anthropic 검수 도구 디렉토리에서 파일시스템 도구 설치(브라우저 확장처럼). JSON 편집 불필요.</div></li>
-      <li><b>방법 2 — JSON: 시스템 메뉴의 Claude → Settings… → Developer 탭 → "Edit Config"</b><div class="sub">macOS <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> / Windows <code>%APPDATA%\Claude\</code>. 아래 내용으로 볼트 경로 지정.</div></li>
+      <li><b>방법 2 — JSON(고급/대체): Claude 설정의 Developer/고급 설정에서 config 편집</b><div class="sub">UI 명칭은 버전에 따라 달라질 수 있습니다. <code>claude_desktop_config.json</code>에 아래 내용으로 볼트 경로를 지정합니다. 이 방식은 <code>npx</code>를 쓰므로 Node.js가 필요합니다.</div></li>
     </ol>
 <pre>{
   <span class="s">"mcpServers"</span>: {
@@ -195,9 +214,9 @@
 }</pre>
     <ol class="steps" style="margin-top:14px;">
       <li><b>Claude Desktop 완전 종료 후 재시작</b></li>
-      <li><b>입력창 우하단 MCP 인디케이터 확인</b><div class="sub">안 뜨면: 완전 재시작 / JSON 문법 / <b>절대경로</b> 확인. 로그: macOS <code>~/Library/Logs/Claude</code>. (Node.js 필요)</div></li>
+      <li><b>입력창 우하단 MCP 인디케이터 확인</b><div class="sub">안 뜨면: 완전 재시작 / 권한 / <b>절대경로</b> 확인. JSON 방식이면 문법과 Node.js 설치도 확인.</div></li>
     </ol>
-    <div class="warnnote">예전에 돌던 "Settings → Connectors → Filesystem" 경로는 공식 확인되지 않습니다. 위 <b>Extensions</b>(원클릭) 또는 <b>Developer &gt; Edit Config</b>(JSON)가 맞습니다.</div>
+    <div class="warnnote">수업 기본 경로는 공식 Desktop Extensions입니다. 수동 JSON 경로는 UI가 바뀔 수 있으니, 당일 Claude Desktop 설정 화면을 기준으로 확인합니다.</div>
 
     <h4 class="blk">C. 클로드에게 시키기 — 예시 프롬프트</h4>
     <div class="code-label">공식 문서 검증 예시</div>
@@ -209,11 +228,11 @@
 "관련 있는 노트끼리 [[백링크]]로 연결해줘."</pre>
     <div class="check">클로드가 볼트의 파일을 읽고(승인 후) 새 노트를 만들거나 요약하면 1차 성공.</div>
 
-    <h4 class="blk">D. 위키를 '굴러가게' 만드는 3가지 — 스키마·인덱스·운영</h4>
-    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">노트를 모으는 데서 그치지 않고 <b>위키가 스스로 최신 상태로 유지·성장</b>하게 만드는 핵심 장치입니다. 아래 셋만 갖추면 입문용 LLM 위키가 완성됩니다.</p>
+    <h4 class="blk">D. 위키를 계속 쓰게 만드는 3가지 — 스키마·인덱스·운영</h4>
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">노트를 모으는 데서 그치지 않고, 새 소스가 들어왔을 때 어디에 넣고 어떻게 갱신할지 정해둡니다. 아래 셋만 갖추면 입문용 LLM 위키로 충분합니다.</p>
 
     <div class="code-label">① 스키마 — 볼트 루트에 <code>CLAUDE.md</code> 한 장</div>
-    <p style="margin-top:0;font-size:14px;color:var(--ink-soft)">위키 구조·규칙·작업 순서를 적은 <b>설정 파일</b>. 이게 클로드를 '대화봇'이 아니라 <b>규율 있는 위키 관리자</b>로 만듭니다 — 매 세션 클로드가 먼저 읽습니다.</p>
+    <p style="margin-top:0;font-size:14px;color:var(--ink-soft)">위키 구조·규칙·작업 순서를 적은 <b>설정 파일</b>. 매 세션 클로드가 먼저 읽고 같은 규칙으로 작업하게 만듭니다.</p>
 <pre><span class="c"># 내 지식 위키 — 유지 규칙 (CLAUDE.md)</span>
 - raw/   : 원본 소스(클로드는 읽기만, 절대 수정 금지)
 - pages/ : 클로드가 만드는 위키 페이지(요약·인물·개념)
@@ -243,8 +262,8 @@
 <span class="c"># Lint(건강검진) — 주기적으로</span>
 "위키에서 서로 모순되는 내용·낡은 주장·
  아무도 안 잇는 고아 페이지를 찾아 고칠 것을 제안해줘."</pre>
-    <div class="tip"><b>핵심:</b> 질문(Query) 결과도 위키에 다시 저장하면 탐색이 <b>채팅 기록으로 사라지지 않고</b> 지식으로 쌓입니다 — 이게 RAG엔 없는 '복리'입니다.</div>
-    <div class="check">CLAUDE.md를 둔 볼트에서 클로드가 새 소스를 인제스트하고 index.md·log.md까지 갱신하면 성공. <b>산출물: 스스로 유지되는 내 LLM 위키(볼트 + CLAUDE.md + 정리 노트)</b></div>
+    <div class="tip"><b>포인트:</b> 질문(Query) 결과도 위키에 다시 저장하면 탐색이 <b>채팅 기록으로 사라지지 않고</b> 다음 작업에 재사용됩니다.</div>
+    <div class="check">CLAUDE.md를 둔 볼트에서 클로드가 새 소스를 인제스트하고 index.md·log.md까지 갱신하면 성공. <b>확인할 것: 계속 갱신되는 내 LLM 위키(볼트 + CLAUDE.md + 정리 노트)</b></div>
   </div>
 </section>
 
@@ -255,17 +274,29 @@
     <h2><span class="step-badge">STEP 2</span>도구를 붙이고 일을 맡긴다<span class="dur">60분</span></h2>
     <div class="goal"><b>목표</b> · Skill·MCP·Cowork 개념을 손으로 체감하고, 폴더 작업을 위임해 실파일을 만든다.</div>
 
-    <h4 class="blk">A. 내장 Skill 체감 (PDF·엑셀·PPT·Word)</h4>
+    <h4 class="blk">A. 세 단어 정리 — Skill / MCP / Cowork</h4>
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">순서는 간단합니다. <b>Skill은 일하는 방법</b>, <b>MCP·Connector는 도구에 닿는 통로</b>, <b>Cowork는 그 방법과 통로로 실제 일을 맡기는 화면</b>입니다.</p>
+
+    <table class="cost">
+      <thead><tr><th>개념</th><th>비유</th><th>오늘 하는 일</th></tr></thead>
+      <tbody>
+        <tr><td>Skill</td><td>업무 매뉴얼</td><td>PDF·엑셀·PPT·Word 결과물 만들기</td></tr>
+        <tr><td>MCP / Connector</td><td>도구 연결선</td><td>로컬 폴더와 외부 도구에 접근</td></tr>
+        <tr><td>Cowork</td><td>일 맡기는 작업실</td><td>폴더 단위 작업을 에이전트에게 위임</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="blk">B. 내장 Skill 체감 (PDF·엑셀·PPT·Word)</h4>
     <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">claude.ai에는 <b>pptx·xlsx·docx·pdf</b> 스킬이 내장돼 <b>별도 설정 없이</b> 자동 동작합니다. 그냥 자연어로 요청:</p>
 <pre>"이 데이터로 엑셀 매출표랑 차트 만들어줘."
 "이 내용으로 발표용 PPT 10장 만들어줘."
 "이 PDF 핵심만 요약해서 Word 보고서로."</pre>
-    <div class="tip"><b>Skill</b> = 클로드에게 '하는 법'을 패키지로 가르친 것 / <b>MCP</b> = 클로드를 외부 도구·로컬 파일에 잇는 통로. (커스텀 스킬은 claude.ai <code>Settings &gt; Features</code>에서 zip 업로드)</div>
+    <div class="tip">커스텀 Skill은 zip으로 올릴 수 있습니다. 공식 문서 기준 경로는 claude.ai의 <code>Settings &gt; Features</code> 계열이지만, UI 명칭은 바뀔 수 있으므로 수업일 화면에서 다시 확인합니다.</div>
 
-    <h4 class="blk">B. MCP(파일시스템) 추가 — STEP 1-B와 동일</h4>
-    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)"><code>Settings &gt; Extensions</code> 원클릭, 또는 <code>Developer &gt; Edit Config</code> JSON. 도구 작업은 실행 전 사용자 승인.</p>
+    <h4 class="blk">C. MCP(파일시스템) 추가 — STEP 1-B와 동일</h4>
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)"><code>Settings &gt; Extensions</code> 원클릭을 기본으로 사용합니다. 수동 JSON 설정은 고급/대체 경로이며 도구 작업은 실행 전 사용자 승인을 거칩니다.</p>
 
-    <h4 class="blk">C. Cowork — 터미널 없이 에이전트로 파일 작업</h4>
+    <h4 class="blk">D. Cowork — 터미널 없이 에이전트로 파일 작업</h4>
     <ol class="steps">
       <li><b>Claude Desktop 실행 (Cowork는 데스크탑 전용·유료)</b></li>
       <li><b>상단 모드 선택기에서 "Cowork" 탭 클릭</b></li>
@@ -273,16 +304,26 @@
       <li><b>폴더/앱 접근이 필요하면: <code>Settings &gt; General</code>의 "Computer use" 토글 켜기</b><div class="sub">작업 시점에 앱별 접근 권한을 요청.</div></li>
     </ol>
     <div class="warnnote">Cowork가 도는 동안 <b>데스크탑 앱을 닫지 마세요</b> — 닫으면 세션이 종료됩니다.</div>
-    <div class="check">내 폴더를 통째로 분석해 정리본/실파일을 만들면 성공. <b>산출물: 내 커넥터·스킬로 만든 산출물</b></div>
+    <div class="check">내 폴더를 통째로 분석해 정리본/실파일을 만들면 성공. <b>확인할 것: 내 커넥터·스킬로 만든 파일</b></div>
   </div>
 </section>
 
 <!-- STEP 3 -->
 <section id="s3">
   <div class="wrap reveal">
-    <span class="eyebrow">핵심 · 실제 배포되는 사이트</span>
+    <span class="eyebrow">배포 실습 · 실제 열리는 사이트</span>
     <h2><span class="step-badge">STEP 3 ★</span>내 사이트를 인터넷에 띄우기<span class="dur">90분</span></h2>
     <div class="goal"><b>목표</b> · Vercel + Supabase로 실제 동작하는 사이트를 배포해 <b>라이브 URL</b>을 받는다.</div>
+
+    <h4 class="blk">여기까지만 해도 충분합니다</h4>
+    <table class="cost">
+      <thead><tr><th>단계</th><th>완료 기준</th></tr></thead>
+      <tbody>
+        <tr><td><span class="free">최소</span></td><td>Vercel 라이브 URL이 열리고 템플릿 사이트가 보인다.</td></tr>
+        <tr><td>표준</td><td>문구·색상·프로필을 바꾼 뒤 <code>git push</code>로 재배포된다.</td></tr>
+        <tr><td>더 해볼 것</td><td>Supabase 로그인/DB 기능을 확인하거나 즉흥 주제 페이지를 하나 더 만든다.</td></tr>
+      </tbody>
+    </table>
 
     <h4 class="blk">A. 가장 단순한 길 — 템플릿 Deploy 버튼</h4>
     <ol class="steps">
@@ -291,12 +332,13 @@
       <li><b>Supabase Integration 자동 설치 → Supabase 프로젝트 생성 안내 따라가기</b><div class="sub">완료되면 <b>환경변수가 자동 주입</b>되어 추가 설정 없이 동작.</div></li>
       <li><b>배포 완료 → Vercel 라이브 URL 발급</b></li>
     </ol>
-    <div class="check">발급된 URL을 열어 사이트가 뜨면 성공. <b>산출물: 인터넷에 떠 있는 내 사이트 URL</b></div>
+    <div class="check">발급된 URL을 열어 사이트가 뜨면 성공. <b>확인할 것: 인터넷에 떠 있는 내 사이트 URL</b></div>
 
     <h4 class="blk">B. 로컬에서 시작하는 길 (대안)</h4>
 <pre>npx create-next-app -e with-supabase   <span class="c"># 쿠키 인증+TS+Tailwind 포함</span>
 <span class="c"># .env.example → .env.local 로 이름 변경 후 Supabase 값 입력</span>
 npm run dev                            <span class="c"># http://localhost:3000</span></pre>
+    <div class="warnnote">Supabase 연결에서 막히면 일반 Vercel 템플릿을 먼저 배포합니다. 수업의 최소 목표는 "인터넷에 뜨는 내 URL"입니다.</div>
 
     <h4 class="blk">C. 내용 수정 → 자동 재배포</h4>
     <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">GitHub 레포에서 텍스트·컴포넌트를 고치고 <code>git push</code>하면 Vercel이 자동 재배포합니다. (클로드 코드/Antigravity로 "프로필 문구·색 바꿔줘" 위임 가능)</p>
@@ -333,7 +375,7 @@ npm run dev                            <span class="c"># http://localhost:3000</
   <div class="wrap">
     <div>
       <div class="fb">codemon.<small>AI 교육 · 도입 파트너</small></div>
-      <div class="conf">단계별 핸즈온 가이드 v0.1 · 2026</div>
+      <div class="conf">실습 가이드 v0.1 · 2026</div>
     </div>
     <div class="src">
       <b>출처 (공식 1차 자료)</b>
