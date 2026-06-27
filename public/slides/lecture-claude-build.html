@@ -74,6 +74,10 @@
   .check::before{content:"✓ 확인  ";font-weight:800;color:var(--teal);}
   .tip{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:13.5px;color:var(--ink-soft);}
   .tip::before{content:"💡 팁  ";font-weight:800;}
+  .concept{margin-top:18px;background:#eef4ef;border:1px solid #cfe0d5;border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:16px 20px;}
+  .concept .ct{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--teal);margin-bottom:6px;}
+  .concept p{font-size:14px;color:#2c4a3c;} .concept p+p{margin-top:8px;}
+  .concept a{color:var(--clay);}
   .warnnote{margin-top:14px;background:#FBF0EA;border:1px solid #eccdbf;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#7a3a22;}
   .warnnote::before{content:"⚠️ 주의  ";font-weight:800;color:var(--clay);}
 
@@ -159,6 +163,12 @@
     <h2><span class="step-badge">STEP 1</span>지식노트 만들고 클로드에 연결<span class="dur">60분</span></h2>
     <div class="goal"><b>목표</b> · 마크다운 볼트를 만들고, 클로드가 그 폴더를 직접 읽고 정리하게 한다.</div>
 
+    <div class="concept">
+      <div class="ct">왜 'LLM 위키'인가 — RAG와 뭐가 다른가</div>
+      <p>흔한 방식(RAG·파일 업로드)은 질문할 때마다 원본에서 조각을 <b>매번 다시 찾아</b> 답을 만듭니다 — 쌓이는 게 없죠. <b>LLM 위키</b>는 다릅니다: 클로드가 소스를 읽고 <b>한 번 정리해 마크다운 위키로 남긴 뒤, 새 소스가 들어올 때마다 갱신</b>합니다. 교차링크·모순 표시·요약이 계속 누적돼 <b>쓸수록 똑똑해지는(복리) 내 지식창고</b>가 됩니다.</p>
+      <p>당신은 <b>소스 수집·질문</b>만 하고, 요약·연결·정리 같은 잡일은 <b>클로드가 전부</b> 맡습니다. (안드레아 카파시의 <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank" rel="noopener">LLM Wiki 패턴</a> 기반.)</p>
+    </div>
+
     <h4 class="blk">A. Obsidian 볼트 &amp; 첫 노트</h4>
     <ol class="steps">
       <li><b>Obsidian 실행 → "Create new vault" 옆 Create</b></li>
@@ -197,7 +207,44 @@
 <pre>"내 볼트 전체를 읽고 주제별 인덱스 노트를 만들어줘."
 "이번 주에 쓴 노트 5개를 요약해줘."
 "관련 있는 노트끼리 [[백링크]]로 연결해줘."</pre>
-    <div class="check">클로드가 볼트의 파일을 읽고(승인 후) 새 노트를 만들거나 요약하면 성공. <b>산출물: 내 지식 볼트 + 정리 노트 1개</b></div>
+    <div class="check">클로드가 볼트의 파일을 읽고(승인 후) 새 노트를 만들거나 요약하면 1차 성공.</div>
+
+    <h4 class="blk">D. 위키를 '굴러가게' 만드는 3가지 — 스키마·인덱스·운영</h4>
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft)">노트를 모으는 데서 그치지 않고 <b>위키가 스스로 최신 상태로 유지·성장</b>하게 만드는 핵심 장치입니다. 아래 셋만 갖추면 입문용 LLM 위키가 완성됩니다.</p>
+
+    <div class="code-label">① 스키마 — 볼트 루트에 <code>CLAUDE.md</code> 한 장</div>
+    <p style="margin-top:0;font-size:14px;color:var(--ink-soft)">위키 구조·규칙·작업 순서를 적은 <b>설정 파일</b>. 이게 클로드를 '대화봇'이 아니라 <b>규율 있는 위키 관리자</b>로 만듭니다 — 매 세션 클로드가 먼저 읽습니다.</p>
+<pre><span class="c"># 내 지식 위키 — 유지 규칙 (CLAUDE.md)</span>
+- raw/   : 원본 소스(클로드는 읽기만, 절대 수정 금지)
+- pages/ : 클로드가 만드는 위키 페이지(요약·인물·개념)
+- index.md : 전체 페이지 목록 + 한 줄 요약
+- log.md   : 한 일 기록(시간순)
+
+<span class="c"># 새 소스가 들어오면(Ingest):</span>
+1) raw/ 소스를 읽고 핵심을 pages/ 에 요약 페이지로 저장
+2) 관련 페이지를 [[백링크]]로 연결, 모순되면 표시
+3) index.md 갱신 + log.md 에 한 줄 추가</pre>
+
+    <div class="code-label">② 인덱스·로그 — <code>index.md</code> + <code>log.md</code></div>
+    <ol class="steps">
+      <li><b>index.md = 위키 목차</b><div class="sub">모든 페이지를 [링크 + 한 줄 요약]으로. 클로드가 답할 때 <b>먼저 여기를 읽고</b> 관련 페이지로 들어갑니다 — 작은 규모에선 이것만으로 검색이 충분합니다.</div></li>
+      <li><b>log.md = 시간순 기록</b><div class="sub">한 줄씩 누적: <code>## [2026-06-27] ingest | 글 제목</code>. 언제 뭘 넣었는지 추적되고 <code>grep</code>으로도 찾힙니다.</div></li>
+    </ol>
+
+    <div class="code-label">③ 3대 작업 — Ingest · Query · Lint (예시 프롬프트)</div>
+<pre><span class="c"># Ingest(소스 투입) — 새 글/메모 1개 정리</span>
+"raw/ 에 넣은 이 글을 읽고 요약 페이지를 만들고,
+ 관련 노트에 [[백링크]] 연결한 뒤 index.md·log.md를 갱신해줘."
+
+<span class="c"># Query(질문) — 답을 위키에 되돌려 저장(=복리)</span>
+"내 위키로 'X와 Y의 차이'를 표로 정리하고,
+ 그 표를 새 페이지로 저장해줘."
+
+<span class="c"># Lint(건강검진) — 주기적으로</span>
+"위키에서 서로 모순되는 내용·낡은 주장·
+ 아무도 안 잇는 고아 페이지를 찾아 고칠 것을 제안해줘."</pre>
+    <div class="tip"><b>핵심:</b> 질문(Query) 결과도 위키에 다시 저장하면 탐색이 <b>채팅 기록으로 사라지지 않고</b> 지식으로 쌓입니다 — 이게 RAG엔 없는 '복리'입니다.</div>
+    <div class="check">CLAUDE.md를 둔 볼트에서 클로드가 새 소스를 인제스트하고 index.md·log.md까지 갱신하면 성공. <b>산출물: 스스로 유지되는 내 LLM 위키(볼트 + CLAUDE.md + 정리 노트)</b></div>
   </div>
 </section>
 
