@@ -128,8 +128,8 @@
 <main>
   <header>
     <h1>파트너 핸즈온 강의 2종 수정 계획</h1>
-    <p class="meta">작성: 2026-06-27 · 대상: <code>lecture-claude-build</code>, <code>lecture-trading-bot</code> · 상태: <strong>2차 톤 정리 완료</strong></p>
-    <p>목표는 강의 내용을 최신 사실과 실제 수업 운영 흐름에 맞게 다듬는 것이다. 개요 페이지는 대상·결과·준비물을 명확히 하고, HTML 가이드는 수강생이 막히지 않도록 기본 진행 / 막힐 때 / 선택 실습 경로를 분리한다. 2차 작업은 공개 페이지의 AI식 라벨과 반복 표현을 줄이고, 실제 강의 안내문처럼 읽히게 만드는 데 집중한다.</p>
+    <p class="meta">작성: 2026-06-27 · 대상: <code>lecture-claude-build</code>, <code>lecture-trading-bot</code> · 상태: <strong>1과정 공식 도구 목록 보강 완료</strong></p>
+    <p>목표는 강의 내용을 최신 사실과 실제 수업 운영 흐름에 맞게 다듬는 것이다. 개요 페이지는 대상·결과·준비물을 명확히 하고, HTML 가이드는 수강생이 막히지 않도록 기본 진행 / 막힐 때 / 선택 실습 경로를 분리한다. 2차 작업은 공개 페이지의 AI식 라벨과 반복 표현을 줄였고, 3차 작업은 1과정에 공식 문서 또는 공식 마켓플레이스에서 확인한 MCP/Skill 도구를 추가했다.</p>
   </header>
 
   <section>
@@ -180,6 +180,12 @@
           <td><span class="status done">DONE</span></td>
           <td>Core/Fallback/Optional, 목표, 산출물, 단계별 같은 반복 라벨을 줄이고 자연스러운 수업 안내 문장으로 바꾼다.</td>
         </tr>
+        <tr>
+          <td>7</td>
+          <td>1과정 공식 MCP/Skill 도구 목록 보강</td>
+          <td><span class="status done">DONE</span></td>
+          <td>Superpowers, Playwright CLI/Skills, Playwright MCP, Vercel/Supabase/GitHub 연결을 수업 필수와 선택 확장으로 분리한다.</td>
+        </tr>
       </tbody>
     </table>
   </section>
@@ -217,6 +223,16 @@
   </section>
 
   <section>
+    <h2>3차 도구 목록 보강 기준</h2>
+    <ul>
+      <li><strong>공식 확인:</strong> Claude Code 공식 마켓플레이스, Anthropic/Claude 공식 문서, Microsoft Playwright 공식 문서, Vercel/Supabase/GitHub 공식 문서로 확인되는 항목만 넣는다.</li>
+      <li><strong>필수와 선택 분리:</strong> 파일시스템 MCP와 내장 문서 Skill은 기본 흐름에 두고, Superpowers·Playwright·Vercel/Supabase/GitHub 연결은 준비된 수강생 또는 강사 시연 경로로 둔다.</li>
+      <li><strong>서드파티 표시:</strong> Superpowers는 공식 마켓플레이스에 등록되어 있지만 Anthropic 제작물이 아니므로 서드파티 Skill이라고 명시한다.</li>
+      <li><strong>검증 도구 역할:</strong> Playwright CLI/Skills와 Playwright MCP는 사이트 제작 자체보다 배포 URL 확인, 클릭, 스크린샷, 간단한 화면 점검 용도로 설명한다.</li>
+    </ul>
+  </section>
+
+  <section>
     <h2>Claude Build 수정 범위</h2>
     <ul>
       <li><strong>개요 상단:</strong> "자료는 추후 추가" 문구를 제거하고 전체 가이드 링크를 명확히 유지한다.</li>
@@ -225,6 +241,7 @@
       <li><strong>Node.js:</strong> Desktop Extensions에는 별도 Node 설치가 필요 없을 수 있고, Claude Code npm 설치·로컬 사이트 빌드에는 필요하다고 분리한다.</li>
       <li><strong>LLM Wiki:</strong> RAG 대비 설명은 유지하고, 좋은 노트 구조와 Ingest / Query / Lint 사용 시점을 더 선명하게 한다.</li>
       <li><strong>Skill/MCP/Cowork:</strong> 용어 순서를 "Skill = 방법, MCP = 통로, Cowork = 맡기는 화면"으로 정리한다.</li>
+      <li><strong>공식 도구 목록:</strong> Superpowers, Playwright CLI/Skills, Playwright MCP, Vercel/Supabase/GitHub 연결을 2교시 선택 확장으로 추가한다.</li>
       <li><strong>사이트 배포:</strong> 성공 기준을 최소 / 표준 / 확장으로 나눠 4시간 운영 가능성을 높인다.</li>
     </ul>
   </section>
@@ -254,11 +271,11 @@
       <tbody>
         <tr>
           <td><code>pages/partner/lecture-claude-build/index.mdx</code></td>
-          <td>개요, 준비물, 커리큘럼, 사용 도구 설명 정리</td>
+          <td>개요, 준비물, 커리큘럼, 사용 도구 설명 정리, 공식 MCP/Skill 목록 보강</td>
         </tr>
         <tr>
           <td><code>public/slides/lecture-claude-build.html</code></td>
-          <td>실습 가이드의 Core/Fallback/Optional 구조와 최신 공식 정보 반영</td>
+          <td>실습 가이드의 Core/Fallback/Optional 구조, 최신 공식 정보, Superpowers/Playwright 선택 실습 반영</td>
         </tr>
         <tr>
           <td><code>pages/partner/lecture-trading-bot/index.mdx</code></td>
@@ -299,6 +316,8 @@
       <p><strong>2026-06-27 10차:</strong> 공개 문구 톤 정리 단계로 재진입. AI식 라벨 반복, 광고형 문장, 과한 방어 문구를 우선 수정 대상으로 잡음.</p>
       <p><strong>2026-06-27 11차:</strong> 개요 페이지, 파트너 목록, HTML 가이드의 공개 문구를 수정. 영어 운영 라벨은 한글 진행 표현으로 바꾸고, 과한 홍보 문구는 실제 확인 행동 중심으로 낮춤.</p>
       <p><strong>2026-06-27 12차:</strong> <code>npm run build</code> 통과. 공개 페이지에서 의도치 않게 남은 영어 운영 라벨은 공식 기능명 또는 계획/변경 기록의 설명 문맥만 남음.</p>
+      <p><strong>2026-06-27 13차:</strong> 1과정 공식 MCP/Skill 목록 보강. Claude Code 공식 마켓플레이스의 Superpowers·Playwright·Vercel·Supabase·GitHub, Microsoft Playwright CLI/Skills와 Playwright MCP를 확인하고 필수/선택 경로로 분리해 반영.</p>
+      <p><strong>2026-06-27 14차:</strong> <code>npm run build</code> 통과. Claude Build HTML section/table/pre 균형과 계획서 HTML section/table 균형 확인 완료.</p>
     </div>
   </section>
 </main>

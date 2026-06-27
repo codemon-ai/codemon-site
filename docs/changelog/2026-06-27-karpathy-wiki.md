@@ -64,3 +64,23 @@
 - `npm run build` 통과.
 - HTML section 균형 확인: `lecture-claude-build.html` 5/5, `lecture-trading-bot.html` 8/8.
 - 배포 후 `/partner` 목록, 두 개요 페이지, 두 HTML 가이드를 브라우저에서 재확인 예정.
+
+## 3차 도구 목록 보강 — 1과정 공식 MCP/Skill 경로 추가
+
+### 변경
+- 2과정은 잠시 보류하고, 1과정(`lecture-claude-build`)의 Skill/MCP 파트를 공식 문서와 공식 마켓플레이스 기준으로 보강.
+- Claude Code 공식 마켓플레이스에서 확인한 `superpowers`, `playwright`, `vercel`, `supabase`, `github`를 2교시 선택 확장 도구로 추가.
+- `Superpowers`는 Anthropic 제작물이 아니라 공식 마켓플레이스에 등록된 서드파티 Skill이라고 명시하고, 브레인스토밍·서브에이전트 개발·코드 리뷰·디버깅·red/green TDD 흐름 예시로 배치.
+- Microsoft Playwright 공식 문서 기준으로 `Playwright CLI + Skills`와 `Playwright MCP`를 구분하고, 배포 URL 확인·클릭·스크린샷·간단 화면 점검 용도로 정리.
+- `/partner` 목록의 Claude Build 카드와 개요 페이지의 사용 도구 표, HTML 가이드의 STEP 2, 계획서 상태와 작업 로그를 함께 갱신.
+
+### 출처 확인
+- Claude Code Plugins 공식 문서: `https://code.claude.com/docs/en/discover-plugins`
+- Claude 공식 마켓플레이스 catalog: `https://raw.githubusercontent.com/anthropics/claude-plugins-official/main/.claude-plugin/marketplace.json`
+- Playwright CLI/Skills 공식 문서: `https://playwright.dev/agent-cli/skills`
+- Playwright MCP 공식 저장소: `https://github.com/microsoft/playwright-mcp`
+
+### 검증
+- `npm run build` 통과.
+- HTML section/table/pre 균형 확인: `lecture-claude-build.html` 5/5, 6/6, 10/10.
+- 계획서 HTML section/table 균형 확인: 8/8, 2/2.
