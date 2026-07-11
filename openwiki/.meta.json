@@ -1,0 +1,10 @@
+{
+  "source_commit": "49990f6fa225",
+  "generatedAt": "2026-07-11",
+  "docs": [
+    "index.md",
+    "architecture.md",
+    "modules.md",
+    "dataflow.md"
+  ]
+}
