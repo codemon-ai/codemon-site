@@ -7,6 +7,26 @@ AI/AX 엔지니어 CodeMon의 브랜드 사이트 + 기술 블로그 + 문서
 ## 작업 시작 전 필수
 1. `docs/INDEX.md` 읽기 — 작업별 경로, 문서 구조, 최근 변경 확인
 2. `docs/changelog/` 최신 파일 읽기 — 직전 작업 맥락 파악
+3. `git fetch origin && git rebase origin/main` — 묵은 브랜치에서 시작하지 않기
+4. `docs/wiki/branches.md` 확인 — 열린 PR / 미머지 작업물 파악
+
+## 🚨 화면 유실 방지 (최우선 규칙)
+
+배포는 git이 아니라 **로컬 디스크 스냅샷**(`vercel deploy --prebuilt --prod`)이다.
+→ `main`보다 뒤처진 트리에서 배포하면 **다른 브랜치의 화면이 프로덕션에서 사라진다.** (실제 사고 다수)
+
+| 시점 | 필수 행동 |
+|------|-----------|
+| 작업 시작 | `git fetch origin && git rebase origin/main` |
+| 배포 직전 | `pwd && git rev-parse --abbrev-ref HEAD && git status --short && git log --oneline -1` 확인 (워크트리가 여러 개다) |
+| 배포 직후 | `./scripts/check-routes.sh` — 실패 0이어야 완료 |
+| 페이지 추가/삭제/이동 | `docs/wiki/route-inventory.md` 갱신 |
+| PR 종료 | 머지 or **명시적 폐기 + 이유 기록**. 그냥 닫지 않는다 |
+| 브랜치 삭제 전 | `git log --oneline origin/main..origin/<branch>` 로 미반영 커밋 0 확인 |
+
+- 살아있어야 할 화면 목록: `docs/wiki/route-inventory.md`
+- 브랜치/PR 상태 원장: `docs/wiki/branches.md`
+- ⚠️ `public/partner/`에 HTML 두지 말 것 — `pages/partner/` 라우트에 가려 404 (`/slides/` 사용)
 
 ## Commands
 
@@ -44,6 +64,8 @@ npm run start   # Start production server
 2. 구조 변경 시 `docs/wiki/` 해당 문서 업데이트
 3. 새 기술 결정 시 `docs/wiki/decisions.md`에 ADR 추가
 4. `docs/INDEX.md` 최근 변경 목록 갱신
+5. 페이지 추가/삭제/이동 시 `docs/wiki/route-inventory.md` 갱신
+6. 배포했다면 `./scripts/check-routes.sh` 통과 확인
 
 ## 블로그 포스트 템플릿
 
