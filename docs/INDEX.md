@@ -52,6 +52,5 @@ docs/
 ## 최근 주요 변경 (top 3)
 
 - **[2026-06-27]** Claude Build + Trading Bot 핸즈온 강의 2종 개요/HTML 가이드 추가, 공개 문구 톤 정리, 1과정 공식 MCP/Skill 도구 목록 보강
-- **[2026-04-22]** 설문 폼 4문항 추가 (배운 것/진행도/있으면 좋을 것/개선 요청) — Supabase `survey_responses` 컬럼 4개 마이그레이션 필요
 - **[2026-04-21]** Airpremia Lv1 서베이(`/survey/airpremia-lv1`) 추가 + `lib/survey.ts` 화이트리스트 전환
 - **[2026-04-06]** 데모 3~7 전용 컴포넌트 구현 + Demo 6 패키지 라벨 + Demo 7 반품 분석 + 설명 팝업 + Stitch MCP 연동
