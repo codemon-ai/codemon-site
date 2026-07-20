@@ -30,7 +30,24 @@
 | #29 | `docs/site-baseline-inventory` | 이 문서 + 라우트 인벤토리 + `check-routes.sh` + ADR-004 | ✅ 머지 가능 | 먼저 머지 |
 | #30 | `feat/about-education-revive` | 닫힌 PR #8 작업물 복원 (`/about` 학력 + 설문 4문항) | ✅ 머지 가능 (build 통과) | **Supabase 마이그레이션 먼저** 실행 후 머지 |
 
-> #27~#30이 모두 `docs/INDEX.md`를 건드린다. **한 번에 하나씩 머지하고, 다음 브랜치는 `git rebase origin/main`** 으로 따라붙일 것. (지금 사고 원인 그 자체다.)
+#### 겹침 검증 완료 (2026-07-21) — 4개 PR 동시 안전
+
+`origin/main` 위에 4개를 순서대로 실제 머지해보는 **리허설**을 돌려 확인했다.
+
+| PR | 건드리는 파일 | 기존 라인 삭제 |
+|----|---------------|----------------|
+| #28 | `docs/INDEX.md`, `changelog/2026-06-27.md`, `lecture-{claude-build,trading-bot}.md` | **0** (순수 추가) |
+| #27 | `CLAUDE.md`(맨 끝 섹션 추가), `openwiki/*` | **0** (순수 추가) |
+| #29 | `CLAUDE.md`, `docs/INDEX.md`, `wiki/{branches,decisions,deployment,route-inventory}.md`, `changelog/2026-07-21.md`, `scripts/check-routes.sh` | 16 — 전부 **깨진 nvm 배포 명령·구 체크리스트 교체분** |
+| #30 | `components/*`, `lib/*`, `pages/api/survey/submit.ts`, `changelog/2026-04-22.md` | 8 — 전부 **한 줄 교체**(import·파라미터·CSV select) |
+
+- 충돌 제거 조치: #28은 `origin/main` 위로 **리베이스**(백업 `backup/pr28-pre-rebase`), #30은 `docs/INDEX.md`
+  "최근 주요 변경" 수정을 **아예 빼서** #28/#29와의 겹침을 원천 제거(기록은 `changelog/2026-04-22.md`가 담당).
+- 결과: **#28 → #27 → #29 → #30 순서로 충돌 0**, 합쳐진 상태에서 `npm run build` 통과(정적 페이지 223개 생성).
+- 어떤 PR도 페이지·라우트 파일을 삭제하지 않는다 → 이 4건 머지로 사라지는 화면 없음.
+
+> 원칙: **INDEX/CLAUDE.md 같은 공용 문서는 "추가만"**. 기존 줄을 지우거나 순서를 바꾸면 다른 브랜치와 충돌하고,
+> 충돌을 잘못 풀면 그 순간 남의 작업이 사라진다. 한 번에 하나씩 머지하고 다음 브랜치는 `git rebase origin/main`.
 
 ### ✅ 머지 안 된 채 닫힌 PR — **복원 완료** (2026-07-21)
 
