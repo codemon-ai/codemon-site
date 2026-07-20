@@ -130,15 +130,21 @@ tags: [태그1, 태그2]
 
 GitHub auto-deploy **비활성화** 상태. Vercel CLI 프리빌트 전용:
 
+> ⚠️ 2026-07-21 확인: `~/.nvm`은 **더 이상 존재하지 않는다** (node v22.23.0 @ `~/.local/bin`, hermes/fnm).
+> 예전 문서의 `~/.nvm/versions/node/v22.14.0/bin` 경로는 `npm: command not found`로 실패한다.
+
 ```bash
-# 1. 로컬 빌드 (nvm 재귀 우회)
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'npm run build'
+CLEAN='env -i HOME=/Users/codemon PATH=/Users/codemon/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin'
 
-# 2. Vercel 프리빌트 + 배포
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
+# 1. 로컬 빌드
+$CLEAN /bin/bash -c 'npm run build'
 
-# 3. 검증 (verify-deploy 스킬)
+# 2. Vercel 프리빌트 + 배포 (배포 직전 pwd/브랜치/git status 확인!)
+$CLEAN /bin/bash -c 'vercel build --prod'
+$CLEAN /bin/bash -c 'vercel deploy --prebuilt --prod'
+
+# 3. 검증 — 라우트 생존 확인 (필수) + 눈으로 확인
+./scripts/check-routes.sh
 playwright-cli open https://codemon.ai/<path>
 ```
 

@@ -27,15 +27,24 @@
 |----|--------|------|------|------|
 | #27 | `docs/code-wiki` | `openwiki/` 자동생성 코드위키 4문서 + CLAUDE.md 이원(📖코드/📝지식) 체계 | ✅ 머지 가능 (ahead 1 / behind 0) | 그대로 머지 |
 | #28 | `docs/partner-lectures-handoff` | 파트너 강의 2종(claude-build / trading-bot) 인수인계 기록 + 2026-07 기술검증 | ⚠️ **CONFLICTING** (ahead 1 / behind 7) — `docs/INDEX.md`, `docs/changelog/2026-06-27*`가 PR #24와 충돌 | `git rebase origin/main` 후 충돌 정리 → 머지 |
+| #29 | `docs/site-baseline-inventory` | 이 문서 + 라우트 인벤토리 + `check-routes.sh` + ADR-004 | ✅ 머지 가능 | 먼저 머지 |
+| #30 | `feat/about-education-revive` | 닫힌 PR #8 작업물 복원 (`/about` 학력 + 설문 4문항) | ✅ 머지 가능 (build 통과) | **Supabase 마이그레이션 먼저** 실행 후 머지 |
 
-### ⚠️ 머지 안 된 채 닫힌 PR — 작업물 살아있음 (유실 위험 1순위)
+> #27~#30이 모두 `docs/INDEX.md`를 건드린다. **한 번에 하나씩 머지하고, 다음 브랜치는 `git rebase origin/main`** 으로 따라붙일 것. (지금 사고 원인 그 자체다.)
 
-| 브랜치 | PR | 미반영 커밋 | 내용 | 확인 |
+### ✅ 머지 안 된 채 닫힌 PR — **복원 완료** (2026-07-21)
+
+| 브랜치 | PR | 미반영 커밋 | 내용 | 처리 |
 |--------|----|------------|------|------|
-| `feat/about-education` | #8 (**CLOSED, 미머지**) | `9b34569`, `25953fa` | ① `/about` 학력 섹션(`components/Career.tsx`) ② 설문 4문항 확장(`learnings`/`follow_along`/`would_help`/`improvements` — SurveyForm·lib/survey·submit API·admin SurveyTable) + `docs/changelog/2026-04-22.md` | `main`에 **해당 코드 없음(grep 0건)** = 진짜 미반영 |
+| `feat/about-education` | #8 (**CLOSED, 미머지**) | `9b34569`, `25953fa` | ① `/about` 학력 섹션(`components/Career.tsx`) ② 설문 4문항 확장(`learnings`/`follow_along`/`would_help`/`improvements` — SurveyForm·lib/survey·submit API·admin SurveyTable) + `docs/changelog/2026-04-22.md` | → **PR #30 `feat/about-education-revive`** 로 복원. 원본 브랜치는 main 대비 38커밋 뒤처져 있어 리베이스 대신 **`origin/main` 위로 체리픽** |
 
-> 판단 필요: 되살릴 것인가, 폐기할 것인가. **결정 전까지 브랜치 삭제 금지.**
-> 되살리려면 `git checkout -b feat/about-education-revive origin/feat/about-education && git rebase origin/main` (main 대비 38커밋 뒤처짐 → 충돌 예상).
+복원 시 확인한 것:
+- 충돌은 `docs/INDEX.md` 최근변경 목록 1건뿐 → 날짜순 정리로 해결
+- `lib/survey.ts`는 그 사이 main이 `SUPPORTED_LECTURE_IDS` 화이트리스트로 전환됨 → **main 최신 구조 유지**한 채 4필드만 추가
+- `npm run build` 통과, `origin/main` 대비 순수 추가 diff(회귀 없음)
+- ⚠️ 머지/배포 전 **Supabase 마이그레이션 필수** (`survey_responses`에 컬럼 4개). 안 하면 insert 실패 → 듀얼 라이트가 Blob으로만 떨어져 **어드민에서 설문 응답이 안 보인다.**
+
+> PR #30 머지 후 `feat/about-education` 원본 브랜치 삭제 가능.
 
 ### 🟢 머지 완료 — 삭제해도 안전 (내용 100% main에 있음)
 
