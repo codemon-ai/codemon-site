@@ -125,3 +125,9 @@ playwright-cli open https://codemon.ai/<path>
 - 프로젝트 구조/스택 상세: `docs/wiki/architecture.md`
 - 디자인 가이드: `docs/spec/design-guide.md`
 - 리뉴얼 계획: `docs/prd/renovation-plan.md`
+
+## 위키 이원 체계 (📖 코드 위키 / 📝 지식 위키)
+
+- **📖 코드 위키** = 이 레포 `openwiki/` — 코드에서 자동 생성된 아키텍처·모듈·데이터흐름 문서. **손편집 금지** (재생성 시 덮어씀). frontmatter `source_commit` = 생성 기준 커밋. 코드 구조 파악은 여기부터 읽을 것.
+- **📝 지식 위키** = codemon-connectalive `wiki/` — 회의록·리서치·결정 등 대화 산출의 축적(append). 코드 구조를 직접 서술하지 말고 코드 위키 문서를 참조할 것 (중복 서술 = 낡은 정보의 온상).
+- **재생성**: connectalive 레포에서 `node scripts/repo-wiki-gen.mjs <slug>` (HEAD 변경 시 주간 자동 예정). 위키 검색(`@라몬 검색 ...`) 결과의 📖/📝 라벨로 출처 구분.
