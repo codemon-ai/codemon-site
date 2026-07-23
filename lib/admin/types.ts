@@ -18,6 +18,10 @@ export interface SurveyResponse {
   rating: number
   gains: string
   questions: string
+  learnings: string | null
+  follow_along: string | null
+  would_help: string | null
+  improvements: string | null
   privacy_consent: boolean
   submitted_at: string
 }

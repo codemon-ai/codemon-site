@@ -14,7 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const {
     lectureId, companyName, contactName, title,
-    email, phone, rating, gains, questions, privacyConsent,
+    email, phone, rating, gains, questions,
+    learnings, followAlong, wouldHelp, improvements,
+    privacyConsent,
   } = req.body
 
   // Validation
@@ -48,6 +50,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       rating: Number(rating),
       gains: gains?.trim() || '',
       questions: questions?.trim() || '',
+      learnings: learnings?.trim() || '',
+      followAlong: followAlong?.trim() || '',
+      wouldHelp: wouldHelp?.trim() || '',
+      improvements: improvements?.trim() || '',
       privacyConsent: true,
     })
 
@@ -62,6 +68,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `이메일: ${response.email} | 연락처: ${response.phone}`,
       `별점: ${stars} (${response.rating}/5)`,
       response.gains ? `\n얻은 점: ${response.gains}` : '',
+      response.learnings ? `배운 것: ${response.learnings}` : '',
+      response.followAlong ? `진행도: ${response.followAlong}` : '',
+      response.wouldHelp ? `있으면 좋을 것: ${response.wouldHelp}` : '',
+      response.improvements ? `개선 요청: ${response.improvements}` : '',
       response.questions ? `궁금한 점: ${response.questions}` : '',
     ].filter(Boolean).join('\n')
 

@@ -1,7 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Building2, Zap, Bot } from 'lucide-react'
+import { Building2, Zap, Bot, GraduationCap } from 'lucide-react'
+
+const education = [
+  { school: '연세대학교 공학대학원', status: '재학' },
+  { school: '명지대학교 컴퓨터공학과', status: '졸업' },
+]
 
 const timeline = [
   {
@@ -66,6 +71,30 @@ export function Career() {
                 </motion.div>
               )
             })}
+
+            {/* Education */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: timeline.length * 0.15 }}
+              className="flex gap-5 items-start"
+            >
+              <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0 relative z-10">
+                <GraduationCap className="w-5 h-5 text-purple-400" />
+              </div>
+              <div className="flex-1 pb-2">
+                <h4 className="font-semibold text-foreground text-base">학력</h4>
+                <ul className="mt-1 space-y-1">
+                  {education.map((e) => (
+                    <li key={e.school} className="text-sm text-foreground/60 leading-relaxed">
+                      {e.school}{' '}
+                      <span className="text-xs font-mono text-foreground/40">({e.status})</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
