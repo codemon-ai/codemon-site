@@ -12,8 +12,7 @@
 
 `#28 → #27 → #29 → #30` 순서로 4건 모두 머지(리허설대로 충돌 0). 머지 후 `origin/main` 빌드 통과(정적 페이지 223개).
 
-⚠️ **미완료 1건 — Supabase 마이그레이션(수동).** PR #30(설문 4문항)은 코드만 main에 있고,
-`survey_responses` 테이블에 컬럼 4개가 아직 없다. **다음 프로덕션 배포 전 반드시** 아래 SQL 실행:
+✅ **Supabase 마이그레이션 완료 (2026-07-24).** PR #30(설문 4문항) 코드 + 아래 컬럼이 모두 반영됨:
 ```sql
 ALTER TABLE survey_responses
   ADD COLUMN IF NOT EXISTS learnings text,
@@ -21,8 +20,10 @@ ALTER TABLE survey_responses
   ADD COLUMN IF NOT EXISTS would_help text,
   ADD COLUMN IF NOT EXISTS improvements text;
 ```
-안 하면 배포 시 insert 실패 → 설문 응답이 어드민에서 안 보인다. (GitHub auto-deploy 꺼져 있어 **머지만으론 배포 안 됨** → 현재 프로덕션은 안전.)
-자동 실행 시도했으나 DB 비밀번호·키체인 토큰 미접근 + supabase CLI v2.75(원격 쿼리 미지원)로 막힘 → Supabase SQL Editor에서 수동 실행 또는 Supabase MCP 인증 필요.
+- 실행 방법: `supabase db query --linked`(CLI v2.109, Management API 경유 — 원격 DB 비밀번호 불필요, 저장된 액세스 토큰 사용). 프로젝트 ref `uhynpqyrpquueareqync`.
+- `db push`는 원격 이력의 8자리 phantom 버전(`20260228`) 때문에 막혔고, `migration repair`는 파괴적 명령이라 차단됨 → 이력을 건드리지 않는 `db query`로 단일 ALTER 실행.
+- 검증: `information_schema.columns` 조회로 4개 컬럼(`text`) 생성 확인.
+- 이제 설문 4문항 기능은 배포해도 안전(insert 성공 → 어드민 노출).
 
 ### 삭제한 원격 브랜치 (복원용 SHA — GitHub나 `git push origin <sha>:refs/heads/<name>`로 복구 가능)
 모두 삭제 전 `origin/main`에 내용 반영 확인 완료(미반영 커밋 0 또는 main이 더 최신):
