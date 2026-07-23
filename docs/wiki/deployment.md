@@ -50,17 +50,28 @@ npm run start
 
 > **GitHub auto-deploy 비활성화 상태.** git push만으로는 배포되지 않음.
 
+> ⚠️ **툴체인 변경 (2026-07-21 확인).** `~/.nvm`은 더 이상 없다. node v22.23.0이 `~/.local/bin`
+> (hermes/fnm)에 있고, `vercel`도 같은 경로다. 예전 `~/.nvm/...` PATH는 `npm: command not found`로 실패.
+
 ```bash
-# 1. 로컬 빌드 (nvm 재귀 우회를 위해 env -i 사용)
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'npm run build'
+CLEAN='env -i HOME=/Users/codemon PATH=/Users/codemon/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+
+# 0. ⚠️ 어느 트리에서 배포하는지 확인 (워크트리가 여러 개다 — 화면 유실 1순위 원인)
+pwd && git rev-parse --abbrev-ref HEAD && git status --short && git log --oneline -1
+
+# 1. 로컬 빌드
+$CLEAN /bin/bash -c 'npm run build'
 
 # 2. Vercel 프리빌트
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
+$CLEAN /bin/bash -c 'vercel build --prod'
 
 # 3. Vercel 배포
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
+$CLEAN /bin/bash -c 'vercel deploy --prebuilt --prod'
 
-# 4. 검증 (verify-deploy 스킬)
+# 4. 검증 — 라우트 생존 확인 (필수)
+./scripts/check-routes.sh
+
+# 5. 눈으로 확인 (verify-deploy 스킬)
 playwright-cli open https://codemon.ai/<path>
 playwright-cli screenshot --filename=verify.png
 playwright-cli close
@@ -71,12 +82,13 @@ playwright-cli close
 ## 체크리스트
 
 ### 배포 전
+- [ ] `git fetch origin && git rebase origin/main` — 뒤처진 트리에서 배포하면 다른 화면이 사라진다
+- [ ] `pwd` + 브랜치 + `git status`로 배포할 트리 확인
 - [ ] `npm run build` 성공 확인
-- [ ] 로컬에서 모든 페이지 테스트
-- [ ] 이미지/에셋 경로 확인
+- [ ] 이미지/에셋 경로 확인 (`public/partner/`는 라우트에 가려 404 — `/slides/` 사용)
 
 ### 배포 후
+- [ ] **`./scripts/check-routes.sh` → fail=0** (필수)
 - [ ] 프로덕션 URL 접속 확인
-- [ ] SSL 인증서 확인
-- [ ] 모바일 반응형 확인
-- [ ] 다크모드 확인
+- [ ] 모바일 반응형 / 다크모드 확인
+- [ ] `docs/wiki/route-inventory.md` 개수·날짜 갱신 (페이지 추가/삭제 시)

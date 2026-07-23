@@ -7,6 +7,26 @@ AI/AX 엔지니어 CodeMon의 브랜드 사이트 + 기술 블로그 + 문서
 ## 작업 시작 전 필수
 1. `docs/INDEX.md` 읽기 — 작업별 경로, 문서 구조, 최근 변경 확인
 2. `docs/changelog/` 최신 파일 읽기 — 직전 작업 맥락 파악
+3. `git fetch origin && git rebase origin/main` — 묵은 브랜치에서 시작하지 않기
+4. `docs/wiki/branches.md` 확인 — 열린 PR / 미머지 작업물 파악
+
+## 🚨 화면 유실 방지 (최우선 규칙)
+
+배포는 git이 아니라 **로컬 디스크 스냅샷**(`vercel deploy --prebuilt --prod`)이다.
+→ `main`보다 뒤처진 트리에서 배포하면 **다른 브랜치의 화면이 프로덕션에서 사라진다.** (실제 사고 다수)
+
+| 시점 | 필수 행동 |
+|------|-----------|
+| 작업 시작 | `git fetch origin && git rebase origin/main` |
+| 배포 직전 | `pwd && git rev-parse --abbrev-ref HEAD && git status --short && git log --oneline -1` 확인 (워크트리가 여러 개다) |
+| 배포 직후 | `./scripts/check-routes.sh` — 실패 0이어야 완료 |
+| 페이지 추가/삭제/이동 | `docs/wiki/route-inventory.md` 갱신 |
+| PR 종료 | 머지 or **명시적 폐기 + 이유 기록**. 그냥 닫지 않는다 |
+| 브랜치 삭제 전 | `git log --oneline origin/main..origin/<branch>` 로 미반영 커밋 0 확인 |
+
+- 살아있어야 할 화면 목록: `docs/wiki/route-inventory.md`
+- 브랜치/PR 상태 원장: `docs/wiki/branches.md`
+- ⚠️ `public/partner/`에 HTML 두지 말 것 — `pages/partner/` 라우트에 가려 404 (`/slides/` 사용)
 
 ## Commands
 
@@ -44,6 +64,8 @@ npm run start   # Start production server
 2. 구조 변경 시 `docs/wiki/` 해당 문서 업데이트
 3. 새 기술 결정 시 `docs/wiki/decisions.md`에 ADR 추가
 4. `docs/INDEX.md` 최근 변경 목록 갱신
+5. 페이지 추가/삭제/이동 시 `docs/wiki/route-inventory.md` 갱신
+6. 배포했다면 `./scripts/check-routes.sh` 통과 확인
 
 ## 블로그 포스트 템플릿
 
@@ -108,15 +130,21 @@ tags: [태그1, 태그2]
 
 GitHub auto-deploy **비활성화** 상태. Vercel CLI 프리빌트 전용:
 
+> ⚠️ 2026-07-21 확인: `~/.nvm`은 **더 이상 존재하지 않는다** (node v22.23.0 @ `~/.local/bin`, hermes/fnm).
+> 예전 문서의 `~/.nvm/versions/node/v22.14.0/bin` 경로는 `npm: command not found`로 실패한다.
+
 ```bash
-# 1. 로컬 빌드 (nvm 재귀 우회)
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'npm run build'
+CLEAN='env -i HOME=/Users/codemon PATH=/Users/codemon/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin'
 
-# 2. Vercel 프리빌트 + 배포
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel build --prod'
-env -i HOME=/Users/codemon PATH="/Users/codemon/.nvm/versions/node/v22.14.0/bin:/Users/codemon/Library/pnpm:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin" /bin/bash -c 'vercel deploy --prebuilt --prod'
+# 1. 로컬 빌드
+$CLEAN /bin/bash -c 'npm run build'
 
-# 3. 검증 (verify-deploy 스킬)
+# 2. Vercel 프리빌트 + 배포 (배포 직전 pwd/브랜치/git status 확인!)
+$CLEAN /bin/bash -c 'vercel build --prod'
+$CLEAN /bin/bash -c 'vercel deploy --prebuilt --prod'
+
+# 3. 검증 — 라우트 생존 확인 (필수) + 눈으로 확인
+./scripts/check-routes.sh
 playwright-cli open https://codemon.ai/<path>
 ```
 
