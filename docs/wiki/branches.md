@@ -3,7 +3,49 @@
 > **NOW 문서.** "예전 화면이 사라졌다"는 사고를 막기 위한 브랜치 상태 기준선.
 > 브랜치를 지우기 전, PR을 닫기 전, 배포하기 전에 여기를 본다.
 >
-> **마지막 정비: 2026-07-21** — `origin/main` = `ffbe929` (2026-06-27, PR #26 머지)
+> **마지막 정비: 2026-07-24** — `origin/main` = `8456140` (PR #27~#30 머지 완료).
+> 2026-07-21 기준선(PR #26, `ffbe929`)에서 열려 있던 PR 4건을 모두 머지하고 안전 브랜치를 정리했다.
+
+---
+
+## 2026-07-24 정리 결과 (PR #27~#30 머지 + 브랜치 삭제)
+
+`#28 → #27 → #29 → #30` 순서로 4건 모두 머지(리허설대로 충돌 0). 머지 후 `origin/main` 빌드 통과(정적 페이지 223개).
+
+⚠️ **미완료 1건 — Supabase 마이그레이션(수동).** PR #30(설문 4문항)은 코드만 main에 있고,
+`survey_responses` 테이블에 컬럼 4개가 아직 없다. **다음 프로덕션 배포 전 반드시** 아래 SQL 실행:
+```sql
+ALTER TABLE survey_responses
+  ADD COLUMN IF NOT EXISTS learnings text,
+  ADD COLUMN IF NOT EXISTS follow_along text,
+  ADD COLUMN IF NOT EXISTS would_help text,
+  ADD COLUMN IF NOT EXISTS improvements text;
+```
+안 하면 배포 시 insert 실패 → 설문 응답이 어드민에서 안 보인다. (GitHub auto-deploy 꺼져 있어 **머지만으론 배포 안 됨** → 현재 프로덕션은 안전.)
+자동 실행 시도했으나 DB 비밀번호·키체인 토큰 미접근 + supabase CLI v2.75(원격 쿼리 미지원)로 막힘 → Supabase SQL Editor에서 수동 실행 또는 Supabase MCP 인증 필요.
+
+### 삭제한 원격 브랜치 (복원용 SHA — GitHub나 `git push origin <sha>:refs/heads/<name>`로 복구 가능)
+모두 삭제 전 `origin/main`에 내용 반영 확인 완료(미반영 커밋 0 또는 main이 더 최신):
+
+| 브랜치 | 삭제 시 SHA | 사유 |
+|--------|-------------|------|
+| `deploy/wikicbow-study-math-sync` | `51ae2ac` | PR #12 머지됨 |
+| `feat/survey-airpremia-lv1` | `00be2f1` | PR #7 머지됨 |
+| `feat/yonsei-deep-learning-wikicbow` | `4675897` | PR #9 머지됨 |
+| `feature/lecture-yonsei` | `2e2cc0b` | PR #4 머지됨 |
+| `feature/partner-lead-capture` | `733279d` | PR #3 머지됨 |
+| `feature/yonsei-east-asian-history` | `795b7bf` | PR #6 머지됨 |
+| `worktree-karpathy-wiki-lecture1` | `5f0ed7d` | PR #24 머지됨 |
+| `feat/about-education` | `25953fa` | **PR #30으로 내용 복원**(체리픽) — main과 코드 동일 확인 |
+| `feature/partner-admin` | `31c50bb` | PR #5로 어드민 반영됨. 나머지 diff는 **main이 더 최신**(머지 시 화면 대량 삭제되는 위험 브랜치라 폐기) |
+| `vercel/vercel-web-analytics-to-nextjs-que93t` | `c9f047a` | `@vercel/analytics` 이미 main 반영. 브랜치는 247커밋 뒤처진 구버전이라 폐기 |
+
+> `backup/pr28-pre-rebase`(`49990f6`)는 #28 리베이스 전 백업 — 안전 확인됐으므로 함께 정리.
+> PR 머지로 자동 삭제된 브랜치: `feat/partner-{claude-build-html,handson-guides,lecture-claude-build,trading-bot-plus-fixes}`, `feat/yonsei-founding-myself`, `fix/partner-claude-build-html-path`, #27~#30 브랜치.
+
+---
+
+## (이하 2026-07-21 기록 — 참고용)
 
 ---
 
