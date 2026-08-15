@@ -2,7 +2,7 @@
 
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { Clock, FolderGit2, Bot, Repeat } from 'lucide-react'
+import { Clock, FolderGit2, Presentation, Briefcase } from 'lucide-react'
 
 const stats = [
   {
@@ -18,16 +18,16 @@ const stats = [
     icon: FolderGit2,
   },
   {
-    label: 'AI 에이전트 팀',
-    value: null,
-    displayText: 'n+',
-    icon: Bot,
+    label: '기업 AI 강의·워크숍',
+    value: 20,
+    suffix: '회+',
+    icon: Presentation,
   },
   {
-    label: '자동화한 업무',
-    value: 100,
-    suffix: '+',
-    icon: Repeat,
+    label: 'AI/AX 컨설팅',
+    value: 10,
+    suffix: '건+',
+    icon: Briefcase,
   },
 ]
 
@@ -89,11 +89,7 @@ export function Stats() {
                   </div>
 
                   <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">
-                    {stat.value !== null ? (
-                      <AnimatedNumber value={stat.value} suffix={stat.suffix!} />
-                    ) : (
-                      <span className="font-mono text-purple-400">{stat.displayText}</span>
-                    )}
+                    <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                   </div>
 
                   <div className="text-sm text-foreground/60">
