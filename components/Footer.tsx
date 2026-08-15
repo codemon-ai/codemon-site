@@ -2,18 +2,14 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, Twitter, Heart } from 'lucide-react'
+import { Github, Mail, Twitter, Heart } from 'lucide-react'
 
+// 신원 직접 특정 방지 — LinkedIn 등 실명 연결 링크는 두지 않는다.
 const socialLinks = [
   {
     name: 'GitHub',
     href: 'https://github.com/codemon-ai',
     icon: Github,
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://linkedin.com/in/coffeemon',
-    icon: Linkedin,
   },
   {
     name: 'Twitter',
