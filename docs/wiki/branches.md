@@ -25,7 +25,13 @@ ALTER TABLE survey_responses
 - 검증: `information_schema.columns` 조회로 4개 컬럼(`text`) 생성 확인.
 - 이제 설문 4문항 기능은 배포해도 안전(insert 성공 → 어드민 노출).
 
-### 삭제한 원격 브랜치 (복원용 SHA — GitHub나 `git push origin <sha>:refs/heads/<name>`로 복구 가능)
+> **✅ 2026-08-15 실삭제 완료.** 아래 브랜치 + `backup/pr28-pre-rebase`까지 총 14개를 원격에서 삭제했다.
+> 삭제 직전 Fable(claude-fable-5)이 14개 전 브랜치의 diff를 독립 재검증 → **DELETE-SAFE 12 / DISCARD 2 / KEEP 0**
+> (유니크한 미머지 작업물 0건). 삭제 후 원격 브랜치는 `origin/main` 하나만 남음.
+> 특히 `feature/partner-admin`·`vercel/...analytics`는 **머지 없이 폐기**(머지 시 현재 화면 삭제/회귀).
+> 복원이 필요하면 아래 SHA로 `git push origin <sha>:refs/heads/<name>`.
+
+### 삭제한 원격 브랜치 (복원용 SHA)
 모두 삭제 전 `origin/main`에 내용 반영 확인 완료(미반영 커밋 0 또는 main이 더 최신):
 
 | 브랜치 | 삭제 시 SHA | 사유 |
@@ -41,8 +47,13 @@ ALTER TABLE survey_responses
 | `feature/partner-admin` | `31c50bb` | PR #5로 어드민 반영됨. 나머지 diff는 **main이 더 최신**(머지 시 화면 대량 삭제되는 위험 브랜치라 폐기) |
 | `vercel/vercel-web-analytics-to-nextjs-que93t` | `c9f047a` | `@vercel/analytics` 이미 main 반영. 브랜치는 247커밋 뒤처진 구버전이라 폐기 |
 
-> `backup/pr28-pre-rebase`(`49990f6`)는 #28 리베이스 전 백업 — 안전 확인됐으므로 함께 정리.
-> PR 머지로 자동 삭제된 브랜치: `feat/partner-{claude-build-html,handson-guides,lecture-claude-build,trading-bot-plus-fixes}`, `feat/yonsei-founding-myself`, `fix/partner-claude-build-html-path`, #27~#30 브랜치.
+| `backup/pr28-pre-rebase` | `49990f6` | #28 리베이스 전 백업 — #28 머지됨, 내용 파일 main과 byte-identical |
+| `docs/branch-cleanup-record` | (2026-07-24) | PR #31 머지됨 (워크트리 점유로 자동삭제 실패했던 것) |
+| `docs/migration-done` | (2026-07-24) | PR #32 머지됨 |
+| `docs/partner-lectures-handoff` | (2026-07-21) | PR #28 머지됨 |
+
+> PR 머지로 이미 자동 삭제됐던 브랜치: `feat/partner-{claude-build-html,handson-guides,lecture-claude-build,trading-bot-plus-fixes}`, `feat/yonsei-founding-myself`, `fix/partner-claude-build-html-path`, #29·#30 브랜치.
+> **결과: 원격 브랜치 = `main` 단독.** 열린 PR 0건.
 
 ---
 
