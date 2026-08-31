@@ -11,13 +11,16 @@
 
 | 구분 | 개수 | 상태 |
 |------|------|------|
-| 공개 페이지 (`pages/**`, `/p/` 제외) | 129 | ✅ 121×200 + 8×3xx(의도된 리다이렉트) |
+| 공개 페이지 (`pages/**`, `/p/` 제외) | 131 | ✅ 121×200 + 10×3xx(의도된 리다이렉트) |
 | 비공개 페이지 (`/p/`, `/en/p/`) | 65 | ✅ 전부 200 |
 | 정적 자산 (`public/**/*.html|pdf`) | 15 | ✅ 전부 200 |
-| **합계** | **209** | ✅ 유실 0건 |
+| **합계** | **211** | ✅ 유실 0건 |
+
+> 2026-08-31: `/work`(외주 포트폴리오, 비번보호) 신설로 공개 129→131.
 
 의도된 3xx (실패 아님):
 - `307` — `/admin`, `/admin/{mailing,qr,subscribers,surveys}` → 미인증 시 로그인 리다이렉트
+- `307` — `/work` → 비번 미인증 시 `/work/login` 리다이렉트 (외주 포트폴리오 게이트)
 - `308` — `/partner/survey/lecture-*` → `/survey/{lectureId}` 정규 경로로 리다이렉트
 
 ---
@@ -32,6 +35,7 @@
 | `/en/*` | 19 | 영문 i18n (블로그 8, 프로젝트 7, about/docs/index) | 로디몬 |
 | `/projects/*` | 7 | 프로젝트 소개 (arbimon, cryptomon, farmingmon, grimharu, moneymon, realestate-crawler) | 코드몬 |
 | `/admin/*` | 6 | 어드민 (구독자·설문·메일링·QR) — 인증 필요 | Claude Code |
+| `/work*` | 2 | 외주 포트폴리오 (`/work` + `/work/login`) — **비번 보호**(`WORK_PASSWORD`) | 코드몬/Claude Code |
 | 루트 단일 | 8 | `/`, `/about`, `/docs`, `/news`, `/showcase`, `/subscribe`, `/privacy`, `/terms` | 코드몬 |
 | `/p/*`, `/en/p/*` | 65 | 비공개 링크 전용 페이지(해시 slug) | 로디몬 |
 
