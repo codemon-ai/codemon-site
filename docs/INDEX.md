@@ -21,6 +21,7 @@
 | **화면 유실 확인 / 라우트 점검** | `wiki/route-inventory.md` + `scripts/check-routes.sh` |
 | **브랜치·PR 정리, 미머지 작업물 확인** | `wiki/branches.md` |
 | 비공개 페이지 | `prd/private-page.md` |
+| 외주 쇼케이스(/work) 기획 | `prd/work-showcase.md` (숨김·비번보호 포트폴리오 설계안) |
 | 강의 데모 시스템 | `CLAUDE.md` 데모 시스템 섹션 + `data/demo/config.ts` |
 | 파트너 강의 관리 (지식노트+사이트 / 투자봇) | `lecture-claude-build.md`, `lecture-trading-bot.md` (인수인계 기록 — 위치·커리큘럼·빌드 출처·TODO) |
 
@@ -56,6 +57,7 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-08-31]** 외주 쇼케이스 `/work`(숨김·비번보호 포트폴리오) 설계안 작성 — `prd/work-showcase.md`
 - **[2026-07-24]** 열린 PR 5건(#27~#31) 전량 머지 + 설문 4문항 Supabase 마이그레이션 완료 + 안전 브랜치 정리
 - **[2026-07-21]** 기반 정비 — 라우트 인벤토리(209개 전수 점검, 유실 0) + 브랜치·PR 원장 + `check-routes.sh` + ADR-004 화면 유실 방지
 - **[2026-06-27]** Claude Build + Trading Bot 핸즈온 강의 2종 개요/HTML 가이드 추가, 공개 문구 톤 정리, 1과정 공식 MCP/Skill 도구 목록 보강
