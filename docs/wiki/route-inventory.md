@@ -35,7 +35,7 @@
 | `/en/*` | 19 | 영문 i18n (블로그 8, 프로젝트 7, about/docs/index) | 로디몬 |
 | `/projects/*` | 7 | 프로젝트 소개 (arbimon, cryptomon, farmingmon, grimharu, moneymon, realestate-crawler) | 코드몬 |
 | `/admin/*` | 6 | 어드민 (구독자·설문·메일링·QR) — 인증 필요 | Claude Code |
-| `/work*` | 2 | 외주 포트폴리오 (`/work` + `/work/login`) — **비번 보호**(`WORK_PASSWORD`) | 코드몬/Claude Code |
+| `/work*` | 2 + 3상세 | 외주 포트폴리오 (`/work` + `/work/login` + 상세 `/work/{dearu,bluemango,dr-reborn}`) — **비번 보호**(`WORK_PASSWORD`). 상세는 `[slug]` 동적이라 check-routes 미포함 | 코드몬/Claude Code |
 | 루트 단일 | 8 | `/`, `/about`, `/docs`, `/news`, `/showcase`, `/subscribe`, `/privacy`, `/terms` | 코드몬 |
 | `/p/*`, `/en/p/*` | 65 | 비공개 링크 전용 페이지(해시 slug) | 로디몬 |
 
