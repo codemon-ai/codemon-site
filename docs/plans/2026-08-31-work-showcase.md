@@ -376,9 +376,9 @@ title: Work
 
 import { WorkGrid } from '../../components/work/WorkCard'
 
-# 외주 프로젝트
+# 코드몬이 만든 서비스
 
-코드몬이 기획·구축한 클라이언트 서비스입니다.
+기획부터 배포까지 코드몬이 구축한 서비스들입니다. (외주 클라이언트 + 자체 서비스)
 
 <WorkGrid />
 ```
@@ -419,9 +419,9 @@ env -i HOME=/Users/codemon PATH=/Users/codemon/.local/bin:/opt/homebrew/bin:/usr
 
 ---
 
-## Phase 2 (후속 계획 — 별도 실행) — 나머지 8건 채우기
+## Phase 2 (후속 계획 — 별도 실행) — 나머지 10건 채우기
 `data/work/projects.ts`에 아래를 각각 추가(같은 `WorkProject` 형식) + `public/images/work/<slug>/cover.png`:
-브릿지세븐/b7 · 블루망고 · 에어프레미아 · 닥터리본(dr-reborn) · etude-nodestar · etude-selecten(셀렉텀) · etude-lms · etude-library.
+브릿지세븐/b7 · 블루망고 · 에어프레미아 · 닥터리본(dr-reborn) · etude-nodestar · etude-selecten(셀렉텀) · etude-lms · etude-library · **어스오브제(usobjet-renew)** · **타로몬(tarot.codemon.ai — 자체 서비스, `client:'codemon.ai (자체)'`)**.
 각 건: 라이브 공개 가능 여부 확인 → 공개분은 playwright 캡처, 비공개는 코드몬 제공. 실명/문구는 코드몬 확정. 태스크당 1건 추가 + 빌드 + 커밋.
 
 ## Phase 3 (후속) — 대표 상세 케이스

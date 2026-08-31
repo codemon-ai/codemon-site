@@ -4,8 +4,9 @@
 > 배경 브레인스토밍: superpowers:brainstorming. 구현은 스펙 승인 + writing-plans 이후.
 
 ## 1. 목적 (WHY)
-코드몬이 **외주로 구축한 클라이언트 서비스**를 영업 대상에게 보여줄 수 있는 포트폴리오 메뉴.
-기존 `/showcase`(코드몬 자체 서비스)는 **그대로 두고**, 클라이언트 작업 전용으로 **분리된 숨김 메뉴**를 신설한다.
+코드몬이 **기획·구축한 서비스**(외주 클라이언트 작업 + 자체 서비스 중 보여줄 수 있는 것)를 영업 대상에게 보여줄 포트폴리오 메뉴.
+기존 `/showcase`(자체 서비스 공개 소개)는 **그대로 두고**, 비번보호 **분리된 숨김 메뉴**를 신설한다.
+※ 초기엔 외주 중심이나, 자체 서비스(타로몬 등)도 포함하므로 인덱스 카피는 "코드몬이 만든 서비스" 톤으로.
 
 ## 2. 핵심 결정 (확정)
 | 항목 | 결정 |
@@ -28,6 +29,8 @@
 | 7 | etude — selecten (셀렉텀) | 각각 별도 카드 | `etude-platform` · `etude-selectum.vercel.app` | ✅ |
 | 8 | etude — 에튜드 LMS(본 서비스) | 각각 별도 카드 | `etude-platform` · `etude-lms-web.vercel.app` | ✅ |
 | 9 | etude — 도서관(library) | 각각 별도 카드 | `etude-platform` · `etude-library.vercel.app` | ✅ |
+| 10 | 어스오브제 (usobjet) | 클라이언트 웹 (Vercel) | `usobjet-renew` · 라이브 URL 확인 필요 | ✅ |
+| 11 | 타로몬 (TarotMon) | **코드몬 자체 서비스** — AI 타로 리딩 | `tarot.codemon.ai` (기존 `/showcase`에도 존재) | ✅ |
 
 > etude 4개 서비스 확정(2026-08-31): **nodestar / selecten(셀렉텀) / 에튜드 LMS / 도서관**.
 > URL은 현재 `*.vercel.app` 스테이징 — 프로덕션 도메인/공개 캡처 가능 여부는 채울 때 확인.
