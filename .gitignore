@@ -50,3 +50,6 @@ data/*
 !data/news.json
 !data/demo/
 !data/work/
+
+# playwright-cli 로컬 캐시
+.playwright-cli/
