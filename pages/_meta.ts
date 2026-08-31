@@ -62,6 +62,13 @@ export default {
       sidebar: false,
     }
   },
+  work: {
+    type: 'folder',
+    display: 'hidden',
+    theme: {
+      sidebar: false,
+    }
+  },
   admin: {
     type: 'folder',
     display: 'hidden'

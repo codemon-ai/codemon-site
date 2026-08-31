@@ -17,9 +17,22 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // Protect /work/* except its login page and login API
+  if (
+    pathname.startsWith('/work') &&
+    pathname !== '/work/login' &&
+    !pathname.startsWith('/api/work/login')
+  ) {
+    const token = request.cookies.get('work_session')?.value
+
+    if (!token || !token.includes('.') || token.split('.').length !== 2) {
+      return NextResponse.redirect(new URL('/work/login', request.url))
+    }
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/work/:path*'],
 }
