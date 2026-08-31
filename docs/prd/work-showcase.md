@@ -1,7 +1,8 @@
 # PRD — 외주 쇼케이스 `/work` (숨김·비번보호)
 
-> 상태: 설계 확정 대기 (2026-08-31) · 분류: architectural (신규 하위 시스템)
-> 배경 브레인스토밍: superpowers:brainstorming. 구현은 스펙 승인 + writing-plans 이후.
+> 상태: **구현·배포 완료 (Phase 1~3, 2026-08-31)** · 분류: architectural (신규 하위 시스템)
+> 배경 브레인스토밍: superpowers:brainstorming → writing-plans(`docs/plans/2026-08-31-work-showcase.md`) → 배포.
+> 배포 내역: `docs/changelog/2026-08-31.md`. 남은 것은 코드 아님 — 플레이스홀더 4건 실 스크린샷 교체 + 상세 문구 검수.
 
 ## 1. 목적 (WHY)
 코드몬이 **외주로 구축한 서비스 모음**을 영업 대상에게 보여줄 포트폴리오 메뉴.
