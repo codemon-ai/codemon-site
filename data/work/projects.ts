@@ -13,6 +13,11 @@ export interface WorkProject {
   screenshots: string[] // /images/work/<slug>/*
   liveUrl?: string
   detail?: boolean
+  // 상세 케이스(detail:true 일 때). 문구는 코드몬 확정 대상.
+  problem?: string
+  approach?: string[]
+  results?: string[]
+  gallery?: string[] // 상세용 추가 이미지 (없으면 screenshots 사용)
 }
 
 // 컨셉: 외주 모음. 커버가 placeholder 인 항목은 실 스크린샷 교체 예정.
@@ -35,6 +40,17 @@ export const workProjects: WorkProject[] = [
     ],
     screenshots: ['/images/work/dearu/cover.png'],
     detail: true,
+    problem:
+      'Shopify 기본 기능만으로는 고객 등급별 혜택과 스토어크레딧 적립을 자동으로 운영하기 어려웠다. 주문·결제 이벤트에 맞춰 적립·등급을 실시간으로 반영할 수단이 필요했다.',
+    approach: [
+      '주문/결제 웹훅을 받아 스토어크레딧을 자동 적립하는 미들웨어 앱 설계',
+      '고객 등급 세그먼트와 자동 할인을 연동해 등급별 혜택을 규칙화',
+      '실검증 테스트 하네스로 적립·등급 흐름을 반복 회귀 검증',
+    ],
+    results: [
+      '주문 발생 시 크레딧이 자동 적립되는 무인 운영 흐름 확보',
+      '등급·혜택 정책 변경을 코드가 아닌 규칙으로 관리',
+    ],
   },
   {
     slug: 'bluemango',
@@ -54,6 +70,17 @@ export const workProjects: WorkProject[] = [
     ],
     screenshots: ['/images/work/bluemango/cover.png'],
     detail: true,
+    problem:
+      '태국 현지 액티비티·여행 상품을 한 곳에서 예약할 수 있는 플랫폼이 필요했고, 흩어진 현지 상품 데이터를 모아 정규화하는 것이 핵심 과제였다.',
+    approach: [
+      'Next.js 15 · Turborepo 모노레포로 고객/관리자/백엔드를 분리 구축',
+      '크롤러로 현지 상품 데이터를 수집·정규화하는 파이프라인',
+      'Drizzle · Supabase 기반 상품–예약–정산 데이터 모델',
+    ],
+    results: [
+      '상품 탐색부터 예약·정산까지 이어지는 풀스택 플랫폼',
+      '현지 상품 데이터를 자동 수집·갱신하는 구조',
+    ],
   },
   {
     slug: 'dr-reborn',
@@ -72,6 +99,15 @@ export const workProjects: WorkProject[] = [
     ],
     screenshots: ['/images/work/dr-reborn/cover.png'],
     detail: true,
+    problem:
+      '에스테틱·의료 브랜드의 고객 앱, 웹 프론트, 관리자, 백엔드가 따로 놀면 예약·회원 흐름이 끊긴다. 이를 하나의 서비스 플랫폼으로 묶는 것이 목표였다.',
+    approach: [
+      '고객 앱 · 프론트 · 관리자 · 백엔드를 통합 아키텍처로 구축',
+      '예약과 회원 흐름을 서비스 전반에 일관되게 설계',
+    ],
+    results: [
+      '앱–웹–관리자가 하나로 연결된 서비스 플랫폼 구축',
+    ],
   },
   {
     slug: 'bridge7',

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { workProjects, type WorkProject } from '../../data/work/projects'
 
 const statusLabel: Record<WorkProject['status'], string> = {
@@ -53,16 +54,23 @@ export function WorkCard({ project }: { project: WorkProject }) {
             </span>
           ))}
         </div>
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-block text-sm text-purple-400 hover:underline"
-          >
-            라이브 보기 →
-          </a>
-        )}
+        <div className="mt-3 flex gap-4">
+          {project.detail && (
+            <Link href={`/work/${project.slug}`} className="text-sm text-purple-400 hover:underline">
+              케이스 보기 →
+            </Link>
+          )}
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-purple-400 hover:underline"
+            >
+              라이브 보기 →
+            </a>
+          )}
+        </div>
       </div>
     </motion.div>
   )
