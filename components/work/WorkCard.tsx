@@ -79,7 +79,7 @@ export function WorkCard({ project }: { project: WorkProject }) {
 export function WorkGrid() {
   return (
     <motion.div
-      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 not-prose my-8"
+      className="grid gap-6 grid-cols-1 sm:grid-cols-2 not-prose my-8"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
