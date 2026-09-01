@@ -226,6 +226,42 @@ export const workProjects: WorkProject[] = [
     detail: false,
   },
   {
+    slug: 'fineclub',
+    name: '파인클럽 (FineClub)',
+    realName: true,
+    client: '파인클럽(FineClub)',
+    industry: '커머스 · 반려동물',
+    period: '2024',
+    status: 'done',
+    summary:
+      '반려동물 라이프스타일 브랜드 커머스 — 쇼핑몰·모바일 앱(FineMate)·관리자를 아우르는 MVP를 구축했다.',
+    role: 'MVP 기획 · 개발 (쇼핑몰 + 앱 + 관리자)',
+    stack: ['Web', 'App(FineMate)', 'Admin'],
+    highlights: [
+      '쇼핑몰 · FineMate 앱 · 관리자 통합 MVP',
+      'PARTY EDITION 기획전 · 룩북 · 매거진 운영',
+      '반려동물 라이프스타일 브랜드 커머스',
+    ],
+    screenshots: ['/images/work/fineclub/cover.png'],
+    gallery: [
+      '/images/work/fineclub/cover.png',
+      '/images/work/fineclub/02.png',
+      '/images/work/fineclub/03.png',
+      '/images/work/fineclub/04.png',
+    ],
+    detail: true,
+    problem:
+      '반려동물 라이프스타일 브랜드를 온라인에서 빠르게 검증하려면, 쇼핑몰·앱·관리자를 갖춘 최소 기능 제품(MVP)이 필요했다.',
+    approach: [
+      '쇼핑몰 프론트 · FineMate 모바일 앱 · 관리자(fineclub-admin)를 MVP 범위로 구축',
+      '기획전(PARTY EDITION)·룩북·매거진 등 브랜드 콘텐츠 운영 구조',
+    ],
+    results: [
+      'fineclub.co.kr 라이브 — 브랜드 커머스 MVP 출시',
+      '앱·관리자까지 연결된 운영 가능한 최소 제품 확보',
+    ],
+  },
+  {
     slug: 'hightecher',
     name: '하이테커 · Claude 실무 강의',
     realName: true,
