@@ -98,7 +98,7 @@ B0 TF-IDF 단독은 P@1 0.40. plain CBOW B1 은 0.45. TF-IDF 풀링을 plain CBO
 
 **주황색은 3-Resources/Guides 클러스터** — 우하단에 깔끔하게 응집했습니다. 옵시디언 워크플로우 가이드, 태그 컨벤션 등 토픽적으로 일관된 노트들이 모인 거고요.
 
-**파란색 1-Projects** 는 더 넓게 펼쳐졌지만, 그 안에서 blog-codemon, rsquare, moneymon 같은 sub-cluster들이 보입니다. 위키링크 엣지는 클러스터를 가로지르며 서로 연결된 노트들을 잇습니다.
+**파란색 1-Projects** 는 더 넓게 펼쳐졌지만, 그 안에서 blog-codemon, moneymon 같은 sub-cluster들이 보입니다. 위키링크 엣지는 클러스터를 가로지르며 서로 연결된 노트들을 잇습니다.
 
 *그래프 신호가 폴더 구조를 임베딩 공간에 복원하고 있다* 는 것이 시각적으로 확인됩니다."
 
