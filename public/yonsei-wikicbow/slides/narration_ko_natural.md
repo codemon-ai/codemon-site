@@ -326,7 +326,7 @@ $$ \hat n_{1\dots k} = \operatorname*{arg\,top\text{-}k}_{\,n\in\mathcal N}\ \co
 >
 > 주황색이 **3-Resources 폴더 노트들** — 우하단에 깔끔하게 응집했습니다. 옵시디언 워크플로우 가이드, 태그 컨벤션 같은 토픽적으로 일관된 노트들이 모인 거예요.
 >
-> 파란색 **1-Projects** 는 더 넓게 펼쳐졌는데, 그 안에서 blog-codemon, rsquare, moneymon 같은 sub-cluster(서브 클러스터) 들이 따로 형성됐어요.
+> 파란색 **1-Projects** 는 더 넓게 펼쳐졌는데, 그 안에서 blog-codemon, moneymon 같은 sub-cluster(서브 클러스터) 들이 따로 형성됐어요.
 >
 > 해석은 단순합니다 — **그래프 신호가 폴더 구조를 임베딩 공간에 자연스럽게 복원한다.** 이게 시각적으로 확인되는 거고요."
 
