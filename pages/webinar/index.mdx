@@ -1,0 +1,225 @@
+---
+title: "웨비나 사전 준비 — Claude 바이브 코딩 핸즈온"
+description: "하이테커 × 코드몬 Claude 바이브 코딩 웨비나 사전 준비 가이드. Claude Code·Node.js·Vercel CLI·플러그인(superpowers, vercel)·Playwright MCP·Orca 설치를 20–30분에 끝냅니다."
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 웨비나 사전 준비
+
+**Claude 바이브 코딩 핸즈온 (60분)** — 프롬프트 규칙 → 스킬 → MCP·플러그인 → 브레인스토밍 → 한방 프롬프트 → 아티팩트 → Playwright 테스트 → Vercel 배포.
+
+웨비나 당일은 강사와 참가자가 **같은 프롬프트를 동시에 입력**합니다. 아래 준비를 마쳐야 같은 속도로 따라올 수 있습니다. 소요 20–30분, 전부 무료 범위에서 가능합니다(계정·사용량에 따라 다를 수 있음). 준비가 어려우면 시연을 보며 프롬프트 작성과 결과 확인에 참여할 수 있습니다.
+
+<Callout type="info">
+이 페이지의 명령은 **터미널**(macOS: 터미널 앱, Windows: PowerShell)에 입력하는 것과 **Claude Code 안**(`/`로 시작)에 입력하는 것이 섞여 있습니다. 코드 블록 위 설명에서 어디에 입력하는지 확인하세요. 확인일 2026-09-18.
+</Callout>
+
+## 준비 완료 체크리스트
+
+| # | 항목 | 확인 명령 | 기대 결과 |
+|---|------|-----------|-----------|
+| 1 | Claude Code 설치 + 로그인 | `claude --version` → `claude` | 버전 출력, 대화 시작 |
+| 2 | Node.js LTS + Vercel CLI 로그인 | `node --version` · `npx vercel whoami` | 버전 출력, 내 계정명 |
+| 3 | 플러그인 2개 (superpowers, vercel) | Claude Code에서 `/plugin` | 목록에 두 개 표시 |
+| 4 | Vercel MCP 인증 | Claude Code에서 `/mcp` | vercel · connected |
+| 5 | Playwright MCP 등록 | `claude mcp list` | playwright 표시 |
+| 6 | (선택) Orca 설치 | `orca status` 또는 앱 실행 | 앱이 열림 |
+| 7 | 실습 폴더 + 환경 점검 프롬프트 | 아래 §7 | 점검 결과 출력 |
+| 8 | 소개 2문장 · 사례 3개 · 이메일 | 메모 | 공개해도 되는 내용만 |
+
+---
+
+<Steps>
+
+### Claude Code 설치와 로그인
+
+Claude Code를 쓸 수 있는 Claude 계정(Pro·Max·Team 또는 API 결제)이 필요합니다. 이미 설치했다면 `claude --version`만 확인하고 넘어갑니다.
+
+<Tabs items={['macOS', 'Windows']}>
+  <Tabs.Tab>
+    터미널 앱에 입력합니다.
+
+    ```bash
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    PowerShell에 입력합니다.
+
+    ```powershell
+    irm https://claude.ai/install.ps1 | iex
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+설치 후 **터미널을 새로 열고** 확인합니다. 처음 `claude`를 실행하면 브라우저 로그인 안내가 나옵니다.
+
+```bash
+claude --version
+claude
+```
+
+> 공식 문서: [Claude Code 설치](https://code.claude.com/docs/en/setup) · [시작하기](https://code.claude.com/docs/en/quickstart)
+
+### Node.js와 Vercel CLI
+
+[Node.js 공식 다운로드](https://nodejs.org/en/download)에서 **LTS**를 설치합니다. 로컬 서버와 Vercel CLI 실행에 사용합니다. [Vercel](https://vercel.com/signup) 계정도 만들어 둡니다(Hobby 무료).
+
+```bash
+node --version
+npm --version
+npx vercel login
+npx vercel whoami
+```
+
+`npx`는 첫 실행 때 패키지 다운로드를 제안할 수 있습니다. `whoami`에 내 계정명이 나오면 완료입니다. 조직 PC에서는 설치 정책을 먼저 확인하세요.
+
+> 공식 문서: [Vercel CLI](https://vercel.com/docs/cli)
+
+### 플러그인 2개 설치 — superpowers, vercel
+
+플러그인은 스킬·MCP·명령을 한 번에 설치하는 묶음입니다. 둘 다 Claude Code 기본 마켓플레이스(`claude-plugins-official`)에 있습니다. **Claude Code 안에서** 입력합니다.
+
+```text
+/plugin install superpowers@claude-plugins-official
+/plugin install vercel@claude-plugins-official
+```
+
+- **superpowers** — 브레인스토밍·계획·디버깅 등 "일하는 순서"를 스킬로 묶은 오픈소스 플러그인. 설치 후 `/superpowers:brainstorming`이 보이면 성공. ([저장소](https://github.com/obra/superpowers))
+- **vercel** — Vercel MCP 서버 + `/vercel:deploy` `/vercel:status` `/vercel:env` 명령 + 배포 스킬. ([저장소](https://github.com/vercel/vercel-plugin))
+
+명령이 안 되면 `/plugin`을 입력해 **Discover** 탭에서 이름을 검색해 설치해도 같습니다.
+
+> 공식 문서: [플러그인 찾기·설치](https://code.claude.com/docs/en/discover-plugins) · [Plugins](https://code.claude.com/docs/en/plugins)
+
+### Vercel MCP 인증
+
+플러그인 설치와 서비스 인증은 별개입니다. **Claude Code 안에서** `/mcp`를 입력하고 `vercel` 서버를 선택해 브라우저 로그인을 마칩니다.
+
+```text
+/mcp
+```
+
+인증이 끝나면 `/vercel:status`를 입력해 봅니다. 아직 프로젝트가 없으면 "링크되지 않음" 안내가 나오는 것이 정상입니다. 서버 이름이 목록에 보이는 것과 인증 성공은 다르니 `connected` 상태를 확인하세요.
+
+<Callout type="warning">
+OAuth 화면과 터미널에 계정 이메일·토큰이 보일 수 있습니다. 웨비나 중 화면을 공유한다면 미리 인증을 끝내 두세요.
+</Callout>
+
+> 공식 문서: [Claude Code MCP](https://code.claude.com/docs/en/mcp) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp)
+
+### Playwright MCP 등록
+
+Claude가 실제 브라우저를 열어 클릭·스크린샷으로 사이트를 테스트하게 하는 도구 서버입니다. Claude Code 공식 플러그인이 아니라 Microsoft가 배포하는 MCP 서버를 직접 등록합니다. **터미널**에서 입력합니다.
+
+```bash
+claude mcp add playwright -- npx @playwright/mcp@latest
+claude mcp list
+```
+
+첫 실행 때 브라우저(Chromium) 다운로드가 있을 수 있습니다. 미리 한 번 돌려 두면 당일 대기가 없습니다. Claude Code를 열고 이렇게 요청해 보세요.
+
+```text
+Playwright MCP로 https://example.com 을 열어 제목을 읽고 스크린샷을 찍어줘.
+```
+
+> 공식 문서: [Playwright MCP](https://github.com/microsoft/playwright-mcp)
+
+### (선택) Orca 설치 — 세션 여러 개를 나란히
+
+웨비나 중반에 **한방 프롬프트**를 날려두고, 사이트가 만들어지는 동안 다른 세션에서 아티팩트를 만듭니다. 터미널 창을 두 개 띄워도 되지만, [Orca](https://onorca.dev/)를 쓰면 같은 폴더의 Claude Code 세션 여러 개를 한 화면에서 나란히 보고 조종할 수 있습니다. 무료·오픈소스(MIT)입니다.
+
+<Tabs items={['macOS (Homebrew)', 'macOS / Windows / Linux (다운로드)']}>
+  <Tabs.Tab>
+    ```bash
+    brew install --cask stablyai/orca/orca
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    [onorca.dev/download](https://onorca.dev/download)에서 운영체제에 맞는 설치 파일을 받습니다. macOS Apple Silicon / Intel, Windows `.exe`, Linux AppImage.
+  </Tabs.Tab>
+</Tabs>
+
+첫 실행 순서:
+
+1. Orca를 열고 **Add project**로 실습 폴더(`my-portfolio`)를 선택합니다.
+2. **New workspace**를 만들고 에이전트로 **Claude Code**를 고릅니다. 터미널이 열리면서 `claude`가 실행됩니다.
+3. 같은 방법으로 워크스페이스를 하나 더 만들면 두 세션이 나란히 보입니다. 웨비나에서는 하나는 사이트 제작, 하나는 아티팩트에 씁니다.
+
+Orca는 워크스페이스마다 git worktree를 만들 수 있습니다. 이번 실습은 git 없이 진행해도 되니, 워크트리 옵션은 끄거나 기본값으로 둡니다.
+
+> 공식 문서: [Orca](https://onorca.dev/) · [저장소](https://github.com/stablyai/orca)
+
+### 실습 폴더와 환경 점검 프롬프트
+
+새 빈 폴더에서 시작합니다. 기존 저장소나 개인 문서 폴더를 선택하지 않습니다.
+
+```bash
+mkdir my-portfolio
+cd my-portfolio
+claude
+```
+
+Claude Code가 열리면 아래 프롬프트(웨비나 P0)를 붙여 넣습니다. 당일 첫 손동작이기도 합니다.
+
+```text
+현재 작업 폴더의 위치와 파일을 확인해줘.
+Claude Code, Node.js, npm, Vercel CLI 사용 가능 여부를 점검해줘.
+비밀값은 출력하지 말고 로그인 여부만 확인해줘.
+설치된 플러그인과 연결된 MCP 서버 목록을 알려줘.
+부족한 준비는 내 운영체제에 맞춰 한 단계씩 안내해줘.
+아직 파일을 수정하거나 배포하지 마.
+```
+
+결과에 "Vercel 로그인됨 / 플러그인 superpowers·vercel / MCP vercel·playwright"가 나오면 준비 완료입니다. 빠진 항목은 위 단계로 돌아갑니다.
+
+### 준비할 내용
+
+코드가 아니라 **내용**이 웨비나의 병목입니다. 미리 메모해 두세요.
+
+- 소개 문구 2문장 — "누구를, 어떻게 돕는가"
+- 공개해도 되는 작업 사례 3개 — 각각 문제 / 내가 한 일 / 결과 한 줄씩. 없으면 `[예시]`로 표시하고 진행
+- 연락용 이메일 1개 — 사이트에 공개됩니다
+
+</Steps>
+
+---
+
+## 막혔을 때
+
+| 증상 | 확인 | 해결 |
+|------|------|------|
+| `claude` 명령 없음 | 설치 후 터미널을 새로 열었는지, PATH | 재설치 후 새 터미널. Windows는 PowerShell 재시작 |
+| 로그인 화면이 안 뜸 | 브라우저 팝업 차단, 다른 계정 로그인 상태 | `claude` 재실행 → 안내된 URL을 직접 열기 |
+| `npx vercel` 느림 | 첫 다운로드 | 한 번 기다리면 이후는 빠름 |
+| `/plugin install` 실패 | 로그인 상태, 마켓플레이스 이름 오타 | `/plugin` → Discover 탭에서 검색 |
+| `/mcp`에 vercel이 없음 | vercel 플러그인 설치 여부 | 플러그인 설치 후 Claude Code 재시작 |
+| `/mcp` 인증 후에도 조회 실패 | 계정·팀 권한 | Vercel 대시보드에서 팀 확인 후 재인증 |
+| Playwright가 브라우저를 못 염 | 첫 실행 다운로드, 방화벽 | 위 example.com 요청을 한 번 더. 당일에는 수동 클릭으로 대체 가능 |
+| Orca에서 Claude Code가 안 보임 | `claude` 설치·PATH | 터미널에서 `claude --version` 확인 후 Orca 재시작 |
+| 사용량 제한 | 플랜 한도 | 시연을 보며 참여. 로그아웃으로 한도가 초기화되지 않음 |
+
+오류를 전달할 때는 **"어느 환경에서 / 무엇을 했더니 / 무엇이 나와야 했는데 / 실제로 무엇이 나왔다"** 순서로, 키·토큰·개인정보는 가린 로그만 보내 주세요.
+
+## 당일 흐름 미리 보기
+
+| 시간 | 손동작 | 남는 결과 |
+|------|--------|-----------|
+| 03–09 | ① 프롬프트 규칙 5 + 환경 점검 (P0) | 내 환경 상태 |
+| 09–15 | ② 스킬: 내 스킬 만들기 + superpowers | `.claude/skills/portfolio-check` |
+| 15–21 | ③ MCP·플러그인: Vercel 설치·인증·조회 | `/vercel:status` 결과 |
+| 21–28 | ④ 브레인스토밍 스킬로 아이디에이션 | `docs/plans/portfolio-design.md` |
+| 28–32 | ⑤ 한방 프롬프트 날려두기 | `site/` 생성 시작 |
+| 32–40 | ⑥ 아티팩트로 설계 시각화 | 공유 링크 |
+| 40–46 | 로컬 확인 + 한 번 수정 | Local 주소 · `check.md` |
+| 46–52 | ⑦ Playwright 테스트 (+ ego lite) | 스크린샷 · `check.md` |
+| 52–58 | ⑧ 배포: Preview → Production | 배포 URL |
+
+참가자 핸드북(프롬프트 12개 전체)과 슬라이드는 웨비나 당일 하이테커 채널로 안내합니다.
+
+---
+
+<small>
+확인일 2026-09-18. 출처: [Claude Code 설치](https://code.claude.com/docs/en/setup) · [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Plugins](https://code.claude.com/docs/en/plugins) · [플러그인 찾기](https://code.claude.com/docs/en/discover-plugins) · [Artifacts](https://code.claude.com/docs/en/artifacts) · [Vercel CLI](https://vercel.com/docs/cli) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp) · [Vercel 플러그인](https://github.com/vercel/vercel-plugin) · [superpowers](https://github.com/obra/superpowers) · [Playwright MCP](https://github.com/microsoft/playwright-mcp) · [Orca](https://onorca.dev/) · [Node.js](https://nodejs.org/en/download). 요금·플랜 조건은 각 서비스의 현재 안내를 따릅니다.
+</small>

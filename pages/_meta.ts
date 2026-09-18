@@ -69,6 +69,13 @@ export default {
       sidebar: false,
     }
   },
+  webinar: {
+    type: 'folder',
+    display: 'hidden',
+    theme: {
+      sidebar: false,
+    }
+  },
   admin: {
     type: 'folder',
     display: 'hidden'
