@@ -151,7 +151,7 @@ ALTER TABLE survey_responses
 
 | # | 상태 | 날짜 | 내용 |
 |---|------|------|------|
-| 64 | 머지 | 2026-09-18 | `/webinar` 웨비나 사전 준비 가이드 신설 (feat/webinar-prep) |
+| 65 | 머지 | 2026-09-18 | `/webinar` 웨비나 사전 준비 가이드 신설 (feat/webinar-prep) |
 | 28 | OPEN | 2026-07-17 | 파트너 강의 2종 인수인계 기록 |
 | 27 | OPEN | 2026-07-11 | 코드 위키(openwiki/) + CLAUDE.md 이원 체계 |
 | 26 | 머지 | 2026-06-27 | 1과정 공식 MCP/Skill 도구 목록 보강 |
