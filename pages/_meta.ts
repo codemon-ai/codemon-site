@@ -72,9 +72,6 @@ export default {
   webinar: {
     type: 'folder',
     display: 'hidden',
-    theme: {
-      sidebar: false,
-    }
   },
   admin: {
     type: 'folder',
