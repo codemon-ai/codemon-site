@@ -99,7 +99,7 @@ const config: DocsThemeConfig = {
   project: {
     link: 'https://github.com/codemon-ai',
   },
-  docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site',
+  docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site/blob/main',
   footer: {
     content: (
       <div className="flex flex-col items-center gap-2 w-full">
