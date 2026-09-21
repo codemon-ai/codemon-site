@@ -151,6 +151,7 @@ ALTER TABLE survey_responses
 
 | # | 상태 | 날짜 | 내용 |
 |---|------|------|------|
+| 66 | 머지 | 2026-09-21 | `/webinar` 허브 + `/webinar/handbook` 참가자 핸드북 서빙 (feat/webinar-handbook) |
 | 65 | 머지 | 2026-09-18 | `/webinar` 웨비나 사전 준비 가이드 신설 (feat/webinar-prep) |
 | 28 | OPEN | 2026-07-17 | 파트너 강의 2종 인수인계 기록 |
 | 27 | OPEN | 2026-07-11 | 코드 위키(openwiki/) + CLAUDE.md 이원 체계 |

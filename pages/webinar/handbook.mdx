@@ -1,0 +1,457 @@
+---
+title: "참가자 핸드북 — Claude 바이브 코딩 핸즈온"
+description: "하이테커 × 코드몬 Claude 바이브 코딩 웨비나 참가자 핸드북. 60분 진행표, 8단계 손동작, 복사해서 쓰는 프롬프트 12개, 트러블슈팅, 완성 체크리스트."
+---
+
+import { Callout } from 'nextra/components'
+
+# 참가자 핸드북
+
+**아이디어를 내 사이트로.** 프롬프트 규칙 다섯 줄에서 시작해, 스킬과 플러그인을 붙이고, 브레인스토밍한 설계를 한방 프롬프트로 만들고, Playwright로 테스트한 뒤 Vercel 주소로 공개하는 60분 핸즈온.
+
+<Callout type="info">
+아직 준비 전이면 [사전 준비](/webinar/prep)부터 (20–30분). 이 페이지의 명령과 프롬프트는 실습 예시이며, 읽는 것만으로 설치·인증·배포가 실행되지는 않습니다. 완성 예제: [demo-static](/files/webinar/demo-static/index.html) · 프롬프트만 모아 받기: [prompt-pack.md](/files/webinar/prompt-pack.md)
+</Callout>
+
+## 01 · 여덟 번의 손동작, 결과는 주소 하나
+
+개념 설명은 각 단계 앞에 한 장씩만. 나머지는 **직접 입력하고 결과를 확인하는 시간**입니다. 사전 준비를 마치면 강사와 같은 속도로 진행할 수 있고, 준비가 부족해도 프롬프트 작성과 화면 검수에 참여할 수 있습니다.
+
+| 시간 | 손동작 | 남는 결과 | 프롬프트 |
+|------|--------|-----------|----------|
+| 00–03 | 오늘의 완성품 보기 | 만들 결과 이해 | — |
+| 03–09 | ① 프롬프트 규칙 5 + 환경 점검 | 규칙 5줄 · 내 환경 상태 | P0 |
+| 09–15 | ② 스킬: 내 스킬 만들기 + superpowers | `.claude/skills/portfolio-check` | P1 |
+| 15–21 | ③ MCP·플러그인: Vercel 설치·인증·조회 | `/vercel:status` 결과 | P7 |
+| 21–28 | ④ 브레인스토밍 스킬로 아이디에이션 | `docs/plans/portfolio-design.md` | P2 |
+| 28–32 | ⑤ 한방 프롬프트 날려두기 | `site/` 생성 시작 | P3 |
+| 32–40 | ⑥ 아티팩트로 설계 시각화 | 공유 링크 | P4 |
+| 40–46 | 로컬 확인 + 한 번 수정 | Local 주소 · `check.md` | P5 |
+| 46–52 | ⑦ Playwright 테스트 (+ ego lite) | 스크린샷 · `check.md` | P6 |
+| 52–58 | ⑧ 배포: Preview → Production | 배포 URL | P8 · P9 |
+| 58–60 | 마무리 Q&A | 나의 다음 아이디어 | — |
+
+**기본 경로:** Claude Code + 내 검수 스킬 + superpowers 브레인스토밍 + Vercel 플러그인(MCP·배포 명령) + Playwright MCP. 한 페이지 포트폴리오는 DB 없이 완성합니다. Supabase 확장과 GitHub 연동은 부록·후속 학습입니다.
+
+## 02 · 사전 준비 요약
+
+전체 절차는 [사전 준비](/webinar/prep)에 있습니다. 아래는 확인용입니다.
+
+- [ ] `claude --version` 동작 + 로그인
+- [ ] `node --version` · `npx vercel whoami`에 내 계정
+- [ ] `/plugin install superpowers@claude-plugins-official` · `/plugin install vercel@claude-plugins-official`
+- [ ] `/mcp` → Vercel 인증 완료
+- [ ] `claude mcp add playwright -- npx @playwright/mcp@latest`
+- [ ] (선택) Orca 설치
+- [ ] 소개 2문장 · 작업 사례 3개 · 연락 이메일
+
+```bash
+mkdir my-portfolio
+cd my-portfolio
+claude
+```
+
+새 빈 폴더에서 시작합니다. 배포할 파일은 `site/`에만 생성합니다.
+
+## 03 · ① 프롬프트 규칙 다섯 가지 (03–09)
+
+오늘 쓰는 프롬프트 12개는 전부 이 다섯 줄로 짜여 있습니다. 규칙을 외우는 것보다 [P0](#p0--실습-환경-점검)에서 다섯 줄이 어디에 있는지 찾아보는 편이 빠릅니다.
+
+| 규칙 | 뜻 | P0에서 |
+|------|----|--------|
+| 1. 목표·대상·완료 기준 | 무엇을, 누구에게, 어떤 상태면 끝인지 | "환경 점검 … 사용 가능 여부" |
+| 2. 범위와 제외 | 이번에 안 하는 것을 먼저 말하기 | "아직 파일을 수정하지 마" |
+| 3. 관찰 가능하게 | "예쁘게" 대신 "390px에서 안 잘리게" | "로그인 여부만 확인" |
+| 4. 한 번에 하나 | 결과 확인 후 다음 프롬프트 | P0 → P1 → … |
+| 5. 금지선 | 비밀값 출력 금지, 배포 금지 | "비밀값은 출력하지 말고" |
+
+**손동작:** 새 폴더에서 `claude` 실행 → P0 붙여 넣기 → 결과에서 "로그인됨 / 플러그인 목록 / MCP 목록" 확인. 빠진 것이 있으면 [사전 준비](/webinar/prep)의 해당 항목으로.
+
+## 04 · ② 스킬: 파일 하나가 작업법이 됩니다 (09–15)
+
+스킬은 `.claude/skills/<이름>/SKILL.md` 파일입니다. 설명(description)을 보고 Claude가 상황에 맞게 고르거나, `/<이름>`으로 직접 부릅니다. 스킬은 권한이나 서비스 인증을 대신하지 않습니다. ([Skills 공식 문서](https://code.claude.com/docs/en/skills))
+
+```markdown
+---
+name: portfolio-check
+description: 포트폴리오 수정 후 품질 점검에 사용
+---
+모바일, 키보드, 실제 링크, 예시 표시를 점검한다.
+공개 폴더와 비밀값 노출을 확인한다.
+결과는 통과 / 실패 / 미확인으로 보고한다.
+```
+
+**손동작 1 · 내 첫 스킬**
+
+1. [P1](#p1--내-첫-스킬-만들기)을 입력합니다.
+2. `.claude/skills/portfolio-check/SKILL.md`가 생겼는지 봅니다.
+3. `/portfolio-check`를 입력해 목록에 뜨는지 확인합니다. 뒤의 한방 프롬프트와 Playwright 테스트가 이 스킬을 씁니다.
+
+안 보이면 경로와 `SKILL.md` 대소문자를 확인하고 세션을 다시 엽니다. 시간이 없으면 [템플릿](/files/webinar/templates/portfolio-check.SKILL.md)을 같은 경로에 복사합니다. 직접 호출만 허용하려면 frontmatter에 `disable-model-invocation: true`.
+
+**손동작 2 · 남이 만든 스킬 묶음, superpowers**
+
+```text
+/plugin install superpowers@claude-plugins-official
+```
+
+브레인스토밍·계획·디버깅 등 "일하는 순서"를 스킬로 묶은 오픈소스 플러그인입니다. 설치 후 `/superpowers:brainstorming`이 보이면 성공. `/plugin`의 Discover 탭에서 검색해 설치해도 됩니다. ([superpowers](https://github.com/obra/superpowers))
+
+## 05 · ③ MCP와 플러그인: Vercel을 붙이고 진짜 연결됐는지 봅니다 (15–21)
+
+| 개념 | 하는 일 | 오늘 |
+|------|---------|------|
+| Skill | 반복 작업의 절차를 담은 파일 | portfolio-check, brainstorming |
+| MCP | 외부 도구·데이터를 연결하는 표준 프로토콜 | Vercel 서버, Playwright 서버 |
+| Plugin | 스킬 + MCP + 명령 + 에이전트를 한 번에 설치하는 묶음 | vercel, superpowers |
+| CLI | 터미널 명령으로 서비스 조작 | `npx vercel` |
+
+**손동작 · Vercel 플러그인 설치 → 인증 → 조회**
+
+```text
+/plugin install vercel@claude-plugins-official
+/mcp
+/vercel:status
+```
+
+1. 설치하면 Vercel MCP 서버(mcp.vercel.com)와 `/vercel:deploy` · `/vercel:status` · `/vercel:env` 명령, 배포 관련 스킬이 함께 들어옵니다. ([플러그인 저장소](https://github.com/vercel/vercel-plugin))
+2. `/mcp` → Vercel 서버 → 인증을 선택하고 브라우저 로그인을 마칩니다. 설치와 인증은 별개입니다.
+3. [P7](#p7--vercel-플러그인으로-상태-조회)로 팀·프로젝트 상태를 실제 조회합니다. 서버 이름이 목록에 보이는 것과 조회 성공은 다릅니다.
+
+플러그인 없이 MCP만 등록하려면 `claude mcp add --transport http vercel https://mcp.vercel.com`. MCP 인증과 CLI 로그인(`npx vercel whoami`)은 각각 확인합니다. MCP 없이 CLI만으로도 배포할 수 있습니다. 근거: [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Plugins](https://code.claude.com/docs/en/plugins) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp)
+
+## 06 · ④ 브레인스토밍 스킬로 아이디어를 설계로 (21–28)
+
+[P2](#p2--브레인스토밍으로-아이디에이션)를 입력하면 스킬이 질문을 시작합니다. **질문 2~3개에만 답하고** 나머지는 "기본값으로"라고 답해 4분 안에 끝냅니다. 질문이 5개를 넘으면 "지금까지 결정으로 문서를 정리해줘"로 끊습니다.
+
+| 스킬이 묻는 것 | 답하는 요령 |
+|----------------|-------------|
+| 방문자는 누구인가 | 한 종류만: 채용 담당자 / 잠재 고객 |
+| 사례 3개는 어떤 종류인가 | 카테고리 3개 이름만 (예: 리서치·기획·자동화) |
+| 첫 화면 한 문장 | 내가 누구를 어떻게 돕는지 한 줄 |
+| 그 외 | "기본값으로" |
+
+결과 `docs/plans/portfolio-design.md`를 열어 **완료 기준 5개**가 있는지만 확인합니다. 없으면 "완료 기준 5개를 추가해줘". 이 다섯 항목을 뒤의 Playwright 테스트가 그대로 검사합니다.
+
+```text
+1. 390px 화면에서 가로로 넘치지 않는다.
+2. 사례 3개가 보이고 카테고리 필터가 동작한다.
+3. 이메일 복사가 성공하거나 수동 복사 안내가 나온다.
+4. 키보드로 버튼과 링크에 이동할 수 있다.
+5. 공개 주소에서 이미지·스타일·연락 동선이 정상이다.
+```
+
+조사가 더 필요하면 브레인스토밍 중 "참고 사이트 3개를 찾아 URL과 확인 날짜를 적어줘"라고 덧붙일 수 있습니다. AI가 접근하지 못한 페이지를 읽은 것으로 간주하지 않습니다. [관찰·해석·결정을 나눈 조사 예제](/files/webinar/templates/research-example.md)
+
+## 07 · ⑤ 한방 프롬프트를 날려두고 다음 단계로 (28–32)
+
+[P3](#p3--포트폴리오-한방-프롬프트-로컬-확인까지)를 붙여 넣고 Enter. "확인이 끝날 때까지 질문하지 말고 끝까지 진행해줘"가 핵심입니다. 구현 → 로컬 서버 실행 → `/portfolio-check` 자체 점검 → check.md까지 한 번에 진행합니다. 권한 확인이 뜨면 허용합니다. 실행 중에는 화면을 그대로 두고 아티팩트 단계로 넘어갑니다.
+
+```text
+my-portfolio/
+  .claude/skills/portfolio-check/SKILL.md
+  docs/plans/portfolio-design.md
+  check.md
+  site/
+    index.html
+    styles.css
+    app.js
+```
+
+**두 번째 세션이 필요하면** Orca에서 같은 폴더의 새 워크스페이스를 엽니다. 한 세션은 사이트를 만들고, 다른 세션은 아티팩트를 만듭니다.
+
+<Callout type="warning">
+**43분까지 초안이 없으면** [demo-static 예제](/files/webinar/demo-static/index.html)의 `index.html`·`app.js`를 `site/`에 복사하고 소개 문구 한 줄을 바꿔 계속 진행합니다. 예제를 사용했다는 점을 check.md에 적으면 됩니다.
+</Callout>
+
+## 08 · ⑥ 아티팩트: 설계를 눈에 보이게 (32–40)
+
+아티팩트는 Claude가 만든 HTML·차트·문서를 코드가 아니라 **실제 화면으로 렌더링한 결과물**입니다. 링크로 공유할 수 있고, 배포는 아닙니다. 한방 프롬프트가 도는 동안 방금 만든 설계 문서를 시각화합니다.
+
+| 경로 | 방법 |
+|------|------|
+| A · Claude 앱 (모두) | claude.ai 대화창에 [P4](#p4--브레인스토밍-결과를-아티팩트로)와 `portfolio-design.md` 내용을 붙여 넣습니다. 오른쪽에 아티팩트가 렌더링됩니다. |
+| B · Claude Code 게시 (Pro·Max·Team) | 두 번째 세션에서 P4 끝에 "아티팩트로 게시해줘"를 붙입니다. claude.ai/code/artifacts에 비공개 링크로 게시되고 `/artifacts`로 목록을 봅니다. ([문서](https://code.claude.com/docs/en/artifacts)) |
+
+**손동작:** P4 실행 → 완성된 아티팩트에서 섹션 하나를 클릭해 완료 기준이 펼쳐지는지 확인 → 공유 링크 복사 → Claude Code 화면으로 돌아가 한방 프롬프트 결과 확인.
+
+## 로컬 주소를 열고, 한 가지만 고칩니다 (40–46)
+
+Claude가 출력한 **Local 주소**를 엽니다. 포트를 3000으로 고정해 추측하지 않습니다. check.md의 자체 점검 결과를 읽고, 첫 화면·사례·필터·이메일 복사를 직접 클릭합니다. 서버가 실행 중인 터미널은 그대로 둡니다.
+
+실제 화면에서 발견한 문제 하나를 [P5](#p5--관찰한-문제로-한-번-수정)의 "환경 → 행동 → 기대 → 실제" 형식으로 적습니다. 문제가 없으면 첫 화면 문장 길이를 바꿉니다. 전체 재생성이 아니라 **관찰 → 수정 → 재확인** 한 바퀴를 돕니다.
+
+| 모호한 요청 | 검증 가능한 요청 |
+|-------------|------------------|
+| 뭔가 답답해. 더 멋있게 바꿔줘. | 390px에서 제목이 잘려. 가로 스크롤 없이 두세 줄로 보여줘. |
+
+## 09 · ⑦ Playwright로 브라우저 테스트를 맡깁니다 (46–52)
+
+Playwright MCP는 Claude가 실제 브라우저를 열어 클릭·입력·스크린샷을 하게 하는 도구 서버입니다. Claude Code의 공식 플러그인이 아니라 Microsoft가 배포하는 MCP 서버를 직접 등록합니다. 첫 실행 때 브라우저 다운로드가 있을 수 있으니 사전 준비에서 한 번 실행해 둡니다. ([Playwright MCP](https://github.com/microsoft/playwright-mcp))
+
+```bash
+claude mcp add playwright -- npx @playwright/mcp@latest
+```
+
+**손동작**
+
+1. [P6](#p6--playwright로-테스트)을 입력합니다. 완료 기준 4개를 자동으로 확인하고 항목별 스크린샷을 찍습니다.
+2. 결과가 check.md에 통과 / 실패 / 미확인으로 추가됐는지 봅니다. "브라우저를 실제로 열지 못했으면 통과라고 쓰지 마"가 들어 있습니다.
+3. 실패 항목은 P5 형식으로 한 번 더 수정합니다.
+
+**시간이 되면 · 로그인이 필요한 화면은 ego lite**
+
+| 도구 | 방식 | 맞는 상황 |
+|------|------|-----------|
+| Playwright MCP | 새 브라우저를 띄워 자동 조작 | 공개 페이지 테스트 (오늘) |
+| ego lite | 내가 로그인한 Chromium을 에이전트가 별도 Space에서 사용. 캡차·2FA·SSO에 안 막힘 | 로그인 뒤 화면 테스트, 여러 에이전트 병렬 |
+| Claude in Chrome | Claude Code가 내 Chrome 탭을 직접 조작. `/chrome`으로 연결 | 지금 보고 있는 탭을 그대로 다룰 때 |
+
+[ego lite](https://lite.ego.app/) · [Claude in Chrome](https://code.claude.com/docs/en/chrome). 설치 시연은 하지 않고 어떤 상황에 필요한지만 다룹니다.
+
+## 10 · ⑧ 배포: Preview → Production (52–58)
+
+Vercel 플러그인의 `/vercel:deploy`는 CLI·프로젝트 링크·미커밋 변경을 점검한 뒤 Preview 배포를 실행합니다. 같은 일을 터미널에서 하려면 **site/ 안에서** `npx vercel`. 설계 문서와 스킬이 든 상위 폴더를 올리지 않습니다.
+
+```text
+/vercel:deploy
+```
+
+```bash
+cd site
+npx vercel whoami
+npx vercel
+```
+
+| 질문/설정 | 실습 선택 |
+|-----------|-----------|
+| 배포할 팀·계정 | 본인 실습용 팀. 강사의 팀 이름을 그대로 복사하지 않기 |
+| 기존 프로젝트에 연결 | 첫 배포는 새 프로젝트. 기존 연결이 있으면 대상 확인 |
+| 프로젝트 이름 | 본인이 구별할 영문 이름 |
+| 코드 디렉터리 | site/에서 실행했다면 `./` |
+| Framework Preset | Other · 정적 HTML |
+| Build Command / Output | 없음 / 현재 디렉터리 `.` |
+
+**손동작**
+
+1. [P8](#p8--preview-배포) 또는 `/vercel:deploy`로 Preview 주소를 만듭니다.
+2. 반환된 Preview URL을 열어 필터·복사를 한 번 더 누릅니다. 휴대폰이나 로그아웃 창으로 접근 범위를 확인합니다.
+3. 공개할 준비가 되면 [P9](#p9--production-공개-및-검증) 또는 `/vercel:deploy prod`(터미널: `npx vercel --prod`)로 Production 배포합니다.
+4. 실제 URL을 기록합니다. "배포 완료" 문장이 아니라 접속 결과가 근거입니다.
+
+**Preview는 자동으로 비공개라는 뜻이 아닙니다.** 공개 범위는 현재 Deployment Protection 설정을 확인합니다. 커스텀 도메인과 GitHub 연동 자동 배포는 후속 학습입니다. [배포 문서](https://vercel.com/docs/cli/deploy) · [접근 보호](https://vercel.com/docs/deployment-protection)
+
+## 11 · 복사해서 쓰는 프롬프트 12개
+
+대괄호를 자신의 정보로 바꿉니다. 프롬프트를 한꺼번에 모두 실행하지 말고, 각 결과를 확인한 뒤 다음 단계로 넘어갑니다. 슬래시 명령과 자연어는 Claude Code에, `npx`·`claude mcp` 명령은 터미널에 입력합니다. 코드 블록 오른쪽 위 버튼으로 복사합니다. 전체 묶음: [prompt-pack.md](/files/webinar/prompt-pack.md)
+
+### P0 · 실습 환경 점검
+
+```text
+현재 작업 폴더의 위치와 파일을 확인해줘.
+Claude Code, Node.js, npm, Vercel CLI 사용 가능 여부를 점검해줘.
+비밀값은 출력하지 말고 로그인 여부만 확인해줘.
+설치된 플러그인과 연결된 MCP 서버 목록을 알려줘.
+부족한 준비는 내 운영체제에 맞춰 한 단계씩 안내해줘.
+아직 파일을 수정하거나 배포하지 마.
+```
+
+### P1 · 내 첫 스킬 만들기
+
+```text
+이번 포트폴리오 제작에서 반복 사용할 품질 점검 절차를 스킬로 만들어줘.
+.claude/skills/portfolio-check/SKILL.md에 저장해줘.
+name은 portfolio-check, description에는 사용할 상황을 명시해줘.
+점검 항목은 모바일 가로 넘침, 키보드 조작, 실제 링크, 예시 표시,
+비밀값 노출, 공개할 파일 범위야. 자동 배포 동작은 넣지 마.
+검증 결과는 통과 / 실패 / 미확인으로 구분하고 근거를 적게 해줘.
+브라우저 도구가 있으면 직접 확인하고, 없으면 사용자가 확인할 체크리스트를 출력하게 해줘.
+```
+
+### P2 · 브레인스토밍으로 아이디에이션
+
+```text
+/superpowers:brainstorming
+나는 [직업/관심 분야]의 한 페이지 포트폴리오 사이트를 만들고 싶어.
+방문자는 [채용 담당자/잠재 고객]이고, 원하는 행동은 [사례 확인 후 이메일 연락]이야.
+오늘 60분 안에 HTML/CSS/JavaScript 정적 사이트로 Vercel에 배포할 거야.
+로그인, 결제, DB, 문의 저장 폼은 이번 범위에서 제외해줘.
+질문은 한 번에 하나씩 해줘. 결정이 끝나면 화면 구성, 사례 3개의 틀,
+완료 기준 5개를 docs/plans/portfolio-design.md에 정리해줘. 아직 구현하지 마.
+```
+
+### P3 · 포트폴리오 한방 프롬프트 (로컬 확인까지)
+
+```text
+docs/plans/portfolio-design.md대로 site/ 폴더에 포트폴리오를 구현해줘.
+index.html, styles.css, app.js로 구성하고 외부 라이브러리는 사용하지 마.
+화면은 소개 → 작업 사례 3개 → 작업 방식 → 연락 순서야.
+사례는 문제 / 내가 한 일 / 결과 형식으로, 카테고리 필터와 이메일 복사 버튼을 넣어줘.
+허구의 경력·고객·성과 수치를 만들지 말고, 미제공 내용은 [예시]라고 표시해줘.
+필수 이미지가 없으면 CSS 도형으로 구성해줘.
+구현이 끝나면 site/에서 로컬 서버를 실행하고, 실제 접속 주소를 알려줘.
+/portfolio-check로 자체 점검하고 결과를 check.md에 남겨줘.
+확인이 끝날 때까지 나에게 질문하지 말고 끝까지 진행해줘. 아직 배포하지 마.
+```
+
+### P4 · 브레인스토밍 결과를 아티팩트로
+
+```text
+아래는 내 포트폴리오 사이트의 설계 문서야.
+방문자 여정(첫 화면 → 사례 → 연락)과 화면 구성을 한눈에 보이는
+인터랙티브 아티팩트로 시각화해줘.
+섹션을 클릭하면 그 섹션의 목적과 완료 기준이 펼쳐지게 해줘.
+문서에 없는 내용은 추가하지 말고, 예시 표시는 그대로 유지해줘.
+
+[docs/plans/portfolio-design.md 내용 붙여넣기]
+```
+
+### P5 · 관찰한 문제로 한 번 수정
+
+```text
+현재 화면에서 [휴대폰 너비에서 제목이 잘림]을 확인했어.
+기대 결과는 [390px 너비에서 가로 스크롤 없이 제목 전체가 보임]이야.
+재현 조건은 [브라우저/너비/클릭 순서]이고 실제 결과는 [관찰한 내용]이야.
+관련 원인을 찾아 필요한 범위만 수정해줘.
+변경 전후를 비교하고 같은 조건으로 다시 확인해줘.
+전체 디자인이나 기능을 새로 만들지 마.
+```
+
+### P6 · Playwright로 테스트
+
+```text
+Playwright MCP로 로컬 서버 주소를 열어 다음을 실제로 확인해줘.
+1) 390px 너비에서 가로 스크롤이 없다.
+2) 카테고리 필터를 누르면 해당 사례만 남는다.
+3) 이메일 복사 버튼을 누르면 복사 완료 표시가 나온다.
+4) Tab 키로 버튼과 링크에 순서대로 이동할 수 있다.
+각 항목의 스크린샷을 찍고 통과 / 실패 / 미확인과 근거를 check.md에 추가해줘.
+브라우저를 실제로 열지 못했으면 통과라고 쓰지 마.
+```
+
+### P7 · Vercel 플러그인으로 상태 조회
+
+```text
+Vercel MCP로 현재 인증 상태와 접근 가능한 팀을 확인해줘.
+내가 지정한 [실습 팀/프로젝트]의 배포 상태를 읽어서 요약해줘.
+프로젝트가 없으면 없다고 알려줘. 이 단계에서는 새로 만들지 마.
+도구 이름과 실제 조회 결과를 구분해서 보여줘.
+연결되지 않았으면 성공했다고 추측하지 말고 /mcp 인증 절차를 안내해줘.
+```
+
+### P8 · Preview 배포
+
+```text
+check.md의 결과를 먼저 확인해줘.
+검증한 site/ 폴더만 Vercel CLI로 Preview 배포해줘.
+대상 팀은 [팀 이름], 새 프로젝트 이름은 [고유한 실습 이름]이야.
+기존 프로젝트와 연결되는 경우 대상이 맞는지 먼저 알려줘.
+정적 사이트 설정으로 배포하고 실제 반환된 URL을 알려줘.
+배포 성공 여부와 화면 접속 여부를 나누어 확인해줘.
+Production 배포와 도메인 구매는 아직 하지 마.
+```
+
+### P9 · Production 공개 및 검증
+
+```text
+Preview에서 소개·사례·필터·연락 동작을 확인했어.
+같은 Vercel 프로젝트에 현재 site/ 내용을 Production으로 배포해줘.
+실제 배포 URL을 알려주고 휴대폰 너비와 로그아웃 상태에서 확인할 항목을 적어줘.
+접근 보호가 켜져 있다면 현재 설정을 설명해줘.
+공개 성공은 설정과 실제 접속 결과를 확인한 뒤에만 보고해줘.
+```
+
+### P10 · (부록) Supabase 확장 설계
+
+```text
+포트폴리오의 사례 목록을 Supabase에서 읽는 구조로 확장하고 싶어.
+이번에는 공개 사례 조회만 만들고, 방문자 쓰기와 로그인은 제외해줘.
+전용 실습 프로젝트에서 webinar_projects 테이블을 사용해줘.
+컬럼은 id, title, summary, category, published이고 공개 예시만 저장해줘.
+RLS를 켜고 anon/authenticated는 published=true인 행의 SELECT만 허용해줘.
+테이블 권한과 RLS 정책을 함께 제시하고 비공개 행과 쓰기 차단 검증도 준비해줘.
+SQL은 검토할 파일로 먼저 만들어줘. DB 변경은 아직 실행하지 마.
+```
+
+### P11 · (부록) Supabase 데이터 연결
+
+```text
+실습용 DB의 SQL과 조회 정책을 확인했어.
+공개용 Project URL과 publishable key로 사례 목록을 조회하도록 연결해줘.
+브라우저에 secret/service_role 키를 넣지 마.
+로딩, 빈 목록, 네트워크 실패 상태를 각각 보여줘.
+DB 데이터는 textContent 등 안전한 방식으로 렌더링해줘.
+공개 사례는 표시되고 비공개 사례는 숨겨지는지 실제 API 요청으로 확인해줘.
+방문자 삽입·수정·삭제가 차단되는지도 확인해줘.
+연결 실패를 목업 성공 화면으로 위장하지 말고 실패라고 보여줘.
+```
+
+## 12 · 막혔을 때
+
+| 증상 | 확인 | 이어가는 방법 |
+|------|------|---------------|
+| claude / npm 명령 없음 | 설치·PATH·새 터미널·운영체제 | [사전 준비](/webinar/prep)를 따르기. 현장에서는 시연 참여 |
+| /plugin install 실패 | 로그인 상태, 마켓플레이스 이름, 네트워크 | `/plugin` Discover 탭에서 검색해 설치 |
+| MCP 목록은 있지만 호출 실패 | /mcp 인증, 계정·조직·프로젝트 범위 | 인증을 마친 뒤 읽기 요청으로 재확인. CLI 경로는 별도 진행 |
+| 브레인스토밍 질문이 끝나지 않음 | 답한 결정 개수 | "지금까지 결정으로 문서를 정리해줘"로 끊고 P3로 |
+| 한방 프롬프트가 중간에 질문함 | 권한 확인인지 설계 질문인지 | 권한은 허용. 설계 질문은 "설계 문서대로, 기본값으로" |
+| 로컬 화면이 안 열림 | 서버 실행 유지·출력된 포트·index.html 위치 | 출력된 Local 주소로 접속. 포트를 고정해서 추측하지 않기 |
+| Playwright가 브라우저를 못 염 | MCP 등록 여부, 첫 실행 다운로드, 방화벽 | 수동 클릭으로 대체하고 check.md에 미확인으로 기록 |
+| 아티팩트 게시 안 됨 | 플랜·/login 상태 | Claude 앱에 붙여 넣는 경로 A로 진행 |
+| Vercel 다른 프로젝트로 배포 | whoami·선택 팀·.vercel 연결·현재 폴더 | 대상을 확인한 뒤 올바른 폴더에서 배포 |
+| 배포 후 404 / 스타일 없음 | 배포 루트·index.html·상대 경로·정적 설정 | 실제 로그를 붙여 원인부터 수정. 재배포 후 URL 확인 |
+| URL이 로그인 화면 | Deployment Protection 설정 | 의도한 공개 범위와 일치하는지 확인 |
+| 사용량 제한 / 요청 중단 | 제품의 제한 안내·상태·네트워크 | 예제로 이어가고 범위 축소. 로그아웃으로 한도 초기화 시도하지 않기 |
+
+오류 전달 템플릿: **"어느 환경에서 / 무엇을 했더니 / 무엇이 나와야 했는데 / 실제로 무엇이 나왔다."** 키·토큰·개인정보는 가린 로그만 전달합니다.
+
+## 13 · 내 결과 확인
+
+- [ ] 프롬프트 규칙 다섯 가지를 P0에서 찾을 수 있다.
+- [ ] `.claude/skills/portfolio-check/SKILL.md`가 있고 `/portfolio-check`가 호출된다.
+- [ ] `/vercel:status` 또는 P7로 실제 조회 결과를 봤다.
+- [ ] `docs/plans/portfolio-design.md`에 완료 기준 5개가 있다.
+- [ ] 아티팩트 공유 링크가 있다.
+- [ ] 390px 무넘침·필터·복사·키보드 이동을 사람과 Playwright가 각각 확인했다.
+- [ ] 가상 경력·성과와 실제 정보를 구분했고 공개 폴더에 비밀 키가 없다.
+- [ ] 실제 배포 URL에서 화면과 접근 범위를 확인했다.
+
+다음 과제: 사례 하나를 실제 작업으로 교체하고, 소개 문구를 대상 방문자에 맞게 수정한 뒤 재배포합니다. 여러 사람이 내용을 갱신해야 할 때 부록의 Supabase 확장으로 넘어갑니다.
+
+## 부록 · Supabase로 사례 데이터를 읽습니다
+
+본편에서 다루지 않는 후속 20–30분 확장입니다. 방문자가 내용을 저장하는 방명록·문의 폼은 범위에 포함하지 않습니다.
+
+| 개발할 때 · MCP | 방문할 때 · API |
+|-----------------|-----------------|
+| Claude가 DB 구조와 데이터를 도구로 확인합니다. MCP 등록만으로 사이트에 DB 기능이 생기지는 않습니다. | 브라우저의 JavaScript가 Supabase Data API를 호출해 공개 사례를 읽습니다. 방문자의 접근 범위는 DB 정책으로 정합니다. |
+
+**1. 읽기 전용 MCP** — `YOUR_PROJECT_REF`를 전용 실습 프로젝트 ID로 바꿉니다.
+
+```bash
+claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=YOUR_PROJECT_REF&read_only=true"
+```
+
+**2. 테이블과 권한 준비** — [supabase-demo.sql](/files/webinar/templates/supabase-demo.sql)을 검토한 뒤 전용 실습 프로젝트의 SQL Editor에서 한 번 실행합니다(P10). 새 테이블 `webinar_projects`를 만드므로 같은 이름이 이미 있으면 실행을 멈춥니다. SQL은 RLS를 활성화하고 `published = true` 행의 SELECT만 허용합니다. SQL Editor에 데이터가 보인다는 사실만으로 방문자 정책을 검증할 수 없습니다.
+
+**3. 사이트 연결과 검증** — `config.js`에 Project URL과 **publishable key**만 넣습니다(P11). secret / service_role 키는 절대 넣지 않습니다. 정적 HTML이라 Vercel 환경변수만 등록해서는 채워지지 않습니다.
+
+```js
+window.SUPABASE_CONFIG = {
+  url: "https://YOUR_PROJECT_REF.supabase.co",
+  publishableKey: "sb_publishable_REPLACE_ME"
+};
+```
+
+1. 로컬 서버에서 예제를 열어 공개 사례 3개만 보이는지 확인합니다.
+2. Table Editor에서 제목을 바꾸고 새로고침해 반영되는지 봅니다.
+3. `published=false` 예시가 응답과 화면에서 빠지는지 확인합니다.
+4. 방문자 키로 읽기·삽입·수정·삭제 차단을 검사합니다. 전용 실습 DB에서만.
+
+[Supabase MCP](https://supabase.com/docs/guides/ai-tools/mcp) · [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [API 키](https://supabase.com/docs/guides/getting-started/api-keys) · [환경변수](https://vercel.com/docs/environment-variables)
+
+## 부록 · 공식 출처 · 확인일 2026-09-18
+
+60분 시간표, 프롬프트, 예제 데이터와 운영안은 이 웨비나를 위해 작성한 교육 설계입니다. 요금·모델 가용성·UI 문구는 강의 직전 현재 계정에서 다시 확인합니다.
+
+[Claude Code 시작](https://code.claude.com/docs/en/quickstart) · [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Plugins](https://code.claude.com/docs/en/plugins) · [플러그인 찾기](https://code.claude.com/docs/en/discover-plugins) · [CLAUDE.md](https://code.claude.com/docs/en/memory) · [권한](https://code.claude.com/docs/en/permissions) · [Artifacts](https://code.claude.com/docs/en/artifacts) · [Claude in Chrome](https://code.claude.com/docs/en/chrome) · [Vercel 플러그인](https://github.com/vercel/vercel-plugin) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp) · [Vercel CLI](https://vercel.com/docs/cli) · [Vercel 배포](https://vercel.com/docs/cli/deploy) · [Deployment Protection](https://vercel.com/docs/deployment-protection) · [superpowers](https://github.com/obra/superpowers) · [Playwright MCP](https://github.com/microsoft/playwright-mcp) · [ego lite](https://lite.ego.app/) · [Orca](https://onorca.dev/) · [Node.js](https://nodejs.org/en/download) · [Supabase MCP](https://supabase.com/docs/guides/ai-tools/mcp) · [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Supabase API 키](https://supabase.com/docs/guides/getting-started/api-keys) · [Supabase Data API](https://supabase.com/docs/guides/api)
