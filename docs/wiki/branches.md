@@ -151,6 +151,7 @@ ALTER TABLE survey_responses
 
 | # | 상태 | 날짜 | 내용 |
 |---|------|------|------|
+| 68 | 머지 | 2026-09-21 | `/webinar` .md 링크 404 수정 + Edit this page 경로 수정 (fix/webinar-md-links) |
 | 67 | 머지 | 2026-09-21 | `/webinar` 사이드바 비활성 수정 (fix/webinar-sidebar) |
 | 66 | 머지 | 2026-09-21 | `/webinar` 허브 + `/webinar/handbook` 참가자 핸드북 서빙 (feat/webinar-handbook) |
 | 65 | 머지 | 2026-09-18 | `/webinar` 웨비나 사전 준비 가이드 신설 (feat/webinar-prep) |
