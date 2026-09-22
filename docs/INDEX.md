@@ -10,7 +10,7 @@
 
 | 작업 | 읽을 문서 |
 |------|-----------|
-| 리뉴얼 작업 | `prd/renovation-plan.md` → `spec/design-guide.md` |
+| 리뉴얼 작업 (2026-09~) | `prd/site-renewal-2026.md` → `plans/2026-09-23-site-renewal-roadmap.md` (구 계획 `prd/renovation-plan.md`는 대체됨) |
 | 새 기능 추가 | `wiki/architecture.md` → 관련 `spec/` |
 | 컴포넌트 수정 | `spec/design-guide.md` + `wiki/architecture.md` |
 | 블로그/뉴스 발행 | `CLAUDE.md` 역할 분담 섹션 (로디몬 담당) |
@@ -57,6 +57,7 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-09-23]** 콘텐츠 중심 리뉴얼 **스펙 + 6페이즈 로드맵** 작성(Swiss Signal 디자인, 메뉴 `인사이트·실습·강의·사례·About`, research-saas 통합, high-techer/airpremia 이관 게이트) — `prd/site-renewal-2026.md`·`plans/2026-09-23-site-renewal-roadmap.md`·`changelog/2026-09-23.md`
 - **[2026-09-21]** `/webinar` 허브화 + `/webinar/prep`·`/webinar/handbook`(참가자 핸드북) 서빙, 정적 파일 `public/files/webinar/` — `changelog/2026-09-21.md`
 - **[2026-09-18]** `/webinar` 웨비나 사전 준비 가이드 신설(Claude Code·플러그인·Playwright MCP·Orca 설치) — `changelog/2026-09-18.md`
 - **[2026-08-31]** 외주 쇼케이스 `/work`(숨김·비번보호) **구현·배포 완료** — 11건 카드 + 상세 케이스 3건(Phase 1~3). `prd/work-showcase.md`·`changelog/2026-08-31.md`
