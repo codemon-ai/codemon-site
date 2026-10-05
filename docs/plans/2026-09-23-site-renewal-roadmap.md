@@ -12,7 +12,8 @@
 
 ## Global Constraints
 
-- 배포는 `vercel deploy --prebuilt --prod`. 배포 트리는 항상 `origin/main` 최신. 배포 직후 `./scripts/check-routes.sh` 실패 0
+- **리뉴얼은 프로덕션(codemon.ai) 직접 배포 금지.** 전 과정을 **`renew.codemon.ai`** 서브도메인(프리뷰 배포 alias)에만 올려 검수하고, 최종 게이트에서만 apex로 승격(단일 컷오버). → 화면 유실 리스크 0. (작업 브랜치: `codemon-ai/design-renew`)
+- 승격 시에만 `vercel deploy --prebuilt --prod`. 배포 직후 `./scripts/check-routes.sh` 실패 0
 - 페이지 추가/삭제/이동 시 `docs/wiki/route-inventory.md` 갱신 (현재 기준선 134)
 - 색: `--paper #FFFFFF / --ink #001D3D / --ink-2 #003566 / --signal #FFC300 / --band #000814`. 보라·그라데이션·글로우·blur·그림자·둥근 모서리 금지
 - 서체: Pretendard 400/700/900 단일
@@ -34,8 +35,15 @@
 | 3 | 핵심 페이지 | 2주 | 홈·인사이트·실습(게이트)·강의·사례·문의·뉴스레터 | 폼→admin→Slack, 게이트 해제 |
 | 4 | 자료 이관 | 2주 (P3와 병렬) | A등급 → 실습 15·강의 카탈로그, B등급(G1·G2 후) | 브랜드 grep 0 |
 | 5 | research-saas 다이제스트 | 2주 | export CLI, `/admin/digest`, 발송, 아카이브 | 주간 1호 실발송 |
+| 6 | **콘텐츠 자동 발행 파이프라인** | 상시 | Codex 조사·이미지 + Fable 5.1 수용판단 → 3일 1편 인사이트 발행 | P2 스키마 후 가동 |
 
-총 **약 8~9주**(P3·P4 병렬 기준). 페이즈 순서는 고정, P4는 P2 완료 후 P3와 동시 진행 가능.
+총 **약 8~9주**(P3·P4 병렬 기준). 페이즈 순서는 고정, P4는 P2 완료 후 P3와 동시 진행 가능. **P6는 P2(frontmatter 스키마) 완료 후 상시 가동.**
+
+### IA 변경 (2026-10, 오너 확정)
+- nav = `홈 · 인사이트 · 강의 · 사례 · About` + [KO/EN][뉴스레터] — **홈 추가, 실습 메뉴 제거.**
+- 실습(데모·실습 자료)은 **사례**(결과물성)·**인사이트**(교육 레시피)로 흡수. 리드 수집은 뉴스레터 폼 중심. → **P3 Task 3.4(실습 목록·이메일 게이트) 삭제**, `lib/practice/*`·`pages/api/practice/*` 불필요. `data/practice.ts`(P2) 폐기.
+- 사례(`/cases`)에 `kind` 값 **`ax`(AX 구축)** 추가 — AX 구축 + 외주 개발 + 자체 서비스 3필터.
+- 히어로 확정: "당신의 업무에 AI를 도입하세요." / "기업의 실제 업무에 AI를 붙이고, 구성원이 직접 사용하도록 진단·적용·교육까지 함께 합니다."
 
 ---
 
@@ -225,6 +233,39 @@
 
 ### Task 5.5 운영 문서
 `docs/wiki/digest-ops.md`: 주간 루틴(월 pull → 화 리터칭 → 수 발송), 장애 시 대응, research-saas 연락 경로
+
+---
+
+## Phase 6 — 콘텐츠 자동 발행 파이프라인 (상시, P2 후)
+
+**문제:** 약 6개월간 인사이트(블로그) 발행 0 → 유입 엔진이 꺼져 있다.
+**목표:** **3일에 1편** 인사이트에 발행(월 ~10편). 배치로 만들어 큐에서 간격 발행.
+
+**역할 분담**
+- **Codex** — ① 주제 발굴 + 초안을 **한 번에 배치** 생성 ② 채택본만 글당 **관련 이미지 3~5개** 생성(`/images/blog/<slug>/01~05`)
+- **Fable 5.1** — 각 초안 **수용 판단**(채택/반려). **웹서칭으로 사실 확인**(모델명·가격·날짜·출시 등) 후 통과. 반려 사유 기록. 통과분은 본문에 `<!-- verified: YYYY-MM -->`
+- **Claude Code** — frontmatter 스키마·카테고리 매핑·이미지 경로 검증, 배치 큐, 3일 간격 스케줄 스크립트
+
+**흐름:** Codex 배치 초안 → Fable 사실검증·수용판단 → 채택본 Codex 이미지 3~5 → frontmatter 스키마 통과 → 큐 적재 → 3일 간격 pop·발행
+
+### Task 6.1 파이프라인 스크립트
+**Files:** Create `scripts/content-pipeline.mjs`(배치 초안 수집 + Fable 판정 연동 + 스키마 검증), `scripts/content-schedule.mjs`(큐에서 3일 간격 pop → `pages/blog/*.mdx` 생성/커밋), `data/content-queue/`(배치 큐 JSON)
+**Produces:** 큐 항목 = `{slug, title, category, body(mdx), images[3..5], verifiedAt, status: 'queued'|'published'}`
+**Verify:** 배치 1회 → Fable 판정 로그(채택/반려+사유) → 채택본 큐 적재 + 이미지 3~5 생성 확인
+
+### Task 6.2 수용 판단(Fable 5.1) + 웹서칭 사실검증
+- Fable 5.1 에이전트: 초안별 사실 주장 추출 → 웹서칭 대조 → 채택/반려 + 근거 URL. P2 카테고리 5종 중 분류 강제
+**Verify:** 반려 케이스 1건 사유 기록, 채택 케이스 `verified` 주석 삽입
+
+### Task 6.3 이미지 생성(Codex) 3~5/글
+- 각 채택 글의 핵심 개념·다이어그램·썸네일 등 **관련 이미지 3~5개**. 경로·alt·blog 본문 삽입 규칙 고정
+**Verify:** 글당 3~5개, 경로 `/images/blog/<slug>/`, build 통과
+
+### Task 6.4 스케줄 발행
+- `content-schedule.mjs` cron(또는 로디 launchd) 3일 간격: 큐 head pop → MDX 커밋 → (renew 검수 후) 발행. 발행 이력 `data/content-queue/log.json`
+**Verify:** 2주 운영(5편) 간격·카테고리 분포 확인
+
+> MDX 최종 발행은 로디몬 승인 경로 유지. Claude Code는 파이프라인·스크립트·스키마까지. 콘텐츠 자체 생성이라 G1·G2 게이트 무관.
 
 ---
 
