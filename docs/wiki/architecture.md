@@ -148,3 +148,15 @@ playwright-cli open https://codemon.ai/<path>
 - `index` 페이지: `layout: 'raw'` (사이드바/TOC 없음)
 - 기타 페이지: Nextra docs 표준 레이아웃
 - 다크모드 기본, `dark:` variant 필수
+
+## 콘텐츠 데이터 계층 (리뉴얼 P2, 2026-10-06)
+
+| 파일 | 역할 |
+|------|------|
+| `lib/content/schema.ts` | 블로그 frontmatter 타입·카테고리 5종 상수 (ADR-007) |
+| `scripts/generate-posts.mjs` | prebuild: frontmatter 검증(위반=빌드 실패) → `data/posts.json`, `data/categories.json` |
+| `data/cases.ts` | 사례 25건 — `kind: ax\|client\|product\|lab`, `visibility`. `workCases`(client+ax)가 /work 소스 |
+| `data/lectures.ts` | 강의 카탈로그 7건 (refs → /partner, /webinar) |
+| `data/start-here.ts` | 인사이트 "여기부터" 3편 |
+
+`pages/blog/_meta.ts`에는 포스트를 나열하지 않는다 — 제목·순서는 frontmatter가 단일 소스.

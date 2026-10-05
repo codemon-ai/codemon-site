@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { workProjects, type WorkProject } from '../../data/work/projects'
+import { workCases, type Case } from '../../data/cases'
 
-const statusLabel: Record<WorkProject['status'], string> = {
+const statusLabel: Record<Case['status'], string> = {
   live: '운영 중',
   building: '개발 중',
   done: '완료',
 }
 
-export function WorkCard({ project }: { project: WorkProject }) {
+export function WorkCard({ project }: { project: Case }) {
   return (
     <motion.div
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
@@ -85,7 +85,7 @@ export function WorkGrid() {
       viewport={{ once: true }}
       variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
     >
-      {workProjects.map((p) => (
+      {workCases.map((p) => (
         <WorkCard key={p.slug} project={p} />
       ))}
     </motion.div>

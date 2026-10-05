@@ -49,7 +49,7 @@ next-env.d.ts
 data/*
 !data/news.json
 !data/demo/
-!data/work/
+!data/*.ts
 
 # playwright-cli 로컬 캐시
 .playwright-cli/

@@ -2,26 +2,26 @@ import type { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { workProjects, type WorkProject } from '../../data/work/projects'
+import { workCases, type Case } from '../../data/cases'
 
-const statusLabel: Record<WorkProject['status'], string> = {
+const statusLabel: Record<Case['status'], string> = {
   live: '운영 중',
   building: '개발 중',
   done: '완료',
 }
 
 export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: workProjects.filter((p) => p.detail).map((p) => ({ params: { slug: p.slug } })),
+  paths: workCases.filter((p) => p.detail).map((p) => ({ params: { slug: p.slug } })),
   fallback: false,
 })
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const project = workProjects.find((p) => p.slug === params?.slug && p.detail)
+  const project = workCases.find((p) => p.slug === params?.slug && p.detail)
   if (!project) return { notFound: true }
   return { props: { project } }
 }
 
-export default function WorkDetailPage({ project }: { project: WorkProject }) {
+export default function WorkDetailPage({ project }: { project: Case }) {
   const gallery = project.gallery?.length ? project.gallery : project.screenshots
   return (
     <>

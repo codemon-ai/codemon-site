@@ -1,7 +1,12 @@
-export interface WorkProject {
+export type CaseKind = 'ax' | 'client' | 'product' | 'lab'   // AX 구축 / 외주 개발 / 자체 서비스 / 실험
+export type CaseVisibility = 'public' | 'anonymous' | 'private'
+
+export interface Case {
   slug: string
   name: string
-  realName: boolean
+  kind: CaseKind
+  visibility: CaseVisibility   // anonymous: clientLabel 로 표기 / private: /work 비번 게이트
+  clientLabel?: string
   client: string
   industry: string
   period: string
@@ -21,11 +26,12 @@ export interface WorkProject {
 }
 
 // 컨셉: 외주 모음. 커버가 placeholder 인 항목은 실 스크린샷 교체 예정.
-export const workProjects: WorkProject[] = [
+export const cases: Case[] = [
   {
     slug: 'dearu',
+    kind: 'client',
+    visibility: 'public',
     name: '디어유 · bubble HOUSE',
-    realName: true,
     client: '디어유(DearU)',
     industry: '커머스 · Shopify',
     period: '2026.06 —',
@@ -54,8 +60,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'bluemango',
+    kind: 'client',
+    visibility: 'public',
     name: '블루망고 (BlueMango)',
-    realName: true,
     client: 'BlueMango',
     industry: '여행 · 예약 플랫폼',
     period: '2025 —',
@@ -84,8 +91,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'dr-reborn',
+    kind: 'client',
+    visibility: 'public',
     name: '닥터리본 (Dr. Reborn)',
-    realName: true,
     client: 'Dr. Reborn',
     industry: '의료 · 에스테틱',
     period: '2025',
@@ -111,8 +119,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'bridge7',
+    kind: 'client',
+    visibility: 'public',
     name: '브릿지세븐 · Shopify 앱',
-    realName: true,
     client: '브릿지세븐(Bridge7)',
     industry: '커머스 · Shopify',
     period: '2026',
@@ -129,8 +138,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'usobjet',
+    kind: 'client',
+    visibility: 'public',
     name: '어스오브제 (usobjet)',
-    realName: true,
     client: '어스오브제',
     industry: '브랜드 · 웹',
     period: '2026',
@@ -146,8 +156,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'airpremia',
+    kind: 'ax',
+    visibility: 'public',
     name: '에어프레미아 · AX',
-    realName: true,
     client: '에어프레미아(AIR PREMIA)',
     industry: '항공 · AX',
     period: '2025',
@@ -164,8 +175,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'etude-nodestar',
+    kind: 'client',
+    visibility: 'public',
     name: '에튜드 · nodestar',
-    realName: true,
     client: '에튜드(etude)',
     industry: '교육 · 플랫폼',
     period: '2026 —',
@@ -179,8 +191,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'etude-selecten',
+    kind: 'client',
+    visibility: 'public',
     name: '에튜드 · 셀렉텀(selecten)',
-    realName: true,
     client: '에튜드(etude)',
     industry: '교육 · 플랫폼',
     period: '2026 —',
@@ -194,8 +207,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'etude-lms',
+    kind: 'client',
+    visibility: 'public',
     name: '에튜드 · LMS',
-    realName: true,
     client: '에튜드(etude)',
     industry: '교육 · LMS',
     period: '2026 —',
@@ -212,8 +226,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'etude-library',
+    kind: 'client',
+    visibility: 'public',
     name: '에튜드 · 도서관',
-    realName: true,
     client: '에튜드(etude)',
     industry: '교육 · 플랫폼',
     period: '2026 —',
@@ -227,8 +242,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'fineclub',
+    kind: 'client',
+    visibility: 'public',
     name: '파인클럽 (FineClub)',
-    realName: true,
     client: '파인클럽(FineClub)',
     industry: '커머스 · 반려동물',
     period: '2024',
@@ -263,8 +279,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'gen-grade',
+    kind: 'client',
+    visibility: 'public',
     name: '파스칼 · AI 성장보고서',
-    realName: true,
     client: '파스칼(Pascal) 독서논술',
     industry: '교육 · AI',
     period: '2026',
@@ -282,8 +299,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'lg-lucky-draw',
+    kind: 'client',
+    visibility: 'public',
     name: 'LG 이벤트 추첨 · Lucky Draw',
-    realName: true,
     client: 'LG (이벤트)',
     industry: '이벤트 · 웹앱',
     period: '2026',
@@ -300,8 +318,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'moneymon',
+    kind: 'client',
+    visibility: 'public',
     name: '머니몬 (MoneyMon)',
-    realName: true,
     client: '머니몬',
     industry: 'AI · 핀테크',
     period: '운영 중',
@@ -318,8 +337,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'hightecher',
+    kind: 'client',
+    visibility: 'public',
     name: '하이테커 · Claude 실무 강의',
-    realName: true,
     client: '하이테커(Hi-Techer)',
     industry: '교육 · 온라인 강의',
     period: '2026 —',
@@ -336,8 +356,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'dollar-signal',
+    kind: 'client',
+    visibility: 'public',
     name: '달러시그널 (Dollar Signal)',
-    realName: true,
     client: '달러시그널',
     industry: 'AI · 핀테크',
     period: '운영 중',
@@ -355,8 +376,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'salitar',
+    kind: 'client',
+    visibility: 'public',
     name: '살리타 (Salita)',
-    realName: true,
     client: 'Salita',
     industry: '헬스케어 · 측정',
     period: '2026 —',
@@ -374,8 +396,9 @@ export const workProjects: WorkProject[] = [
   },
   {
     slug: 'tarot',
+    kind: 'client',
+    visibility: 'public',
     name: '타로몬 (TarotMon)',
-    realName: true,
     client: '타로몬',
     industry: 'AI · 타로',
     period: '운영 중',
@@ -391,4 +414,18 @@ export const workProjects: WorkProject[] = [
     liveUrl: 'https://tarot.codemon.ai',
     detail: false,
   },
+  // ── 자체 서비스 (showcase 이관, work 중복인 타로몬·달러시그널 제외) ──
+  { slug: 'slimmon', name: '슬림몬 (SlimMon)', kind: 'product', visibility: 'public', client: '자체 서비스', industry: '헬스케어 · 앱', period: '운영 중', status: 'live', summary: 'AI 기반 간헐적 단식 관리 서비스. 스마트 타이머와 식단 추천.', role: '기획 · 개발 · 운영', stack: ['Next.js', 'AI'], highlights: ['단식 타이머·체중 기록·통계'], screenshots: [], liveUrl: 'https://slimmon.codemon.ai', detail: false },
+  { slug: 'forest99', name: '숲에서 99일 밤', kind: 'product', visibility: 'public', client: '자체 서비스', industry: '게임 · 3D', period: '2026', status: 'live', summary: '9살 아들의 아이디어로 시작된 Three.js 기반 3D 생존 게임.', role: '기획 · 개발', stack: ['Three.js', 'React'], highlights: ['3D 생존 게임 · 가족 프로젝트'], screenshots: [], liveUrl: 'https://forest99.codemon.ai', detail: false },
+  // ── 실험 (projects 이관, work 중복인 머니몬 제외) ──
+  { slug: 'grimharu', name: '그림하루 (GrimHaru)', kind: 'lab', visibility: 'public', client: '실험', industry: 'AI · 일기', period: '운영 중', status: 'live', summary: 'AI 그림일기 — 일기를 쓰면 감정을 분석하고 이미지를 생성.', role: '기획 · 개발', stack: ['Next.js', 'OpenAI', 'DALL-E'], highlights: ['감정 분석 + 이미지 생성'], screenshots: [], liveUrl: 'https://grimharu-beta.vercel.app', detail: false },
+  { slug: 'arbimon', name: '아비몬 (ArbiMon)', kind: 'lab', visibility: 'public', client: '실험', industry: '크립토 · 데이터', period: '개발 중', status: 'building', summary: '거래소 간 펀딩비·김치프리미엄 실시간 모니터링과 차익거래 기회 알림.', role: '기획 · 개발', stack: ['Python', 'FastAPI', 'Telegram Bot'], highlights: ['실시간 모니터링 · 텔레그램 알림'], screenshots: [], detail: false },
+  { slug: 'farmingmon', name: '파밍몬 (FarmingMon)', kind: 'lab', visibility: 'public', client: '실험', industry: '자동화', period: '개발 중', status: 'building', summary: '앱테크·에어드롭 리워드 수집 자동화 시스템.', role: '기획 · 개발', stack: ['Python', 'ADB'], highlights: ['출석·광고·포인트 적립 자동화'], screenshots: [], detail: false },
+  { slug: 'realestate-crawler', name: '부동산 크롤러', kind: 'lab', visibility: 'public', client: '실험', industry: '부동산 · 데이터', period: '개발 중', status: 'building', summary: '네이버 부동산 크롤링으로 시세 대비 저렴한 급매물 감지·알림.', role: '기획 · 개발', stack: ['Python', 'Selenium'], highlights: ['급매물 감지 · 알림'], screenshots: [], detail: false },
+  { slug: 'cryptomon', name: '크립토몬 (CryptoMon)', kind: 'lab', visibility: 'public', client: '실험', industry: 'AI · 크립토', period: '개발 중', status: 'building', summary: 'AI 기반 암호화폐 매매 시그널 서비스. dollar-signal 구조 재활용.', role: '기획 · 개발', stack: ['Next.js', 'Python'], highlights: ['매매 시그널'], screenshots: [], detail: false },
 ]
+
+/** /work (비번 게이트) 목록 — 외주·AX 구축만. 기존 18건과 동일. */
+export const workCases = cases.filter((c) => c.kind === 'client' || c.kind === 'ax')
+export const getPublicCases = () => cases.filter((c) => c.visibility !== 'private')
+export const getCase = (slug: string) => cases.find((c) => c.slug === slug)
