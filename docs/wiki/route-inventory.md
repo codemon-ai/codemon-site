@@ -20,12 +20,13 @@
 > 2026-09-18: `/webinar`(웨비나 사전 준비 가이드, 숨김 메뉴·공개 접근) 신설로 공개 131→132.
 > 2026-09-21: `/webinar` 허브화 + `/webinar/prep`·`/webinar/handbook` 신설로 공개 132→134, 정적 `public/files/webinar/demo-static/index.html` 15→16.
 
-> 2026-10-06 (리뉴얼 P3, **프리뷰만**): 공개 134→144. 신설 `/insights`(+카테고리 5) · `/lectures`(+동적 7) · `/cases`(+동적 25) · `/contact` · `/newsletter` · `/admin/inquiries`(307). `/subscribe`→`/newsletter` **308**, `/work/{slug}`→`/cases/{slug}` **307**(login 제외). 동적 상세는 check-routes 미포함.
+> 2026-10-06 (리뉴얼 P3~P5, **프리뷰만**): 공개 134→145(P5 `/insights/digest` 307 포함). 신설 `/insights`(+카테고리 5) · `/lectures`(+동적 7) · `/cases`(+동적 25) · `/contact` · `/newsletter` · `/admin/inquiries`(307). `/subscribe`→`/newsletter` **308**, `/work/{slug}`→`/cases/{slug}` **307**(login 제외). 동적 상세는 check-routes 미포함.
 
 의도된 3xx (실패 아님):
 - `308` — `/subscribe` → `/newsletter` (리뉴얼 P3)
 - `307` — `/work/{slug}` → `/cases/{slug}` (리뉴얼 P3, 최종 프로모트 시 301)
-- `307` — `/admin/inquiries` → 미인증 시 로그인
+- `307` — `/admin/inquiries`·`/admin/digest` → 미인증 시 로그인
+- `307` — `/insights/digest` → `/newsletter` (리뉴얼 P5). 상세 `/insights/digest/{week}` 동적(check-routes 미포함)
 - `307` — `/admin`, `/admin/{mailing,qr,subscribers,surveys}` → 미인증 시 로그인 리다이렉트
 - `307` — `/work` → 비번 미인증 시 `/work/login` 리다이렉트 (외주 포트폴리오 게이트)
 - `308` — `/partner/survey/lecture-*` → `/survey/{lectureId}` 정규 경로로 리다이렉트

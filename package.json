@@ -8,7 +8,7 @@
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node scripts/generate-posts.mjs"
+    "prebuild": "node scripts/generate-posts.mjs && node scripts/generate-digests.mjs"
   },
   "author": "codemon",
   "license": "MIT",

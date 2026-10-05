@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/admin/inquiries', label: '문의함', icon: Users },
   { href: '/admin/surveys', label: '설문', icon: ClipboardList },
   { href: '/admin/mailing', label: '메일링', icon: Mail },
+  { href: '/admin/digest', label: '다이제스트', icon: Mail },
   { href: '/admin/qr', label: 'QR 관리', icon: QrCode },
 ]
 

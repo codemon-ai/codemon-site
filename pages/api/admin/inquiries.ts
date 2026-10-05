@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { errMsg } from '../../../lib/admin/err'
 import { withAuth } from '../../../lib/admin/auth'
 import { listInquiries, exportInquiriesCSV } from '../../../lib/admin/inquiries'
 
@@ -12,5 +13,5 @@ export default withAuth(async function handler(req: NextApiRequest, res: NextApi
     }
     const { search, type, page, limit } = req.query
     return res.json(await listInquiries({ search: search as string, type: type as string, page: page ? Number(page) : undefined, limit: limit ? Number(limit) : undefined }))
-  } catch (err) { return res.status(500).json({ error: String(err) }) }
+  } catch (err) { return res.status(500).json({ error: errMsg(err) }) }
 })

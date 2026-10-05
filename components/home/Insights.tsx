@@ -4,7 +4,7 @@ import postsData from '../../data/posts.json'
 import digests from '../../data/digest/index.json'
 import { CATEGORIES, type Category } from '../../lib/content/schema'
 
-interface Digest { week: string; title: string; items: string[] }
+interface Digest { week: string; title: string; items: string[]; url: string }
 const posts = (postsData as { posts: { slug: string; title: string; date: string; category: Category }[] }).posts
 const latestDigest = (digests as Digest[])[0]
 
@@ -31,6 +31,7 @@ export function Insights() {
               <ul className="mt-3 space-y-1.5 text-sm text-ink-2">
                 {latestDigest.items.slice(0, 3).map((it) => <li key={it} className="pl-3 border-l-2 border-signal">{it}</li>)}
               </ul>
+              <Link href={latestDigest.url} className="mt-4 inline-block text-sm font-bold underline underline-offset-4">이번 호 읽기</Link>
             </>
           ) : (
             <>

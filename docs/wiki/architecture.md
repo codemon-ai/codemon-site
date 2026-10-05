@@ -170,3 +170,14 @@ playwright-cli open https://codemon.ai/<path>
 | `scripts/convert-resource.mjs` | 제공자료 HTML → CopyBox/TroubleCard/Checklist MDX |
 | `components/content/*` | 이관 콘텐츠용 컴포넌트 |
 | `content/migrated/blog/` | 스테이징 (ADR-012) — 빌드 대상 아님 |
+
+### 다이제스트 (리뉴얼 P5) — 운영은 `digest-ops.md`
+
+| 파일 | 역할 |
+|------|------|
+| `lib/content/digest.ts` | Digest 타입, export→item 변환, ISO 주차 |
+| `data/digest/inbox/*.json` | research-saas export 원본 (주차별) |
+| `lib/admin/digest.ts` · `pages/api/admin/digest/*` · `pages/admin/digest.tsx` | 리터칭 UI/API (Supabase `digests`) |
+| `scripts/generate-digests.mjs` | prebuild: published → `data/digest/<week>.json` + `index.json` |
+| `pages/insights/digest/[week].tsx` | 공개 페이지 (SiteShell) |
+| `emails/Digest.tsx` · `pages/api/admin/digest/send.ts` | 발송 |
