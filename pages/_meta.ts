@@ -11,10 +11,6 @@ export default {
       pagination: false
     }
   },
-  about: {
-    title: 'About',
-    type: 'page'
-  },
   showcase: {
     title: 'Showcase',
     display: 'hidden',
@@ -35,6 +31,35 @@ export default {
   blog: {
     title: '인사이트',
     type: 'page'
+  },
+  lectures: {
+    title: '강의',
+    type: 'page'
+  },
+  cases: {
+    title: '사례',
+    type: 'page'
+  },
+  about: {
+    title: 'About',
+    type: 'page'
+  },
+  insights: {
+    title: '인사이트 카테고리',
+    type: 'page',
+    display: 'hidden'
+  },
+  contact: {
+    title: '문의',
+    type: 'page',
+    display: 'hidden',
+    theme: { layout: 'raw', breadcrumb: false, sidebar: false, toc: false, pagination: false }
+  },
+  newsletter: {
+    title: '뉴스레터',
+    type: 'page',
+    display: 'hidden',
+    theme: { layout: 'raw', breadcrumb: false, sidebar: false, toc: false, pagination: false }
   },
   news: {
     title: 'News',
@@ -87,11 +112,6 @@ export default {
   },
   admin: {
     type: 'folder',
-    display: 'hidden'
-  },
-  subscribe: {
-    title: '뉴스레터 구독',
-    type: 'page',
     display: 'hidden'
   },
   survey: {

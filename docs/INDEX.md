@@ -57,6 +57,7 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-10-06]** 리뉴얼 **P3 완료(프리뷰)** — 홈(Swiss Signal 10섹션)·인사이트 카테고리 URL+페이지네이션+글 하단 사다리·/lectures·/cases(+/work→/cases 307)·/contact(+admin 문의함)·/newsletter(/subscribe 308)·About. ⚠️ Supabase inquiries DDL 수동 적용 필요 — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P2 완료(프리뷰)** — frontmatter 스키마(5 카테고리, 위반=빌드 실패)·39편 이관·`data/cases.ts`(25건, kind)·`data/lectures.ts`·`data/start-here.ts`, blog _meta 수동 목록 제거 — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P1 완료(프리뷰)** — Swiss Signal 토큰(paper/ink/signal/band)·Pretendard·Nextra 톤·LangSwitch/구독 버튼 셸, 공개면 22파일 보라 제거(글로우·그라데이션·glass 0). 다크 옐로 버튼 on-signal — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P0 완료(프리뷰)** — 뉴스레터 폼 3곳(홈·푸터·헤더)+`source` 저장, 중복판정 Supabase 단일화, nav 재편(홈·인사이트 / showcase·projects·news·docs·tools 숨김), ADR-005~010 초안 — `changelog/2026-10-06.md`

@@ -188,3 +188,9 @@ codemon.ai **안으로 통합**. 주 1회 `engine export --json` → `data/diges
 
 ### 결과
 - 목표 **3일 1편**(월 ~10편) · ADR-007 스키마(P2) 완료 후 가동 · 콘텐츠 자체 생성이라 G1·G2 게이트 무관
+
+## ADR-011: 동적 라우트는 SiteShell, 목록은 MDX (2026-10-06)
+
+**결정:** Nextra 3(pages router)는 `.tsx` 페이지를 테마 레이아웃으로 감싸지 않는다. 목록·허브 페이지(`/lectures`, `/cases`, `/insights/*`, `/contact`, `/newsletter`)는 MDX로 두어 Nextra 네비를 그대로 쓰고, 동적 상세(`/lectures/[slug]`, `/cases/[slug]`)만 `components/shell/SiteShell.tsx`(같은 모양의 헤더·푸터, `nav.ts` 상수 공유)로 감싼다.
+**이유:** 25+7건 상세를 MDX로 생성하면 데이터 단일 소스(ADR-007)가 깨진다. 헤더 중복 유지 비용 < 데이터 이중화 비용.
+**부수 결정:** `/work/:slug`→`/cases/:slug`는 공개 범위(visibility) 확정 전까지 **307**. 최종 프로모트 시 301로 승격.

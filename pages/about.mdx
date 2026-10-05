@@ -1,46 +1,50 @@
 ---
-title: About
+title: About — 코드몬
+description: 대기업 10년, 스타트업 10년. 지금은 기업 업무에 AI를 붙이고 구성원이 직접 쓰게 만드는 AI/AX 엔지니어.
 ---
 
 import { Career } from '../components/Career'
-import { Stats } from '../components/Stats'
-import { TechStack } from '../components/TechStack'
-import { AgentTeam } from '../components/AgentTeam'
-import { WorkProcess } from '../components/WorkProcess'
+import { Process } from '../components/home/Process'
+import { ServiceCells } from '../components/home/Services'
+import Link from 'next/link'
 
 # About
 
-## Pro Vibe Coder & Cracked Engineer
+## 만들고, 붙이고, 남기고 나옵니다.
 
 대기업에서 10년, 스타트업에서 10년.
 시스템을 배웠고, 속도를 배웠습니다.
 
-지금은 AI 에이전트 팀과 함께
-매일 무언가를 만들고 있습니다.
+지금은 기업의 실제 업무에 AI를 붙이고,
+구성원이 직접 사용하도록 진단·적용·교육까지 함께 합니다.
 
-아이디어가 생기면 만듭니다. 그게 저의 방식입니다.
-
-> "만들고, 자동화하고, 공유합니다."
+> "슬라이드가 아니라 코드로 답합니다."
 
 <Career />
 
-<Stats />
+## 하는 일
 
----
+<ServiceCells />
 
-<AgentTeam />
+<div className="not-prose -mx-4 md:-mx-6"><Process /></div>
 
----
+## 법인 정보
 
-<WorkProcess />
+<div className="not-prose text-[15px] leading-relaxed">
+  <p><strong>Codemon Inc.</strong> · Seoul, Korea</p>
+  <p className="text-ink-2">AI/AX Engineering · Forward Deployed Engineer · 기업 AX 교육/컨설팅</p>
+  <p className="text-ink-2 mt-1">문의는 아래 양식 또는 사이트 우하단 채팅으로.</p>
+</div>
 
----
+## 같이 일하기 [#work-with-me]
 
-<TechStack />
-
----
-
-## Contact
-
-- **GitHub**: [github.com/codemon-ai](https://github.com/codemon-ai)
-- **Blog**: [codemon.ai/blog](/blog)
+<div className="not-prose border-2 border-ink p-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between my-6">
+  <div>
+    <div className="text-xl font-black tracking-tight">한 가지 업무부터 시작합니다.</div>
+    <div className="mt-1 text-sm text-ink-2">AX 진단 1주 → 2주 PoC → 현장 투입. 강의는 대상·시간부터 알려주세요.</div>
+  </div>
+  <div className="flex gap-3">
+    <Link href="/contact?type=project" className="bg-signal text-on-signal px-5 py-2.5 font-bold text-sm">프로젝트 문의</Link>
+    <Link href="/contact?type=lecture" className="border-2 border-ink px-5 py-2.5 font-bold text-sm">강의 문의</Link>
+  </div>
+</div>

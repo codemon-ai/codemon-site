@@ -1,0 +1,18 @@
+---
+title: 뉴스레터 — 현장에서 쓰는 AI, 주 1회
+description: 에이전트·모델·인프라에서 실제 업무에 바로 쓸 수 있는 것만 추려 주 1회 다이제스트로 보냅니다.
+---
+
+import { NewsletterSignup } from '../components/NewsletterSignup'
+import { QRCodeDisplay } from '../components/QRCodeDisplay'
+import { DigestArchive } from '../components/insights/DigestArchive'
+
+<div className="mx-auto max-w-3xl px-4 md:px-6 py-10 md:py-14">
+  <h1 className="text-3xl md:text-4xl font-black tracking-tight">뉴스레터</h1>
+  <p className="mt-2 text-lg text-ink-2 leading-relaxed">매주, 쓸 만한 것만 골라서. 에이전트·모델·인프라에서 실제 업무에 바로 쓸 수 있는 것만 추려 다이제스트로 보냅니다. 강의에서 다루는 실습 레시피도 먼저 받아보세요.</p>
+  <div className="mt-8 grid gap-8 sm:grid-cols-[1fr_auto] items-start">
+    <NewsletterSignup source="newsletter-page" title="구독" description="주 1회 다이제스트. 언제든 해지." />
+    <QRCodeDisplay url="https://codemon.ai/newsletter" />
+  </div>
+  <DigestArchive />
+</div>

@@ -13,6 +13,10 @@ const nextConfig = withNextra({
   },
   async redirects() {
     return [
+      // 리뉴얼 P3: 구독 페이지 → 뉴스레터 허브
+      { source: '/subscribe', destination: '/newsletter', permanent: true },
+      // 리뉴얼 P3: /work 상세 → /cases 상세 (login 제외). 공개 범위 확정 전까지 307, 최종 프로모트 시 301로
+      { source: '/work/:slug((?!login$).*)', destination: '/cases/:slug', permanent: false },
       {
         source: '/partner/survey/lecture-agency-ai',
         destination: '/survey/lecture-agency-ai',

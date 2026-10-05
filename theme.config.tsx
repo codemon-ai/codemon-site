@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
 import { LangSwitch } from './components/shell/LangSwitch'
 import { SubscribeButton } from './components/shell/SubscribeButton'
+import { PostFooter } from './components/insights/PostFooter'
 // ChatWidget moved to _app.tsx
 
 const SITE_URL = 'https://codemon.ai'
@@ -96,7 +97,15 @@ const Head = () => {
   )
 }
 
+/** 블로그 글 경로에만 전환 사다리(PostFooter) 주입 */
+const Main = ({ children }: { children: React.ReactNode }) => {
+  const { asPath } = useRouter()
+  const isPost = /^\/blog\/[^/?#]+/.test(asPath)
+  return (<>{children}{isPost && <PostFooter />}</>)
+}
+
 const config: DocsThemeConfig = {
+  main: Main,
   logo: <span style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.03em' }}>codemon</span>,
   project: {
     link: 'https://github.com/codemon-ai',

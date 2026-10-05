@@ -50,6 +50,10 @@ data/*
 !data/news.json
 !data/demo/
 !data/*.ts
+!data/digest/
 
 # playwright-cli 로컬 캐시
 .playwright-cli/
+
+# supabase CLI 링크 임시파일
+supabase/.temp/

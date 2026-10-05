@@ -4,7 +4,7 @@ import Link from 'next/link'
 export function SubscribeButton() {
   return (
     <Link
-      href="/subscribe"
+      href="/newsletter"
       className="inline-flex items-center bg-signal text-on-signal border-2 border-on-signal px-3 py-1 text-sm font-bold hover:opacity-80 transition-opacity whitespace-nowrap"
     >
       뉴스레터 구독

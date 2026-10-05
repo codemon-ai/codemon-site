@@ -12,6 +12,7 @@ import {
 const NAV_ITEMS = [
   { href: '/admin', label: '대시보드', icon: LayoutDashboard },
   { href: '/admin/subscribers', label: '구독자', icon: Users },
+  { href: '/admin/inquiries', label: '문의함', icon: Users },
   { href: '/admin/surveys', label: '설문', icon: ClipboardList },
   { href: '/admin/mailing', label: '메일링', icon: Mail },
   { href: '/admin/qr', label: 'QR 관리', icon: QrCode },

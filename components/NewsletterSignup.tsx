@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Mail } from 'lucide-react'
 
-type Variant = 'inline' | 'footer' | 'gate'
+type Variant = 'inline' | 'footer' | 'gate' | 'band'
 
 interface Props {
   variant?: Variant
@@ -21,7 +21,8 @@ export function NewsletterSignup({
 }: Props) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'already' | 'error'>('idle')
-  const compact = variant === 'footer'
+  const compact = variant === 'footer' || variant === 'band'
+  const band = variant === 'band'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -54,7 +55,7 @@ export function NewsletterSignup({
       )}
 
       {status === 'success' || status === 'already' ? (
-        <p className="text-sm text-foreground font-medium">
+        <p className={`text-sm font-medium ${band ? 'text-white' : 'text-foreground'}`}>
           {status === 'success' ? '구독 감사합니다!' : '이미 구독 중입니다.'}
         </p>
       ) : (
@@ -66,12 +67,16 @@ export function NewsletterSignup({
             placeholder="이메일 주소"
             required
             aria-label="이메일"
-            className="flex-1 min-w-0 px-4 py-2.5 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-ink transition-colors"
+            className={band
+              ? 'flex-1 min-w-0 px-4 py-3 text-sm bg-white text-[#001D3D] placeholder:text-[#001D3D]/40 border-2 border-white outline-none'
+              : 'flex-1 min-w-0 px-4 py-2.5 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-ink transition-colors'}
           />
           <button
             type="submit"
             disabled={status === 'sending'}
-            className="px-5 py-2.5 rounded-lg bg-signal text-on-signal text-sm font-semibold hover:opacity-80 transition-opacity disabled:opacity-50 whitespace-nowrap"
+            className={band
+              ? 'px-5 py-3 bg-signal text-on-signal text-sm font-bold hover:opacity-80 transition-opacity disabled:opacity-50 whitespace-nowrap'
+              : 'px-5 py-2.5 rounded-lg bg-signal text-on-signal text-sm font-semibold hover:opacity-80 transition-opacity disabled:opacity-50 whitespace-nowrap'}
           >
             {status === 'sending' ? '...' : '구독'}
           </button>
