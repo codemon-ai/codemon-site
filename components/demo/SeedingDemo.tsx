@@ -184,7 +184,7 @@ export function SeedingDemo() {
     <div className="mt-4">
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO 1</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO 1</div>
           <h2 className="text-xl font-bold dark:text-white">인플루언서 시딩 이메일 자동화</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             인플루언서별 개인화 이메일을 병렬로 생성합니다 — 제품: <strong>{product.name}</strong>
@@ -193,13 +193,13 @@ export function SeedingDemo() {
         <div className="flex gap-2">
           <button
             onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📖 설명
           </button>
           <a
             href="/partner/lecture-podl-ai/demo/dashboard"
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📊 대시보드
           </a>
@@ -210,7 +210,7 @@ export function SeedingDemo() {
         <button
           onClick={generateAll}
           disabled={genCount > 0 && doneCount + genCount === influencers.length}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {genCount > 0 ? `⏳ ${genCount}명 생성중...` : '▶ 전체 생성'}
         </button>
@@ -302,7 +302,7 @@ function StatusBadge({ status }: { status: Status }) {
 function ActionButton({ state, onGenerate, onOpen }: { state: InfluencerState; onGenerate: () => void; onOpen: () => void }) {
   switch (state.status) {
     case 'idle':
-      return <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">생성</button>
+      return <button onClick={onGenerate} className="px-3 py-1 rounded text-xs font-medium text-on-signal bg-signal hover:opacity-80 transition-colors">생성</button>
     case 'generating':
       return <span className="px-3 py-1 rounded text-xs font-medium text-amber-600 bg-amber-100 dark:bg-amber-900/30">생성중...</span>
     case 'done':

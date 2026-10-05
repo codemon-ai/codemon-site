@@ -7,7 +7,8 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
-const BLOG_DIR = path.resolve('pages/blog')
+const CHECK_DIR = process.argv.includes('--check') ? process.argv[process.argv.indexOf('--check') + 1] : null
+const BLOG_DIR = path.resolve(CHECK_DIR ?? 'pages/blog')
 const OUT_POSTS = path.resolve('data/posts.json')
 const OUT_CATS  = path.resolve('data/categories.json')
 const CATEGORIES = {
@@ -64,6 +65,7 @@ function run() {
     for (const f of failures) console.error(`  - ${f.slug}: ${f.errs.join(' / ')}`)
     process.exit(1)
   }
+  if (CHECK_DIR) { console.log(`✅ ${posts.length}편 스키마 통과 (${CHECK_DIR}, 출력 없음)`); return }
   posts.sort((a, b) => b.date.localeCompare(a.date))
   const allTags = [...new Set(posts.flatMap(p => p.tags))].sort()
   const categories = Object.entries(CATEGORIES).map(([id, label]) => ({ id, label, count: posts.filter(p => p.category === id).length }))

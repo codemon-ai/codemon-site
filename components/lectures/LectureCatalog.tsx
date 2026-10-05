@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { lectures, type Lecture } from '../../data/lectures'
+import { publicLectures as lectures, type Lecture } from '../../data/lectures'
 
 function Row({ l }: { l: Lecture }) {
   return (

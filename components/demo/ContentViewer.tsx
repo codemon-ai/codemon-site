@@ -1,10 +1,10 @@
 'use client'
 
 const CONTENT_TYPE_LABELS: Record<string, { label: string; icon: string }> = {
-  'detail-page': { label: '상세페이지 카피', icon: '📄' },
-  'carousel': { label: '인스타 캐러셀', icon: '🖼️' },
-  'hashtags': { label: '해시태그', icon: '#️⃣' },
-  'tiktok': { label: '틱톡 스크립트', icon: '🎬' },
+ 'detail-page': { label: '상세페이지 카피', icon: '📄' },
+ 'carousel': { label: '인스타 캐러셀', icon: '🖼️' },
+ 'hashtags': { label: '해시태그', icon: '#️⃣' },
+ 'tiktok': { label: '틱톡 스크립트', icon: '🎬' },
 }
 
 function markdownToHtml(md: string): string {
@@ -43,13 +43,13 @@ export function openContentViewer(contents: Record<string, string>, productName:
   const tabButtons = typeIds.map((id, i) => {
     const meta = CONTENT_TYPE_LABELS[id] || { label: id, icon: '' }
     return `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-tab="${id}" onclick="switchTab('${id}')">${meta.icon} ${meta.label}</button>`
-  }).join('\n      ')
+  }).join('\n ')
 
   // Build tab content sections
   const tabContents = typeIds.map((id, i) => {
     const html = markdownToHtml(contents[id])
     return `<div class="tab-content ${i === 0 ? 'active' : ''}" id="tab-${id}">${html}</div>`
-  }).join('\n    ')
+  }).join('\n ')
 
   // Escape all raw markdown for copy
   const allRaw: Record<string, string> = {}

@@ -165,7 +165,7 @@ export function ReportDemo() {
     <div className="mt-4">
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO 2</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO 2</div>
           <h2 className="text-xl font-bold dark:text-white">매출 데이터 일일 리포트</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             기간: {salesDetail.period} | <strong>{salesDetail.totalOrders.toLocaleString()}건</strong> 주문 데이터
@@ -174,11 +174,11 @@ export function ReportDemo() {
         <div className="flex gap-2">
           <button
             onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📖 설명
           </button>
-          <a href="/partner/lecture-podl-ai/demo/dashboard" className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors">
+          <a href="/partner/lecture-podl-ai/demo/dashboard" className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors">
             📊 대시보드
           </a>
         </div>
@@ -215,7 +215,7 @@ export function ReportDemo() {
                 <td className="py-1.5 px-2 text-right text-red-500">{fmtWon(o.cogs)}</td>
                 <td className="py-1.5 px-2 text-right">{fmtWon(o.grossProfit)}</td>
                 <td className="py-1.5 px-2 text-right text-orange-500">{fmtWon(o.channelFee)}</td>
-                <td className="py-1.5 px-2 text-right font-medium text-purple-600 dark:text-purple-400">{fmtWon(o.netProfit)}</td>
+                <td className="py-1.5 px-2 text-right font-medium text-ink ">{fmtWon(o.netProfit)}</td>
                 <td className="py-1.5 px-2">{o.region}</td>
                 <td className="py-1.5 px-2">{o.customerType}</td>
               </tr>
@@ -229,7 +229,7 @@ export function ReportDemo() {
         <button
           onClick={generate}
           disabled={status === 'generating'}
-          className="px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2.5 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {status === 'generating' ? '⏳ 리포트 생성중...' : '▶ 리포트 생성'}
         </button>

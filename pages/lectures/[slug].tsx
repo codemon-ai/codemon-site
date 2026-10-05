@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import { SiteShell } from '../../components/shell/SiteShell'
 import { InquiryBlock } from '../../components/lectures/InquiryBlock'
-import { lectures, type Lecture } from '../../data/lectures'
+import { publicLectures as lectures, type Lecture } from '../../data/lectures'
 
 export const getStaticPaths: GetStaticPaths = async () => ({ paths: lectures.map((l) => ({ params: { slug: l.slug } })), fallback: false })
 export const getStaticProps: GetStaticProps = async ({ params }) => {

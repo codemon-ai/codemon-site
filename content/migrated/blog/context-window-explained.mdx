@@ -1,0 +1,85 @@
+---
+title: "책상이 좁으면 서류를 떨어뜨린다"
+description: "대화가 길어지면 클로드가 앞말을 잊는 것처럼 느껴집니다. 고장이 아니라 책상 넓이의 문제입니다. 컨텍스트 창을 책상에 비유해서 설명하고, \"새 대화를 여는 순간\"이라는 실무 규칙으로 착지하는 5분."
+date: 2026-10-05
+author: codemon
+category: agents-ops
+tags: ["context-window", "llm", "prompting"]
+source: "high-techer/online-vod-site/v2/extras/context-window-desk.html"
+migrated: true
+verified: "2026-07"
+---
+
+{/* 이관(A등급): 원본 extras/context-window-desk.html · 사실 기준 2026-07 · 게시 전 재검증(수치·모델명) · 발행=로디몬 */}
+
+# 책상이 좁으면 서류를 떨어뜨린다
+
+대화가 길어지면 클로드가 앞말을 잊는 것처럼 느껴집니다. 고장이 아니라 책상 넓이의 문제입니다. 컨텍스트 창을 책상에 비유해서 설명하고, "새 대화를 여는 순간"이라는 실무 규칙으로 착지하는 5분.
+
+## 비유부터
+
+### 클로드의 책상은 얼마나 넓은가
+
+*컨텍스트 창(context window) = 모델이 한 번에 올려놓고 볼 수 있는 서류의 양*
+
+클로드는 대화 전체를 매번 다시 읽습니다. 시스템 지침, 이전 대화, 첨부 파일, 그리고 지금 만들어 낼 답변까지 전부 한 책상 위에 올라갑니다. 그 책상의 넓이를 토큰 수로 표시한 것이 컨텍스트 창입니다.
+
+- **100만 토큰** — Fable 5 · Opus 4.8 · Sonnet 5의 컨텍스트 창 (API 공식 문서 기준 — 채팅 화면 수치는 2번 카드)
+- **약 55만 단어** — 100만 토큰의 환산치 — 유니코드 약 250만 자
+- **20만 토큰** — Haiku 4.5의 컨텍스트 창 — 같은 4종 중에서도 책상 크기가 다릅니다
+
+> **참고** 한 번의 요청에 넣을 수 있는 이미지·PDF 페이지는 **최대 600장**입니다. 컨텍스트 창이 20만 토큰인 모델은 100장이 한도입니다.
+
+## 책상이 다 차면
+
+### 앞말을 "잊는" 게 아니라, 앞말이 "밀려나는" 것
+
+#### claude.ai — 채팅 화면 — 앞 대화를 요약해서 자리를 만듭니다
+
+공식 도움말 기준입니다. 대화가 컨텍스트 창 한계에 가까워지면 **클로드가 앞쪽 메시지를 요약해서 새 내용이 들어갈 자리를 만듭니다.** 요약은 요약이라, 세부 사항은 깎여 나갑니다. 그래서 "아까 정한 톤"이 슬며시 달라집니다.
+
+*유료 플랜 기준 Sonnet 5는 100만 토큰 · Opus 4.8은 50만 토큰*
+
+#### API — 개발자 관점 — 넘치면 잘라주지 않고, 그냥 거절합니다
+
+입력만으로 이미 창을 넘기면 **"prompt is too long" 오류**가 돌아옵니다. 생성 도중에 한계에 닿으면 답변이 중단 사유와 함께 끊깁니다. 컨텐츠2에서 클로드 코드를 쓸 때 긴 파일을 통째로 밀어 넣으면 만나게 되는 상황입니다.
+
+*한계 = 자동 정리 아님 · 명시적 실패*
+
+## 더 중요한 얘기
+
+### 책상이 넓어도, 가운데 서류는 잘 안 봅니다
+
+*연구로 확인된 두 가지 — 위치 편향과 길이에 따른 성능 저하*
+
+- **Lost in the Middle** — 2023년 논문(Liu 외, TACL 게재). 정답이 입력의 *앞이나 끝*에 있을 때 성능이 가장 높고, *가운데*에 있을 때 눈에 띄게 떨어진다는 것을 다문서 질의응답 실험으로 보였습니다.
+- **Context Rot** — 2025년 7월 Chroma 연구팀(Kelly Hong·Anton Troynikov·Jeff Huber). 최신 모델 **18종**을 검사했더니, 단순한 검색·복제 과제에서도 **입력이 길어질수록 결과가 불안정**해졌습니다. 결론은 "모델은 컨텍스트를 균일하게 쓰지 않는다"입니다.
+- **주의 예산(attention budget)** — 앤트로픽 엔지니어링 블로그의 표현입니다. 토큰 하나가 늘 때마다 이 예산이 조금씩 깎입니다. 그래서 목표는 "많이 넣기"가 아니라 *"원하는 결과를 낼 수 있는 가장 작은 고신호 토큰 묶음"*을 찾는 것입니다.
+
+> **한 줄 요약** 책상이 넓다는 건 **많이 올려도 된다**는 뜻이지, **올린 걸 다 똑같이 본다**는 뜻이 아닙니다. 중요한 지시는 맨 앞이나 맨 끝에 두세요.
+
+## 착지
+
+### 새 대화를 열어야 하는 순간
+
+- **주제가 바뀌었을 때** — 상품 상세페이지 문구를 쓰다가 재고 정산 얘기로 넘어간다면, 새 대화입니다. 앞 서류가 책상만 차지합니다.
+- **같은 실수를 두 번 이상 반복할 때** — 지시가 이미 요약에 묻혔다는 신호입니다. 고쳐 달라고 세 번 말하는 것보다 새 대화가 빠릅니다.
+- **대화가 눈에 띄게 느려질 때** — 책상 위 서류를 매번 다시 읽고 있다는 뜻입니다.
+- **대신, 규칙은 대화 밖에 적어 둡니다** — 반복되는 지시는 Project 지침이나 CLAUDE.md에 넣습니다. 그러면 새 대화를 열어도 규칙은 남습니다. 컨텐츠2 3강에서 하는 일이 정확히 이겁니다.
+
+> **긍정 착지** 새 대화를 여는 건 되돌아가는 게 아닙니다. **책상을 치우는 것**입니다. 그리고 치워도 안 사라지게 만드는 방법이 바로 우리 수업의 지침 파일입니다.
+
+### 출처
+
+## 출처
+
+- 컨텍스트 창 동작
+- 100만 토큰
+- 환산치
+- 이미지 600장: [Claude Docs — Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows), [Claude Docs — Models overview](https://platform.claude.com/docs/en/about-claude/models/overview)
+- claude.ai 유료 플랜 창 크기 및 자동 요약: [Claude Help Center — How large is the context window on paid Claude plans?](https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans)
+- Lost in the Middle: [Liu 외, "Lost in the Middle: How Language Models Use Long Contexts" (TACL)](https://arxiv.org/abs/2307.03172)
+- Context Rot(18종 모델, 2025-07-14): [Chroma Research — Context Rot](https://www.trychroma.com/research/context-rot)
+- 주의 예산
+- 고신호 토큰: [Anthropic Engineering — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- **2026-07-21 확인. 모델별 창 크기는 변동 항목이니 촬영 전 공식 페이지 재확인 권장.**

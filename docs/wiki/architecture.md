@@ -160,3 +160,13 @@ playwright-cli open https://codemon.ai/<path>
 | `data/start-here.ts` | 인사이트 "여기부터" 3편 |
 
 `pages/blog/_meta.ts`에는 포스트를 나열하지 않는다 — 제목·순서는 frontmatter가 단일 소스.
+
+### 자료 이관 도구 (리뉴얼 P4)
+
+| 파일 | 역할 |
+|------|------|
+| `scripts/strip-brand.mjs` | 브랜드 치환표 + 잔여 grep (`--write`) |
+| `scripts/convert-lesson.mjs` | 교안/보충자료 HTML → 인사이트 MDX (스피커노트 제거) |
+| `scripts/convert-resource.mjs` | 제공자료 HTML → CopyBox/TroubleCard/Checklist MDX |
+| `components/content/*` | 이관 콘텐츠용 컴포넌트 |
+| `content/migrated/blog/` | 스테이징 (ADR-012) — 빌드 대상 아님 |

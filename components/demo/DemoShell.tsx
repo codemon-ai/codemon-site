@@ -32,13 +32,13 @@ export function DemoShell({
     <div className="mt-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO {demoNumber}</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO {demoNumber}</div>
           <h2 className="text-xl font-bold dark:text-white">{title}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
         </div>
         <a
           href="/partner/lecture-podl-ai/demo/dashboard"
-          className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+          className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
         >
           📊 대시보드
         </a>
@@ -60,13 +60,13 @@ export function DemoShell({
             value={prompt}
             onChange={e => setPrompt(e.target.value)}
             rows={6}
-            className="w-full px-3 py-2 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] focus:border-purple-500 focus:outline-none resize-none font-mono"
+            className="w-full px-3 py-2 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] focus:border-ink focus:outline-none resize-none font-mono"
           />
           <div className="flex gap-2">
             <button
               onClick={handleRun}
               disabled={isStreaming}
-              className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isStreaming ? '⏳ 생성 중...' : '▶ 실행'}
             </button>

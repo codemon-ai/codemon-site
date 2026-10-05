@@ -20,27 +20,27 @@ const MARKETS = [
 const SYSTEM_PROMPT = '당신은 글로벌 마케팅 현지화 전문가입니다. K-뷰티 브랜드의 마케팅 카피를 각 문화권에 맞게 현지화합니다. 단순 번역이 아니라 해당 시장의 뷰티 문화, 소비자 심리, 트렌드를 반영하세요.'
 
 const MARKET_INSTRUCTIONS: Record<string, string> = {
-  'en-us': `**영어 (미국 시장 - Amazon US)**
+ 'en-us': `**영어 (미국 시장 - Amazon US)**
 - 미국 소비자의 K-뷰티 관심사 반영
 - 성분 중심 마케팅 (Clean Beauty 트렌드)
 - 자연스러운 미국식 영어 (번역체 X)
 - FDA 친화적 표현, "dermatologist-tested" 등 신뢰 키워드`,
-  'ar-mena': `**아랍어 (중동 시장 - MENA)**
+ 'ar-mena': `**아랍어 (중동 시장 - MENA)**
 - 할랄 뷰티 / 자연 성분 강조
 - 중동 소비자의 스킨케어 기대치 반영
 - 고급스럽고 우아한 톤
 - 아랍어 RTL(우→좌) 문화권에 맞는 표현`,
-  'ja-jp': `**일본어 (일본 시장 - Amazon JP / Qoo10)**
+ 'ja-jp': `**일본어 (일본 시장 - Amazon JP / Qoo10)**
 - J-뷰티와 비교 포지셔닝 (K-뷰티 강점 어필)
 - 성분 상세 설명 (일본 소비자는 성분을 꼼꼼히 확인)
 - 정중하고 세련된 일본어 톤
 - "敏感肌にも" 등 일본 뷰티 키워드 활용`,
-  'zh-cn': `**중국어 간체 (중국 시장 - 샤오홍슈 / 티몰)**
+ 'zh-cn': `**중국어 간체 (중국 시장 - 샤오홍슈 / 티몰)**
 - 성분 안전성 강조 (중국 소비자의 최대 관심사)
 - 샤오홍슈 스타일 감성 카피
 - 한류 / K-뷰티 프리미엄 이미지 활용
 - "成分安全" "温和不刺激" 등 중국 뷰티 키워드`,
-  'fr-fr': `**프랑스어 (프랑스 시장)**
+ 'fr-fr': `**프랑스어 (프랑스 시장)**
 - 럭셔리 포지셔닝 (프랑스 = 뷰티 종주국)
 - 클린 뷰티 + 자연 유래 성분 강조
 - 세련되고 문학적인 프랑스어 톤
@@ -208,7 +208,7 @@ export function LocalizeDemo() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO 5</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO 5</div>
           <h2 className="text-xl font-bold dark:text-white">글로벌 마케팅 카피 현지화</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             단순 번역이 아닌, 문화권별 맥락을 반영한 마케팅 카피 현지화
@@ -217,13 +217,13 @@ export function LocalizeDemo() {
         <div className="flex gap-2">
           <button
             onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📖 설명
           </button>
           <a
             href="/partner/lecture-podl-ai/demo/dashboard"
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             대시보드
           </a>
@@ -242,11 +242,11 @@ export function LocalizeDemo() {
                 onClick={() => setSelectedCopyId(copy.id)}
                 className={`text-left p-3 rounded-lg border transition-all ${
                   isSelected
-                    ? 'border-purple-500 bg-purple-500/10 dark:bg-purple-500/10'
-                    : 'border-black/[0.08] dark:border-white/[0.06] hover:border-purple-300 dark:hover:border-purple-700'
+                    ? 'border-ink bg-ink/5 '
+                    : 'border-black/[0.08] dark:border-white/[0.06] hover:border-ink '
                 }`}
               >
-                <div className="text-xs font-medium text-purple-500 mb-1">
+                <div className="text-xs font-medium text-ink mb-1">
                   {copy.product || '브랜드'}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{copy.type}</div>
@@ -262,7 +262,7 @@ export function LocalizeDemo() {
       {/* Source copy display */}
       <div className="mb-4 p-4 rounded-lg border border-black/[0.08] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02]">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-500 font-medium">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-ink/5 text-ink font-medium">
             {selectedCopy.type}
           </span>
           {selectedCopy.product && (
@@ -290,8 +290,8 @@ export function LocalizeDemo() {
                 onClick={() => toggleMarket(market.id)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
                   isEnabled
-                    ? 'bg-purple-600 text-white'
-                    : 'border border-black/[0.08] dark:border-white/[0.06] text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-purple-700'
+                    ? 'bg-signal text-on-signal'
+                    : 'border border-black/[0.08] dark:border-white/[0.06] text-gray-600 dark:text-gray-300 hover:border-ink '
                 }`}
               >
                 <span>{market.flag}</span>
@@ -320,7 +320,7 @@ export function LocalizeDemo() {
         <button
           onClick={generateAll}
           disabled={enabledList.length === 0 || (genCount > 0 && genCount + doneCount === enabledList.length)}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {genCount > 0 ? `${genCount}개 시장 생성중...` : '현지화 실행'}
         </button>
@@ -381,7 +381,7 @@ export function LocalizeDemo() {
                       <div className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
                         {state.content}
                       </div>
-                      <span className="inline-block w-2 h-4 bg-purple-500 animate-pulse ml-0.5" />
+                      <span className="inline-block w-2 h-4 bg-signal animate-pulse ml-0.5" />
                     </div>
                   )}
                   {state.status === 'done' && (
@@ -411,7 +411,7 @@ export function LocalizeDemo() {
                           selectedCopy,
                         )
                       }}
-                      className="text-xs text-purple-500 hover:text-purple-400 font-medium"
+                      className="text-xs text-ink hover:text-ink font-medium"
                     >
                       전체 보기
                     </button>

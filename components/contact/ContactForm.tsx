@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { lectures } from '../../data/lectures'
+import { publicLectures as lectures } from '../../data/lectures'
 
 type Type = 'project' | 'lecture'
 const FIELDS: Record<Type, { key: string; label: string; options?: string[] }[]> = {

@@ -25,7 +25,7 @@ export function StreamingOutput({ content, isStreaming, placeholder }: Streaming
       {content ? (
         <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap">
           {content}
-          {isStreaming && <span className="inline-block w-2 h-4 bg-purple-500 animate-pulse ml-0.5" />}
+          {isStreaming && <span className="inline-block w-2 h-4 bg-signal animate-pulse ml-0.5" />}
         </div>
       ) : (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 dark:text-gray-600">

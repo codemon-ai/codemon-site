@@ -92,7 +92,7 @@ export function openLabelViewer(
   const escapedAll = escapeForTemplate(allText)
   const contentsScript = activeSpecs
     .map(s => `'${s.id}': \`${escapeForTemplate(contents[s.id])}\``)
-    .join(',\n  ')
+    .join(',\n ')
 
   const html = `<!DOCTYPE html>
 <html>

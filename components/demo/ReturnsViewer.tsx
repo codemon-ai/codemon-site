@@ -36,10 +36,10 @@ function fmtWon(n: number) {
 }
 
 const REASON_COLORS: Record<string, string> = {
-  '\uD488\uC9C8': '#ef4444',
-  '\uBC30\uC1A1': '#f59e0b',
-  '\uAE30\uB300\uBD88\uC77C\uCE58': '#60a5fa',
-  '\uB2E8\uC21C\uBCC0\uC2EC': '#a1a1aa',
+ '\uD488\uC9C8': '#ef4444',
+ '\uBC30\uC1A1': '#f59e0b',
+ '\uAE30\uB300\uBD88\uC77C\uCE58': '#60a5fa',
+ '\uB2E8\uC21C\uBCC0\uC2EC': '#a1a1aa',
 }
 
 function buildCharts(items: Return[]): string {

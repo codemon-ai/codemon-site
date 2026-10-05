@@ -52,16 +52,16 @@ export function OrgChart() {
     <div className="mt-6">
       {/* CEO */}
       <div className="flex justify-center mb-6">
-        <div className="text-center px-6 py-4 rounded-xl border-2 border-purple-500/30 bg-purple-500/5">
+        <div className="text-center px-6 py-4 rounded-xl border-2 border-ink/30 bg-ink/5">
           <div className="text-2xl mb-1">{org.ceo.emoji}</div>
           <div className="font-bold dark:text-white">{org.ceo.name}</div>
-          <div className="text-xs text-purple-500">{org.ceo.title}</div>
+          <div className="text-xs text-ink">{org.ceo.title}</div>
         </div>
       </div>
 
       {/* Connector line */}
       <div className="flex justify-center mb-4">
-        <div className="w-px h-6 bg-purple-500/30" />
+        <div className="w-px h-6 bg-ink/20" />
       </div>
 
       {/* Teams grid */}
@@ -71,7 +71,7 @@ export function OrgChart() {
             key={team.name}
             className={`rounded-lg border p-4 transition-all ${
               team.demo
-                ? 'border-purple-500/20 bg-purple-500/[0.02] hover:border-purple-500/40 hover:bg-purple-500/[0.05]'
+                ? 'border-ink/20 bg-signal/[0.02] hover:border-ink hover:opacity-80/[0.05]'
                 : 'border-black/[0.06] dark:border-white/[0.06] bg-black/[0.01] dark:bg-white/[0.01]'
             }`}
           >
@@ -95,7 +95,7 @@ export function OrgChart() {
               </div>
             )}
             {team.demo && (
-              <a href={team.demo} className="inline-block mt-2 text-xs text-purple-500 hover:text-purple-400 transition-colors">
+              <a href={team.demo} className="inline-block mt-2 text-xs text-ink hover:text-ink transition-colors">
                 → 데모 보기
               </a>
             )}

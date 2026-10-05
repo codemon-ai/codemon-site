@@ -70,7 +70,7 @@ export function openLocalizeViewer(
   const contentsScript = markets
     .filter(m => contents[m.id])
     .map(m => `'${m.id}': \`${escapedContents[m.id]}\``)
-    .join(',\n  ')
+    .join(',\n ')
 
   const sourceKoEscaped = sourceCopy.ko.replace(/\n/g, '<br/>')
 

@@ -194,3 +194,8 @@ codemon.ai **안으로 통합**. 주 1회 `engine export --json` → `data/diges
 **결정:** Nextra 3(pages router)는 `.tsx` 페이지를 테마 레이아웃으로 감싸지 않는다. 목록·허브 페이지(`/lectures`, `/cases`, `/insights/*`, `/contact`, `/newsletter`)는 MDX로 두어 Nextra 네비를 그대로 쓰고, 동적 상세(`/lectures/[slug]`, `/cases/[slug]`)만 `components/shell/SiteShell.tsx`(같은 모양의 헤더·푸터, `nav.ts` 상수 공유)로 감싼다.
 **이유:** 25+7건 상세를 MDX로 생성하면 데이터 단일 소스(ADR-007)가 깨진다. 헤더 중복 유지 비용 < 데이터 이중화 비용.
 **부수 결정:** `/work/:slug`→`/cases/:slug`는 공개 범위(visibility) 확정 전까지 **307**. 최종 프로모트 시 301로 승격.
+
+## ADR-012: 이관 콘텐츠는 `content/migrated/`에 스테이징, 발행은 로디몬 (2026-10-06)
+
+**결정:** 외부 자료(high-techer·airpremia)에서 변환한 MDX는 `pages/blog/`에 바로 넣지 않고 `content/migrated/blog/`(빌드 대상 아님)에 두고 `generate-posts.mjs --check`로 스키마만 통과시킨다. 검토·date 확정·`pages/blog/` 이동·발행은 로디몬.
+**이유:** CLAUDE.md 역할 분담(콘텐츠 작성·발행 = 로디몬). 변환 품질과 사실 유효기간(2026-07 기준) 검토가 필요하다. B등급(G1·G2 전)은 스크립트 검증용으로만 변환하고 결과물을 커밋하지 않는다.

@@ -233,7 +233,7 @@ export function LabelDemo() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO 6</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO 6</div>
           <h2 className="text-xl font-bold dark:text-white">패키지 라벨 & 규제 카피</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             제품별 x 국가별 화장품 규제에 맞는 패키지 라벨 텍스트를 자동 생성합니다
@@ -242,13 +242,13 @@ export function LabelDemo() {
         <div className="flex gap-2">
           <button
             onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📖 설명
           </button>
           <a
             href="/partner/lecture-podl-ai/demo/dashboard"
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             대시보드
           </a>
@@ -264,8 +264,8 @@ export function LabelDemo() {
             onClick={() => setSelectedProductId(p.id)}
             className={`flex-shrink-0 w-48 text-left rounded-lg border-2 p-3 transition-all ${
               p.id === selectedProductId
-                ? 'border-purple-500 bg-purple-500/5 dark:bg-purple-500/10'
-                : 'border-black/[0.08] dark:border-white/[0.06] hover:border-purple-300 dark:hover:border-purple-700'
+                ? 'border-ink bg-ink/5 '
+                : 'border-black/[0.08] dark:border-white/[0.06] hover:border-ink '
             }`}
           >
             <div className="text-sm font-semibold dark:text-white truncate">{p.name}</div>
@@ -281,7 +281,7 @@ export function LabelDemo() {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h3 className="text-base font-bold dark:text-white">{selectedProduct.name}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-500">{selectedProduct.category}</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-ink/5 text-ink">{selectedProduct.category}</span>
               <span className="text-xs text-gray-500 dark:text-gray-400">{fmtPrice(selectedProduct.price)}</span>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{selectedProduct.usp}</p>
@@ -309,8 +309,8 @@ export function LabelDemo() {
               disabled={genCount > 0}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
                 enabled
-                  ? 'bg-purple-600 text-white hover:bg-purple-700'
-                  : 'border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-purple-400 dark:hover:border-purple-500'
+                  ? 'bg-signal text-on-signal hover:opacity-80'
+                  : 'border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-ink '
               } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <span>{type.icon}</span>
@@ -333,8 +333,8 @@ export function LabelDemo() {
                 onClick={() => toggleCountry(spec.id)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
                   isEnabled
-                    ? 'bg-purple-600 text-white'
-                    : 'border border-black/[0.08] dark:border-white/[0.06] text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-purple-700'
+                    ? 'bg-signal text-on-signal'
+                    : 'border border-black/[0.08] dark:border-white/[0.06] text-gray-600 dark:text-gray-300 hover:border-ink '
                 }`}
               >
                 <span>{spec.flag}</span>
@@ -363,7 +363,7 @@ export function LabelDemo() {
         <button
           onClick={generateAll}
           disabled={enabledSpecList.length === 0 || enabledTypeIds.length === 0 || (genCount > 0 && genCount + doneCount === enabledSpecList.length)}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {genCount > 0 ? `${genCount}개국 생성중...` : `라벨 생성 (${enabledSpecList.length}개국)`}
         </button>
@@ -417,7 +417,7 @@ export function LabelDemo() {
                       <div className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
                         {state.content}
                       </div>
-                      <span className="inline-block w-2 h-4 bg-purple-500 animate-pulse ml-0.5" />
+                      <span className="inline-block w-2 h-4 bg-signal animate-pulse ml-0.5" />
                     </div>
                   )}
                   {state.status === 'done' && (
@@ -447,7 +447,7 @@ export function LabelDemo() {
                           selectedProduct.name,
                         )
                       }}
-                      className="text-xs text-purple-500 hover:text-purple-400 font-medium"
+                      className="text-xs text-ink hover:text-ink font-medium"
                     >
                       전체 보기
                     </button>

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Section } from './Section'
-import { lectures } from '../../data/lectures'
+import { publicLectures as lectures } from '../../data/lectures'
 
 const FEATURED = ['claude-masterclass', 'claude-build', 'startup-ai']
 

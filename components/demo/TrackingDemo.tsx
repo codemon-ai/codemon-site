@@ -237,7 +237,7 @@ export function TrackingDemo() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-purple-500 font-medium mb-1">DEMO 3</div>
+          <div className="text-xs text-ink font-medium mb-1">DEMO 3</div>
           <h2 className="text-xl font-bold dark:text-white">SNS 소재 성과 트래킹</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             히트 콘텐츠 패턴을 분석하고 다음 전략을 제안합니다 | <strong>{filtered.length}건</strong> 게시물
@@ -246,13 +246,13 @@ export function TrackingDemo() {
         <div className="flex gap-2">
           <button
             onClick={() => openDemoExplain(EXPLAIN_CONFIG)}
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📖 설명
           </button>
           <a
             href="/partner/lecture-podl-ai/demo/dashboard"
-            className="text-xs px-3 py-1.5 rounded-md bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-md bg-ink/5 text-ink hover:bg-ink/10 transition-colors"
           >
             📊 대시보드
           </a>
@@ -277,7 +277,7 @@ export function TrackingDemo() {
               onClick={() => setPlatformFilter(p)}
               className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                 platformFilter === p
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-signal text-on-signal'
                   : 'bg-black/[0.04] dark:bg-white/[0.06] text-gray-600 dark:text-gray-300 hover:bg-black/[0.08] dark:hover:bg-white/[0.1]'
               }`}
             >
@@ -293,7 +293,7 @@ export function TrackingDemo() {
               onClick={() => setTypeFilter(t)}
               className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                 typeFilter === t
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-signal text-on-signal'
                   : 'bg-black/[0.04] dark:bg-white/[0.06] text-gray-600 dark:text-gray-300 hover:bg-black/[0.08] dark:hover:bg-white/[0.1]'
               }`}
             >
@@ -322,7 +322,7 @@ export function TrackingDemo() {
                 <th
                   key={key}
                   onClick={() => toggleSort(key)}
-                  className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer hover:text-purple-500 dark:hover:text-purple-400 select-none transition-colors"
+                  className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer hover:text-ink  select-none transition-colors"
                 >
                   {label}{sortArrow(key)}
                 </th>
@@ -351,7 +351,7 @@ export function TrackingDemo() {
                   <td className="py-1.5 px-2 text-gray-600 dark:text-gray-300">{p.type}</td>
                   <td className="py-1.5 px-2 text-right font-mono text-emerald-600 dark:text-emerald-400">{formatNumber(p.views)}</td>
                   <td className="py-1.5 px-2 text-right font-mono text-gray-600 dark:text-gray-300">{formatNumber(p.likes)}</td>
-                  <td className="py-1.5 px-2 text-right font-mono text-purple-600 dark:text-purple-400">{engagementRate(p).toFixed(2)}%</td>
+                  <td className="py-1.5 px-2 text-right font-mono text-ink ">{engagementRate(p).toFixed(2)}%</td>
                 </tr>
               )
             })}
@@ -364,7 +364,7 @@ export function TrackingDemo() {
         <button
           onClick={generate}
           disabled={status === 'generating'}
-          className="px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2.5 rounded-lg text-sm font-medium text-on-signal bg-signal hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {status === 'generating' ? '⏳ 분석중...' : '▶ 분석 실행'}
         </button>
