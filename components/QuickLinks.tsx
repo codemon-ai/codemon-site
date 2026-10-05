@@ -10,21 +10,21 @@ const links = [
     description: '혼자 만들고 운영 중인 서비스들',
     href: '/projects',
     icon: FolderOpen,
-    gradient: 'from-purple-500 to-purple-700',
+    gradient: 'from-foreground/10 to-foreground/10',
   },
   {
     title: 'Blog',
     description: '만들면서 배운 것들. 기술, AI, 자동화.',
     href: '/blog',
     icon: BookOpen,
-    gradient: 'from-purple-500 to-purple-700',
+    gradient: 'from-foreground/10 to-foreground/10',
   },
   {
     title: 'Docs',
     description: '기술 가이드와 문서',
     href: '/docs',
     icon: FileText,
-    gradient: 'from-purple-500 to-purple-700',
+    gradient: 'from-foreground/10 to-foreground/10',
   },
 ]
 
@@ -67,13 +67,13 @@ export function QuickLinks() {
               <motion.div key={i} variants={itemVariants}>
                 <Link
                   href={link.href}
-                  className="group flex items-start gap-4 p-5 rounded-xl glass hover:bg-white/10 transition-all duration-300"
+                  className="group flex items-start gap-4 p-5 rounded-xl border border-foreground/15 hover:bg-foreground/5 transition-all duration-300"
                 >
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${link.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground group-hover:text-accent-purple transition-colors flex items-center gap-1">
+                    <h3 className="font-semibold text-foreground group-hover:text-foreground transition-colors flex items-center gap-1">
                       {link.title}
                       <span className="text-foreground/40 group-hover:translate-x-1 transition-transform duration-300">
                         →

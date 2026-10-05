@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Script from 'next/script'
+import Head from 'next/head'
 import { Analytics } from '@vercel/analytics/react'
 import { ChatWidget } from '../components/ChatWidget'
 import 'nextra-theme-docs/style.css'
@@ -23,6 +24,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+      </Head>
       <Script
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2049212498619879"
         crossOrigin="anonymous"

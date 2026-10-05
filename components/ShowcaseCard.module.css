@@ -30,7 +30,7 @@
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 :global(.dark) .card {
@@ -39,7 +39,7 @@
 }
 
 :global(.dark) .card:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 
 /* Private card style */
@@ -273,15 +273,15 @@
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #a855f7;
+  color: #001D3D;
   background: transparent;
-  border: 1px solid #a855f7;
+  border: 1px solid #001D3D;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .demoBtnPrivate:hover {
-  background: #a855f7;
+  background: #001D3D;
   color: #ffffff;
 }
 

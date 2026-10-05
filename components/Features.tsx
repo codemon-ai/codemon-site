@@ -53,8 +53,8 @@ export function Features() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <span className="text-sm font-mono text-black/20 dark:text-white/25">{feature.number}</span>
-                <div className="mt-3 w-10 h-10 rounded-lg bg-accent-purple/10 border border-accent-purple/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                  <Icon className="w-5 h-5 text-accent-purple" />
+                <div className="mt-3 w-10 h-10 rounded-lg bg-foreground/5 border border-foreground/15 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                  <Icon className="w-5 h-5 text-foreground" />
                 </div>
                 <h3 className="mt-3 text-2xl font-semibold text-black dark:text-white">
                   {feature.title}

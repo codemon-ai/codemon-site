@@ -83,9 +83,9 @@ export function Stats() {
                 }}
                 className="relative group"
               >
-                <div className="text-center p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/30 transition-all duration-300">
-                  <div className="inline-flex w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <Icon className="w-6 h-6 text-purple-400" />
+                <div className="text-center p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.06] hover:border-foreground/40 transition-all duration-300">
+                  <div className="inline-flex w-12 h-12 rounded-xl bg-foreground/5 border border-foreground/15 items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-6 h-6 text-foreground/80" />
                   </div>
 
                   <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">

@@ -33,14 +33,14 @@ export default function WorkDetailPage({ project }: { project: WorkProject }) {
         <div className="mx-auto max-w-3xl px-6 py-16">
           <Link
             href="/work"
-            className="inline-flex items-center gap-1.5 text-sm text-foreground/50 hover:text-purple-400 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors"
           >
             <ArrowLeft size={16} /> 외주 프로젝트
           </Link>
 
           <div className="mt-6 flex items-center gap-2">
             <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/80">
               {statusLabel[project.status]}
             </span>
           </div>
@@ -58,18 +58,18 @@ export default function WorkDetailPage({ project }: { project: WorkProject }) {
 
           {project.problem && (
             <section className="mt-10">
-              <h2 className="text-sm font-mono uppercase tracking-widest text-purple-400">Problem</h2>
+              <h2 className="text-sm font-mono uppercase tracking-widest text-foreground/80">Problem</h2>
               <p className="mt-2 text-foreground/75 leading-relaxed">{project.problem}</p>
             </section>
           )}
 
           {project.approach?.length ? (
             <section className="mt-8">
-              <h2 className="text-sm font-mono uppercase tracking-widest text-purple-400">Approach</h2>
+              <h2 className="text-sm font-mono uppercase tracking-widest text-foreground/80">Approach</h2>
               <ul className="mt-2 space-y-2">
                 {project.approach.map((a) => (
                   <li key={a} className="flex gap-2 text-foreground/75 leading-relaxed">
-                    <span className="text-purple-400">·</span>
+                    <span className="text-foreground/80">·</span>
                     <span>{a}</span>
                   </li>
                 ))}
@@ -79,11 +79,11 @@ export default function WorkDetailPage({ project }: { project: WorkProject }) {
 
           {project.results?.length ? (
             <section className="mt-8">
-              <h2 className="text-sm font-mono uppercase tracking-widest text-purple-400">Result</h2>
+              <h2 className="text-sm font-mono uppercase tracking-widest text-foreground/80">Result</h2>
               <ul className="mt-2 space-y-2">
                 {project.results.map((r) => (
                   <li key={r} className="flex gap-2 text-foreground/75 leading-relaxed">
-                    <span className="text-purple-400">·</span>
+                    <span className="text-foreground/80">·</span>
                     <span>{r}</span>
                   </li>
                 ))}
@@ -92,7 +92,7 @@ export default function WorkDetailPage({ project }: { project: WorkProject }) {
           ) : null}
 
           <section className="mt-8">
-            <h2 className="text-sm font-mono uppercase tracking-widest text-purple-400">Role · Stack</h2>
+            <h2 className="text-sm font-mono uppercase tracking-widest text-foreground/80">Role · Stack</h2>
             <p className="mt-2 text-foreground/75">{project.role}</p>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {project.stack.map((s) => (
@@ -122,7 +122,7 @@ export default function WorkDetailPage({ project }: { project: WorkProject }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-10 inline-block rounded-xl bg-purple-600 px-5 py-2.5 font-medium text-white hover:bg-purple-500 transition-colors"
+              className="mt-10 inline-block rounded-xl bg-signal px-5 py-2.5 font-medium text-ink hover:opacity-80 transition-colors"
             >
               라이브 보기 →
             </a>

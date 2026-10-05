@@ -65,7 +65,7 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
     }
   }
 
-  const inputClass = 'w-full px-4 py-3 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-accent-purple transition-colors'
+  const inputClass = 'w-full px-4 py-3 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-ink transition-colors'
 
   if (status === 'success') {
     return (
@@ -75,7 +75,7 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
         transition={{ duration: 0.6 }}
         className="text-center py-16"
       >
-        <CheckCircle size={48} className="mx-auto mb-4 text-accent-purple" />
+        <CheckCircle size={48} className="mx-auto mb-4 text-foreground" />
         <h2 className="text-2xl font-bold text-black dark:text-white mb-2">
           감사합니다!
         </h2>
@@ -281,7 +281,7 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
               type="checkbox"
               checked={privacyConsent}
               onChange={(e) => setPrivacyConsent(e.target.checked)}
-              className="w-4 h-4 accent-accent-purple"
+              className="w-4 h-4 accent-ink"
             />
             <span className="text-sm text-black dark:text-white">
               개인정보 수집 및 이용에 동의합니다 <span className="text-red-500">*</span>
@@ -296,7 +296,7 @@ export function SurveyForm({ lectureId, lectureTitle }: SurveyFormProps) {
         <button
           type="submit"
           disabled={status === 'sending'}
-          className="w-full py-3 rounded-lg bg-accent-purple text-white font-semibold text-base hover:opacity-80 transition-opacity disabled:opacity-50"
+          className="w-full py-3 rounded-lg bg-signal text-on-signal font-semibold text-base hover:opacity-80 transition-opacity disabled:opacity-50"
         >
           {status === 'sending' ? '제출 중...' : '설문 제출하기'}
         </button>

@@ -53,7 +53,7 @@ export function Career() {
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-5 top-0 bottom-0 w-px bg-purple-500/20 hidden md:block" />
+          <div className="absolute left-5 top-0 bottom-0 w-px bg-foreground/5 hidden md:block" />
 
           <div className="space-y-8">
             {timeline.map((item, i) => {
@@ -68,8 +68,8 @@ export function Career() {
                   className="flex gap-5 items-start"
                 >
                   {/* Icon */}
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0 relative z-10">
-                    <Icon className="w-5 h-5 text-purple-400" />
+                  <div className="w-10 h-10 rounded-lg bg-foreground/5 border border-foreground/15 flex items-center justify-center flex-shrink-0 relative z-10">
+                    <Icon className="w-5 h-5 text-foreground/80" />
                   </div>
 
                   {/* Content */}
@@ -98,8 +98,8 @@ export function Career() {
               transition={{ duration: 0.5, delay: timeline.length * 0.15 }}
               className="flex gap-5 items-start"
             >
-              <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0 relative z-10">
-                <Briefcase className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 rounded-lg bg-foreground/5 border border-foreground/15 flex items-center justify-center flex-shrink-0 relative z-10">
+                <Briefcase className="w-5 h-5 text-foreground/80" />
               </div>
               <div className="flex-1 pb-2">
                 <h4 className="font-semibold text-foreground text-base mb-3">주요 근무 이력</h4>
@@ -125,8 +125,8 @@ export function Career() {
               transition={{ duration: 0.5, delay: (timeline.length + 1) * 0.15 }}
               className="flex gap-5 items-start"
             >
-              <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0 relative z-10">
-                <GraduationCap className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 rounded-lg bg-foreground/5 border border-foreground/15 flex items-center justify-center flex-shrink-0 relative z-10">
+                <GraduationCap className="w-5 h-5 text-foreground/80" />
               </div>
               <div className="flex-1 pb-2">
                 <h4 className="font-semibold text-foreground text-base">학력</h4>

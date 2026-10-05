@@ -37,7 +37,6 @@ export function Footer() {
   return (
     <footer className="relative py-16 px-6 bg-background border-t border-white/10">
       {/* Background gradient */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent-purple/5 rounded-full blur-3xl" />
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Contact Section */}
@@ -47,7 +46,7 @@ export function Footer() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text inline-block mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground inline-block mb-4">
             Let&apos;s Build Together
           </h2>
           <p className="text-foreground/60 max-w-md mx-auto mb-8">
@@ -57,7 +56,7 @@ export function Footer() {
           {/* Email CTA */}
           <Link
             href="mailto:hello@codemon.ai"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-accent-purple text-white rounded-xl font-semibold hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-accent-purple/25"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-signal text-on-signal rounded-xl font-semibold hover:scale-105 transition-transform duration-300 "
           >
             <Mail className="w-5 h-5" />
             <span>hello@codemon.ai</span>
@@ -85,10 +84,10 @@ export function Footer() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-white/10 transition-all duration-300 hover:-translate-y-1"
+                className="group w-12 h-12 rounded-xl border border-foreground/15 flex items-center justify-center hover:bg-foreground/5 transition-all duration-300 hover:-translate-y-1"
                 aria-label={link.name}
               >
-                <Icon className="w-5 h-5 text-foreground/60 group-hover:text-accent-purple transition-colors" />
+                <Icon className="w-5 h-5 text-foreground/60 group-hover:text-foreground transition-colors" />
               </Link>
             )
           })}
@@ -138,7 +137,7 @@ export function Footer() {
           className="text-center text-sm text-foreground/40"
         >
           <p className="flex items-center justify-center gap-1">
-            Made with <Heart className="w-4 h-4 text-accent-purple fill-accent-purple" /> by codemon
+            Made with <Heart className="w-4 h-4 text-foreground fill-foreground" /> by codemon
           </p>
           <p className="mt-2">
             &copy; {currentYear} codemon. All rights reserved.

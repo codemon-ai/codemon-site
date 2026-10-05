@@ -13,10 +13,8 @@ export function Hero() {
       }} />
 
       {/* Main radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent-purple/[0.07] dark:bg-accent-purple/[0.05] rounded-full blur-[120px] pointer-events-none" />
 
       {/* Secondary glow for depth */}
-      <div className="absolute top-[40%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent-purple/[0.04] dark:bg-accent-purple/[0.03] rounded-full blur-[80px] pointer-events-none" />
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">
@@ -57,7 +55,7 @@ export function Hero() {
         >
           <button
             onClick={() => window.dispatchEvent(new Event('open-chat'))}
-            className="px-8 py-3 rounded-full bg-accent-purple text-white font-semibold text-base hover:opacity-80 transition-opacity cursor-pointer"
+            className="px-8 py-3 rounded-full bg-signal text-on-signal font-semibold text-base hover:opacity-80 transition-opacity cursor-pointer"
           >
             문의하기
           </button>

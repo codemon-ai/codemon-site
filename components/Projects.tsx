@@ -12,7 +12,7 @@ const projects = [
     subtitle: 'AI 에이전트 외주 플랫폼',
     description: 'AI 에이전트 7명이 기획·개발·QA를 수행하는 자동화 외주 플랫폼. PM이 PRD를 쓰고, Dev가 코드를 짜고, QA가 검증한다.',
     icon: Sparkles,
-    gradient: 'from-purple-500 to-purple-700',
+    gradient: 'from-foreground/10 to-foreground/10',
     thumbnail: '/projects/codemon-make.png',
     tags: ['AI Agents', 'Next.js 15', 'BullMQ', 'Claude'],
     links: {
@@ -38,7 +38,7 @@ const projects = [
     subtitle: 'AI 타로 리딩',
     description: 'AI 기반 타로 카드 리딩 서비스. 직관적인 UI와 깊이 있는 해석을 제공합니다.',
     icon: Sparkles,
-    gradient: 'from-purple-500 to-purple-700',
+    gradient: 'from-foreground/10 to-foreground/10',
     thumbnail: '/projects/taromon.png',
     tags: ['AI', 'OpenAI', 'Next.js'],
     links: {
@@ -126,7 +126,6 @@ export function Projects() {
   return (
     <section className="py-24 px-6 bg-background relative overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent-purple/5 rounded-full blur-3xl" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -136,7 +135,7 @@ export function Projects() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground inline-block">
             What I Built
           </h2>
           <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
@@ -159,7 +158,7 @@ export function Projects() {
                 variants={itemVariants}
                 className="group relative"
               >
-                <div className="relative h-full p-6 rounded-2xl glass overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:bg-white/10">
+                <div className="relative h-full p-6 rounded-2xl border border-foreground/15 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:bg-foreground/5">
                   {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
 
@@ -176,7 +175,7 @@ export function Projects() {
                     <h3 className="text-xl font-bold text-foreground mb-1">
                       {project.title}
                     </h3>
-                    <p className="text-sm text-accent-purple mb-3">
+                    <p className="text-sm text-foreground mb-3">
                       {project.subtitle}
                     </p>
                     <p className="text-foreground/60 text-sm leading-relaxed mb-4">
@@ -199,7 +198,7 @@ export function Projects() {
                     <div className="flex gap-3 pt-2 border-t border-white/10">
                       <Link
                         href={project.links.demo}
-                        className="flex items-center gap-1.5 text-sm text-foreground/60 hover:text-accent-purple transition-colors"
+                        className="flex items-center gap-1.5 text-sm text-foreground/60 hover:text-foreground transition-colors"
                       >
                         <ExternalLink className="w-4 h-4" />
                         <span>View</span>
@@ -217,7 +216,7 @@ export function Projects() {
                   </div>
 
                   {/* Border glow on hover */}
-                  <div className={`absolute inset-0 rounded-2xl border border-transparent group-hover:border-accent-purple/30 transition-colors duration-500`} />
+                  <div className={`absolute inset-0 rounded-2xl border border-transparent group-hover:border-foreground/40 transition-colors duration-500`} />
                 </div>
               </motion.div>
             )
@@ -234,7 +233,7 @@ export function Projects() {
         >
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 px-6 py-3 glass rounded-xl text-foreground/80 hover:text-foreground hover:bg-white/10 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-foreground/15 rounded-xl text-foreground/80 hover:text-foreground hover:bg-foreground/5 transition-all duration-300"
           >
             <span>View All Projects</span>
             <ExternalLink className="w-4 h-4" />

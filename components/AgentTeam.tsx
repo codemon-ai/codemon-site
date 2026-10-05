@@ -83,12 +83,12 @@ export function AgentTeam() {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="group"
             >
-              <div className="p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/30 transition-all duration-300 text-center">
+              <div className="p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.06] hover:border-foreground/40 transition-all duration-300 text-center">
                 <div className="text-3xl mb-2">{agent.emoji}</div>
                 <div className="font-semibold text-foreground text-sm">
                   {agent.name}
                 </div>
-                <div className="text-xs text-purple-400 font-medium mt-0.5">
+                <div className="text-xs text-foreground/80 font-medium mt-0.5">
                   {agent.role}
                 </div>
                 <div className="text-xs text-foreground/30 mt-1 font-mono">
@@ -106,7 +106,7 @@ export function AgentTeam() {
             transition={{ duration: 0.4, delay: agents.length * 0.08 }}
             className="group"
           >
-            <div className="p-4 rounded-xl border border-dashed border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/20 transition-all duration-300 text-center h-full flex flex-col items-center justify-center">
+            <div className="p-4 rounded-xl border border-dashed border-black/[0.08] dark:border-white/[0.06] hover:border-foreground/40 transition-all duration-300 text-center h-full flex flex-col items-center justify-center">
               <div className="text-2xl mb-2 text-foreground/20">+</div>
               <div className="text-xs text-foreground/30">
                 확장 중...

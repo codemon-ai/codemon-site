@@ -22,7 +22,7 @@ export function ContactCTA() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => window.dispatchEvent(new Event('open-chat'))}
-              className="px-8 py-3 rounded-full bg-accent-purple text-white font-semibold text-base hover:opacity-80 transition-opacity cursor-pointer"
+              className="px-8 py-3 rounded-full bg-signal text-on-signal font-semibold text-base hover:opacity-80 transition-opacity cursor-pointer"
             >
               문의하기
             </button>

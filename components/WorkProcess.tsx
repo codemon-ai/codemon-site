@@ -61,13 +61,13 @@ export function WorkProcess() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="relative group"
               >
-                <div className="p-6 rounded-xl border border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/30 transition-all duration-300 h-full">
+                <div className="p-6 rounded-xl border border-black/[0.08] dark:border-white/[0.06] hover:border-foreground/40 transition-all duration-300 h-full">
                   <span className="text-xs font-mono text-foreground/30">
                     {step.number}
                   </span>
 
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mt-3 mb-3">
-                    <Icon className="w-5 h-5 text-purple-400" />
+                  <div className="w-10 h-10 rounded-lg bg-foreground/5 border border-foreground/15 flex items-center justify-center mt-3 mb-3">
+                    <Icon className="w-5 h-5 text-foreground/80" />
                   </div>
 
                   <h3 className="font-semibold text-foreground text-base">

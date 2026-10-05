@@ -49,7 +49,7 @@ export default function NewsIndex() {
           onClick={() => setActiveTag(null)}
           className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
             activeTag === null
-              ? 'bg-purple-500 text-white'
+              ? 'bg-signal text-on-signal'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
           }`}
         >
@@ -63,7 +63,7 @@ export default function NewsIndex() {
               onClick={() => setActiveTag(activeTag === tag ? null : tag)}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                 activeTag === tag
-                  ? 'bg-purple-500 text-white'
+                  ? 'bg-signal text-on-signal'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
               }`}
             >
@@ -78,7 +78,7 @@ export default function NewsIndex() {
         {filtered.map(item => (
           <article
             key={item.id}
-            className="border border-gray-200 dark:border-gray-800 rounded-lg p-4 hover:border-purple-500/50 transition-colors"
+            className="border border-gray-200 dark:border-gray-800 rounded-lg p-4 hover:border-foreground/40 transition-colors"
           >
             {/* Top: tags + date */}
             <div className="flex items-center justify-between mb-2">
@@ -86,7 +86,7 @@ export default function NewsIndex() {
                 {item.tags.map(tag => (
                   <span
                     key={tag}
-                    className="px-2 py-0.5 text-xs rounded-full bg-purple-500/10 text-purple-500 dark:bg-purple-500/20 dark:text-purple-400"
+                    className="px-2 py-0.5 text-xs rounded-full bg-foreground/5 text-foreground  "
                   >
                     {tag}
                   </span>
@@ -104,7 +104,7 @@ export default function NewsIndex() {
               rel="noopener noreferrer"
               className="group block"
             >
-              <h2 className="text-base font-semibold group-hover:text-purple-500 transition-colors">
+              <h2 className="text-base font-semibold group-hover:text-foreground transition-colors">
                 {item.title}
               </h2>
             </a>
@@ -126,14 +126,14 @@ export default function NewsIndex() {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-purple-500 dark:text-gray-400 dark:hover:text-purple-400 transition-colors"
+                className="text-gray-500 hover:text-foreground dark:text-gray-400  transition-colors"
               >
                 {sourceIcon[item.source] || '🔗'} {item.source} ↗
               </a>
               {item.blogLink && (
                 <Link
                   href={item.blogLink}
-                  className="text-purple-500 hover:text-purple-400 font-medium transition-colors"
+                  className="text-foreground hover:text-foreground font-medium transition-colors"
                 >
                   자세히 보기 →
                 </Link>

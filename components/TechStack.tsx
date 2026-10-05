@@ -113,7 +113,7 @@ export function TechStack() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text inline-block">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground inline-block">
             Tech Stack
           </h2>
           <p className="text-foreground/60 mt-4 max-w-2xl mx-auto text-lg">
@@ -130,7 +130,7 @@ export function TechStack() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
             >
-              <h3 className="text-sm font-semibold text-accent-purple uppercase tracking-wider mb-6">
+              <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-6">
                 {category.name}
               </h3>
               <motion.div
@@ -149,7 +149,7 @@ export function TechStack() {
                       className="group relative"
                     >
                       <div
-                        className="flex items-center gap-2 px-3 py-2 glass rounded-lg hover:bg-white/10 transition-all duration-300 cursor-default"
+                        className="flex items-center gap-2 px-3 py-2 border border-foreground/15 rounded-lg hover:bg-foreground/5 transition-all duration-300 cursor-default"
                         style={{
                           '--hover-color': item.color,
                         } as React.CSSProperties}

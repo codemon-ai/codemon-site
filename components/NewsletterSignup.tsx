@@ -46,7 +46,7 @@ export function NewsletterSignup({
       {!compact && (
         <>
           <div className="flex items-center gap-2 mb-3">
-            <Mail size={18} className="text-accent-purple" />
+            <Mail size={18} className="text-foreground" />
             <h3 className="text-lg font-semibold text-black dark:text-white">{title}</h3>
           </div>
           <p className="text-sm text-black/50 dark:text-white/45 mb-4">{description}</p>
@@ -54,7 +54,7 @@ export function NewsletterSignup({
       )}
 
       {status === 'success' || status === 'already' ? (
-        <p className="text-sm text-accent-purple font-medium">
+        <p className="text-sm text-foreground font-medium">
           {status === 'success' ? '구독 감사합니다!' : '이미 구독 중입니다.'}
         </p>
       ) : (
@@ -66,12 +66,12 @@ export function NewsletterSignup({
             placeholder="이메일 주소"
             required
             aria-label="이메일"
-            className="flex-1 min-w-0 px-4 py-2.5 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-accent-purple transition-colors"
+            className="flex-1 min-w-0 px-4 py-2.5 rounded-lg text-sm bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.06] text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 outline-none focus:border-ink transition-colors"
           />
           <button
             type="submit"
             disabled={status === 'sending'}
-            className="px-5 py-2.5 rounded-lg bg-accent-purple text-white text-sm font-semibold hover:opacity-80 transition-opacity disabled:opacity-50 whitespace-nowrap"
+            className="px-5 py-2.5 rounded-lg bg-signal text-on-signal text-sm font-semibold hover:opacity-80 transition-opacity disabled:opacity-50 whitespace-nowrap"
           >
             {status === 'sending' ? '...' : '구독'}
           </button>

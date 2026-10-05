@@ -17,7 +17,7 @@ export function QRCodeDisplay({ url, size = 120, title }: QRCodeDisplayProps) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
-        <QrCode size={20} className="text-accent-purple" />
+        <QrCode size={20} className="text-foreground" />
         <h3 className="text-lg font-semibold text-black dark:text-white">{title || 'QR 코드'}</h3>
       </div>
       <p className="text-sm text-black/50 dark:text-white/45 mb-4">

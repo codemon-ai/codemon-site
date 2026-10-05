@@ -14,7 +14,7 @@ export function WorkCard({ project }: { project: WorkProject }) {
   return (
     <motion.div
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-      className="group overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.06] hover:border-purple-500/30 transition-all"
+      className="group overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.06] hover:border-foreground/40 transition-all"
     >
       {project.screenshots[0] && (
         <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
@@ -29,7 +29,7 @@ export function WorkCard({ project }: { project: WorkProject }) {
       <div className="p-5">
         <div className="flex items-center gap-2 mb-1">
           <h3 className="font-semibold text-foreground">{project.name}</h3>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/80">
             {statusLabel[project.status]}
           </span>
         </div>
@@ -56,7 +56,7 @@ export function WorkCard({ project }: { project: WorkProject }) {
         </div>
         <div className="mt-3 flex gap-4">
           {project.detail && (
-            <Link href={`/work/${project.slug}`} className="text-sm text-purple-400 hover:underline">
+            <Link href={`/work/${project.slug}`} className="text-sm text-foreground/80 hover:underline">
               케이스 보기 →
             </Link>
           )}
@@ -65,7 +65,7 @@ export function WorkCard({ project }: { project: WorkProject }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-purple-400 hover:underline"
+              className="text-sm text-foreground/80 hover:underline"
             >
               라이브 보기 →
             </a>

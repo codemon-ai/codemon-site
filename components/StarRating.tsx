@@ -31,7 +31,7 @@ export function StarRating({ value, onChange, disabled }: StarRatingProps) {
               size={28}
               className={
                 active
-                  ? 'fill-accent-purple text-accent-purple'
+                  ? 'fill-foreground text-foreground'
                   : 'fill-none text-black/20 dark:text-white/20'
               }
             />

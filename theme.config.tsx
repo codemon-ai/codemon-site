@@ -1,6 +1,8 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
+import { LangSwitch } from './components/shell/LangSwitch'
+import { SubscribeButton } from './components/shell/SubscribeButton'
 // ChatWidget moved to _app.tsx
 
 const SITE_URL = 'https://codemon.ai'
@@ -95,29 +97,35 @@ const Head = () => {
 }
 
 const config: DocsThemeConfig = {
-  logo: <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>codemon</span>,
+  logo: <span style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.03em' }}>codemon</span>,
   project: {
     link: 'https://github.com/codemon-ai',
   },
   docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site/blob/main',
   navbar: {
     extraContent: (
-      <a
-        href="/subscribe"
-        className="ml-2 inline-flex items-center rounded-md border border-current px-3 py-1 text-sm font-semibold hover:opacity-70 transition-opacity"
-      >
-        뉴스레터 구독
-      </a>
+      <div className="ml-2 flex items-center gap-3">
+        <LangSwitch />
+        <SubscribeButton />
+      </div>
     ),
   },
   footer: {
     content: (
-      <div className="flex flex-col items-center gap-2 w-full">
-        <div className="flex gap-4 text-xs">
-          <a href="/terms" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">이용약관</a>
-          <a href="/privacy" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:underline">개인정보처리방침</a>
+      <div className="flex w-full flex-col gap-3 text-sm md:flex-row md:items-end md:justify-between">
+        <div>
+          <div className="font-black tracking-tight text-base">codemon</div>
+          <div className="text-ink/60 text-xs leading-relaxed">
+            Codemon Inc. · Seoul, Korea<br />AI/AX Engineering · Forward Deployed Engineer
+          </div>
         </div>
-        <span>&copy; {new Date().getFullYear()} codemon.ai</span>
+        <div className="flex flex-wrap gap-4 text-xs text-ink/60">
+          <a href="/projects" className="hover:text-ink">Projects</a>
+          <a href="https://tools.codemon.ai" target="_blank" rel="noopener noreferrer" className="hover:text-ink">Tools</a>
+          <a href="/privacy" className="hover:text-ink">개인정보처리방침</a>
+          <a href="/terms" className="hover:text-ink">이용약관</a>
+          <span>&copy; {new Date().getFullYear()} codemon.ai</span>
+        </div>
       </div>
     ),
   },

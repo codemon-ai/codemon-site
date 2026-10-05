@@ -40,8 +40,8 @@ export default function WorkLoginPage() {
           className="w-full max-w-sm space-y-6 rounded-xl border border-zinc-800 bg-zinc-950 p-8"
         >
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-500/10">
-              <Lock className="text-purple-400" size={24} />
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-foreground/5">
+              <Lock className="text-foreground/80" size={24} />
             </div>
             <h1 className="mt-4 text-lg font-semibold text-zinc-100">외주 포트폴리오</h1>
             <p className="mt-1 text-sm text-zinc-400">비밀번호를 입력하세요.</p>
@@ -51,14 +51,14 @@ export default function WorkLoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoFocus
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-zinc-100 outline-none focus:border-purple-500"
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-zinc-100 outline-none focus:border-ink"
             placeholder="비밀번호"
           />
           {error && <p className="text-sm text-red-400">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-purple-600 py-2 font-medium text-white hover:bg-purple-500 disabled:opacity-50"
+            className="w-full rounded-lg bg-signal py-2 font-medium text-ink hover:opacity-80 disabled:opacity-50"
           >
             {loading ? '확인 중…' : '입장'}
           </button>
