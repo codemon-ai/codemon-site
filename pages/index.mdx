@@ -5,9 +5,16 @@ title: codemon
 import { Hero } from '../components/Hero'
 import { Features } from '../components/Features'
 import { ContactCTA } from '../components/ContactCTA'
+import { NewsletterSignup } from '../components/NewsletterSignup'
 
 <Hero />
 
 <Features />
+
+<section className="py-16 px-6">
+  <div className="max-w-xl mx-auto">
+    <NewsletterSignup variant="inline" source="home" />
+  </div>
+</section>
 
 <ContactCTA />

@@ -1,6 +1,6 @@
 export default {
   index: {
-    title: 'Home',
+    title: '홈',
     type: 'page',
     theme: {
       layout: 'raw',
@@ -17,6 +17,7 @@ export default {
   },
   showcase: {
     title: 'Showcase',
+    display: 'hidden',
     type: 'page',
     theme: {
       layout: 'default',
@@ -28,28 +29,36 @@ export default {
   },
   projects: {
     title: 'Projects',
+    display: 'hidden',
     type: 'page'
   },
   blog: {
-    title: 'Blog',
+    title: '인사이트',
     type: 'page'
   },
   news: {
     title: 'News',
+    display: 'hidden',
     type: 'page'
   },
   tools: {
     title: 'Tools',
+    display: 'hidden',
     type: 'page',
     href: 'https://tools.codemon.ai',
     newWindow: true
   },
   docs: {
     title: 'Docs',
+    display: 'hidden',
     type: 'page',
     theme: {
       pagination: false
     }
+  },
+  yonsei: {
+    type: 'folder',
+    display: 'hidden'
   },
   p: {
     type: 'folder',

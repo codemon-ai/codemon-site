@@ -100,6 +100,16 @@ const config: DocsThemeConfig = {
     link: 'https://github.com/codemon-ai',
   },
   docsRepositoryBase: 'https://github.com/codemon-ai/codemon-site/blob/main',
+  navbar: {
+    extraContent: (
+      <a
+        href="/subscribe"
+        className="ml-2 inline-flex items-center rounded-md border border-current px-3 py-1 text-sm font-semibold hover:opacity-70 transition-opacity"
+      >
+        뉴스레터 구독
+      </a>
+    ),
+  },
   footer: {
     content: (
       <div className="flex flex-col items-center gap-2 w-full">

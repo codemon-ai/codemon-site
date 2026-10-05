@@ -57,6 +57,7 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-10-06]** 리뉴얼 **P0 완료(프리뷰)** — 뉴스레터 폼 3곳(홈·푸터·헤더)+`source` 저장, 중복판정 Supabase 단일화, nav 재편(홈·인사이트 / showcase·projects·news·docs·tools 숨김), ADR-005~010 초안 — `changelog/2026-10-06.md`
 - **[2026-09-23]** 콘텐츠 중심 리뉴얼 **스펙 + 6페이즈 로드맵** 작성(Swiss Signal 디자인, 메뉴 `인사이트·실습·강의·사례·About`, research-saas 통합, high-techer/airpremia 이관 게이트) — `prd/site-renewal-2026.md`·`plans/2026-09-23-site-renewal-roadmap.md`·`changelog/2026-09-23.md`
 - **[2026-09-21]** `/webinar` 허브화 + `/webinar/prep`·`/webinar/handbook`(참가자 핸드북) 서빙, 정적 파일 `public/files/webinar/` — `changelog/2026-09-21.md`
 - **[2026-09-18]** `/webinar` 웨비나 사전 준비 가이드 신설(Claude Code·플러그인·Playwright MCP·Orca 설치) — `changelog/2026-09-18.md`

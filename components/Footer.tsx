@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Github, Mail, Twitter, Heart } from 'lucide-react'
+import { NewsletterSignup } from './NewsletterSignup'
 
 // 신원 직접 특정 방지 — LinkedIn 등 실명 연결 링크는 두지 않는다.
 const socialLinks = [
@@ -62,6 +63,11 @@ export function Footer() {
             <span>hello@codemon.ai</span>
           </Link>
         </motion.div>
+
+        {/* Newsletter */}
+        <div className="max-w-md mx-auto mb-12">
+          <NewsletterSignup variant="footer" source="footer" />
+        </div>
 
         {/* Social Links */}
         <motion.div
