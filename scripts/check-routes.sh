@@ -16,6 +16,8 @@ set -uo pipefail
 cd "$(dirname "$0")/.."
 
 BASE="${BASE:-https://codemon.ai}"
+# 보호된 프리뷰 검증용: VERIFY_HEADER="x-vercel-trusted-oidc-idp-token: $VERCEL_OIDC_TOKEN"
+HDR=(); [ -n "${VERIFY_HEADER:-}" ] && HDR=(-H "$VERIFY_HEADER")
 ALL=0
 [ "${1:-}" = "--all" ] && ALL=1
 
@@ -46,10 +48,11 @@ list_assets() {
 fail=0
 total=0
 while read -r r; do
-  code=$(curl -s -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 1 -m 25 "$BASE$r" </dev/null)
+  code=$(curl -s -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 1 -m 25 "${HDR[@]}" "$BASE$r" </dev/null)
   total=$((total + 1))
   case "$code" in
-    200|301|302|307|308) ;;
+    200|301|307|308) ;;
+    302) if [ -n "${VERIFY_HEADER:-}" ]; then echo "FAIL $code $r (protection redirect)"; fail=$((fail + 1)); fi ;;
     *) echo "FAIL $code $r"; fail=$((fail + 1)) ;;
   esac
 done < /tmp/check-routes-list.txt
