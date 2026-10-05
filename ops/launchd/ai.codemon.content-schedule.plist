@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 매일 09:10 실행; 3일 간격은 스크립트가 판단. 설치: cp → ~/Library/LaunchAgents/ &amp;&amp; launchctl load -w ~/Library/LaunchAgents/ai.codemon.content-schedule.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>ai.codemon.content-schedule</string>
+  <key>ProgramArguments</key><array>
+    <string>/bin/zsh</string><string>-lc</string>
+    <string>cd ~/workspace/codemon/codemon-site &amp;&amp; git fetch -q origin &amp;&amp; git checkout -q main &amp;&amp; git pull -q --ff-only &amp;&amp; node scripts/content-schedule.mjs >> ~/Library/Logs/codemon-content-schedule.log 2>&amp;1</string>
+  </array>
+  <key>StartCalendarInterval</key><dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>10</integer></dict>
+  <key>StandardOutPath</key><string>/Users/codemon/Library/Logs/codemon-content-schedule.log</string>
+  <key>StandardErrorPath</key><string>/Users/codemon/Library/Logs/codemon-content-schedule.log</string>
+</dict></plist>

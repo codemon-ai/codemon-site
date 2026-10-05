@@ -1,0 +1,41 @@
+{
+  "accept": false,
+  "category": "models",
+  "reasons": [
+    "사실 주장 4건 전부 틀렸다 — Fable 5.1은 2024년 1월이 아니라 2026년 9월 1일 출시, 입력 가격은 $0.01/1M이 아니라 $10/1M(출력 $50/1M).",
+    "Nextra 3는 2019년이 아니라 2024년 9월 28일(npm 3.0.0 게시) 출시이고, Angular가 아니라 Next.js(React) 기반이다. 이 프로젝트 자체가 nextra 3.3.1 + next 14 + react 18로 돌아간다.",
+    "글의 유일한 논지('위 숫자로 비용을 계산하라')가 틀린 가격에 통째로 기대고 있어 교정 채택이 불가능하다. 독자 이익도 없음.",
+    "고치려면: 출시일 2026-09-01, 가격 $10/$50(캐시 읽기 $0.25), Nextra 3 = 2024-09 Next.js/React 기반으로 바꾸고 '왜 중요한가'에 실제 비용 계산 예시를 넣어야 한다."
+  ],
+  "facts": [
+    {
+      "claim": "Claude Fable 5.1은 2024년 1월에 출시되었다",
+      "status": "false",
+      "url": "https://emergent.sh/news/claude-fable-5-1-launches-anthropic-s-latest",
+      "note": "실제 출시는 2026년 9월 1일. Fable 5(2026년 6월)의 포인트 릴리스. 2년 8개월 오차로 단순 오타가 아니다."
+    },
+    {
+      "claim": "Fable 5.1 API 가격은 입력 100만 토큰당 0.01달러",
+      "status": "false",
+      "url": "https://anotherwrapper.com/llm-pricing/claude-fable-5-1",
+      "note": "실제 입력 $10.00/1M, 출력 $50.00/1M, 캐시 읽기 $0.25/1M. 1,000배 차이이며 글의 비용 계산 논지가 이 숫자에 의존한다."
+    },
+    {
+      "claim": "Nextra 3는 2019년에 나왔다",
+      "status": "false",
+      "url": "https://the-guild.dev/blog/nextra-3",
+      "note": "npm 레지스트리 기준 nextra 3.0.0 게시일 2024-09-28(알파 3.0.0-alpha.1은 2023-10-08). 2.0.0도 2022-12-02라 2019년에는 Nextra 3가 존재하지 않았다."
+    },
+    {
+      "claim": "Nextra 3는 Angular 기반 프레임워크다",
+      "status": "false",
+      "url": "https://nextra.site/docs/guide/static-exports",
+      "note": "Nextra는 Next.js 기반 정적 사이트 생성기. peerDependencies가 next>=14, react>=18이며 Angular 의존성이 전혀 없다. 이 레포도 nextra 3.3.1 + next 14 + react 18 구성."
+    }
+  ],
+  "correctedBody": "",
+  "_cost": 2.360901,
+  "_turns": 11,
+  "judgedAt": "2026-10-05T22:13:13.162Z",
+  "model": "claude-fable-5-1"
+}

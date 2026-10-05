@@ -187,3 +187,12 @@ ALTER TABLE survey_responses
 4. **배포는 `main` 기준 트리에서만.** 배포 직전 `pwd` + 브랜치 + `git status` 확인.
 5. **배포 직후** — `./scripts/check-routes.sh` 실행. 실패 0이어야 완료.
 6. 이 문서와 [라우트 인벤토리](./route-inventory.md)를 함께 갱신한다.
+
+## 리뉴얼 (2026-10-06 기준)
+
+| 브랜치 | 상태 | 비고 |
+|---|---|---|
+| `codemon-ai/design-renew` (origin) | **활성** — P0~P6 모두 ff-merge됨, 프리뷰 배포만 | 최종 프로모트(apex) 시 `main`으로 PR. 워크트리 `orca/workspaces/codemon-site/design-renew` |
+| `renewal/p0`~`renewal/p6` (로컬, 워크트리 `renew`) | 머지 완료 | design-renew에 ff-merge된 작업 브랜치. 삭제 가능(미반영 커밋 0) |
+| `content/<slug>` (스케줄러 생성 예정) | — | 파이프라인 PR 브랜치, 로디몬 머지 후 삭제 |
+| research-saas `feat/export-cli` | PR #14 열림 | 다이제스트 export, 로디 검증 후 머지 |

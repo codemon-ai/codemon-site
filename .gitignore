@@ -57,3 +57,4 @@ data/*
 
 # supabase CLI 링크 임시파일
 supabase/.temp/
+!data/content-queue/

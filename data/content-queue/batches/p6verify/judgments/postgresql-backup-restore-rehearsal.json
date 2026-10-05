@@ -1,0 +1,48 @@
+{
+  "accept": true,
+  "category": "infra",
+  "reasons": [
+    "사실 주장 5건 모두 PostgreSQL 공식 문서(app-pgdump, app-pgrestore)와 일치. corrected/false 없음.",
+    "pg_dump 단일 DB 범위, pg_dumpall의 역할·테이블스페이스 담당, custom 포맷과 pg_restore 관계, --list/--exit-on-error 동작 설명이 문서 원문과 정확히 대응.",
+    "홍보성 없음. 격리 환경·보관소 인출 검증·시간 구간 분리 기록 등 독자가 바로 적용할 실무 절차로 구성되어 독자 이익이 분명함.",
+    "레포 내 기존 발행 글에 PostgreSQL 백업/복구 주제 없음(검색 결과 초안 큐만 매칭). 중복 아님.",
+    "카테고리는 초안대로 infra(혼자 만드는 인프라·빌드로그)가 적합. 본문 수정 불필요."
+  ],
+  "facts": [
+    {
+      "claim": "pg_dump는 단일 데이터베이스를 덤프한다",
+      "status": "verified",
+      "url": "https://www.postgresql.org/docs/current/app-pgdump.html",
+      "note": "문서 원문: \"pg_dump only dumps a single database.\""
+    },
+    {
+      "claim": "역할·테이블스페이스 같은 클러스터 공통 객체를 내보내려면 pg_dumpall을 사용한다",
+      "status": "verified",
+      "url": "https://www.postgresql.org/docs/current/app-pgdump.html",
+      "note": "문서 원문: \"To export an entire cluster, or to export global objects that are common to all databases in a cluster (such as roles and tablespaces), use pg_dumpall.\""
+    },
+    {
+      "claim": "pg_dump의 custom 형식은 pg_restore로 복원할 수 있는 아카이브 형식이다",
+      "status": "verified",
+      "url": "https://www.postgresql.org/docs/current/app-pgdump.html",
+      "note": "custom 포맷은 \"a custom-format archive suitable for input into pg_restore\"로 기술됨. pg_restore 문서도 non-plain-text 포맷 아카이브 복원 유틸리티임을 명시."
+    },
+    {
+      "claim": "pg_restore --list 옵션은 아카이브의 목차를 출력한다",
+      "status": "verified",
+      "url": "https://www.postgresql.org/docs/current/app-pgrestore.html",
+      "note": "문서 원문: \"-l --list: List the table of contents of the archive.\""
+    },
+    {
+      "claim": "pg_restore --exit-on-error 옵션은 SQL 명령을 데이터베이스로 보내는 과정에서 오류가 발생하면 종료한다",
+      "status": "verified",
+      "url": "https://www.postgresql.org/docs/current/app-pgrestore.html",
+      "note": "문서 원문: \"Exit if an error is encountered while sending SQL commands to the database. The default is to continue and to display a count of errors at the end.\" 본문 표현과 일치."
+    }
+  ],
+  "correctedBody": "",
+  "_cost": 1.34245375,
+  "_turns": 7,
+  "judgedAt": "2026-10-05T22:08:38.030Z",
+  "model": "claude-fable-5-1"
+}

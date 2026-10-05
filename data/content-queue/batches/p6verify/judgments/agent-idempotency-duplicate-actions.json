@@ -1,0 +1,42 @@
+{
+  "accept": true,
+  "category": "agents-build",
+  "reasons": [
+    "사실 주장은 RFC 9110 §9.2.2 관련 3건(멱등 정의, PUT·DELETE 멱등 메서드, 반복 시 응답 가변)뿐이며 RFC 원문(rfc9110.txt 3861~3881행)과 전부 일치. 링크 앵커(#section-9.2.2)도 실제 섹션 번호와 맞음.",
+    "나머지는 저자의 설계 경험·기준(업무 식별자 고정, 결과 미확인 상태, 고유 제약으로 실행 권한 확보, 응답 유실 테스트)으로 검증 대상이 아닌 의견이며 근거 없는 단정이나 홍보성 내용 없음.",
+    "기존 발행 글 중 멱등성을 다룬 글 없음(BlueMango 릴리즈 노트에 '토스 웹훅 멱등성' 한 줄 언급뿐) — 중복 아님.",
+    "쓰기 도구를 가진 에이전트의 재시도 설계와 장애 테스트 체크리스트가 독자에게 실용적 이익을 줌. 카테고리는 초안대로 agents-build 유지.",
+    "본문 수정 불필요 — correctedBody 비움."
+  ],
+  "facts": [
+    {
+      "claim": "RFC 9110은 동일한 요청을 여러 번 보냈을 때 서버에 의도한 효과가 한 번 보냈을 때와 같으면 멱등적이라고 정의한다",
+      "status": "verified",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "note": "원문: \"A request method is considered 'idempotent' if the intended effect on the server of multiple identical requests with that method is the same as the effect for a single such request.\""
+    },
+    {
+      "claim": "RFC 9110은 PUT과 DELETE를 멱등 메서드로 규정한다",
+      "status": "verified",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "note": "원문: \"Of the request methods defined by this specification, PUT, DELETE, and safe request methods are idempotent.\" (safe 메서드도 포함되나 초안 서술은 틀리지 않음)"
+    },
+    {
+      "claim": "멱등 요청을 반복하더라도 응답은 달라질 수 있다",
+      "status": "verified",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "note": "원문: \"...repeating the request will have the same intended effect, even if the original request succeeded, though the response might differ.\" MDN 용어집도 DELETE 첫 호출 200, 이후 404 예시로 동일 설명 (https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)"
+    },
+    {
+      "claim": "링크 앵커 #section-9.2.2 가 'Idempotent Methods' 섹션을 가리킨다",
+      "status": "verified",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "note": "RFC 9110 목차상 9.2.1 Safe Methods, 9.2.2 Idempotent Methods, 9.2.3 Methods and Caching 확인"
+    }
+  ],
+  "correctedBody": "",
+  "_cost": 1.7716222499999996,
+  "_turns": 9,
+  "judgedAt": "2026-10-05T22:07:58.289Z",
+  "model": "claude-fable-5-1"
+}

@@ -57,6 +57,7 @@ docs/
 
 ## 최근 주요 변경 (top 3)
 
+- **[2026-10-06]** 리뉴얼 **P6 완료(프리뷰)** — 콘텐츠 자동 발행 파이프라인: Codex 초안·이미지 프롬프트 → Fable 5.1 WebSearch 사실검증(채택 2/반려 1 실증) → gpt-image-2 3장/글 → 큐 → 3일 간격 PR(`content-schedule.mjs`, launchd 템플릿). `wiki/content-pipeline-ops.md` — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P5 완료(프리뷰)** — research-saas `engine export` PR#14, inbox pull 스크립트, `/admin/digest` 리터칭(Supabase digests, DDL 수동), generate-digests prebuild, `/insights/digest/2026-W10` 첫 호, `docs/wiki/digest-ops.md` — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P4 완료(프리뷰)** — 변환 스크립트 3종(strip-brand·convert-lesson·convert-resource), A등급 15편 `content/migrated/blog/` 스테이징(로디몬 발행), 강의 카탈로그 outline 채움(+private 3), 데모 7종 리스킨·사례화. G3 N=1 인용불가, G4 0건 — `changelog/2026-10-06.md`
 - **[2026-10-06]** 리뉴얼 **P3 완료(프리뷰)** — 홈(Swiss Signal 10섹션)·인사이트 카테고리 URL+페이지네이션+글 하단 사다리·/lectures·/cases(+/work→/cases 307)·/contact(+admin 문의함)·/newsletter(/subscribe 308)·About. ⚠️ Supabase inquiries DDL 수동 적용 필요 — `changelog/2026-10-06.md`

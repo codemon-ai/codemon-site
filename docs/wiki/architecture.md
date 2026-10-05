@@ -181,3 +181,13 @@ playwright-cli open https://codemon.ai/<path>
 | `scripts/generate-digests.mjs` | prebuild: published → `data/digest/<week>.json` + `index.json` |
 | `pages/insights/digest/[week].tsx` | 공개 페이지 (SiteShell) |
 | `emails/Digest.tsx` · `pages/api/admin/digest/send.ts` | 발송 |
+
+### 콘텐츠 자동 발행 파이프라인 (리뉴얼 P6) — 운영은 `content-pipeline-ops.md`
+
+| 파일 | 역할 |
+|------|------|
+| `scripts/content-pipeline.mjs` | draft(Codex) → judge(Fable 5.1+WebSearch) → images(OpenAI Images) → enqueue |
+| `scripts/content-prompts/{draft,judge}.md` | 프롬프트 템플릿 (편집 가능) |
+| `scripts/content-schedule.mjs` | 3일 간격 큐 pop → `pages/blog/<slug>.mdx` → PR |
+| `data/content-queue/{queue,log}.json`, `batches/<id>/` | 큐·발행 이력·배치 산출물(판정 근거 보관) |
+| `ops/launchd/ai.codemon.content-schedule.plist` | 매일 09:10 스케줄 템플릿 |
