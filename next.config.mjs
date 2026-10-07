@@ -11,6 +11,12 @@ const nextConfig = withNextra({
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  async rewrites() {
+    return [
+      // 웨비나 발표 슬라이드: 정적 HTML을 /webinar/slides 경로로 서빙 (public/webinar/는 pages/webinar/ 라우트에 가려 404)
+      { source: '/webinar/slides', destination: '/files/webinar/slides.html' },
+    ]
+  },
   async redirects() {
     return [
       {

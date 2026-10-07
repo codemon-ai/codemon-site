@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>하이테커 · Claude 바이브 코딩 핸즈온 60분</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   These styles ensure slides fit exactly in the viewport.
+   =========================================== */
+
+/* 1. Lock html/body to viewport */
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+/* 2. Each slide = exact viewport height */
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    overflow: hidden; /* CRITICAL: Prevent ANY overflow */
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 3. Content container with flex for centering */
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden; /* Double-protection against overflow */
+    padding: var(--slide-padding);
+}
+
+/* 4. ALL typography uses clamp() for responsive scaling */
+:root {
+    /* Titles scale from mobile to desktop */
+    --title-size: clamp(1.5rem, 5vw, 4rem);
+    --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+    --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+
+    /* Body text */
+    --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+    --small-size: clamp(0.65rem, 1vw, 0.875rem);
+
+    /* Spacing scales with viewport */
+    --slide-padding: clamp(1rem, 4vw, 4rem);
+    --content-gap: clamp(0.5rem, 2vw, 2rem);
+    --element-gap: clamp(0.25rem, 1vw, 1rem);
+}
+
+/* 5. Cards/containers use viewport-relative max sizes */
+.card, .container, .content-box {
+    max-width: min(90vw, 1000px);
+    max-height: min(80vh, 700px);
+}
+
+/* 6. Lists auto-scale with viewport */
+.feature-list, .bullet-list {
+    gap: clamp(0.4rem, 1vh, 1rem);
+}
+
+.feature-list li, .bullet-list li {
+    font-size: var(--body-size);
+    line-height: 1.4;
+}
+
+/* 7. Grids adapt to available space */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+/* 8. Images constrained to viewport */
+img, .image-container {
+    max-width: 100%;
+    max-height: min(50vh, 400px);
+    object-fit: contain;
+}
+
+/* ===========================================
+   RESPONSIVE BREAKPOINTS
+   Aggressive scaling for smaller viewports
+   =========================================== */
+
+/* Short viewports (< 700px height) */
+@media (max-height: 700px) {
+    :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+        --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size: clamp(1rem, 3vw, 1.75rem);
+    }
+}
+
+/* Very short viewports (< 600px height) */
+@media (max-height: 600px) {
+    :root {
+        --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+        --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+        --title-size: clamp(1.1rem, 4vw, 2rem);
+        --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    }
+
+    /* Hide non-essential elements */
+    .nav-dots, .keyboard-hint, .decorative {
+        display: none;
+    }
+}
+
+/* Extremely short (landscape phones, < 500px height) */
+@media (max-height: 500px) {
+    :root {
+        --slide-padding: clamp(0.4rem, 2vw, 1rem);
+        --title-size: clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size: clamp(0.65rem, 1vw, 0.85rem);
+    }
+}
+
+/* Narrow viewports (< 600px width) */
+@media (max-width: 600px) {
+    :root {
+        --title-size: clamp(1.25rem, 7vw, 2.5rem);
+    }
+
+    /* Stack grids vertically */
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===========================================
+   REDUCED MOTION
+   Respect user preferences
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* === Theme: ink, warm paper, cobalt === */
+:root{--paper:#f3f0e8;--ink:#17231e;--muted:#59635e;--blue:#154ce0;--line:#cecfc4;--lime:#d8f070;--body-size:clamp(.86rem,1.7vw,1.6rem);--slide-padding:clamp(1.3rem,5vw,6rem);--title-size:clamp(2rem,4.7vw,5rem);--small-size:clamp(.65rem,.88vw,.9rem)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans','Noto Sans KR',sans-serif;word-break:keep-all}a{color:inherit;text-underline-offset:.2em}button,a{touch-action:manipulation}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #fb8b42;outline-offset:4px}h1,h2,h3,p,pre{margin:0}h1{font-size:var(--title-size);font-weight:800;line-height:1.2;letter-spacing:-.055em}h3{font-size:clamp(1rem,2vw,2rem);line-height:1.4;letter-spacing:-.035em}p{line-height:1.6}em{color:var(--blue);font-style:normal}
+/* === Slide frame === */
+.slide{background:var(--paper);padding:clamp(1rem,2.2vh,2rem) clamp(1.3rem,5vw,6rem);isolation:isolate}.slide:nth-child(3n+2){background:#e9eee8}.slide-top,.slide-bottom{display:flex;align-items:center;justify-content:space-between;gap:clamp(.5rem,1vw,1rem);font-size:var(--small-size);font-weight:600;letter-spacing:.065em;z-index:1}.slide-top{padding-bottom:clamp(.6rem,1.6vh,1.5rem);border-bottom:1px solid var(--line)}.slide-top b{color:var(--blue);padding:0 .5em}.slide-top i{font-style:normal;opacity:.4;padding:0 .6em}.slide-bottom{padding-top:clamp(.5rem,1vh,1rem);padding-bottom:clamp(1.8rem,3.6vh,2.8rem)}.source-links{font-size:clamp(.5rem,.68vw,.7rem);max-width:62%;letter-spacing:0;line-height:1.5;opacity:.72;text-align:center}.slide-content{padding:clamp(.8rem,3.6vh,3rem) 0;gap:clamp(.7rem,3.5vh,2.6rem);justify-content:center;overflow:visible;min-height:0;max-height:calc(100% - 5rem)}.body-content{min-height:0;max-height:100%;display:flex;flex-direction:column;gap:clamp(.6rem,2.5vh,2rem)}.subtitle{color:var(--muted);font-size:clamp(.82rem,1.45vw,1.45rem);margin-top:clamp(.5rem,1.6vh,1.2rem);letter-spacing:-.02em}
+/* === Content layouts === */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.6rem,1.8vw,2rem)}.cards:has(article:nth-child(4)){grid-template-columns:repeat(4,1fr)}.cards article{border-top:2px solid var(--ink);padding:clamp(.7rem,2vh,1.6rem) 0}.card-num{font-size:clamp(.75rem,1.1vw,1.15rem);color:var(--blue);display:block;margin-bottom:clamp(.4rem,1.5vh,1rem)}.cards p{font-size:var(--body-size);margin-top:clamp(.3rem,1.3vh,1rem);color:var(--muted);line-height:1.6;letter-spacing:-.03em}.route{display:flex;gap:clamp(.4rem,1.7vw,1.6rem)}.route>div{position:relative;flex:1;border-top:3px solid var(--blue);padding:clamp(.6rem,2vh,1.4rem) 0}.route>div:not(:last-child):after{content:'↗';position:absolute;right:0;top:clamp(.5rem,1.4vh,1.2rem);color:var(--blue);font-size:clamp(1rem,2vw,2rem)}.route b{font-size:clamp(1rem,1.95vw,2rem);display:block;margin-bottom:clamp(.3rem,1vh,.8rem)}.route span{font-size:clamp(.8rem,1.35vw,1.4rem);color:var(--muted);display:block;padding-right:clamp(.7rem,1vw,1rem)}.points{list-style:none;counter-reset:point;display:grid;gap:clamp(.4rem,1.2vh,1.1rem);margin:0;padding:0}.points li{counter-increment:point;font-size:var(--body-size);line-height:1.5;border-bottom:1px solid var(--line);padding:clamp(.3rem,1vh,.8rem) 0}.points li:before{content:'0' counter(point);color:var(--blue);margin-right:clamp(.7rem,2.2vw,2rem);font-size:clamp(.75rem,1.1vw,1.1rem)}.codebox{background:var(--ink);color:#edf3dd;padding:clamp(.7rem,2.2vh,1.7rem) clamp(1rem,2.6vw,2.5rem);border-left:clamp(.2rem,.5vw,.45rem) solid var(--lime)}.code-label{display:block;font-size:clamp(.65rem,.9vw,.9rem);color:var(--lime);margin-bottom:clamp(.4rem,1.3vh,1rem)}pre{font-family:'DM Sans','Noto Sans KR',monospace;font-size:clamp(.68rem,1.32vw,1.35rem);line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}code{font-family:inherit}.footline{font-size:clamp(.7rem,1.22vw,1.25rem);color:var(--muted)}.prompt{font-size:clamp(1rem,2.25vw,2.45rem);line-height:1.75;letter-spacing:-.035em;border-left:clamp(.2rem,.5vw,.45rem) solid var(--blue);padding:clamp(.4rem,1.4vh,1rem) clamp(1rem,2.5vw,2.5rem)}.prompt b{color:var(--blue)}.statement{font-size:clamp(1rem,2.4vw,2.7rem);line-height:1.4;letter-spacing:-.04em}.before-after,.decision{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.7rem,2.8vw,3rem)}.decision{grid-template-columns:repeat(3,1fr)}.before-after>div,.decision>div{border-top:2px solid var(--ink);padding-top:clamp(.6rem,2vh,1.5rem)}.before-after>div:last-child{border-color:var(--blue);color:var(--blue)}small{font-size:clamp(.65rem,1vw,1rem)}.before-after p,.decision p{font-size:clamp(1rem,2vw,2.2rem);line-height:1.55;margin-top:clamp(.6rem,2.8vh,2rem)}.decision p{font-size:clamp(.9rem,1.65vw,1.7rem)}.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(.7rem,2.3vw,2.5rem)}.agenda>div{border-top:2px solid var(--ink);padding:clamp(.5rem,1.7vh,1.3rem) 0;display:flex;flex-direction:column;gap:clamp(.25rem,.7vh,.7rem)}.agenda b{color:var(--blue);font-size:clamp(1rem,2.3vw,2.7rem)}.agenda span{font-size:clamp(.9rem,1.65vw,1.8rem)}.agenda small{color:var(--muted)}
+/* === Title and result slides === */
+.cover{background:var(--ink)!important;color:var(--paper)}.cover:before{content:'';position:absolute;width:45vw;height:45vw;border:1px solid #586849;border-radius:50%;right:-15vw;bottom:-18vw;z-index:-1}.cover:after{content:'';position:absolute;width:30vw;height:30vw;border:1px solid #586849;border-radius:50%;right:-7.5vw;bottom:-10.5vw;z-index:-1}.cover h1{font-size:clamp(2.6rem,6.2vw,7rem)}.cover .subtitle{color:#c3ccbc}.cover .slide-top,.cover .slide-bottom{border-color:#4f5b4e}.cover .slide-top b{color:var(--lime)}.cover-word{font-size:clamp(1.2rem,3.4vw,3.9rem);letter-spacing:-.03em;font-weight:500}.cover-word i{color:var(--lime);font-style:normal}.cover-meta{font-size:clamp(.65rem,1vw,1.1rem);letter-spacing:.08em;margin-top:clamp(.5rem,2vh,1.5rem);color:#c3ccbc}.result-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(1rem,5vw,5rem);align-items:center}.mini-site{background:#fffef9;padding:clamp(.8rem,2.5vw,2.5rem);border:1px solid var(--line);transform:rotate(-1deg);box-shadow:clamp(.25rem,.7vw,.6rem) clamp(.25rem,.7vw,.6rem) 0 #cad3c4}.mini-nav{font-size:clamp(.5rem,.8vw,.8rem);display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:clamp(.5rem,1.3vh,1rem)}.mini-site h3{font-size:clamp(1.3rem,2.7vw,3rem);line-height:1.2;margin:clamp(.7rem,2.5vh,2rem) 0}.mini-projects{display:flex;gap:clamp(.3rem,1vw,1rem)}.mini-projects i{background:var(--lime);font-style:normal;padding:clamp(.5rem,1.3vw,1rem);font-size:clamp(.6rem,1vw,1rem);flex:1}.mini-projects i:nth-child(2){background:#bfcffa}.mini-projects i:nth-child(3){background:#f3caba}.mini-contact{display:block;font-size:clamp(.6rem,.9vw,.9rem);margin-top:clamp(.7rem,1.8vh,1.5rem)}.result-copy strong{font-size:clamp(1.2rem,2.6vw,3rem);color:var(--blue)}.result-copy p{font-size:clamp(.85rem,1.6vw,1.8rem);margin-bottom:clamp(.5rem,2vh,1.7rem)}.result-copy a{font-size:clamp(.8rem,1.2vw,1.3rem)}.closing-links{display:flex;gap:clamp(.8rem,2vw,2rem);font-size:clamp(.85rem,1.5vw,1.6rem);color:var(--lime)}.closing-line{font-size:clamp(1.1rem,2.7vw,3rem);line-height:1.45;margin-top:clamp(.5rem,2vh,1.4rem)}
+/* === Navigation, notes and animation === */
+.controls{position:fixed;bottom:clamp(.3rem,.8vh,.8rem);left:50%;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:clamp(.15rem,.4vw,.4rem);border:1px solid #d1d5c8;background:#fffffff2;border-radius:clamp(.3rem,.5vw,.6rem);padding:clamp(.2rem,.4vh,.4rem);box-shadow:0 2px 12px #0001;white-space:nowrap;color:var(--ink)}.controls button,.controls a{border:0;background:transparent;text-decoration:none;padding:clamp(.3rem,.65vh,.6rem) clamp(.4rem,.7vw,.8rem);font-size:clamp(.65rem,.8vw,.9rem)}.controls button:hover,.controls a:hover{background:#e7edda}.controls button:disabled{opacity:.35;cursor:default}#counter{font-size:clamp(.6rem,.7vw,.8rem);font-variant-numeric:tabular-nums}#progress{position:fixed;left:0;top:0;height:3px;background:var(--blue);z-index:70;transition:width .2s}dialog{border:1px solid var(--line);background:var(--paper);color:var(--ink);width:min(90vw,900px);max-height:85dvh;padding:clamp(1rem,3vw,2.5rem)}dialog::backdrop{background:#17231eb8}.dialog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:clamp(.8rem,2vh,1.8rem)}.dialog-head h2{font-size:clamp(1rem,2vw,2rem)}.dialog-head button{padding:clamp(.4rem,.7vw,.8rem)}.nav-dots{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.2rem,.6vw,.6rem)}.nav-dots button{text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:clamp(.5rem,1vw,1rem);font-size:clamp(.75rem,1vw,1.1rem);color:var(--ink)}.nav-dots button[aria-current=true]{background:var(--lime)}#notesPanel{position:fixed;z-index:40;bottom:clamp(3rem,7vh,5rem);right:clamp(1rem,3vw,3rem);width:min(620px,90vw);max-height:40vh;overflow:auto;padding:clamp(.7rem,1.8vw,1.8rem);background:#fffdf2;color:var(--ink);border:2px solid var(--blue);box-shadow:0 5px 25px #0002;font-size:clamp(.8rem,1.1vw,1.2rem)}#notesPanel b{color:var(--blue);display:block;margin-bottom:clamp(.5rem,1vh,1rem)}.reveal{opacity:1;transform:none}.js-ready .reveal{opacity:.3;transform:translateY(12px);transition:opacity .3s,transform .3s}.visible .reveal{opacity:1;transform:none}.visible .reveal:nth-child(2){transition-delay:.08s}
+/* === Compact viewports: retain all teaching content === */
+@media(max-height:700px){:root{--title-size:clamp(1.6rem,3.9vw,3.7rem);--body-size:clamp(.8rem,1.5vw,1.3rem)}.slide-content{gap:clamp(.5rem,2vh,1.4rem);padding:clamp(.5rem,2vh,1.3rem) 0}.cards p{line-height:1.5}.cover h1{font-size:clamp(2.2rem,5.2vw,5.6rem)}}
+@media(max-height:600px){:root{--title-size:clamp(1.3rem,3.3vw,2.8rem);--body-size:clamp(.7rem,1.2vw,1.05rem)}.subtitle{font-size:clamp(.7rem,1.15vw,1rem)}.slide-content{gap:clamp(.4rem,1.8vh,1rem)}.cards article{padding:clamp(.4rem,1vh,.7rem) 0}.card-num{margin-bottom:clamp(.2rem,.5vh,.4rem)}.cover h1{font-size:clamp(1.8rem,4.6vw,4rem)}pre{font-size:clamp(.6rem,1.1vw,.95rem)}.prompt{font-size:clamp(.9rem,1.9vw,1.7rem)}.nav-dots{display:grid}.mini-site h3{margin:clamp(.5rem,1.5vh,1rem) 0}}
+@media(max-height:500px){.slide-top,.slide-bottom{font-size:clamp(.5rem,.7vw,.7rem)}.slide-bottom{padding-bottom:clamp(1.5rem,5vh,2.3rem)}.cover-word{font-size:clamp(1rem,3vw,2rem)}.source-links{font-size:clamp(.45rem,.6vw,.6rem)}h3{font-size:clamp(.8rem,1.5vw,1.3rem)}.route b{font-size:clamp(.8rem,1.5vw,1.3rem)}.agenda b{font-size:clamp(1rem,2vw,1.5rem)}.agenda span{font-size:clamp(.7rem,1.3vw,1.1rem)}.statement{font-size:clamp(.9rem,1.8vw,1.5rem)}}
+@media(max-width:650px){:root{--title-size:clamp(1.7rem,7.3vw,2.8rem);--body-size:clamp(.75rem,3.1vw,1.1rem)}.slide{padding-left:clamp(1rem,5vw,2rem);padding-right:clamp(1rem,5vw,2rem)}.slide-top{font-size:clamp(.5rem,1.8vw,.7rem);letter-spacing:0}.cards,.cards:has(article:nth-child(4)){grid-template-columns:repeat(2,1fr)}h3{font-size:clamp(.8rem,3.6vw,1.3rem)}.card-num{font-size:clamp(.65rem,2.6vw,.8rem)}.subtitle{font-size:clamp(.72rem,3vw,1rem)}.agenda{grid-template-columns:repeat(2,1fr)}.route{flex-wrap:wrap}.route>div{min-width:28%}.route b{font-size:clamp(.8rem,3.8vw,1.4rem)}.route span{font-size:clamp(.7rem,2.8vw,1rem)}.prompt{font-size:clamp(.85rem,3.6vw,1.35rem);line-height:1.65}.source-links{display:none}.slide-bottom{font-size:clamp(.5rem,1.8vw,.7rem)}.before-after p,.decision p{font-size:clamp(.8rem,3.6vw,1.25rem)}.decision{grid-template-columns:1fr;gap:clamp(.5rem,1vh,1rem)}.decision p{margin-top:clamp(.2rem,.6vh,.5rem)}.decision br{display:none}.result-layout{grid-template-columns:1fr}.result-copy{display:none}.mini-site h3{font-size:clamp(1.5rem,6.5vw,2.4rem)}.mini-site{padding:clamp(1rem,5vw,2rem)}.mini-nav{font-size:clamp(.55rem,2.3vw,.8rem)}.mini-projects i{font-size:clamp(.65rem,2.8vw,1rem)}.mini-contact{font-size:clamp(.65rem,2.6vw,.9rem)}.cover h1{font-size:clamp(2.1rem,9vw,3.6rem)}.cover-word{font-size:clamp(1rem,4vw,1.6rem)}.controls #fullBtn{display:none}.controls a{font-size:clamp(.6rem,2.2vw,.8rem)}.nav-dots{grid-template-columns:1fr}.footline{font-size:clamp(.65rem,2.7vw,.9rem)}pre{font-size:clamp(.63rem,2.7vw,.9rem)}}
+/* === Landscape phones: compress spacing without removing lesson text === */
+@media(max-height:500px){:root{--title-size:clamp(1.1rem,2.6vw,1.45rem);--body-size:clamp(.65rem,1.05vw,.9rem)}.slide-content{gap:clamp(.3rem,1vh,.5rem);padding:clamp(.25rem,.8vh,.45rem) 0}.body-content{gap:clamp(.3rem,1vh,.5rem)}.subtitle{font-size:clamp(.6rem,1.05vw,.9rem);margin-top:clamp(.2rem,.6vh,.4rem)}.codebox{padding:clamp(.35rem,1vh,.5rem) clamp(.7rem,1.8vw,1.3rem)}.code-label{margin-bottom:clamp(.2rem,.6vh,.4rem)}.points{gap:clamp(.15rem,.4vh,.3rem)}.points li{padding:clamp(.2rem,.6vh,.4rem) 0}.footline{font-size:clamp(.6rem,1vw,.85rem)}}
+/* === Print: one slide per page, no controls or notes === */
+@media print{@page{size:320mm 180mm;margin:0}html,body{width:320mm;height:auto;overflow:visible;scroll-snap-type:none}.slide{width:320mm;height:180mm;break-after:page;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}.controls,#progress,dialog,#notesPanel{display:none!important}.reveal{opacity:1!important;transform:none!important}.slide:last-child{break-after:auto}.slide-bottom{padding-bottom:0}}
+
+/* 가로 폰(높이 450px 이하)에서 결과 미리보기 카드 축소 */
+@media(max-height:450px){.mini-site{padding:clamp(.5rem,1.4vw,.9rem)}.mini-site h3{font-size:clamp(1rem,2.4vw,1.5rem);margin:.25rem 0}.mini-projects,.mini-contact{margin-top:.25rem}}
+</style></head><body>
+<nav class="controls" aria-label="발표 제어"><button id="prev" aria-label="이전 슬라이드">←</button><span id="counter" aria-live="polite"></span><button id="next" aria-label="다음 슬라이드">→</button><button id="tocBtn">목차</button><button id="notesBtn" aria-pressed="false">노트 N</button><button id="fullBtn">전체화면</button><a href="https://codemon.ai/webinar/handbook" target="_blank">핸드북 ↗</a></nav>
+<div id="progress" aria-hidden="true"></div><main><!-- === Slide 1: OPENING === -->
+<section class="slide cover" id="s1" data-index="0" data-title="아이디어를 내 사이트로.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>OPENING <i>/</i> 00–02</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>아이디어를<br>내 사이트로.</h1><p class="subtitle">Claude Code 핸즈온 · 60분 뒤 내 주소 하나 · HIGHTECHER LIVE</p></div><div class="body-content reveal"><div class="cover-word">PROMPT <i>→</i> SKILL <i>→</i> BUILD <i>→</i> SHIP</div><div class="cover-meta">60 MIN / CLAUDE CODE / SKILLS · MCP · PLUGIN / PLAYWRIGHT / VERCEL</div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"></span><span>01 / 24</span></footer>
+ <aside class="speaker-note" hidden>“오늘은 개념 설명을 최소로 줄이고, 처음부터 끝까지 손으로 따라 합니다. 60분 뒤에 남는 것은 실제로 접속되는 주소 하나입니다.” 개발 경험이 없어도 된다고 안내한다. 사전 준비(codemon.ai/webinar)를 마친 분은 함께 실행하고, 못 마친 분은 시연을 보며 프롬프트 작성에 참여한다.</aside>
+</section><!-- === Slide 2: OUTCOME === -->
+<section class="slide " id="s2" data-index="1" data-title="오늘의 완성은 주소 하나입니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>OUTCOME <i>/</i> 02–03</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>오늘의 완성은<br>주소 하나입니다.</h1><p class="subtitle">한 페이지 · 사례 세 개 · 연락 동선 · 테스트 통과</p></div><div class="body-content reveal"><div class="result-layout"><div class="mini-site"><div class="mini-nav">SEOYUN / PORTFOLIO <span>WORK ↗</span></div><h3>복잡한 일을<br>명확한 경험으로.</h3><div class="mini-projects"><i>리서치</i><i>기획</i><i>자동화</i></div><span class="mini-contact">이메일 복사 ↗</span></div><div class="result-copy"><strong>01</strong><p>내 컴퓨터 + Playwright로 확인</p><strong>02</strong><p>Vercel 주소로 공유</p><a href="https://codemon.ai/files/webinar/demo-static/index.html" target="_blank">완성 예제 열기 ↗</a></div></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://codemon.ai/webinar/prep" target="_blank" rel="noopener">사전 준비 가이드 (codemon.ai/webinar/prep)</a></span><span>02 / 24</span></footer>
+ <aside class="speaker-note" hidden>demo-static/index.html을 열어 필터와 이메일 복사를 30초 안에 보여준다. 이름과 사례는 교육용 가상 데이터이며 주소도 example.com임을 밝힌다. 실제 공개 배포 주소는 강사가 사전 리허설에서 준비한다. 사전 준비 페이지 주소(codemon.ai/webinar)를 채팅에 붙인다.</aside>
+</section><!-- === Slide 3: 01 / PROMPT === -->
+<section class="slide " id="s3" data-index="2" data-title="프롬프트 규칙 다섯 가지.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>01 / PROMPT <i>/</i> 03–06</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>프롬프트 규칙 다섯 가지.</h1><p class="subtitle">오늘 쓰는 모든 프롬프트가 이 다섯 줄로 되어 있습니다.</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>목표·대상·완료 기준</h3><p>무엇을, 누구에게, 어떤 상태면 끝인지 적는다.</p></article><article><span class="card-num">02</span><h3>범위와 제외</h3><p>이번에 안 만드는 것을 먼저 말한다. 로그인·결제·DB.</p></article><article><span class="card-num">03</span><h3>관찰 가능하게</h3><p>“예쁘게” 대신 “390px에서 제목이 안 잘리게”.</p></article><article><span class="card-num">04</span><h3>한 번에 하나</h3><p>결과를 확인하고 다음 프롬프트로. 한꺼번에 붙이지 않는다.</p></article><article><span class="card-num">05</span><h3>금지선</h3><p>비밀값 출력 금지, 배포 금지 등 하지 말 것을 끝에 적는다.</p></article></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a></span><span>03 / 24</span></footer>
+ <aside class="speaker-note" hidden>규칙을 읽어주는 데 1분, 나머지는 실습이다. 핸드북의 프롬프트 12개가 전부 이 틀로 쓰여 있음을 P0을 열어 보여준다. “전문가처럼 해줘”는 목표가 아니라는 점만 짚는다.</aside>
+</section><!-- === Slide 4: 01 / PROMPT === -->
+<section class="slide " id="s4" data-index="3" data-title="첫 프롬프트: 내 환경을 점검합니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>01 / PROMPT <i>/</i> 06–09</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>첫 프롬프트: 내 환경을 점검합니다.</h1><p class="subtitle">참가자 핸드북 P0 · 새 폴더에서 claude 실행 후 붙여 넣기</p></div><div class="body-content reveal"><div class="codebox"><span class="code-label">터미널 · 새 폴더에서 시작</span><pre><code>mkdir my-portfolio
+cd my-portfolio
+claude</code></pre></div><div class="prompt">현재 작업 폴더와 Claude Code, Node.js, Vercel CLI 사용 가능 여부를 점검해줘.<br>비밀값은 출력하지 말고 <b>로그인 여부만</b> 확인해줘.<br><b>설치된 플러그인과 MCP 목록</b>을 알려줘. 아직 파일을 수정하지 마.</div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a> · <a href="https://codemon.ai/webinar/prep" target="_blank" rel="noopener">사전 준비 가이드 (codemon.ai/webinar/prep)</a></span><span>04 / 24</span></footer>
+ <aside class="speaker-note" hidden>P0을 실행한다. 다섯 규칙이 어디에 들어 있는지(목표·금지선) 손가락으로 짚는다. 결과에서 “vercel 로그인됨 / 플러그인 없음”처럼 지금 상태가 나오면, 다음 단계에서 플러그인을 채운다고 예고한다. 여기서 막힌 참가자는 codemon.ai/webinar의 트러블슈팅으로 보낸다.</aside>
+</section><!-- === Slide 5: 02 / SKILL === -->
+<section class="slide " id="s5" data-index="4" data-title="스킬은 파일 하나입니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>02 / SKILL <i>/</i> 09–11</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>스킬은 파일 하나입니다.</h1><p class="subtitle">.claude/skills/<이름>/SKILL.md · 호출은 /<이름></p></div><div class="body-content reveal"><div class="codebox"><span class="code-label">SKILL.md · 교육용 최소 예시</span><pre><code>---
+name: portfolio-check
+description: 포트폴리오 수정 후 품질 점검에 사용
+---
+모바일, 키보드, 실제 링크, 예시 표시를 점검한다.
+공개 폴더와 비밀값 노출을 확인한다.
+결과는 통과 / 실패 / 미확인으로 보고한다.</code></pre></div><p class="footline">스킬 = 반복할 <b>작업법</b>을 저장한 문서. 설명(description)을 보고 Claude가 고르거나, <b>/portfolio-check</b>로 직접 부릅니다.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">Claude Code Skills</a></span><span>05 / 24</span></footer>
+ <aside class="speaker-note" hidden>개념은 이 한 장이다. “같은 문장을 쓰면 무조건 실행”이 아니라 설명에 따라 선택되거나 슬래시로 명시 호출된다고만 설명한다. 스킬은 권한이나 인증을 대신하지 않는다.</aside>
+</section><!-- === Slide 6: 02 / SKILL === -->
+<section class="slide " id="s6" data-index="5" data-title="내 첫 스킬을 만듭니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>02 / SKILL <i>/</i> 11–13</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>내 첫 스킬을 만듭니다.</h1><p class="subtitle">참가자 핸드북 P1 · 결과: .claude/skills/portfolio-check/SKILL.md</p></div><div class="body-content reveal"><div class="prompt">반복 사용할 품질 점검 절차를 스킬로 만들어줘.<br><b>.claude/skills/portfolio-check/SKILL.md</b>에 저장해줘.<br>점검 항목은 모바일 넘침·키보드·실제 링크·예시 표시·비밀값·공개 범위.<br>결과는 통과 / 실패 / 미확인으로 구분해줘.</div><p class="footline">생성 후 <b>/portfolio-check</b> 입력 → 목록에 뜨는지 확인. 뒤에서 한방 프롬프트와 Playwright 테스트가 이 스킬을 씁니다.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">Claude Code Skills</a></span><span>06 / 24</span></footer>
+ <aside class="speaker-note" hidden>P1을 실행하고 파일이 어디에 생겼는지 보여준다. 스킬이 안 보이면 경로와 SKILL.md 대소문자를 확인하고 세션을 다시 연다. 시간이 없으면 templates/portfolio-check.SKILL.md를 복사한다.</aside>
+</section><!-- === Slide 7: 02 / SKILL === -->
+<section class="slide " id="s7" data-index="6" data-title="남이 만든 스킬 묶음: superpowers.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>02 / SKILL <i>/</i> 13–15</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>남이 만든 스킬 묶음:<br>superpowers.</h1><p class="subtitle">브레인스토밍·계획·디버깅 스킬을 한 번에 설치</p></div><div class="body-content reveal"><div class="codebox"><span class="code-label">Claude Code 안에서 · 공식 마켓플레이스</span><pre><code>/plugin install superpowers@claude-plugins-official</code></pre></div><p class="footline">설치 후 <b>/superpowers:brainstorming</b>이 보이면 성공. 오늘 아이디에이션 단계에서 씁니다.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">superpowers 플러그인</a> · <a href="https://code.claude.com/docs/en/discover-plugins" target="_blank" rel="noopener">플러그인 찾기·설치</a></span><span>07 / 24</span></footer>
+ <aside class="speaker-note" hidden>설치는 사전 준비 항목이므로 현장에서는 명령과 목록만 보여준다. superpowers는 “일하는 순서”를 스킬로 묶은 오픈소스 플러그인이라고만 설명한다. /plugin의 Discover 탭에서 검색해 설치해도 같다. 이것이 자연스럽게 다음 장(플러그인 개념)으로 이어진다.</aside>
+</section><!-- === Slide 8: 03 / MCP · PLUGIN === -->
+<section class="slide " id="s8" data-index="7" data-title="스킬은 작업법. MCP는 도구 연결. 플러그인은 묶음.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>03 / MCP · PLUGIN <i>/</i> 15–17</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>스킬은 작업법.<br>MCP는 도구 연결.<br>플러그인은 묶음.</h1><p class="subtitle">설치할 것이 무엇인지 이 한 장으로 구분합니다.</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>Skill · SKILL.md</h3><p>반복 작업의 절차. 방금 만든 portfolio-check.</p></article><article><span class="card-num">02</span><h3>MCP</h3><p>외부 도구·데이터를 연결하는 표준. Vercel·Playwright 서버.</p></article><article><span class="card-num">03</span><h3>Plugin</h3><p>스킬 + MCP + 명령 + 에이전트를 한 번에 설치하는 묶음.</p></article></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">Claude Code Skills</a> · <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">Claude Code MCP</a> · <a href="https://code.claude.com/docs/en/plugins" target="_blank" rel="noopener">Claude Code Plugins</a></span><span>08 / 24</span></footer>
+ <aside class="speaker-note" hidden>비유는 “점검 매뉴얼 / 외부 서비스 연결 규격 / 설치 묶음”. 모든 플러그인이 스킬과 MCP를 동시에 포함하는 것은 아니다. 플러그인을 설치해도 서비스 인증(/mcp)은 별도라는 점을 다음 장에서 실제로 보여준다.</aside>
+</section><!-- === Slide 9: 03 / MCP · PLUGIN === -->
+<section class="slide " id="s9" data-index="8" data-title="Vercel 플러그인을 설치하고 진짜로 연결됐는지 봅니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>03 / MCP · PLUGIN <i>/</i> 17–21</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>Vercel 플러그인을 설치하고<br>진짜로 연결됐는지 봅니다.</h1><p class="subtitle">설치 → /mcp 인증 → /vercel:status → P7 조회</p></div><div class="body-content reveal"><div class="route"><div><b>설치</b><span>/plugin install vercel@…</span></div><div><b>인증</b><span>/mcp → Vercel → 브라우저 로그인</span></div><div><b>검증</b><span>/vercel:status · P7</span></div></div><div class="codebox"><span class="code-label">Claude Code 안에서</span><pre><code>/plugin install vercel@claude-plugins-official
+/mcp
+/vercel:status</code></pre></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/vercel/vercel-plugin" target="_blank" rel="noopener">Vercel 플러그인 (Claude Code)</a> · <a href="https://vercel.com/docs/agent-resources/vercel-mcp" target="_blank" rel="noopener">Vercel MCP 연결</a> · <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">Claude Code MCP</a></span><span>09 / 24</span></footer>
+ <aside class="speaker-note" hidden>설치는 사전 준비, 현장에서는 /mcp 인증 상태와 /vercel:status 결과를 보여준다. 플러그인에는 Vercel MCP 서버(mcp.vercel.com)와 /vercel:deploy·/vercel:status 명령, 배포 스킬이 함께 들어 있다. 등록 목록에 있다는 것만으로 성공이라고 하지 않고 P7로 실습 팀의 프로젝트 상태를 실제 조회한다. OAuth 화면에 개인 정보가 드러나지 않게 준비한다. MCP 없이 CLI만으로도 배포는 가능하다.</aside>
+</section><!-- === Slide 10: 04 / IDEATION === -->
+<section class="slide " id="s10" data-index="9" data-title="브레인스토밍 스킬로 아이디어를 설계로 바꿉니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>04 / IDEATION <i>/</i> 21–24</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>브레인스토밍 스킬로<br>아이디어를 설계로 바꿉니다.</h1><p class="subtitle">참가자 핸드북 P2 · /superpowers:brainstorming</p></div><div class="body-content reveal"><div class="prompt"><b>/superpowers:brainstorming</b><br>나는 [분야]의 한 페이지 포트폴리오를 만들고 싶어.<br>방문자는 [채용 담당자], 원하는 행동은 [사례 확인 후 연락].<br>60분 안에 정적 사이트로 Vercel 배포. 로그인·결제·DB 제외.<br>질문은 <b>한 번에 하나씩</b>. 결정이 끝나면 docs/plans/portfolio-design.md에 정리해줘.</div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">superpowers 플러그인</a></span><span>10 / 24</span></footer>
+ <aside class="speaker-note" hidden>P2를 실행하면 스킬이 질문을 시작한다. 강사는 2~3개 질문에만 답하고(방문자, 사례 3개의 종류, 첫 화면 문장) 나머지는 “기본값으로”라고 답해 4분 안에 끝낸다. 참가자도 같은 방식으로 답하게 한다. 질문이 5개를 넘으면 “지금까지 결정으로 문서를 정리해줘”로 끊는다.</aside>
+</section><!-- === Slide 11: 04 / IDEATION === -->
+<section class="slide " id="s11" data-index="10" data-title="설계 문서 한 장이 한방 프롬프트의 입력입니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>04 / IDEATION <i>/</i> 24–28</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>설계 문서 한 장이<br>한방 프롬프트의 입력입니다.</h1><p class="subtitle">docs/plans/portfolio-design.md · 화면 구성 + 사례 틀 + 완료 기준 5개</p></div><div class="body-content reveal"><div class="decision"><div><small>결정</small><p>방문자는 채용 담당자.<br>첫 화면 한 문장.</p></div><div><small>구성</small><p>소개 → 사례 3 → 작업 방식 → 연락.<br>필터 + 이메일 복사.</p></div><div><small>완료 기준</small><p>390px 무넘침 · 필터 동작 · 복사 성공<br>· 키보드 이동 · 공개 URL 정상.</p></div></div><p class="footline">문서를 열어 <b>완료 기준 5개</b>가 있는지만 확인합니다. 없으면 “완료 기준 5개를 추가해줘”.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">superpowers 플러그인</a></span><span>11 / 24</span></footer>
+ <aside class="speaker-note" hidden>생성된 문서를 열어 세 블록(결정·구성·완료 기준)을 짚는다. 완료 기준은 뒤의 Playwright 테스트가 그대로 검사할 항목이다. 문서가 길면 읽지 말고 완료 기준만 확인한다. 이 문서는 아티팩트 단계에서 시각화 재료로도 쓴다.</aside>
+</section><!-- === Slide 12: 05 / ONE-SHOT === -->
+<section class="slide " id="s12" data-index="11" data-title="한방 프롬프트를 날려두고 다음 단계로 갑니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>05 / ONE-SHOT <i>/</i> 28–32</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>한방 프롬프트를 날려두고<br>다음 단계로 갑니다.</h1><p class="subtitle">참가자 핸드북 P3 · 구현 → 로컬 서버 → /portfolio-check까지 한 번에</p></div><div class="body-content reveal"><div class="prompt"><b>portfolio-design.md대로 site/에 구현</b>해줘. HTML/CSS/JS, 외부 라이브러리 없이.<br>필터와 이메일 복사를 넣고, 허구 수치는 만들지 말고 [예시]로 표시해줘.<br>끝나면 <b>로컬 서버를 실행</b>하고 접속 주소를 알려줘.<br><b>/portfolio-check</b>로 자체 점검하고 check.md에 남겨줘.<br>확인이 끝날 때까지 질문하지 말고 끝까지 진행해줘. 아직 배포하지 마.</div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a> · <a href="https://onorca.dev/" target="_blank" rel="noopener">Orca 에이전트 오케스트레이터</a></span><span>12 / 24</span></footer>
+ <aside class="speaker-note" hidden>P3를 붙여 넣고 Enter. “질문하지 말고 끝까지”가 한방 프롬프트의 핵심이다. 권한 확인이 뜨면 허용한다. 실행 중에는 화면을 그대로 두고 다음 장(아티팩트)으로 넘어간다. 두 번째 세션을 쓰려면 Orca로 새 워크스페이스를 연다(사전 준비 안내에 설치 포함). 32분에 결과를 기다리지 않는다.</aside>
+</section><!-- === Slide 13: 06 / ARTIFACT === -->
+<section class="slide " id="s13" data-index="12" data-title="아티팩트: 대화 속 결과를 화면으로 꺼냅니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>06 / ARTIFACT <i>/</i> 32–35</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>아티팩트: 대화 속 결과를<br>화면으로 꺼냅니다.</h1><p class="subtitle">만들어지는 동안, 방금 설계한 것을 눈에 보이게</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>무엇</h3><p>Claude가 만든 HTML·차트·문서를 코드가 아니라 실제 화면으로 보여주는 결과물. 링크로 공유.</p></article><article><span class="card-num">02</span><h3>어디서</h3><p>Claude 앱 대화창(모두), 또는 Claude Code가 claude.ai/code/artifacts에 게시(Pro·Max·Team).</p></article><article><span class="card-num">03</span><h3>오늘</h3><p>portfolio-design.md를 붙여 넣어 방문자 여정과 화면 구성을 클릭형 화면으로.</p></article></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/artifacts" target="_blank" rel="noopener">Claude Code 아티팩트</a> · <a href="https://onorca.dev/" target="_blank" rel="noopener">Orca 에이전트 오케스트레이터</a></span><span>13 / 24</span></footer>
+ <aside class="speaker-note" hidden>한방 프롬프트가 도는 동안 진행한다. 기본 경로는 Claude 앱에 P4를 붙여 넣는 것이다. Claude Code로 하려면 두 번째 세션(Orca 새 워크스페이스)에서 “아티팩트로 만들어줘”라고 하면 claude.ai/code/artifacts에 비공개 링크로 게시된다(/artifacts로 목록 확인, /login 필요). 아티팩트는 “결과를 보는 창”이지 배포가 아니라는 점을 분명히 한다.</aside>
+</section><!-- === Slide 14: 06 / ARTIFACT === -->
+<section class="slide " id="s14" data-index="13" data-title="브레인스토밍 결과를 아티팩트로 시각화합니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>06 / ARTIFACT <i>/</i> 35–40</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>브레인스토밍 결과를<br>아티팩트로 시각화합니다.</h1><p class="subtitle">참가자 핸드북 P4 · Claude 앱에 설계 문서 붙여 넣기</p></div><div class="body-content reveal"><div class="prompt">아래는 내 포트폴리오 설계 문서야.<br><b>방문자 여정과 화면 구성</b>을 인터랙티브 아티팩트로 시각화해줘.<br>섹션을 클릭하면 목적과 완료 기준이 펼쳐지게 해줘.<br>문서에 없는 내용은 추가하지 마. [portfolio-design.md 붙여넣기]</div><p class="footline">섹션 하나를 클릭해 완료 기준이 펼쳐지는지 확인 → 공유 링크 복사. Claude Code 두 번째 세션이면 “아티팩트로 게시해줘”.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/artifacts" target="_blank" rel="noopener">Claude Code 아티팩트</a></span><span>14 / 24</span></footer>
+ <aside class="speaker-note" hidden>P4를 실행하고 완성된 아티팩트에서 섹션 하나를 클릭한다. 참가자에게 “내 설계 문서를 이렇게 팀에 공유할 수 있다”로 연결한다. 강사는 리허설한 경로 하나(Claude 앱 또는 Claude Code 게시)만 시연한다. 39분쯤 Claude Code 화면으로 돌아가 한방 프롬프트 결과를 확인한다.</aside>
+</section><!-- === Slide 15: 07 / LOCAL CHECK === -->
+<section class="slide " id="s15" data-index="14" data-title="로컬 주소를 열고, 한 가지만 고칩니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>07 / LOCAL CHECK <i>/</i> 40–46</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>로컬 주소를 열고,<br>한 가지만 고칩니다.</h1><p class="subtitle">한방 프롬프트 결과 확인 · 참가자 핸드북 P5</p></div><div class="body-content reveal"><div class="route"><div><b>열기</b><span>Claude가 알려준 Local 주소</span></div><div><b>보기</b><span>첫 화면·사례·필터·복사 직접 클릭</span></div><div><b>고치기</b><span>관찰한 문제 하나로 P5</span></div></div><div class="before-after"><div><small>모호한 요청</small><p>뭔가 답답해.<br>더 멋있게 바꿔줘.</p></div><div><small>검증 가능한 요청</small><p>390px에서 제목이 잘려.<br>가로 스크롤 없이 두세 줄로 보여줘.</p></div></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a></span><span>15 / 24</span></footer>
+ <aside class="speaker-note" hidden>Claude가 출력한 Local 주소를 연다. 포트를 3000으로 고정하지 않는다. check.md를 열어 자체 점검 결과를 보여준다. 실제 화면에서 발견한 문제 하나로 P5를 쓴다. 문제가 없으면 첫 화면 문장 길이를 바꾼다. 43분까지 초안이 없으면 demo-static을 site/로 복사하고 계속 간다.</aside>
+</section><!-- === Slide 16: 08 / TEST === -->
+<section class="slide " id="s16" data-index="15" data-title="Playwright로 브라우저 테스트를 맡깁니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>08 / TEST <i>/</i> 46–50</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>Playwright로<br>브라우저 테스트를 맡깁니다.</h1><p class="subtitle">참가자 핸드북 P6 · 완료 기준 4개를 자동으로 확인</p></div><div class="body-content reveal"><div class="codebox"><span class="code-label">터미널 · 사전 준비 항목</span><pre><code>claude mcp add playwright -- npx @playwright/mcp@latest</code></pre></div><div class="prompt">Playwright MCP로 로컬 주소를 열어 확인해줘.<br>1) 390px 가로 스크롤 없음 2) 필터 동작 3) 복사 완료 표시 4) Tab 이동.<br>각 항목 <b>스크린샷</b>을 찍고 통과/실패/미확인을 check.md에 추가해줘.<br>브라우저를 실제로 열지 못했으면 통과라고 쓰지 마.</div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Playwright MCP</a> · <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">Claude Code MCP</a></span><span>16 / 24</span></footer>
+ <aside class="speaker-note" hidden>P6을 실행한다. Claude가 브라우저를 열고 클릭하는 로그와 스크린샷을 보여준다. “사람이 눌러본 것”과 “도구가 눌러본 것”을 둘 다 check.md에 남긴다. Playwright MCP는 공식 플러그인이 아니라 Microsoft가 배포하는 MCP 서버를 직접 등록하는 것이며, 첫 실행 시 브라우저 다운로드가 있을 수 있어 리허설에서 미리 실행한다. [촬영전확인] 등록 명령이 현재 playwright-mcp README와 같은지 확인.</aside>
+</section><!-- === Slide 17: 08 / TEST === -->
+<section class="slide " id="s17" data-index="16" data-title="시간이 되면: 로그인이 필요한 화면은 ego lite로.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>08 / TEST <i>/</i> 50–52</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>시간이 되면: 로그인이 필요한<br>화면은 ego lite로.</h1><p class="subtitle">에이전트 전용 브라우저 · 내 로그인 상태를 물려받는 격리 공간</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>Playwright</h3><p>새 브라우저를 띄워 자동 조작. 공개 페이지 테스트에 적합.</p></article><article><span class="card-num">02</span><h3>ego lite</h3><p>내가 로그인한 Chromium을 에이전트가 별도 Space에서 사용. 캡차·2FA에 안 막힘.</p></article><article><span class="card-num">03</span><h3>Claude in Chrome</h3><p>Claude Code가 내 Chrome 탭을 직접 조작. /chrome으로 연결.</p></article></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://lite.ego.app/" target="_blank" rel="noopener">ego lite 에이전트 브라우저</a> · <a href="https://code.claude.com/docs/en/chrome" target="_blank" rel="noopener">Claude in Chrome</a></span><span>17 / 24</span></footer>
+ <aside class="speaker-note" hidden>시간이 남을 때만 다룬다. ego lite는 Claude Code·Codex 등이 사용자의 로그인 세션을 공유하되 탭은 분리해 병렬로 작업하는 브라우저다. 설치 시연은 하지 않고 어떤 상황에 필요한지(로그인 뒤 화면 테스트)만 말한다. 이 자료의 검수도 ego 브라우저로 했다고 덧붙여도 좋다.</aside>
+</section><!-- === Slide 18: 09 / DEPLOY === -->
+<section class="slide " id="s18" data-index="17" data-title="플러그인 명령 하나로 Preview 주소를 만듭니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>09 / DEPLOY <i>/</i> 52–56</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>플러그인 명령 하나로<br>Preview 주소를 만듭니다.</h1><p class="subtitle">/vercel:deploy 또는 npx vercel · 참가자 핸드북 P8</p></div><div class="body-content reveal"><div class="codebox"><span class="code-label">Claude Code 안에서 · site/ 폴더가 배포 대상인지 확인</span><pre><code>/vercel:deploy</code></pre></div><div class="codebox"><span class="code-label">같은 일을 터미널로 · 팀 → 새 프로젝트 → 정적 설정</span><pre><code>cd site
+npx vercel</code></pre></div><p class="footline">Local → <b>Preview</b> → Production. Preview 주소가 자동으로 비공개는 아닙니다. 접근 범위는 Deployment Protection 설정으로 확인.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://github.com/vercel/vercel-plugin" target="_blank" rel="noopener">Vercel 플러그인 (Claude Code)</a> · <a href="https://vercel.com/docs/cli/deploy" target="_blank" rel="noopener">Vercel 배포 명령</a> · <a href="https://vercel.com/docs/deployment-protection" target="_blank" rel="noopener">Vercel 배포 접근 보호</a></span><span>18 / 24</span></footer>
+ <aside class="speaker-note" hidden>/vercel:deploy는 사전 점검(CLI·링크·미커밋 변경) 후 Preview 배포를 실행한다. 프로젝트가 링크되지 않았으면 vercel link 또는 npx vercel로 팀·새 프로젝트·정적 설정을 고른다. site/만 배포하고 상위 폴더(설계 문서·스킬)는 올리지 않는다. 2분 이상 지연되면 리허설 주소와 로그를 보여준다.</aside>
+</section><!-- === Slide 19: 09 / DEPLOY === -->
+<section class="slide " id="s19" data-index="18" data-title="URL이 생긴 다음이 진짜 확인입니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>09 / DEPLOY <i>/</i> 56–58</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>URL이 생긴 다음이<br>진짜 확인입니다.</h1><p class="subtitle">Preview 확인 → Production 공개 · 참가자 핸드북 P9</p></div><div class="body-content reveal"><ul class="points"><li>반환된 Preview URL을 연다. 필터·복사를 한 번 더 누른다.</li><li>휴대폰 또는 로그아웃 창에서 접근 범위를 확인한다.</li><li>공개할 준비가 되면 같은 프로젝트에 Production 배포한다.</li><li>실제 URL을 기록한다. “배포 완료” 문장이 아니라 접속 결과가 근거다.</li></ul><div class="codebox"><span class="code-label">또는 npx vercel --prod</span><pre><code>/vercel:deploy prod</code></pre></div></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://vercel.com/docs/cli/deploy" target="_blank" rel="noopener">Vercel 배포 명령</a> · <a href="https://vercel.com/docs/deployment-protection" target="_blank" rel="noopener">Vercel 배포 접근 보호</a></span><span>19 / 24</span></footer>
+ <aside class="speaker-note" hidden>P9 사용. 주소를 지어내거나 배포 완료 문장만 읽지 않는다. 보호된 프로젝트면 차단 화면이 나올 수 있다. 공개 의도와 설정이 맞는지 확인한다. GitHub 연동 자동 배포는 후속 학습으로 소개한다.</aside>
+</section><!-- === Slide 20: CLOSING === -->
+<section class="slide cover" id="s20" data-index="19" data-title="오늘 한 손동작 여덟 개.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>CLOSING <i>/</i> 58–60</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>오늘 한 손동작 여덟 개.</h1><p class="subtitle">프롬프트 → 스킬 → 플러그인 → 브레인스토밍 → 한방 → 아티팩트 → 테스트 → 배포</p></div><div class="body-content reveal"><div class="closing-links"><a href="https://codemon.ai/webinar/handbook" target="_blank">참가자 핸드북 ↗</a><a href="https://codemon.ai/webinar/prep" target="_blank">사전 준비 가이드 ↗</a><a href="https://codemon.ai/files/webinar/demo-static/index.html" target="_blank">포트폴리오 예제 ↗</a></div><p class="closing-line">코드는 Claude와.<br>방향과 확인은 나와.</p></div></div>
+ <footer class="slide-bottom"><span>CLAUDE VIBE CODING · HANDS-ON</span><span class="source-links"><a href="https://codemon.ai/webinar/prep" target="_blank" rel="noopener">사전 준비 가이드 (codemon.ai/webinar/prep)</a> · <a href="https://codemon.ai/webinar/handbook" target="_blank" rel="noopener">참가자 핸드북 (codemon.ai/webinar/handbook)</a></span><span>20 / 24</span></footer>
+ <aside class="speaker-note" hidden>마무리 질문: “다음에 만들 사이트는 무엇이고, 가장 먼저 보여줄 한 가지는 무엇인가요?” 참가자는 SKILL.md, portfolio-design.md, site/, check.md, 실제 배포 주소가 있는지 확인한다. 질문은 설치/기능/배포로 나누어 1~2개 답한다. Supabase 확장은 부록으로 안내한다.</aside>
+</section><!-- === Slide 21: A / SETUP === -->
+<section class="slide " id="s21" data-index="20" data-title="사전 준비는 codemon.ai/webinar/prep에서.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>A / SETUP <i>/</i> APPENDIX</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>사전 준비는<br>codemon.ai/webinar/prep에서.</h1><p class="subtitle">계정·설치·플러그인·MCP·Orca까지 한 페이지 · 시작 전 20–30분</p></div><div class="body-content reveal"><ul class="points"><li>Claude Code 설치 + 로그인 · Node.js LTS + Vercel CLI 로그인.</li><li>플러그인 2개: superpowers, vercel — /plugin install.</li><li>Playwright MCP 등록 (claude mcp add playwright …).</li><li>Orca 설치(선택): 세션 여러 개를 나란히 — brew install --cask stablyai/orca/orca.</li><li>공개해도 되는 소개 문구·사례 3개·이메일 준비.</li></ul><p class="footline">전체 절차·Windows 명령·트러블슈팅: <b>https://codemon.ai/webinar/prep</b></p></div></div>
+ <footer class="slide-bottom"><span>REFERENCE / 60분 본편 이후</span><span class="source-links"><a href="https://codemon.ai/webinar/prep" target="_blank" rel="noopener">사전 준비 가이드 (codemon.ai/webinar/prep)</a> · <a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a> · <a href="https://onorca.dev/" target="_blank" rel="noopener">Orca 에이전트 오케스트레이터</a> · <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js 설치</a></span><span>21 / 24</span></footer>
+ <aside class="speaker-note" hidden>사전 준비 페이지는 codemon.ai/webinar에 자체 서비스한다. Mac과 Windows 명령은 그 페이지에 분리했다. 기본 실습에 GitHub·Supabase·Docker를 요구하지 않는다. Orca는 한방 프롬프트를 돌리는 동안 두 번째 세션을 여는 용도로 선택 설치다.</aside>
+</section><!-- === Slide 22: B / SUPABASE === -->
+<section class="slide " id="s22" data-index="21" data-title="사례 데이터를 DB에서 읽고 싶다면.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>B / SUPABASE <i>/</i> APPENDIX</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>사례 데이터를 DB에서 읽고 싶다면.</h1><p class="subtitle">후속 20–30분 확장 · 참가자 핸드북 P10·P11 + demo-supabase/</p></div><div class="body-content reveal"><div class="route"><div><b>MCP</b><span>Claude가 개발할 때 쓰는 연결</span></div><div><b>RLS</b><span>published=true만 SELECT 허용</span></div><div><b>API</b><span>방문자가 사이트를 볼 때 쓰는 연결</span></div></div><div class="codebox"><span class="code-label">터미널 · 한 줄 전체 복사</span><pre><code>claude mcp add --transport http supabase &quot;https://mcp.supabase.com/mcp?project_ref=YOUR_PROJECT_REF&amp;read_only=true&quot;</code></pre></div></div></div>
+ <footer class="slide-bottom"><span>REFERENCE / 60분 본편 이후</span><span class="source-links"><a href="https://supabase.com/docs/guides/ai-tools/mcp" target="_blank" rel="noopener">Supabase MCP 연결</a> · <a href="https://supabase.com/docs/guides/database/postgres/row-level-security" target="_blank" rel="noopener">Supabase RLS</a> · <a href="https://supabase.com/docs/guides/getting-started/api-keys" target="_blank" rel="noopener">Supabase API 키</a> · <a href="https://supabase.com/docs/guides/api" target="_blank" rel="noopener">Supabase Data REST API</a></span><span>22 / 24</span></footer>
+ <aside class="speaker-note" hidden>본편에서 다루지 않는다. 기본 포트폴리오는 DB 없이 완성이다. 여러 사람이 내용을 갱신할 때 Supabase가 필요하다고만 답한다. MCP 연결만으로 웹사이트가 DB를 읽게 되지는 않는다. 브라우저에는 publishable key만 넣는다.</aside>
+</section><!-- === Slide 23: C / RECOVERY === -->
+<section class="slide " id="s23" data-index="22" data-title="멈췄을 때는 단계를 줄여 이어갑니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>C / RECOVERY <i>/</i> APPENDIX</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>멈췄을 때는<br>단계를 줄여 이어갑니다.</h1><p class="subtitle">인증 2분 · 브레인스토밍 4분 · 초안 43분 · 배포 54분을 기준으로 전환</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>플러그인·MCP 실패</h3><p>/mcp 인증과 CLI 로그인을 따로 확인. CLI 배포는 독립 진행.</p></article><article><span class="card-num">02</span><h3>브레인스토밍 길어짐</h3><p>“지금까지 결정으로 문서를 정리해줘”로 끊고 P3로.</p></article><article><span class="card-num">03</span><h3>생성·테스트 지연</h3><p>demo-static을 site/로 복사. Playwright 실패는 수동 클릭으로 대체.</p></article><article><span class="card-num">04</span><h3>배포 지연</h3><p>로컬 성공과 배포 미완료를 구분. 리허설 주소로 흐름 설명.</p></article></div></div></div>
+ <footer class="slide-bottom"><span>REFERENCE / 60분 본편 이후</span><span class="source-links"></span><span>23 / 24</span></footer>
+ <aside class="speaker-note" hidden>자동 반복 재시도 대신 어느 단계가 막혔는지 기록한다. 예제로 전환했다는 점을 분명히 알린다. 로그아웃이 사용량 한도를 초기화하는 해결책이라고 안내하지 않는다.</aside>
+</section><!-- === Slide 24: D / SOURCES === -->
+<section class="slide " id="s24" data-index="23" data-title="공식 문서로 확인하고, 실습 문장으로 다시 썼습니다.">
+ <header class="slide-top"><span>HIGHTECHER <b>×</b> CODEMON</span><span>D / SOURCES <i>/</i> APPENDIX</span></header>
+ <div class="slide-content"><div class="heading reveal"><h1>공식 문서로 확인하고,<br>실습 문장으로 다시 썼습니다.</h1><p class="subtitle">확인일 2026.09.18 · 세부 출처와 원본 정정표는 핸드북</p></div><div class="body-content reveal"><div class="cards"><article><span class="card-num">01</span><h3>Anthropic</h3><p>Claude Code · Skills · MCP · Plugins · Chrome</p></article><article><span class="card-num">02</span><h3>Vercel</h3><p>플러그인 · MCP · CLI 배포 · Deployment Protection</p></article><article><span class="card-num">03</span><h3>도구</h3><p>superpowers · Playwright MCP · ego lite · Orca</p></article></div></div></div>
+ <footer class="slide-bottom"><span>REFERENCE / 60분 본편 이후</span><span class="source-links"><a href="https://code.claude.com/docs/en/quickstart" target="_blank" rel="noopener">Claude Code 시작</a> · <a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">Claude Code Skills</a> · <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">Claude Code MCP</a> · <a href="https://code.claude.com/docs/en/plugins" target="_blank" rel="noopener">Claude Code Plugins</a> · <a href="https://github.com/vercel/vercel-plugin" target="_blank" rel="noopener">Vercel 플러그인 (Claude Code)</a> · <a href="https://vercel.com/docs/agent-resources/vercel-mcp" target="_blank" rel="noopener">Vercel MCP 연결</a> · <a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">superpowers 플러그인</a> · <a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Playwright MCP</a> · <a href="https://lite.ego.app/" target="_blank" rel="noopener">ego lite 에이전트 브라우저</a> · <a href="https://onorca.dev/" target="_blank" rel="noopener">Orca 에이전트 오케스트레이터</a></span><span>24 / 24</span></footer>
+ <aside class="speaker-note" hidden>원본 HTML은 2026년 6월 28일 워크숍 전사록을 정리한 자료라고 설명하지만 전사록 원문은 제공되지 않았다. 이번 자료는 제공된 HTML과 공식 문서를 기반으로 재작성했고, 2026-09-18에 핸즈온 순서로 재구성했다. 모델명·가격·추론 강도 등 변동성이 큰 수치는 고정하지 않았다.</aside>
+</section></main><dialog id="toc"><div class="dialog-head"><h2>슬라이드 바로 가기</h2><button id="tocClose" aria-label="목차 닫기">닫기 ×</button></div><nav id="navDots" class="nav-dots" aria-label="슬라이드 목차"></nav></dialog><aside id="notesPanel" hidden><b>발표자 노트 · N으로 닫기</b><p></p></aside><script>/* === One-file presentation controller === */
+class SlidePresentation {
+ constructor(){
+  this.slides=[...document.querySelectorAll('.slide')];this.current=0;this.notes=false;
+  this.toc=document.getElementById('toc');this.panel=document.getElementById('notesPanel');
+  this.nav=document.getElementById('navDots');this.nav.replaceChildren();
+  this.slides.forEach((s,i)=>{const b=document.createElement('button');b.textContent=`${String(i+1).padStart(2,'0')}  ${s.dataset.title}`;b.addEventListener('click',()=>{this.toc.close();this.go(i)});this.nav.append(b)});
+  document.getElementById('prev').onclick=()=>this.go(this.current-1);
+  document.getElementById('next').onclick=()=>this.go(this.current+1);
+  document.getElementById('tocBtn').onclick=()=>this.toc.showModal();
+  document.getElementById('tocClose').onclick=()=>this.toc.close();
+  document.getElementById('notesBtn').onclick=()=>this.toggleNotes();
+  document.getElementById('fullBtn').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{document.getElementById('fullBtn').textContent='브라우저 전체화면 사용'}};
+  document.addEventListener('keydown',e=>{if(this.toc.open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable||(/BUTTON|A/.test(e.target.tagName)&&e.key===' '))return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();this.go(this.current+1)}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.go(this.current-1)}if(e.key==='Home'){e.preventDefault();this.go(0)}if(e.key==='End'){e.preventDefault();this.go(this.slides.length-1)}if(e.key.toLowerCase()==='n')this.toggleNotes();if(e.key==='Escape'&&this.notes)this.toggleNotes()});
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{e.target.classList.toggle('visible',e.isIntersecting);if(e.isIntersecting&&e.intersectionRatio>.5){this.current=Number(e.target.dataset.index);this.update()}})},{threshold:[.5,.6]});this.slides.forEach(s=>obs.observe(s));
+  // Native vertical scrolling supplies mouse-wheel and touch navigation.
+  let start=null;document.addEventListener('touchstart',e=>{start={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}},{passive:true});document.addEventListener('touchend',e=>{if(!start||this.toc.open)return;const dx=e.changedTouches[0].clientX-start.x,dy=e.changedTouches[0].clientY-start.y;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5)this.go(this.current+(dx<0?1:-1));start=null},{passive:true});
+  const id=Number(location.hash.slice(2))-1;if(Number.isInteger(id)&&id>=0&&id<this.slides.length){this.current=id;this.slides[id].scrollIntoView({behavior:'instant'})}this.update();document.body.classList.add('js-ready');
+  window.addEventListener('hashchange',()=>{const next=Number(location.hash.slice(2))-1;if(Number.isInteger(next)&&next>=0&&next<this.slides.length)this.go(next)});
+  window.addEventListener('resize',()=>this.go(this.current));
+ }
+ go(i){i=Math.max(0,Math.min(this.slides.length-1,i));this.current=i;this.slides[i].scrollIntoView({behavior:'instant'});this.update()}
+ update(){document.getElementById('counter').textContent=`${this.current+1} / ${this.slides.length}`;document.getElementById('prev').disabled=this.current===0;document.getElementById('next').disabled=this.current===this.slides.length-1;document.getElementById('progress').style.width=`${(this.current+1)/this.slides.length*100}%`;[...this.nav.children].forEach((b,i)=>b.setAttribute('aria-current',i===this.current?'true':'false'));this.panel.querySelector('p').textContent=this.slides[this.current].querySelector('.speaker-note').textContent;try{history.replaceState(null,'',`#s${this.current+1}`)}catch{}}
+ toggleNotes(){this.notes=!this.notes;this.panel.hidden=!this.notes;document.getElementById('notesBtn').setAttribute('aria-pressed',String(this.notes));this.update()}
+}
+new SlidePresentation();
+</script></body></html>
