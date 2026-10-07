@@ -200,15 +200,9 @@ claude mcp add playwright -- npx @playwright/mcp@latest
 2. 결과가 check.md에 통과 / 실패 / 미확인으로 추가됐는지 봅니다. "브라우저를 실제로 열지 못했으면 통과라고 쓰지 마"가 들어 있습니다.
 3. 실패 항목은 P5 형식으로 한 번 더 수정합니다.
 
-**시간이 되면 · 로그인이 필요한 화면은 ego lite**
+**브라우저 확인은 클로드 앱 내장 브라우저로**
 
-| 도구 | 방식 | 맞는 상황 |
-|------|------|-----------|
-| Playwright MCP | 새 브라우저를 띄워 자동 조작 | 공개 페이지 테스트 (오늘) |
-| ego lite | 내가 로그인한 Chromium을 에이전트가 별도 Space에서 사용. 캡차·2FA·SSO에 안 막힘 | 로그인 뒤 화면 테스트, 여러 에이전트 병렬 |
-| Claude in Chrome | Claude Code가 내 Chrome 탭을 직접 조작. `/chrome`으로 연결 | 지금 보고 있는 탭을 그대로 다룰 때 |
-
-[ego lite](https://lite.ego.app/) · [Claude in Chrome](https://code.claude.com/docs/en/chrome). 설치 시연은 하지 않고 어떤 상황에 필요한지만 다룹니다.
+별도 설치 없이 앱 안에서 만들어진 페이지를 열고, 에이전트가 클릭·스크린샷 하는 것을 같은 창에서 봅니다. Playwright MCP는 반복 테스트가 필요할 때의 심화 경로입니다. [Claude 도움말](https://support.claude.com/)
 
 ## 10 · ⑧ 배포: Preview → Production (52–58)
 
@@ -455,4 +449,4 @@ window.SUPABASE_CONFIG = {
 
 60분 시간표, 프롬프트, 예제 데이터와 운영안은 이 웨비나를 위해 작성한 교육 설계입니다. 요금·모델 가용성·UI 문구는 강의 직전 현재 계정에서 다시 확인합니다.
 
-[Claude Code 시작](https://code.claude.com/docs/en/quickstart) · [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Plugins](https://code.claude.com/docs/en/plugins) · [플러그인 찾기](https://code.claude.com/docs/en/discover-plugins) · [CLAUDE.md](https://code.claude.com/docs/en/memory) · [권한](https://code.claude.com/docs/en/permissions) · [Artifacts](https://code.claude.com/docs/en/artifacts) · [Claude in Chrome](https://code.claude.com/docs/en/chrome) · [Vercel 플러그인](https://github.com/vercel/vercel-plugin) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp) · [Vercel CLI](https://vercel.com/docs/cli) · [Vercel 배포](https://vercel.com/docs/cli/deploy) · [Deployment Protection](https://vercel.com/docs/deployment-protection) · [superpowers](https://github.com/obra/superpowers) · [Playwright MCP](https://github.com/microsoft/playwright-mcp) · [ego lite](https://lite.ego.app/) · [Orca](https://onorca.dev/) · [Node.js](https://nodejs.org/en/download) · [Supabase MCP](https://supabase.com/docs/guides/ai-tools/mcp) · [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Supabase API 키](https://supabase.com/docs/guides/getting-started/api-keys) · [Supabase Data API](https://supabase.com/docs/guides/api)
+[Claude Code 시작](https://code.claude.com/docs/en/quickstart) · [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Plugins](https://code.claude.com/docs/en/plugins) · [플러그인 찾기](https://code.claude.com/docs/en/discover-plugins) · [CLAUDE.md](https://code.claude.com/docs/en/memory) · [권한](https://code.claude.com/docs/en/permissions) · [Artifacts](https://code.claude.com/docs/en/artifacts) · [Claude in Chrome](https://code.claude.com/docs/en/chrome) · [Vercel 플러그인](https://github.com/vercel/vercel-plugin) · [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp) · [Vercel CLI](https://vercel.com/docs/cli) · [Vercel 배포](https://vercel.com/docs/cli/deploy) · [Deployment Protection](https://vercel.com/docs/deployment-protection) · [superpowers](https://github.com/obra/superpowers) · [Playwright MCP](https://github.com/microsoft/playwright-mcp) · [Orca](https://onorca.dev/) · [Node.js](https://nodejs.org/en/download) · [Supabase MCP](https://supabase.com/docs/guides/ai-tools/mcp) · [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Supabase API 키](https://supabase.com/docs/guides/getting-started/api-keys) · [Supabase Data API](https://supabase.com/docs/guides/api)
