@@ -151,6 +151,7 @@ ALTER TABLE survey_responses
 
 | # | 상태 | 날짜 | 내용 |
 |---|------|------|------|
+| 70 | 머지 | 2026-10-07 | `/webinar` 당일 순서 재편 — 슬라이드 교체·진행표 갱신 (feat/webinar-day-order) |
 | 69 | 머지 | 2026-10-07 | `/webinar/slides` 발표 슬라이드 배포 (feat/webinar-slides) |
 | 68 | 머지 | 2026-09-21 | `/webinar` .md 링크 404 수정 + Edit this page 경로 수정 (fix/webinar-md-links) |
 | 67 | 머지 | 2026-09-21 | `/webinar` 사이드바 비활성 수정 (fix/webinar-sidebar) |
